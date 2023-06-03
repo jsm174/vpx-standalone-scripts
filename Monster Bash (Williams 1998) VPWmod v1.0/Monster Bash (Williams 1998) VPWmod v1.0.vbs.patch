@@ -1,0 +1,85 @@
+--- ./Monster Bash (Williams 1998) VPWmod v1.0/Monster Bash (Williams 1998) VPWmod v1.0.vbs.original	2023-06-02 16:40:34
++++ ./Monster Bash (Williams 1998) VPWmod v1.0/Monster Bash (Williams 1998) VPWmod v1.0.vbs	2023-06-02 16:40:25
+@@ -2557,7 +2557,33 @@
+ '******************************************************
+ '		STAND-UP TARGET INITIALIZATION
+ '******************************************************
++
++Class StandupTarget
++  Private m_primary, m_prim, m_sw, m_animate
++
++  Public Property Get Primary(): Set Primary = m_primary: End Property
++  Public Property Let Primary(input): Set m_primary = input: End Property
++
++  Public Property Get Prim(): Set Prim = m_prim: End Property
++  Public Property Let Prim(input): Set m_prim = input: End Property
++
++  Public Property Get Sw(): Sw = m_sw: End Property
++  Public Property Let Sw(input): m_sw = input: End Property
++
++  Public Property Get Animate(): Animate = m_animate: End Property
++  Public Property Let Animate(input): m_animate = input: End Property
++
++  Public default Function init(primary, prim, sw, animate)
++    Set m_primary = primary
++    Set m_prim = prim
++    m_sw = sw
++    m_animate = animate
++
++    Set Init = Me
++  End Function
++End Class
+ 
++
+ 'Define a variable for each stand-up target
+ Dim ST12, ST15 , ST85, ST86, ST23
+ 
+@@ -2571,11 +2597,11 @@
+ '	switch:				ROM switch number
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ 
+-ST12 = Array(sw12, sw12p,12, 0)
+-ST15 = Array(sw15, sw15p,15, 0)
+-ST23 = Array(sw23, sw23p,23, 0)
+-ST85 = Array(sw85, frankytargets,85, 0)
+-ST86 = Array(sw86, frankytargets,86, 0)
++Set ST12 = (new StandupTarget)(sw12, sw12p,12, 0)
++Set ST15 = (new StandupTarget)(sw15, sw15p,15, 0)
++Set ST23 = (new StandupTarget)(sw23, sw23p,23, 0)
++Set ST85 = (new StandupTarget)(sw85, frankytargets,85, 0)
++Set ST86 = (new StandupTarget)(sw86, frankytargets,86, 0)
+ 
+ 
+ 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
+@@ -2599,10 +2625,10 @@
+ 	i = STArrayID(switch)
+ 
+ 	'PlayTargetSound
+-	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
++	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
+ 
+-	If STArray(i)(3) <> 0 Then
+-		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
++	If STArray(i).animate <> 0 Then
++		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
+ 	End If
+ 	DoSTAnim
+ End Sub
+@@ -2617,7 +2643,7 @@
+ Function STArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(STArray) 
+-		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
++		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
+ 	Next
+ End Function
+ 
+@@ -2642,7 +2668,7 @@
+ Sub DoSTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(STArray)
+-		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
++		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+ 	Next
+ End Sub
+ 

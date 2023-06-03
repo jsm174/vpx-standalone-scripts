@@ -1,0 +1,38 @@
+--- ./Starship Troopers (Sega 1997) VPW Mod v2.0/Starship Troopers (Sega 1997) VPW Mod v2.0.vbs.original	2023-06-02 07:07:27
++++ ./Starship Troopers (Sega 1997) VPW Mod v2.0/Starship Troopers (Sega 1997) VPW Mod v2.0.vbs	2023-06-02 18:09:04
+@@ -1324,7 +1324,7 @@
+ 	fbulb.visible = 1
+ 	for each bulb in StrobeFlashersLRed
+ 	bulb.state = 1
+-	If FlasherOnR = False then FlasherTimer1.Enabled = 1: Else 
++	If FlasherOnR = False then FlasherTimer1.Enabled = 1
+ 	FlasherTimer2.Enabled = 0
+ 	next
+ 	next
+@@ -1355,7 +1355,7 @@
+ 	fbulb.visible = 1
+ 	for each bulb in StrobeFlashersLGreen
+ 	bulb.state = 1
+-	If FlasherOnG = False then FlasherTimer3.Enabled = 1: Else 
++	If FlasherOnG = False then FlasherTimer3.Enabled = 1 
+ 	FlasherTimer4.Enabled = 0
+ 	next
+ 	next
+@@ -1386,7 +1386,7 @@
+ 	fbulb.visible = 1
+ 	for each bulb in StrobeFlashersLYellow
+ 	bulb.state = 1
+-	If FlasherOnY = False then FlasherTimer5.Enabled = 1: Else 
++	If FlasherOnY = False then FlasherTimer5.Enabled = 1 
+ 	FlasherTimer6.Enabled = 0
+ 	next
+ 	next
+@@ -1416,7 +1416,7 @@
+ 	fbulb.visible = 1
+ 	for each bulb in StrobeFlashersLBlue
+ 	bulb.state = 1
+-	If FlasherOnB = False then FlasherTimer7.Enabled = 1: Else 
++	If FlasherOnB = False then FlasherTimer7.Enabled = 1 
+ 	FlasherTimer8.Enabled = 0
+ 	next
+ 	next

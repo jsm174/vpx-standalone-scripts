@@ -1,0 +1,125 @@
+--- ./Cactus Canyon (Bally 1998) VPW 1.1/Cactus Canyon (Bally 1998) VPW 1.1.vbs.original	2023-06-02 07:07:27
++++ ./Cactus Canyon (Bally 1998) VPW 1.1/Cactus Canyon (Bally 1998) VPW 1.1.vbs	2023-06-01 09:54:25
+@@ -108,6 +108,7 @@
+ Const cSingleLFlip = 0
+ Const cSingleRFlip = 0
+ 
++Const tnob = 4 ' total number of balls
+ 
+ Const BallSize = 50
+ Const BallMass = 1
+@@ -1925,7 +1926,6 @@
+ 'End Sub
+ 
+ ' *** These are usually defined elsewhere (ballrolling), but activate here if necessary
+-Const tnob = 4 ' total number of balls
+ Const lob = 1	'locked balls on start; might need some fiddling depending on how your locked balls are done
+ 'Dim tablewidth: tablewidth = Table1.width
+ 'Dim tableheight: tableheight = Table1.height
+@@ -3833,7 +3833,41 @@
+ '******************************************************
+ '		DROP TARGETS INITIALIZATION
+ '******************************************************
++
++Class DropTarget
++  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
++
++  Public Property Get Primary(): Set Primary = m_primary: End Property
++  Public Property Let Primary(input): Set m_primary = input: End Property
+ 
++  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
++  Public Property Let Secondary(input): Set m_secondary = input: End Property
++
++  Public Property Get Prim(): Set Prim = m_prim: End Property
++  Public Property Let Prim(input): Set m_prim = input: End Property
++
++  Public Property Get Sw(): Sw = m_sw: End Property
++  Public Property Let Sw(input): m_sw = input: End Property
++
++  Public Property Get Animate(): Animate = m_animate: End Property
++  Public Property Let Animate(input): m_animate = input: End Property
++
++  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
++  Public Property Let IsDropped(input): m_isDropped = input: End Property
++
++  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
++    Set m_primary = primary
++    Set m_secondary = secondary
++    Set m_prim = prim
++    m_sw = sw
++    m_animate = animate
++    m_isDropped = isDropped
++
++    Set Init = Me
++  End Function
++End Class
++
++
+ 'Define a variable for each drop target
+ Dim DT61, DT62, DT63, DT64
+ 
+@@ -3852,11 +3886,12 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
++'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
+ 
+-DT61 = Array(sw61, sw61a, sw61p, 61, 0)
+-DT62 = Array(sw62, sw62a, sw62p, 62, 0)
+-DT63 = Array(sw63, sw63a, sw63p, 63, 0)
+-DT64 = Array(sw64, sw64a, sw64p, 64, 0)
++Set DT61 = (new DropTarget)(sw61, sw61a, sw61p, 61, 0, false)
++Set DT62 = (new DropTarget)(sw62, sw62a, sw62p, 62, 0, false)
++Set DT63 = (new DropTarget)(sw63, sw63a, sw63p, 63, 0, false)
++Set DT64 = (new DropTarget)(sw64, sw64a, sw64p, 64, 0, false)
+ 
+ Dim DTArray
+ DTArray = Array(DT61, DT62, DT63, DT64)
+@@ -3887,9 +3922,9 @@
+ 	i = DTArrayID(switch)
+ 
+ '	PlaySoundAtVol  DTHitSound, Activeball, Vol(Activeball)*22.5
+-	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
+-	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
+-		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
++	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
++	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
++		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -3898,7 +3933,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
+-	DTArray(i)(4) = -1
++	DTArray(i).animate = -1
+ 	DoDTAnim
+ End Sub
+ 
+@@ -3906,14 +3941,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
+-	DTArray(i)(4) = 1
++	DTArray(i).animate = 1
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
+-		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
++		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
+ 	Next
+ End Function
+ 
+@@ -3975,7 +4010,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
+-		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
++		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 
