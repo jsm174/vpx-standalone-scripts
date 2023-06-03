@@ -327,8 +327,8 @@ End Sub
 
 sub BallSearch() ' check for down drop targets on start (pinmame reset)
 	dim i : for i = 0 to uBound(DTArray) 
-		if DTarray(i)(2).transz <> 0 then ' this seems like not an ideal way to do this
-			Controller.switch(DTarray(i)(3) ) = 1 
+		if DTArray(i).prim.transz <> 0 then ' this seems like not an ideal way to do this
+			Controller.switch(DTArray(i).sw ) = 1
 		end if 
 	Next
 	bstrough.Update

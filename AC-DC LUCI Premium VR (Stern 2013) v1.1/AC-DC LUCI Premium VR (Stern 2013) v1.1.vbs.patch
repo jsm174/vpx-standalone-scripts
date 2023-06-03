@@ -1,5 +1,16 @@
 --- ./AC-DC LUCI Premium VR (Stern 2013) v1.1/AC-DC LUCI Premium VR (Stern 2013) v1.1.vbs.original	2023-06-02 13:23:03
-+++ ./AC-DC LUCI Premium VR (Stern 2013) v1.1/AC-DC LUCI Premium VR (Stern 2013) v1.1.vbs	2023-06-02 13:32:54
++++ ./AC-DC LUCI Premium VR (Stern 2013) v1.1/AC-DC LUCI Premium VR (Stern 2013) v1.1.vbs	2023-06-02 22:17:55
+@@ -327,8 +327,8 @@
+ 
+ sub BallSearch() ' check for down drop targets on start (pinmame reset)
+ 	dim i : for i = 0 to uBound(DTArray) 
+-		if DTarray(i)(2).transz <> 0 then ' this seems like not an ideal way to do this
+-			Controller.switch(DTarray(i)(3) ) = 1 
++		if DTArray(i).prim.transz <> 0 then ' this seems like not an ideal way to do this
++			Controller.switch(DTArray(i).sw ) = 1
+ 		end if 
+ 	Next
+ 	bstrough.Update
 @@ -3445,7 +3445,40 @@
  '******************************************************
  '  DROP TARGETS INITIALIZATION
@@ -22,10 +33,10 @@
 +
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
-+
+ 
 +  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
 +  Public Property Let IsDropped(input): m_isDropped = input: End Property
- 
++
 +  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
 +    Set m_primary = primary
 +    Set m_secondary = secondary
