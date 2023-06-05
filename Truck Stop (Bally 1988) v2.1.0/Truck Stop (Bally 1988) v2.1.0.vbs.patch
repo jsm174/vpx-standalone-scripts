@@ -1,0 +1,39 @@
+--- ./Truck Stop (Bally 1988) v2.1.0/Truck Stop (Bally 1988) v2.1.0.vbs.original	2023-06-04 20:42:59
++++ ./Truck Stop (Bally 1988) v2.1.0/Truck Stop (Bally 1988) v2.1.0.vbs	2023-06-04 20:42:49
+@@ -283,17 +283,7 @@
+ End Sub
+ 
+ 
+-'***********************************************************************************
+-'****								Knocker               						****
+ '***********************************************************************************
+-SolCallback(sKnocker) = "HitKnocker"
+-
+-Sub HitKnocker(enabled)
+-	If enabled Then PlaySound SoundFX("Knocker",DOFKnocker), 1
+-End Sub
+-
+-
+-'***********************************************************************************
+ '****				        	Solenoid reference      				    	****
+ '***********************************************************************************
+ const sKickerTopRight 				= 2  ' mapped in manual to 3
+@@ -306,7 +296,18 @@
+ const sFlippersEnable				= 19
+ const sLaneSteering					= 18 ' mapped in manual to 12
+ 
++
+ '***********************************************************************************
++'****								Knocker               						****
++'***********************************************************************************
++SolCallback(sKnocker) = "HitKnocker"
++
++Sub HitKnocker(enabled)
++	If enabled Then PlaySound SoundFX("Knocker",DOFKnocker), 1
++End Sub
++
++
++'***********************************************************************************
+ '****						  Drains and Kickers           						****
+ '***********************************************************************************
+ Dim KickerTopLeftBall, KickerTopLeftPos, BallOnTopRamp
