@@ -1,0 +1,130 @@
+--- ./Centaur (Bally 1981)/Centaur (Bally 1981).vbs.original	2023-06-04 20:52:16
++++ ./Centaur (Bally 1981)/Centaur (Bally 1981).vbs	2023-06-04 20:52:09
+@@ -2068,7 +2068,40 @@
+ '******************************************************
+ '		DROP TARGETS INITIALIZATION
+ '******************************************************
++
++Class DropTarget
++  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
++
++  Public Property Get Primary(): Set Primary = m_primary: End Property
++  Public Property Let Primary(input): Set m_primary = input: End Property
++
++  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
++  Public Property Let Secondary(input): Set m_secondary = input: End Property
++
++  Public Property Get Prim(): Set Prim = m_prim: End Property
++  Public Property Let Prim(input): Set m_prim = input: End Property
++
++  Public Property Get Sw(): Sw = m_sw: End Property
++  Public Property Let Sw(input): m_sw = input: End Property
++
++  Public Property Get Animate(): Animate = m_animate: End Property
++  Public Property Let Animate(input): m_animate = input: End Property
++
++  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
++  Public Property Let IsDropped(input): m_isDropped = input: End Property
+ 
++  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
++    Set m_primary = primary
++    Set m_secondary = secondary
++    Set m_prim = prim
++    m_sw = sw
++    m_animate = animate
++    m_isDropped = isDropped
++
++    Set Init = Me
++  End Function
++End Class
++
+ 'Define a variable for each drop target
+ Dim DT25, DT26, DT27, DT28, DT29, DT30, DT31, DT32, DT41, DT42, DT43, DT44
+ 
+@@ -2087,24 +2120,26 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
++'
++'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
+ 
+ ' Right Bank
+-DT25 = Array(sw25, sw25y, psw25, 25, 0)
+-DT26 = Array(sw26, sw26y, psw26, 26, 0)
+-DT27 = Array(sw27, sw27y, psw27, 27, 0)
+-DT28 = Array(sw28, sw28y, psw28, 28, 0)
++Set DT25 = (new DropTarget)(sw25, sw25y, psw25, 25, 0, false)
++Set DT26 = (new DropTarget)(sw26, sw26y, psw26, 26, 0, false)
++Set DT27 = (new DropTarget)(sw27, sw27y, psw27, 27, 0, false)
++Set DT28 = (new DropTarget)(sw28, sw28y, psw28, 28, 0, false)
+ 
+ ' Center Bank
+-DT29 = Array(sw29, sw29y, psw29, 29, 0)
+-DT30 = Array(sw30, sw30y, psw30, 30, 0)
+-DT31 = Array(sw31, sw31y, psw31, 31, 0)
+-DT32 = Array(sw32, sw32y, psw32, 32, 0)
++Set DT29 = (new DropTarget)(sw29, sw29y, psw29, 29, 0, false)
++Set DT30 = (new DropTarget)(sw30, sw30y, psw30, 30, 0, false)
++Set DT31 = (new DropTarget)(sw31, sw31y, psw31, 31, 0, false)
++Set DT32 = (new DropTarget)(sw32, sw32y, psw32, 32, 0, false)
+ 
+ ' Left Bank
+-DT41 = Array(sw41, sw41y, psw41, 41, 0)
+-DT42 = Array(sw42, sw42y, psw42, 42, 0)
+-DT43 = Array(sw43, sw43y, psw43, 43, 0)
+-DT44 = Array(sw44, sw44y, psw44, 44, 0)
++Set DT41 = (new DropTarget)(sw41, sw41y, psw41, 41, 0, false)
++Set DT42 = (new DropTarget)(sw42, sw42y, psw42, 42, 0, false)
++Set DT43 = (new DropTarget)(sw43, sw43y, psw43, 43, 0, false)
++Set DT44 = (new DropTarget)(sw44, sw44y, psw44, 44, 0, false)
+ 
+ 'Add all the Drop Target Arrays to Drop Target Animation Array
+ ' DTAnimationArray = Array(DT1, DT2, ....)
+@@ -2137,9 +2172,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
+-	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
+-	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
+-		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
++	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
++	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
++		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -2148,7 +2183,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
+-	DTArray(i)(4) = -1
++	DTArray(i).animate = -1
+ 	DoDTAnim
+ End Sub
+ 
+@@ -2156,14 +2191,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
+-	DTArray(i)(4) = 1
++	DTArray(i).animate = 1
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
+-		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
++		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
+ 	Next
+ End Function
+ 
+@@ -2224,7 +2259,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
+-		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
++		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ 
+ 	'table specific code
