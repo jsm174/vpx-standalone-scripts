@@ -1,0 +1,22 @@
+--- ./Lord of the Rings (Stern 2003)_VPW_v1.3_10.6/Lord of the Rings (Stern 2003)_VPW_v1.3_10.6.vbs.original	2023-06-04 22:12:04
++++ ./Lord of the Rings (Stern 2003)_VPW_v1.3_10.6/Lord of the Rings (Stern 2003)_VPW_v1.3_10.6.vbs	2023-06-04 22:12:16
+@@ -4322,12 +4322,12 @@
+ 		End If
+ 		if x = uBound(RampBalls) then 	'debug
+ 			'Debug.print "WireRampOn error, ball queue is full: " & vbnewline & RampBalls(0, 0) & vbnewline & _
+-				Typename(RampBalls(1, 0)) & " ID:" & RampBalls(1, 1) & "type:" & RampType(1) & vbnewline & _
+-				Typename(RampBalls(2, 0)) & " ID:" & RampBalls(2, 1) & "type:" & RampType(2) & vbnewline & _
+-				Typename(RampBalls(3, 0)) & " ID:" & RampBalls(3, 1) & "type:" & RampType(3) & vbnewline & _
+-				Typename(RampBalls(4, 0)) & " ID:" & RampBalls(4, 1) & "type:" & RampType(4) & vbnewline & _
+-				Typename(RampBalls(5, 0)) & " ID:" & RampBalls(5, 1) & "type:" & RampType(5) & vbnewline & _
+-				" "
++				'Typename(RampBalls(1, 0)) & " ID:" & RampBalls(1, 1) & "type:" & RampType(1) & vbnewline & _
++				'Typename(RampBalls(2, 0)) & " ID:" & RampBalls(2, 1) & "type:" & RampType(2) & vbnewline & _
++				'Typename(RampBalls(3, 0)) & " ID:" & RampBalls(3, 1) & "type:" & RampType(3) & vbnewline & _
++				'Typename(RampBalls(4, 0)) & " ID:" & RampBalls(4, 1) & "type:" & RampType(4) & vbnewline & _
++				'Typename(RampBalls(5, 0)) & " ID:" & RampBalls(5, 1) & "type:" & RampType(5) & vbnewline & _
++				'" "
+ 		End If
+ 	next
+ End Sub
+\ No newline at end of file
