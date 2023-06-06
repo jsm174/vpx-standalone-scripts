@@ -1,0 +1,47 @@
+--- TimeLord3.0.1.vbs.original	2023-06-06 09:10:34
++++ TimeLord3.0.1.vbs	2023-06-06 09:33:27
+@@ -4059,7 +4059,7 @@
+ 	ResetNewBallLights
+ 	bFlippersEnabled = True
+ '	vpmtimer.addtimer 500, "StopDragon'"
+-	If GloryTableOn=True Then GloryTableOn=False: 	ResetStartofGameVariables():TurnOnStartOfGameLights:GloryStopAtEndOfBallComplete: Else
++	If GloryTableOn=True Then: GloryTableOn=False: 	ResetStartofGameVariables():TurnOnStartOfGameLights:GloryStopAtEndOfBallComplete: Else:
+ 	vpmtimer.addtimer 500, "ResetModesAndAwards'"
+ End Sub
+ 
+@@ -5443,7 +5443,7 @@
+ 'CheckWormHoleJackpots
+ '**************************
+ Sub CheckWormHoleJackpots
+-	If l24.State=2 Then:l23F.State=0:l23G.State=2 Else
++	If l24.State=2 Then:l23F.State=0:l23G.State=2 Else:
+ 	LS_MajorAward.UpdateInterval = 10
+ 	LS_MajorAward.Play SeqUpOn, 35, 2
+ 	vpmTimer.AddTimer 2000, "WormLocksActivate'"
+@@ -6399,7 +6399,7 @@
+ End Sub
+ 
+ Sub Trigger10_Hit()
+-	If 	LastSwitchHit = "Trigger10b" Then :CheckSpiralRampAward:LastSwitchHit = "Trigger10":StartFlasherSpiralAward:Else
++	If 	LastSwitchHit = "Trigger10b" Then :CheckSpiralRampAward:LastSwitchHit = "Trigger10":StartFlasherSpiralAward:Else:
+ 	If 	LastSwitchHit = "Trigger10a" Then :WrongTrajectory:LastSwitchHit = "Trigger10"
+ End Sub
+ 
+@@ -6517,7 +6517,7 @@
+ Sub Trigger10Hard_Hit
+ debug.print "Trigger10HardHit"
+ 	PlaySoundAt "RampOut1_6",Trigger10
+-	If 	LastSwitchHit = "Trigger10c" Then :WrongTrajectory:LastSwitchHit = "Trigger10Hard":Else
++	If 	LastSwitchHit = "Trigger10c" Then :WrongTrajectory:LastSwitchHit = "Trigger10Hard":Else:
+ 	If l62C.State=2 Then:l62A.State=2:l62C.State=0:TimeWarpJackPot2:PlaySound "CO_SuperJackPot":Exit Sub 
+ 	If l62B.State=2 Then:l62C.State=2:l62B.State=0:PlaySound "CO_JackPot":TimeWarpJackPot1:Exit Sub
+ 	If l62A.State=2 Then:l62B.State=2:l62A.State=0:PlaySound "CO_JackPot":TimeWarpJackPot1:Exit Sub
+@@ -6526,7 +6526,7 @@
+ Sub Trigger10Easy_Hit
+ debug.print "Trigger10EasyHit"
+ 	PlaySoundAt "RampOut1_6",Trigger10
+-	If 	LastSwitchHit = "Trigger10c" Then :WrongTrajectory:LastSwitchHit = "Trigger10Easy":Else
++	If 	LastSwitchHit = "Trigger10c" Then :WrongTrajectory:LastSwitchHit = "Trigger10Easy":Else:
+ 	If l62C.State=2 Then:l62A.State=2:l62C.State=0:TimeWarpSuperJackPot:PlaySound "CO_SuperJackPot":Exit Sub 
+ 	If l62B.State=2 Then:l62C.State=2:l62B.State=0:PlaySound "CO_JackPot":TimeWarpJackPot2:Exit Sub
+ 	If l62A.State=2 Then:l62B.State=2:l62A.State=0:PlaySound "CO_JackPot":TimeWarpJackPot1:Exit Sub
