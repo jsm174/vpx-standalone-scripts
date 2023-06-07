@@ -95,7 +95,7 @@ Const RampRollVolume = 0.8		'Level of ramp rolling volume. Value between 0 and 1
 
 'VR OPTIONS....
 
-VRRoom = 0              ' 0 - Desktop/FS   1 - VRRoom   2 - Ultra Minimal Room
+VRRoom = 0             ' 0 - Desktop/FS   1 - VRRoom   2 - Ultra Minimal Room
 GlassScratchesOn = 1     ' 0 - Scratches OFF  1 - Scratches ON
 
 'End VR Options
@@ -279,8 +279,8 @@ Dim bMusicOn
 Dim bSkillshotReady
 Dim bExtraBallWonThisBall
 Dim bJustStarted
-
-
+Dim EasyMode
+Dim HardMode
 
 ' core.vbs variables
 Dim plungerIM 
@@ -365,6 +365,7 @@ Sub Table1_Init()
 	bJustStarted = True
 	FlasherEasySelect3.Visible=1
 	EasyMode=True
+	Hard=0
 	WallJamStopper.isdropped=True
 	GiOff
 	DMDFlush
@@ -717,12 +718,12 @@ End Sub
 
 '********************************************************************************************************
 
-Dim EasyMode
+
 Sub DMDEasyMode
 	EasyMode=True
 End Sub
 
-Dim HardMode
+
 Sub DMDHardMode
 	HardMode=True
 End Sub
@@ -1816,7 +1817,7 @@ End Sub
 ' Use it as AddMultiball 4 to add 4 extra balls to the table
 
 Sub AddMultiball(nballs)
-	If MeteorShowerInPlay=True Or TWJPFiring=True Then StartColouredBalls: End If
+	If MeteorShowerInPlay=True Or TWJPFiring=True Or GloryTableOn=True Then StartColouredBalls: End If
 '	If MeteorShowerInPlay=False Or TWJPFiring=False Then StopColouredBalls: End If
 
 	bAutoPlunger = True
@@ -3661,6 +3662,14 @@ Sub ShowTableInfo
 
 	DMD "", "", "DMD_Blank", eNone, eNone, eNone, 1000, False, "" 'blank
 	DMD "", "", "DMD_FlipperSelect", eNone, eBlink, eNone, 5000, False, "" 'Avago (Have a Go)
+	DMD "", "", "DMD_GrampsArcade", eNone, eNone, eNone, 3000, False, "" 'Avago Presents(Have a Go)
+	DMD "", "", "DMD_Timelord", eNone, eNone, eNone, 3000, False, "" 'Avago Presents(Have a Go)
+	DMD "", "", "DMD_Starring", eNone, eNone, eNone, 3000, False, "" 'Crew
+	DMD "", "", "DMD_Gramps3", eNone, eNone, eNone, 3000, False, "" 'Crew
+	DMD "", "", "DMD_Liz2", eNone, eNone, eNone, 3000, False, "" 'Crew
+	DMD "", "", "DMD_Sammie2", eNone, eNone, eNone, 3000, False, "" 'Russty
+	DMD "", "", "DMD_Josh2", eNone, eNone, eNone, 3000, False, "" 'HP
+	DMD "", "", "DMD_Erin2", eNone, eNone, eNone, 3000, False, "" 'HP
 	DMD "", "", "DMD_Avago", eNone, eNone, eNone, 3000, False, "" 'Avago Presents(Have a Go)
 	DMD "", "", "DMD_Timelord", eNone, eNone, eNone, 3000, False, "" 'Avago Presents(Have a Go)
 	DMD "", "", "DMD_Crew", eNone, eNone, eNone, 3000, False, "" 'Crew
@@ -4059,7 +4068,7 @@ Sub 	ResetNewBallVariables()
 	ResetNewBallLights
 	bFlippersEnabled = True
 '	vpmtimer.addtimer 500, "StopDragon'"
-	If GloryTableOn=True Then GloryTableOn=False: 	ResetStartofGameVariables():TurnOnStartOfGameLights:GloryStopAtEndOfBallComplete: Else
+	If GloryTableOn=True Then GloryTableOn=False: 	ResetStartofGameVariables():TurnOnStartOfGameLights:GloryStopAtEndOfBallComplete
 	vpmtimer.addtimer 500, "ResetModesAndAwards'"
 End Sub
 
@@ -4099,7 +4108,9 @@ Sub 	ResetStartofGameVariables()
 End Sub
 
 Sub ResetModesAndAwards
-
+	WoundDragon=0
+	GateClogBlocker.open = True
+	GateWormLocks.open = True
 	StopSuperLoops
 	StopSuperJets
 	StopAdvanceTime
@@ -5443,7 +5454,7 @@ End Sub
 'CheckWormHoleJackpots
 '**************************
 Sub CheckWormHoleJackpots
-	If l24.State=2 Then:l23F.State=0:l23G.State=2 Else
+	If l24.State=2 Then:l23F.State=0:l23G.State=2
 	LS_MajorAward.UpdateInterval = 10
 	LS_MajorAward.Play SeqUpOn, 35, 2
 	vpmTimer.AddTimer 2000, "WormLocksActivate'"
@@ -5623,8 +5634,7 @@ Sub WormLocksActivate
 End Sub
 
 Sub WormCompleteTimer_Timer
-	If Hard=0 Then:	vpmTimer.AddTimer 60000, "DisableWormLocks'" :End If
-	If Hard=1 Then:	vpmTimer.AddTimer 35000, "DisableWormLocks'" :End If
+	vpmTimer.AddTimer 60000, "DisableWormLocks'" 
 End Sub
 
 Sub DisableWormLocks
@@ -6240,6 +6250,8 @@ End Sub
 '*************************
 'Dim Lock2Hit
 Sub KickerReverseLock2_hit()
+	l40.State=1
+	CheckTIMELORDStatus
 	WireRampOff
 	StartFlasherAward
 	StartClockHandsCounterClockwise
@@ -6358,18 +6370,20 @@ End Sub
 'Start TimeWarp Jackpots and disable Reverse time until 30 second timer runs out
 
 Sub CheckEnableTimeWarpJackpots
-	If	TimeLordCompleteTimer.Enabled=True Then: Exit Sub
+	If	TimeLordComplete=True Then DoNothing
 	StartTimeWarpJackPots
-
+	
 End Sub	
+
+Sub DoNothing
+End Sub
 
 Dim TWJPFiring
 Sub StartTimeWarpJackPots
 	bBallSaverReady = True	'Activate Ball Saver for all Balls
 	TWJPFiring=True
 	l61.State=2:l62A.State=2
-	If Hard=0 Then:	PlaySound "CO_TimeWarpJPAcitvated":TimeWarpEasyTimer.Enabled=True:End If
-	If Hard=1 Then:	PlaySound "CO_TimeWarpJackPotsActHard":TimeWarpHardTimer.Enabled=True:End If
+	PlaySound "CO_TimeWarpJPAcitvated":TimeWarpEasyTimer.Enabled=True
 	AddMultiball (2)
 	vpmtimer.addtimer 500, "ResetReverseLockLights'"
 	vpmtimer.addtimer 200, "TurnOffReverseTimeLights'"
@@ -6389,6 +6403,7 @@ debug.print "Trigger10aHit"
 End Sub
 
 Sub Trigger10b_Hit()
+	CheckSpiralRampAward
 	LastSwitchHit = "Trigger10b"
 debug.print "Trigger10bHit"
 End Sub
@@ -6399,8 +6414,8 @@ debug.print "Trigger10cHit"
 End Sub
 
 Sub Trigger10_Hit()
-	If 	LastSwitchHit = "Trigger10b" Then :CheckSpiralRampAward:LastSwitchHit = "Trigger10":StartFlasherSpiralAward:Else
-	If 	LastSwitchHit = "Trigger10a" Then :WrongTrajectory:LastSwitchHit = "Trigger10"
+	If LastSwitchHit = "Trigger10a" Then:WrongTrajectory
+	LastSwitchHit = "Trigger10"
 End Sub
 
 
@@ -6414,10 +6429,10 @@ End Sub
 
 
 Sub CheckSpiralRampAward
-	If lGlory1.State=2 Then:GloryBillions
-	If l61.State=2 Then: CheckTimeWarpEasyHard
-	If l61A.State=2 Then: AwardSpaceWalk
-	If l61B.State=2 Then: AwardDefyGravity
+	If lGlory1.State=2 Then GloryBillions:StartFlasherSpiralAward
+	If l61.State=2 and GloryTableOn=False Then:TimeWarpJackPotCheck: StartFlasherSpiralAward
+	If l61B.State=2 and GloryTableOn=False and TWJPFiring=False Then: AwardDefyGravity
+	If l61A.State=2 and GloryTableOn=False and TWJPFiring=False Then: AwardSpaceWalk
 End Sub
 
 Dim SpacewalkAward
@@ -6494,19 +6509,13 @@ Sub GravityCallout
 End Sub
 
 Sub CheckTimeWarpEasyHard
-	If Hard=0 Then: Trigger10.Enabled=0:Trigger10a.Enabled=0:Trigger10Hard.Enabled=0:Trigger10Easy.Enabled=1:Trigger10c.Enabled=1: End If
-	If Hard=1 Then: Trigger10.Enabled=0:Trigger10a.Enabled=0:Trigger10Hard.Enabled=1:Trigger10Easy.Enabled=0:Trigger10c.Enabled=1: End If
 End Sub
 
 Sub TimeWarpEasyTimer_Timer
 	debug.print "TimeWarpEasyTimer activated"
-	ResetTimeWarpJackpots
+	vpmTimer.AddTimer 5000, "ResetTimeWarpJackpots'"
 End Sub
 
-Sub TimeWarpHardTimer_Timer
-	ResetTimeWarpJackpots
-	debug.print "TimeWarpEasyTimer activated"
-End Sub
 
 Sub AwardAlmostAJackpot
 	AddScore 50000000
@@ -6514,47 +6523,52 @@ Sub AwardAlmostAJackpot
 	vpmTimer.AddTimer 2200, "DMDScoreNow'"
 End Sub
 
-Sub Trigger10Hard_Hit
-debug.print "Trigger10HardHit"
-	PlaySoundAt "RampOut1_6",Trigger10
-	If 	LastSwitchHit = "Trigger10c" Then :WrongTrajectory:LastSwitchHit = "Trigger10Hard":Else
-	If l62C.State=2 Then:l62A.State=2:l62C.State=0:TimeWarpJackPot2:PlaySound "CO_SuperJackPot":Exit Sub 
-	If l62B.State=2 Then:l62C.State=2:l62B.State=0:PlaySound "CO_JackPot":TimeWarpJackPot1:Exit Sub
-	If l62A.State=2 Then:l62B.State=2:l62A.State=0:PlaySound "CO_JackPot":TimeWarpJackPot1:Exit Sub
-End Sub
 
-Sub Trigger10Easy_Hit
-debug.print "Trigger10EasyHit"
+Sub TimeWarpJackPotCheck
+debug.print "Trigger10_Hit"
 	PlaySoundAt "RampOut1_6",Trigger10
-	If 	LastSwitchHit = "Trigger10c" Then :WrongTrajectory:LastSwitchHit = "Trigger10Easy":Else
-	If l62C.State=2 Then:l62A.State=2:l62C.State=0:TimeWarpSuperJackPot:PlaySound "CO_SuperJackPot":Exit Sub 
-	If l62B.State=2 Then:l62C.State=2:l62B.State=0:PlaySound "CO_JackPot":TimeWarpJackPot2:Exit Sub
-	If l62A.State=2 Then:l62B.State=2:l62A.State=0:PlaySound "CO_JackPot":TimeWarpJackPot1:Exit Sub
+	If l62C.State=2 Then:l62A.State=2:l62C.State=0:TimeWarpSuperJackPot:PlaySound "CO_SuperJackPot"
+	If l62B.State=2 Then:l62C.State=2:l62B.State=0:PlaySound "CO_JackPot":TimeWarpJackPot2
+	If l62A.State=2 Then:l62B.State=2:l62A.State=0:PlaySound "CO_JackPot":TimeWarpJackPot2
 End Sub
 
 
 Sub TimeWarpJackPot1
-	DMD "", "", "DMD_JackPot100M", eNone, eNone, eNone, 3000, True, ""
+	DMD "", "", "DMD_JackPot100M", eNone, eNone, eNone, 4000, True, ""
 	LS_MajorAward.Play SeqBlinking,, 6,100
-	vpmTimer.AddTimer 4000, "DMDScoreNow'"
+	vpmTimer.AddTimer 4100, "JackPot1Score'"
+End Sub
+
+Sub JackPot1Score
 	AddScore 100000000
+	DMDScoreNow
 End Sub
 
 Sub TimeWarpJackPot2
-	DMD "", "", "DMD_JackPot200M", eNone, eNone, eNone, 3000, True, ""
+	DMD "", "", "DMD_Jackpot300M", eNone, eNone, eNone, 4000, True, ""
 	LS_MajorAward.Play SeqBlinking,, 6,100
-	vpmTimer.AddTimer 4000, "DMDScoreNow'" End Sub
-	AddScore 200000000
-Sub TimeWarpSuperJackPot
-	DMD "", "", "DMD_SuperJackpot", eNone, eNone, eNone, 3000, True, ""
-	LS_MajorAward.Play SeqBlinking,, 6,100
-	vpmTimer.AddTimer 4000, "DMDScoreNow'" 
+	vpmTimer.AddTimer 4100, "JackPot2Score'" 
+End Sub
+
+Sub JackPot2Score
 	AddScore 300000000
+	DMDScoreNow
+End Sub
+
+
+Sub TimeWarpSuperJackPot
+	DMD "", "", "DMD_Jackpot400M", eNone, eNone, eNone, 4000, True, ""
+	LS_MajorAward.Play SeqBlinking,, 6,100
+	vpmTimer.AddTimer 4100, "JackPot3Score'" 
+End Sub
+
+Sub JackPot3Score
+	AddScore 100000000
+	DMDScoreNow
 End Sub
 
 Sub	StopTimeWarpJackpots
 	l62A.State=0::l62B.State=0:l62C.State=0:l61.State=0
-	Trigger10.Enabled=1:Trigger10a.Enabled=1:Trigger10b.Enabled=1:Trigger10c.Enabled=1:Trigger10Hard.Enabled=0:Trigger10Easy.Enabled=0
 	TWJPFiring=False
 	StopClockHandsCounterClockwise
 	vpmtimer.addtimer 200, "TimeThiefVisible'"
@@ -6572,13 +6586,10 @@ Sub	ResetTimeWarpJackpots '--------------------------------Called Reste Modes an
 	vpmtimer.addtimer 500, "StartClockHandsClockwise'"
 	TWJPFiring=False
 	TimeWarpEasyTimer.Enabled=False
-	TimeWarpHardTimer.Enabled=False
-	Trigger10.Enabled=1:Trigger10a.Enabled=1:Trigger10Hard.Enabled=0:Trigger10Easy.Enabled=0:Trigger10c.Enabled=0
-	If  l21B.State=1 Then:l21.State=2:l20.State=1:l19.State=1:Exit Sub
-	If  l20A.State=1 Then:l20.State=2:l21.State=0:l19.State=1:Exit Sub
-	If  l19A.State=1 Then:l19.State=2:l20.State=0:l21.State=0:Exit Sub
+	If  l21B.State=1 Then:l21.State=2:l20.State=1:l19.State=1
+	If  l20A.State=1 Then:l20.State=2:l21.State=0:l19.State=1
+	If  l19A.State=1 Then:l19.State=2:l20.State=0:l21.State=0
 End Sub
-
 
 
 Sub ResetTimeWarpJackPotsEndOfBall
@@ -6587,11 +6598,9 @@ Sub ResetTimeWarpJackPotsEndOfBall
 	vpmtimer.addtimer 500, "StartClockHandsClockwise'"
 	TWJPFiring=False
 	TimeWarpEasyTimer.Enabled=False
-	TimeWarpHardTimer.Enabled=False
-	Trigger10.Enabled=1:Trigger10a.Enabled=1:Trigger10Hard.Enabled=0:Trigger10Easy.Enabled=0:Trigger10c.Enabled=0
-	If  l21B.State=1 Then:l21.State=2:l20.State=1:l19.State=1:Exit Sub
-	If  l20A.State=1 Then:l20.State=2:l21.State=0:l19.State=1:Exit Sub
-	If  l19A.State=1 Then:l19.State=2:l20.State=0:l21.State=0:Exit Sub
+	If  l21B.State=1 Then:l21.State=2:l20.State=1:l19.State=1
+	If  l20A.State=1 Then:l20.State=2:l21.State=0:l19.State=1
+	If  l19A.State=1 Then:l19.State=2:l20.State=0:l21.State=0
 End Sub
 
 
@@ -6607,26 +6616,29 @@ Sub GloryBillions
 			
 		Case 3: Glory1Billion
 
-		Case 4: If Hard=0 Then: Glory2Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
+		Case 4: Glory2Billion
+	
+		Case 6: Glory2Billion
+	
+		Case 7:	Glory2Billion
+	
+		Case 8:	Glory3Billion
 
-		Case 5: If Hard=0 Then: Glory2Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
-	
-		Case 6: If Hard=0 Then: Glory2Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
-	
-		Case 7:	If Hard=0 Then: Glory2Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
-	
-		Case 8: If Hard=0 Then: Glory3Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
-
-		Case 9: If Hard=0 Then: Glory3Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
+		Case 9:	Glory3Billion
 					
-		Case 10:If Hard=0 Then: Glory3Billion:End If
-				If Hard=1 Then: Glory1Billion:End If
+		Case 10: Glory3Billion
+
+		Case 11 Glory2Billion
+	
+		Case 12: Glory2Billion
+	
+		Case 13:Glory2Billion
+	
+		Case 14:Glory3Billion
+
+		Case 15:	Glory3Billion
+					
+		Case 16: Glory3Billion
 			Billions=0					
 
 	End Select
@@ -7353,16 +7365,13 @@ Sub StartGloryBillions
 	DMD "", "", "DMD_Glory_hitCR", eNone, eNone, eNone, 2000, True, ""
 	vpmtimer.addtimer 2005, "DMDScoreNow'"
 	AddScore 500000000
-
 	GloryTableOn=True
 	TimeLordCompleteTimer.Enabled=False
-	If Hard=1 Then:GloryHardTimer.Enabled=1:End If
-	If Hard=0 Then:GloryEasyTimer.Enabled=1:End If
-	GloryTableTimer.Enabled=1
+	GloryMultiBallTimer.Enabled=1
+'	GloryTableTimer.Enabled=1
 	TurnOffModes
 	PlaySong "m_Slitheen"
 	vpmtimer.addtimer 200, "TurnOffPlayfieldLights'"
-'	vpmtimer.addtimer 1000, "GloryCallout'"
 	FlasherGloryTable.Visible=1
 	SetLightColor lGlory1, white, -1
 	lGlory1.State=2
@@ -7382,23 +7391,13 @@ Sub StartGloryBillions
 End Sub
 
 
-Sub GloryHardTimer_Timer
+Sub GloryMultiBallTimer_Timer
 	GloryTableOn=False
 	GloryStop
 End Sub
 
-Sub GloryEasyTimer_Timer
-	GloryTableOn=False
-	GloryStop
-End Sub
 Sub GloryCallout
 	PlaySound "CO_YouAreTheTimeLord"
-End Sub
-
-
-Sub GloryHardEasyTimer_Timer
-	If Hard=0 Then:vpmtimer.addtimer 60000, "GloryStop '" Else:vpmtimer.addtimer 40000, "GloryStop '"	
-	debug.print "Set Glory Time"
 End Sub
 
 
@@ -7446,7 +7445,7 @@ End Sub
 Dim GloryComplete
 Sub GloryStop			'Game in play
 	GloryTableOn=False
-	GloryTableTimer.Enabled=0
+'	GloryTableTimer.Enabled=0
 	lGlory1.State=0:lGlory2.State=0:lGlory3.State=0:lGlory4.State=0:lGlory5.State=0
 	FlasherGloryTable.Visible=0
 	StopClockGlory
@@ -7454,8 +7453,7 @@ Sub GloryStop			'Game in play
 	StopClockGloryBig
 	FlasherGlory.Visible=0
 	GloryComplete=True
-	GloryEasyTimer.Enabled=False
-	GloryHardTimer.Enabled=False
+	GloryMultiBallTimer.Enabled=False
 	spindiscimg.visible=True
 	vpmtimer.addtimer 500, "GameReset'"
 	vpmtimer.addtimer 2000, "GiOff'"
@@ -7463,7 +7461,7 @@ End Sub
 
 Sub GloryStopAtEndOfBallComplete			'Game in play
 	GloryTableOn=False
-	GloryTableTimer.Enabled=0
+'	GloryTableTimer.Enabled=0
 	lGlory1.State=0:lGlory2.State=0:lGlory3.State=0:lGlory4.State=0:lGlory5.State=0
 	FlasherGloryTable.Visible=0
 	StopClockGlory
@@ -7471,10 +7469,8 @@ Sub GloryStopAtEndOfBallComplete			'Game in play
 	StopClockGloryBig
 	FlasherGlory.Visible=0
 	GloryComplete=True
-	GloryEasyTimer.Enabled=False
-	GloryHardTimer.Enabled=False
+	GloryMultiBallTimer.Enabled=False
 	spindiscimg.visible=True
-
 End Sub
 
 Sub RobotVisible
@@ -7495,8 +7491,7 @@ End Sub
 Sub GameReset
 	PlaySong "m_Cassandra_s-Waltz"
 	l38.State=0:l39.State=0:l40.State=0:l41.State=0:l42.State=0:l43.State=0:l44.State=0:l45.State=0
-	GloryResetTimer.Enabled=True
-'	vpmtimer.addtimer 500, "clearlights'"
+'	GloryResetTimer.Enabled=True
 	vpmtimer.addtimer 2000, "ResetModesAndAwards'"	
 	vpmtimer.addtimer 4000, "RobotVisible'"
 	vpmtimer.addtimer 5000, "TurnOnStartOfGameLights'"
