@@ -1,0 +1,10 @@
+--- IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original	2023-06-10 00:29:40
++++ IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs	2023-06-10 00:28:49
+@@ -3536,6 +3536,7 @@
+ ' if more than 1 ball (multi-ball) then kill of the ball but don't create
+ ' a new one
+ '
++Dim Default
+ Sub Drain_Hit()
+     ' Destroy the ball
+     Drain.DestroyBall
