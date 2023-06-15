@@ -461,12 +461,6 @@ Sub Table1_exit()
 end sub
 
 Sub Delay( seconds )
-	' Dim wshShell, strCmd
-	' Set wshShell = CreateObject( "WScript.Shell" )
-	' strCmd = wshShell.ExpandEnvironmentStrings( "%COMSPEC% /C (PING.EXE -n " & ( seconds + 1 ) & " localhost >NUL 2>&1)" )
-	' wshShell.Run strCmd, 0, 1
-	' Set wshShell = Nothing
-
 	' TODO - do we have a proper delay function available?
 	'WScript.Sleep seconds * 1000
 
@@ -477,7 +471,6 @@ Sub Delay( seconds )
 	' Loop
 
 	debug.print "Delay not implemeted, asked for " & seconds & " seconds" 
-
 End Sub
 
 

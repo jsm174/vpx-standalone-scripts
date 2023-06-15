@@ -1,6 +1,6 @@
---- /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs.original	2023-06-15 10:49:24
-+++ /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs	2023-06-15 10:49:05
-@@ -461,11 +461,23 @@
+--- /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs.original	2023-06-15 10:54:38
++++ /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs	2023-06-15 10:54:12
+@@ -461,11 +461,16 @@
  end sub
  
  Sub Delay( seconds )
@@ -9,12 +9,6 @@
 -	strCmd = wshShell.ExpandEnvironmentStrings( "%COMSPEC% /C (PING.EXE -n " & ( seconds + 1 ) & " localhost >NUL 2>&1)" )
 -	wshShell.Run strCmd, 0, 1
 -	Set wshShell = Nothing
-+	' Dim wshShell, strCmd
-+	' Set wshShell = CreateObject( "WScript.Shell" )
-+	' strCmd = wshShell.ExpandEnvironmentStrings( "%COMSPEC% /C (PING.EXE -n " & ( seconds + 1 ) & " localhost >NUL 2>&1)" )
-+	' wshShell.Run strCmd, 0, 1
-+	' Set wshShell = Nothing
-+
 +	' TODO - do we have a proper delay function available?
 +	'WScript.Sleep seconds * 1000
 +
@@ -25,14 +19,14 @@
 +	' Loop
 +
 +	debug.print "Delay not implemeted, asked for " & seconds & " seconds" 
-+
  End Sub
  
  
-@@ -4488,6 +4500,39 @@
+@@ -4487,7 +4492,40 @@
+ '******************************************************
  '  DROP TARGETS INITIALIZATION
  '******************************************************
- 
++
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -61,7 +55,7 @@
 +	  m_sw = sw
 +	  m_animate = animate
 +	  m_isDropped = isDropped
-+  
+ 
 +	  Set Init = Me
 +	End Function
 +  End Class
@@ -69,7 +63,7 @@
  'Define a variable for each drop target
  Dim DT1, DT2, DT3, DT4, DT5
  
-@@ -4507,11 +4552,11 @@
+@@ -4507,11 +4545,11 @@
  '
  '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
  
@@ -86,7 +80,7 @@
  
  Dim DTArray
  DTArray = Array(DT1, DT2, DT3, DT4, DT5)
-@@ -4544,9 +4589,9 @@
+@@ -4544,9 +4582,9 @@
  	i = DTArrayID(switch)
  
  	PlayTargetSound
@@ -99,7 +93,7 @@
  	End If
  	DoDTAnim
  End Sub
-@@ -4556,7 +4601,7 @@
+@@ -4556,7 +4594,7 @@
  	i = DTArrayID(switch)
  	DTIsDropped(switch) = 0
  
@@ -108,7 +102,7 @@
  	DoDTAnim
  End Sub
  
-@@ -4564,14 +4609,14 @@
+@@ -4564,14 +4602,14 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -125,7 +119,7 @@
  	Next
  End Function
  
-@@ -4626,7 +4671,7 @@
+@@ -4626,7 +4664,7 @@
  Sub DoDTAnim()
  	Dim i
  	For i=0 to Ubound(DTArray)
