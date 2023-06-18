@@ -1,0 +1,11 @@
+--- /Users/francisdb/vpinball/tables/AceOfSpeed.vbs.original	2023-06-18 23:21:09
++++ /Users/francisdb/vpinball/tables/AceOfSpeed.vbs	2023-06-18 23:17:48
+@@ -1860,7 +1860,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
+-	If isGIOn <> Not IsOff Then
++	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on
