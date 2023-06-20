@@ -1,5 +1,5 @@
---- /Users/francisdb/vpinball/tables/Flash (Williams 1979) bord.vbs.original	2023-06-16 15:00:48
-+++ /Users/francisdb/vpinball/tables/Flash (Williams 1979) bord.vbs	2023-06-16 14:50:48
+--- ./Flash (Williams 1979)/Flash (Williams 1979).vbs.original	2023-06-20 07:25:37
++++ ./Flash (Williams 1979)/Flash (Williams 1979).vbs	2023-06-20 07:25:37
 @@ -2124,6 +2124,39 @@
  '                DROP TARGETS INITIALIZATION
  '******************************************************
