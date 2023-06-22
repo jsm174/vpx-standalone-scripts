@@ -1,5 +1,5 @@
 --- ./Laser War (Data East 1987) w VR Room v2.0/Laser War (Data East 1987) w VR Room v2.0.vbs.original	2023-06-04 22:21:55
-+++ ./Laser War (Data East 1987) w VR Room v2.0/Laser War (Data East 1987) w VR Room v2.0.vbs	2023-06-04 22:21:15
++++ ./Laser War (Data East 1987) w VR Room v2.0/Laser War (Data East 1987) w VR Room v2.0.vbs	2023-06-21 23:01:10
 @@ -1409,7 +1409,7 @@
  Sub SolGI(IsOff)
  	If EnableGI = 0 And Not isGIOn Then gilvl = 0 : Exit Sub
@@ -9,14 +9,34 @@
  		isGIOn = Not IsOff
  		If isGIOn Then
  			' GI goes on
-@@ -2990,8 +2990,33 @@
- '******************************************************
+@@ -2670,9 +2670,9 @@
+ 	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+ 
+ 	Public Sub Update()	'tracks in-ball-velocity
+-		dim str, b, highestID
++		dim str, b, AllBalls, highestID : allBalls = getballs
+ 
+-		for each b in gBOT
++		for each b in allBalls
+ 			if b.id >= HighestID then highestID = b.id
+ 		Next
+ 
+@@ -2680,7 +2680,7 @@
+ 		if uBound(ballvelx) < highestID then redim ballvelx(highestID)	'set bounds
+ 		if uBound(ballvely) < highestID then redim ballvely(highestID)	'set bounds
+ 
+-		for each b in gBOT
++		for each b in allBalls
+ 			ballvel(b.id) = BallSpeed(b)
+ 			ballvelx(b.id) = b.velx
+ 			ballvely(b.id) = b.vely
+@@ -2991,7 +2991,32 @@
  '		STAND-UP TARGET INITIALIZATION
  '******************************************************
-+
+ 
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
-+
+ 
 +  Public Property Get Primary(): Set Primary = m_primary: End Property
 +  Public Property Let Primary(input): Set m_primary = input: End Property
 +
@@ -28,13 +48,13 @@
 +
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
- 
++
 +  Public default Function init(primary, prim, sw, animate)
 +    Set m_primary = primary
 +    Set m_prim = prim
 +    m_sw = sw
 +    m_animate = animate
- 
++
 +    Set Init = Me
 +  End Function
 +End Class
