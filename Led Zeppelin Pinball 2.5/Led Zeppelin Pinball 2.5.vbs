@@ -461,18 +461,12 @@ Sub Table1_exit()
 end sub
 
 Sub Delay( seconds )
-	' TODO - do we have a proper delay function available?
-	'WScript.Sleep seconds * 1000
-
-	' TODO - why does this not work? Now() returns ""?
-	' Dim dteWait
-	' dteWait = DateAdd("s", seconds, Now())
-	' Do Until (Now() > dteWait)
-	' Loop
-
-	debug.print "Delay not implemeted, asked for " & seconds & " seconds" 
+	Dim startTime : startTime = timer
+	Debug.Print "Delay start=" & startTime & ", seconds=" & seconds
+	Do
+	Loop While timer - startTime < seconds
+	Debug.Print "Delay end " & timer
 End Sub
-
 
 Sub MusicOn
 	Dim x

@@ -1,6 +1,6 @@
---- /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs.original	2023-06-15 10:54:38
-+++ /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs	2023-06-15 10:54:12
-@@ -461,11 +461,16 @@
+--- /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs.original	2023-06-23 22:53:43
++++ /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs	2023-06-23 22:52:11
+@@ -461,13 +461,12 @@
  end sub
  
  Sub Delay( seconds )
@@ -9,20 +9,17 @@
 -	strCmd = wshShell.ExpandEnvironmentStrings( "%COMSPEC% /C (PING.EXE -n " & ( seconds + 1 ) & " localhost >NUL 2>&1)" )
 -	wshShell.Run strCmd, 0, 1
 -	Set wshShell = Nothing
-+	' TODO - do we have a proper delay function available?
-+	'WScript.Sleep seconds * 1000
-+
-+	' TODO - why does this not work? Now() returns ""?
-+	' Dim dteWait
-+	' dteWait = DateAdd("s", seconds, Now())
-+	' Do Until (Now() > dteWait)
-+	' Loop
-+
-+	debug.print "Delay not implemeted, asked for " & seconds & " seconds" 
++	Dim startTime : startTime = timer
++	Debug.Print "Delay start=" & startTime & ", seconds=" & seconds
++	Do
++	Loop While timer - startTime < seconds
++	Debug.Print "Delay end " & timer
  End Sub
+-
  
- 
-@@ -4487,7 +4492,40 @@
+ Sub MusicOn
+ 	Dim x
+@@ -4487,7 +4486,40 @@
  '******************************************************
  '  DROP TARGETS INITIALIZATION
  '******************************************************
@@ -63,7 +60,7 @@
  'Define a variable for each drop target
  Dim DT1, DT2, DT3, DT4, DT5
  
-@@ -4507,11 +4545,11 @@
+@@ -4507,11 +4539,11 @@
  '
  '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
  
@@ -80,7 +77,7 @@
  
  Dim DTArray
  DTArray = Array(DT1, DT2, DT3, DT4, DT5)
-@@ -4544,9 +4582,9 @@
+@@ -4544,9 +4576,9 @@
  	i = DTArrayID(switch)
  
  	PlayTargetSound
@@ -93,7 +90,7 @@
  	End If
  	DoDTAnim
  End Sub
-@@ -4556,7 +4594,7 @@
+@@ -4556,7 +4588,7 @@
  	i = DTArrayID(switch)
  	DTIsDropped(switch) = 0
  
@@ -102,7 +99,7 @@
  	DoDTAnim
  End Sub
  
-@@ -4564,14 +4602,14 @@
+@@ -4564,14 +4596,14 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -119,7 +116,7 @@
  	Next
  End Function
  
-@@ -4626,7 +4664,7 @@
+@@ -4626,7 +4658,7 @@
  Sub DoDTAnim()
  	Dim i
  	For i=0 to Ubound(DTArray)
