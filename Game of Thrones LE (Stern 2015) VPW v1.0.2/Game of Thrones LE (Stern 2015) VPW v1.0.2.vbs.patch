@@ -1,16 +1,6 @@
---- ./Game of Thrones LE (Stern 2015) VPW v1.0.2 (Staged Flippers)/Game of Thrones LE (Stern 2015) VPW v1.0.2 (Staged Flippers).vbs.original	2023-06-04 19:35:59
-+++ ./Game of Thrones LE (Stern 2015) VPW v1.0.2 (Staged Flippers)/Game of Thrones LE (Stern 2015) VPW v1.0.2 (Staged Flippers).vbs	2023-06-04 19:35:45
-@@ -3509,7 +3509,7 @@
- 	With FlexDMD
- 		.GameName = myGameName
- 		.TableFile = Table1.Filename & ".vpx"
--        .ProjectFolder = ".\"&myGameName&".FlexDMD\"
-+		.ProjectFolder = "./" & myGameName & ".FlexDMD/"
- 		.Color = RGB(255, 44, 16)
- 		.RenderMode = FlexDMD_RenderMode_DMD_GRAY_4
- 		.Width = 128
-\ No newline at end of file
-@@ -9024,7 +9024,7 @@
+--- ./Game of Thrones LE (Stern 2015) VPW v1.0.2/Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs.original	2023-06-23 18:39:00
++++ ./Game of Thrones LE (Stern 2015) VPW v1.0.2/Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs	2023-06-23 18:35:19
+@@ -8960,7 +8960,7 @@
                  line1 = "TOTAL BONUS" : line2 = FormatScore(BonusCnt * BonusMultiplier(CurrentPlayer))
                  PlayfieldMultiplierVal = 1
                  Dim t : t = ReplayAwarded(CurrentPlayer)
@@ -20,7 +10,7 @@
                  if bBonusHeld = 1 Then 
                      BonusHeldPoints(CurrentPlayer) = BonusCnt * BonusMultiplier(CurrentPlayer)
 \ No newline at end of file
-@@ -15515,7 +15515,7 @@
+@@ -15451,7 +15451,7 @@
                      Else 
                          .Text = (ComboMultiplier(i)*PlayfieldMultiplierVal)&"X"
                      End If
@@ -30,7 +20,7 @@
                  End With
              Next
 \ No newline at end of file
-@@ -15661,7 +15661,40 @@
+@@ -15597,7 +15597,40 @@
  '******************************************************
  '  DROP TARGETS INITIALIZATION
  '******************************************************
@@ -49,7 +39,7 @@
 +
 +  Public Property Get Sw(): Sw = m_sw: End Property
 +  Public Property Let Sw(input): m_sw = input: End Property
-+
+ 
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
 +
@@ -63,7 +53,7 @@
 +    m_sw = sw
 +    m_animate = animate
 +    m_isDropped = isDropped
- 
++
 +    Set Init = Me
 +  End Function
 +End Class
@@ -72,7 +62,7 @@
  Dim DT7, DT8, DT9, DT90
  
 \ No newline at end of file
-@@ -15681,10 +15714,10 @@
+@@ -15617,10 +15650,10 @@
  '						Values for animate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
  '   isDropped:			Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
  
@@ -88,7 +78,7 @@
  Dim DTArray
  DTArray = Array(DT7, DT8, DT9, DT90)
 \ No newline at end of file
-@@ -15716,12 +15749,12 @@
+@@ -15652,12 +15685,12 @@
  	i = DTArrayID(switch)
  
  	PlayTargetSound
@@ -107,7 +97,7 @@
  End Sub
  
 \ No newline at end of file
-@@ -15729,7 +15762,7 @@
+@@ -15665,7 +15698,7 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -117,7 +107,7 @@
  End Sub
  
 \ No newline at end of file
-@@ -15737,14 +15770,14 @@
+@@ -15673,14 +15706,14 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -135,7 +125,7 @@
  End Function
  
 \ No newline at end of file
-@@ -15799,7 +15832,7 @@
+@@ -15735,7 +15768,7 @@
  Sub DoDTAnim()
  	Dim i
  	For i=0 to Ubound(DTArray)
@@ -145,7 +135,7 @@
  End Sub
  
 \ No newline at end of file
-@@ -15855,7 +15888,7 @@
+@@ -15791,7 +15824,7 @@
  		if prim.transz <= -DTDropUnits Then 
  			prim.transz = -DTDropUnits
  			secondary.collidable = 0
@@ -155,7 +145,7 @@
  			primary.uservalue = 0
  			DTAnimate = 0
 \ No newline at end of file
-@@ -15910,7 +15943,7 @@
+@@ -15846,7 +15879,7 @@
  		end if
  		primary.collidable = 0
  		secondary.collidable = 1
@@ -165,7 +155,7 @@
  	End If
  
 \ No newline at end of file
-@@ -15980,6 +16013,31 @@
+@@ -15916,6 +15949,31 @@
  '		STAND-UP TARGET INITIALIZATION
  '******************************************************
  
@@ -198,7 +188,7 @@
  Dim ST04, ST05, ST06, ST07, ST08, ST09, ST10, ST11, ST12, ST13
  
 \ No newline at end of file
-@@ -15996,16 +16054,16 @@
+@@ -15932,16 +15990,16 @@
  'You will also need to add a secondary hit object for each stand up (name sw11o, sw12o, and sw13o on the example Table1)
  'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
  
@@ -226,7 +216,7 @@
  
  'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
 \ No newline at end of file
-@@ -16028,11 +16086,11 @@
+@@ -15964,11 +16022,11 @@
  	i = STArrayID(switch)
  
  	PlayTargetSound
@@ -242,7 +232,7 @@
  	DoSTAnim
  End Sub
 \ No newline at end of file
-@@ -16040,7 +16098,7 @@
+@@ -15976,7 +16034,7 @@
  Function STArrayID(switch)
  	Dim i
  	For i = 0 to uBound(STArray) 
@@ -252,7 +242,7 @@
  End Function
  
 \ No newline at end of file
-@@ -16069,7 +16127,7 @@
+@@ -16005,7 +16063,7 @@
  Sub DoSTAnim()
  	Dim i
  	For i=0 to Ubound(STArray)

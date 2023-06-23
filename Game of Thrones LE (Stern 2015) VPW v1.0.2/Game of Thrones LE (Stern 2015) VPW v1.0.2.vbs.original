@@ -507,9 +507,7 @@ Sub Table1_KeyDown(ByVal Keycode)
         If keycode = MechanicalTilt Then SoundNudgeCenter:CheckTilt
 
         If keycode = LeftFlipperKey Then 
-            If WHCFlipperFrozen = False Then
-				FlipperActivate LeftFlipper, LFPress
-				SolLFlipper 1
+            If WHCFlipperFrozen = False Then FlipperActivate LeftFlipper, LFPress : FlipperActivate LeftUFlipper, ULFPress : SolLFlipper 1
             InstantInfoTimer.Enabled = True
             RotateLaneLights 1
             If InstantInfoTimer.UserValue = 0 Then 
@@ -517,10 +515,8 @@ Sub Table1_KeyDown(ByVal Keycode)
             ElseIf InstantInfoTimer.UserValue <> keycode And bInstantInfo Then
                 InfoPage = InfoPage + 1:InstantInfo
             End If
-		End If
         ElseIf keycode = RightFlipperKey Then 
-            FlipperActivate RightFlipper, RFPress
-			SolRFlipper 1
+            FlipperActivate RightFlipper, RFPress :  FlipperActivate RightUFlipper, URFPress : SolRFlipper 1
             InstantInfoTimer.Enabled = True
             RotateLaneLights 0
             If InstantInfoTimer.UserValue = 0 Then 
@@ -529,15 +525,6 @@ Sub Table1_KeyDown(ByVal Keycode)
                 InfoPage = InfoPage + 1:InstantInfo
             End if
         End If
-
-		If keycode = 30 Then
-			SolULFlipper 1
-		End If
-
-		If keycode = 40 Then
-			SolURFlipper 1
-		End If
-
         '  Action Button, Start Mode, fire ball
 		If keycode = RightMagnaSave or keycode = LockBarKey or _  
 			(keycode = PlungerKey and bUsePlungerForSternKey) Then
@@ -643,16 +630,8 @@ Sub Table1_KeyUp(ByVal keycode)
     ' Table specific
 
     If bGameInPLay AND NOT Tilted Then
-		If keycode = 30 Then
-			SolULFlipper 0
-		End If
-		If keycode = 40 Then
-			SolURFlipper 0
-		End If
-		If keycode = LeftFlipperKey Then
-            If WHCFlipperFrozen = False Then
-				FlipperDeactivate LeftFlipper, LFPress
-				SolLFlipper 0
+        If keycode = LeftFlipperKey Then
+            If WHCFlipperFrozen = False Then FlipperDeactivate LeftFlipper, LFPress : FlipperDeactivate LeftUFlipper, ULFPress : SolLFlipper 0
             If InstantInfoTimer.UserValue = keycode Then
                 InstantInfoTimer.UserValue = 0
                 InstantInfoTimer.Enabled = False
@@ -663,10 +642,8 @@ Sub Table1_KeyUp(ByVal keycode)
                     bInstantInfo = False
                 End If
             End If
-		End If
         ElseIf keycode = RightFlipperKey Then
-            FlipperDeactivate RightFlipper, RFPress
-			SolRFlipper 0
+            FlipperDeactivate RightFlipper, RFPress : FlipperDeactivate RightUFlipper, URFPress : SolRFlipper 0
             If InstantInfoTimer.UserValue = keycode Then
                 InstantInfoTimer.UserValue = 0
                 InstantInfoTimer.Enabled = False
@@ -702,35 +679,23 @@ Const ReflipAngle = 20
 Sub SolLFlipper(Enabled)
     If Enabled Then
         LF.Fire
+        ULF.Fire
         DOF 101, DOFOn
         If leftflipper.currentangle < leftflipper.endangle + ReflipAngle Then 
             RandomSoundReflipUpLeft LeftFlipper
+            RandomSoundReflipUpLeft LeftUFlipper
         Else 
             SoundFlipperUpAttackLeft LeftFlipper
             RandomSoundFlipperUpLeft LeftFlipper
-        End If  
-    Else
-        LeftFlipper.RotateToStart
-        DOF 101, DOFOff
-		If LeftFlipper.currentangle < LeftFlipper.startAngle - 5 Then
-			RandomSoundFlipperDownLeft LeftFlipper
-		End If
-		FlipperLeftHitParm = FlipperUpSoundLevel
-    End If
-End Sub
-
-Sub SolULFlipper(Enabled)
-    If Enabled Then
-        ULF.Fire
-        If LeftUFlipper.currentangle < LeftUFlipper.endangle + ReflipAngle Then 
-            RandomSoundReflipUpLeft LeftUFlipper
-        Else 
             SoundFlipperUpAttackLeft LeftUFlipper
             RandomSoundFlipperUpLeft LeftUFlipper
         End If  
     Else
-       LeftUFlipper.RotateToStart
-		If LeftUFlipper.currentangle < LeftUFlipper.startAngle - 5 Then
+        LeftFlipper.RotateToStart
+        LeftUFlipper.RotateToStart
+        DOF 101, DOFOff
+		If LeftFlipper.currentangle < LeftFlipper.startAngle - 5 Then
+			RandomSoundFlipperDownLeft LeftFlipper
             RandomSoundFlipperDownLeft LeftUFlipper
 		End If
 		FlipperLeftHitParm = FlipperUpSoundLevel
@@ -740,58 +705,29 @@ End Sub
 Sub SolRFlipper(Enabled)
     If Enabled Then
         RF.Fire
+        URF.Fire
         DOF 102, DOFOn
         If rightflipper.currentangle > leftflipper.endangle - ReflipAngle Then 
             RandomSoundReflipUpRight RightFlipper
+            RandomSoundReflipUpRight RightUFlipper
         Else 
             SoundFlipperUpAttackRight RightFlipper
             RandomSoundFlipperUpRight RightFlipper
-        End If  
-    Else
-        RightFlipper.RotateToStart
-        If RightFlipper.currentangle > RightFlipper.startAngle + 5 Then
-			RandomSoundFlipperDownRight RightFlipper
-		End If	
-		FlipperRightHitParm = FlipperUpSoundLevel
-    End If
-End Sub
-
-Sub SolURFlipper(Enabled)
-    If Enabled Then
-        URF.Fire
-        If RightUFlipper.currentangle > RightUFlipper.endangle - ReflipAngle Then 
-            RandomSoundReflipUpRight RightUFlipper
-        Else 
             SoundFlipperUpAttackRight RightUFlipper
             RandomSoundFlipperUpRight RightUFlipper
         End If  
     Else
+        RightFlipper.RotateToStart
         RightUFlipper.RotateToStart
-        If RightUFlipper.currentangle > RightUFlipper.startAngle + 5 Then
-           RandomSoundFlipperDownRight RightUFlipper
+        DOF 102, DOFOff
+        If RightFlipper.currentangle > RightFlipper.startAngle + 5 Then
+			RandomSoundFlipperDownRight RightFlipper
+            RandomSoundFlipperDownRight RightUFlipper
 		End If	
 		FlipperRightHitParm = FlipperUpSoundLevel
     End If
 End Sub
-' flippers hit Sound
 
-Sub LeftFlipper_Collide(parm)
-    LeftFlipperCollide parm
-    CheckLiveCatch Activeball, LeftFlipper, LFCount, parm
-End Sub
-
-Sub RightFlipper_Collide(parm)
-    RightFlipperCollide parm
-    CheckLiveCatch Activeball, RightFlipper, RFCount, parm
-End Sub
-
-Sub LeftUFlipper_Collide(parm)
-    LeftFlipperCollide parm
-End Sub
-
-Sub RightUFlipper_Collide(parm)
-    RightFlipperCollide parm
-End Sub
 ' flippers hit Sound
 
 Sub LeftFlipper_Collide(parm)
@@ -3509,7 +3445,7 @@ Sub LoadFlexDMD
 	With FlexDMD
 		.GameName = myGameName
 		.TableFile = Table1.Filename & ".vpx"
-		.ProjectFolder = "./" & myGameName & ".FlexDMD/"
+        .ProjectFolder = ".\"&myGameName&".FlexDMD\"
 		.Color = RGB(255, 44, 16)
 		.RenderMode = FlexDMD_RenderMode_DMD_GRAY_4
 		.Width = 128
@@ -9024,7 +8960,7 @@ Sub tmrEndOfBallBonus_Timer()
                 line1 = "TOTAL BONUS" : line2 = FormatScore(BonusCnt * BonusMultiplier(CurrentPlayer))
                 PlayfieldMultiplierVal = 1
                 Dim t : t = ReplayAwarded(CurrentPlayer)
-                AddScore ((BonusCnt * BonusMultiplier(CurrentPlayer))+BonusHeldPoints(CurrentPlayer))
+                AddScore (BonusCnt * BonusMultiplier(CurrentPlayer))+BonusHeldPoints(CurrentPlayer)
                 if bBonusHeld = 0 Then BonusHeldPoints(CurrentPlayer) = 0
                 if bBonusHeld = 1 Then 
                     BonusHeldPoints(CurrentPlayer) = BonusCnt * BonusMultiplier(CurrentPlayer)
@@ -15515,7 +15451,7 @@ Sub DMDLocalScore
                     Else 
                         .Text = (ComboMultiplier(i)*PlayfieldMultiplierVal)&"X"
                     End If
-                    .SetAlignedPosition ((i-1)*25),31,FlexDMD_Align_BottomLeft
+                    .SetAlignedPosition (i-1)*25,31,FlexDMD_Align_BottomLeft
                     If t And i > 1 Then .Visible = 0 Else .Visible = 1
                 End With
             Next
@@ -15662,39 +15598,6 @@ End Sub
 '  DROP TARGETS INITIALIZATION
 '******************************************************
 
-Class DropTarget
-  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
-
-  Public Property Get Primary(): Set Primary = m_primary: End Property
-  Public Property Let Primary(input): Set m_primary = input: End Property
-
-  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
-  Public Property Let Secondary(input): Set m_secondary = input: End Property
-
-  Public Property Get Prim(): Set Prim = m_prim: End Property
-  Public Property Let Prim(input): Set m_prim = input: End Property
-
-  Public Property Get Sw(): Sw = m_sw: End Property
-  Public Property Let Sw(input): m_sw = input: End Property
-
-  Public Property Get Animate(): Animate = m_animate: End Property
-  Public Property Let Animate(input): m_animate = input: End Property
-
-  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
-  Public Property Let IsDropped(input): m_isDropped = input: End Property
-
-  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
-    Set m_primary = primary
-    Set m_secondary = secondary
-    Set m_prim = prim
-    m_sw = sw
-    m_animate = animate
-    m_isDropped = isDropped
-
-    Set Init = Me
-  End Function
-End Class
-
 'Define a variable for each drop target
 Dim DT7, DT8, DT9, DT90
 
@@ -15714,10 +15617,10 @@ Dim DT7, DT8, DT9, DT90
 '						Values for animate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 '   isDropped:			Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
 
-Set DT7 = (new DropTarget)(target7, target7a, T7_BM_Dark_Room, 1, 0, false)
-Set DT8 = (new DropTarget)(target8, target8a, T8_BM_Dark_Room, 2, 0, false)
-Set DT9 = (new DropTarget)(target9, target9a, T9_BM_Dark_Room, 3, 0, false)
-Set DT90= (new DropTarget)(target90, target90a, T90_BM_Dark_Room,  4, 0, true)
+DT7 = Array(target7, target7a, T7_BM_Dark_Room, 1, 0, false)
+DT8 = Array(target8, target8a, T8_BM_Dark_Room, 2, 0, false)
+DT9 = Array(target9, target9a, T9_BM_Dark_Room, 3, 0, false)
+DT90= Array(target90, target90a, T90_BM_Dark_Room,  4, 0, true)
 
 Dim DTArray
 DTArray = Array(DT7, DT8, DT9, DT90)
@@ -15749,12 +15652,12 @@ Sub DTHit(switch)
 	i = DTArrayID(switch)
 
 	PlayTargetSound
-    debug.print "dthit "&i&" pre-state: "&DTArray(i).animate
-	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
-	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
-		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
+    debug.print "dthit "&i&" pre-state: "&DTArray(i)(4)
+	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
+	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
+		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 	End If
-    debug.print "post-state: "&DTArray(i).animate
+    debug.print "post-state: "&DTArray(i)(4)
 	'DoDTAnim - No need for this, it's called on a timer every 10ms
 End Sub
 
@@ -15762,7 +15665,7 @@ Sub DTRaise(switch)
 	Dim i
 	i = DTArrayID(switch)
 
-	DTArray(i).animate = -1
+	DTArray(i)(4) = -1
 	DoDTAnim
 End Sub
 
@@ -15770,14 +15673,14 @@ Sub DTDrop(switch)
 	Dim i
 	i = DTArrayID(switch)
 
-	DTArray(i).animate = 1
+	DTArray(i)(4) = 1
 	DoDTAnim
 End Sub
 
 Function DTArrayID(switch)
 	Dim i
 	For i = 0 to uBound(DTArray) 
-		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
+		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 	Next
 End Function
 
@@ -15832,7 +15735,7 @@ End Function
 Sub DoDTAnim()
 	Dim i
 	For i=0 to Ubound(DTArray)
-		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 	Next
 End Sub
 
@@ -15888,7 +15791,7 @@ Function DTAnimate(primary, secondary, prim, switch, animate)
 		if prim.transz <= -DTDropUnits Then 
 			prim.transz = -DTDropUnits
 			secondary.collidable = 0
-			DTArray(ind).isDropped = true 'Mark target as dropped
+			DTArray(ind)(5) = true 'Mark target as dropped
 			DTAction switchid
 			primary.uservalue = 0
 			DTAnimate = 0
@@ -15943,7 +15846,7 @@ Function DTAnimate(primary, secondary, prim, switch, animate)
 		end if
 		primary.collidable = 0
 		secondary.collidable = 1
-		DTArray(ind).isDropped = false 'Mark target as not dropped
+		DTArray(ind)(5) = false 'Mark target as not dropped
 
 	End If
 
@@ -16013,31 +15916,6 @@ End Function
 '		STAND-UP TARGET INITIALIZATION
 '******************************************************
 
-Class StandupTarget
-  Private m_primary, m_prim, m_sw, m_animate
-
-  Public Property Get Primary(): Set Primary = m_primary: End Property
-  Public Property Let Primary(input): Set m_primary = input: End Property
-
-  Public Property Get Prim(): Set Prim = m_prim: End Property
-  Public Property Let Prim(input): Set m_prim = input: End Property
-
-  Public Property Get Sw(): Sw = m_sw: End Property
-  Public Property Let Sw(input): m_sw = input: End Property
-
-  Public Property Get Animate(): Animate = m_animate: End Property
-  Public Property Let Animate(input): m_animate = input: End Property
-
-  Public default Function init(primary, prim, sw, animate)
-    Set m_primary = primary
-    Set m_prim = prim
-    m_sw = sw
-    m_animate = animate
-
-    Set Init = Me
-  End Function
-End Class
-
 'Define a variable for each stand-up target
 Dim ST04, ST05, ST06, ST07, ST08, ST09, ST10, ST11, ST12, ST13
 
@@ -16054,16 +15932,16 @@ Dim ST04, ST05, ST06, ST07, ST08, ST09, ST10, ST11, ST12, ST13
 'You will also need to add a secondary hit object for each stand up (name sw11o, sw12o, and sw13o on the example Table1)
 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
 
-Set ST04 = (new StandupTarget)(Target32, targets_004_BM_Dark_Room, 4,  0)
-Set ST05 = (new StandupTarget)(Target33, targets_005_BM_Dark_Room, 5,  0)
-Set ST06 = (new StandupTarget)(Target34, targets_006_BM_Dark_Room, 6,  0)
-Set ST07 = (new StandupTarget)(Target35, targets_007_BM_Dark_Room, 7,  0)
-Set ST08 = (new StandupTarget)(Target36, targets_008_BM_Dark_Room, 8,  0)
-Set ST09 = (new StandupTarget)(Target43, targets_009_BM_Dark_Room, 9,  0)
-Set ST10 = (new StandupTarget)(Target44, targets_010_BM_Dark_Room, 10, 0)
-Set ST11 = (new StandupTarget)(Target82, targets_011_BM_Dark_Room, 11, 0)
-Set ST12 = (new StandupTarget)(Target81, targets_012_BM_Dark_Room, 12, 0)
-Set ST13 = (new StandupTarget)(Target80, targets_BM_Dark_Room    , 13, 0)
+ST04 = Array(Target32, targets_004_BM_Dark_Room, 4,  0)
+ST05 = Array(Target33, targets_005_BM_Dark_Room, 5,  0)
+ST06 = Array(Target34, targets_006_BM_Dark_Room, 6,  0)
+ST07 = Array(Target35, targets_007_BM_Dark_Room, 7,  0)
+ST08 = Array(Target36, targets_008_BM_Dark_Room, 8,  0)
+ST09 = Array(Target43, targets_009_BM_Dark_Room, 9,  0)
+ST10 = Array(Target44, targets_010_BM_Dark_Room, 10, 0)
+ST11 = Array(Target82, targets_011_BM_Dark_Room, 11, 0)
+ST12 = Array(Target81, targets_012_BM_Dark_Room, 12, 0)
+ST13 = Array(Target80, targets_BM_Dark_Room    , 13, 0)
 
 
 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
@@ -16086,11 +15964,11 @@ Sub STHit(switch)
 	i = STArrayID(switch)
 
 	PlayTargetSound
-	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
+	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 
-	If STArray(i).animate <> 0 Then
+	If STArray(i)(3) <> 0 Then
         ' The line below slows down the ball, the same as a drop target does, but standup targets don't behave that way
-		'DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
+		'DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 	End If
 	DoSTAnim
 End Sub
@@ -16098,7 +15976,7 @@ End Sub
 Function STArrayID(switch)
 	Dim i
 	For i = 0 to uBound(STArray) 
-		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
+		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 	Next
 End Function
 
@@ -16127,7 +16005,7 @@ End Function
 Sub DoSTAnim()
 	Dim i
 	For i=0 to Ubound(STArray)
-		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 	Next
 End Sub
 
