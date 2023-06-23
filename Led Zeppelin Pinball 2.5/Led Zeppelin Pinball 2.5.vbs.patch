@@ -1,5 +1,5 @@
---- /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs.original	2023-06-23 22:53:43
-+++ /Users/francisdb/vpinball/tables/Led Zeppelin Pinball 2.5.vbs	2023-06-23 22:52:11
+--- ./Led Zeppelin Pinball 2.5/Led Zeppelin Pinball 2.5.vbs.original	2023-06-23 19:04:53
++++ ./Led Zeppelin Pinball 2.5/Led Zeppelin Pinball 2.5.vbs	2023-06-23 19:05:25
 @@ -461,13 +461,12 @@
  end sub
  

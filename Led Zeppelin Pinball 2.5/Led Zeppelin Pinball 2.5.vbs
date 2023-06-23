@@ -55,11 +55,11 @@ Const cGameName = "ledzeppelin"
 'MEDIA LINKS
 
 'MUSIC (NON PUP)
-'https://mega.nz/folder/1NJx3Igb#sP9l-WjvSNrpBPyrFctRpg  (PUT IN VPX MUSIC FOLDER)
+'******************************************************  (PUT IN VPX MUSIC FOLDER)
 
 
 'PUP PACK (PUP USERS)
-'https://mega.nz/folder/0J50RSjS#TcHVHQLnSncim0BGlmGMng  (PUT IN PUP VIDEOS FOLDER)
+'******************************************************  (PUT IN PUP VIDEOS FOLDER)
 
 
 '***********************************************************************************************************************
