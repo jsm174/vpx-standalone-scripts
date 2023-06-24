@@ -4870,7 +4870,6 @@ Const darkblue = 8
 Const purple = 9
 Const white = 11
 Const teal = 10
-Const default = 0
 
 Sub SetLightColor(n, col, stat) 'stat 0 = off, 1 = on, 2 = blink, -1= no change
     Select Case col

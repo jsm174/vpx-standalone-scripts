@@ -1,10 +1,10 @@
---- IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original	2023-06-10 00:29:40
-+++ IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs	2023-06-10 00:28:49
-@@ -3536,6 +3536,7 @@
- ' if more than 1 ball (multi-ball) then kill of the ball but don't create
- ' a new one
- '
-+Dim Default
- Sub Drain_Hit()
-     ' Destroy the ball
-     Drain.DestroyBall
+--- IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original	2023-06-24 21:08:46
++++ IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs	2023-06-24 21:08:42
+@@ -4870,6 +4870,7 @@
+ Const purple = 9
+ Const white = 11
+ Const teal = 10
++Const default = 0
+ 
+ Sub SetLightColor(n, col, stat) 'stat 0 = off, 1 = on, 2 = blink, -1= no change
+     Select Case col
