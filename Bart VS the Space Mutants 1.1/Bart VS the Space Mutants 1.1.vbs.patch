@@ -1,5 +1,5 @@
---- Bart VS the Space Mutants 1.1.vbs.original	2023-06-29 15:30:49
-+++ Bart VS the Space Mutants 1.1.vbs	2023-06-29 15:29:10
+--- Bart VS the Space Mutants 1.1.vbs.original	2023-06-29 15:35:57
++++ Bart VS the Space Mutants 1.1.vbs	2023-06-29 15:35:47
 @@ -33,7 +33,7 @@
  Option Explicit
  Randomize
@@ -20,13 +20,13 @@
 -    x = LoadValue(TableName, "HighScore")
 -    If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10000 End If
 -End Sub
+-
+-PlaySound "1BartMusic",-1
+-
 +' HighScoreReel.SetValue Highscore
 +' HighScoreReel.AddValue "84000"
  
--PlaySound "1BartMusic",-1
  
--
--
 +PlaySound "1BartMusic",-1
  
  Sub table1_Init
@@ -75,10 +75,11 @@
  Sub Loadhs
      Dim x
      x = LoadValue(TableName, "HighScore")
--    If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10000 End If
-+    If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10 End If
+     If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10000 End If
 +End Sub
  
+-    x = LoadValue(TableName, "Credits")
+-    If(x <> "") then Credits = CInt(x) Else Credits = 0 End If
 +Sub Savehs
 +    if(Score > HighScore) Then
 +        HighScore = Score
@@ -92,8 +93,7 @@
 +
 +Sub LoadCredits
 +    Dim x
-     x = LoadValue(TableName, "Credits")
--    If(x <> "") then Credits = CInt(x) Else Credits = 0 End If
++    x = LoadValue(TableName, "Credits")
 +    If(x <> "") Then Credits = CDbl(x) Else Credits = 0 End If
  End Sub
  

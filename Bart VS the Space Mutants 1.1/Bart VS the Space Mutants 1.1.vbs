@@ -462,7 +462,7 @@ End Sub
 Sub Loadhs
     Dim x
     x = LoadValue(TableName, "HighScore")
-    If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10 End If
+    If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10000 End If
 End Sub
 
 Sub Savehs
