@@ -1,0 +1,12 @@
+--- Mousin' Around! (Bally 1989) w VR Room v2.1.vbs.original	2023-06-29 22:45:35
++++ Mousin' Around! (Bally 1989) w VR Room v2.1.vbs	2023-06-29 22:43:20
+@@ -1478,7 +1478,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
+-	If isGIOn <> Not IsOff Then
++	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on
+\ No newline at end of file
