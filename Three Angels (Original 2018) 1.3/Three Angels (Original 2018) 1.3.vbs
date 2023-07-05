@@ -62802,7 +62802,7 @@ Sub DoorJackpot()
 	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
 	
-	'AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
+	AddScore(1000000 * DoorJackpotNumber)  'This jackpot is a little harder.
 	bonuspoints(1)=bonuspoints(1)+100000
 
 
