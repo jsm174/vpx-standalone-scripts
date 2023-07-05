@@ -318,18 +318,20 @@ DMDHeight = 684                                   ' Height in Decimal
 
 GetDMDColor
 Sub GetDMDColor
-' Dim WshShell,filecheck,directory
-' Set WshShell = CreateObject("WScript.Shell")
-' If DMDSize then
-' WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
-' WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
-' End if
-' If DMDPosition then
-' WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
-' WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
-' End if
-' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
-' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
+  Dim WshShell,filecheck,directory
+  Set WshShell = CreateObject("WScript.Shell")
+  If Not WshShell Is Nothing Then
+    If DMDSize then
+      WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
+      WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
+    End if
+    If DMDPosition then
+      WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
+      WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
+    End if
+    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
+    WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
+  End If
 End Sub
 '---------------------------------------------------
 
