@@ -1,0 +1,44 @@
+--- Three Angels (Original 2018) 1.3.vbs.original	2023-07-05 10:40:44
++++ Three Angels (Original 2018) 1.3.vbs	2023-07-05 10:37:02
+@@ -318,18 +318,18 @@
+ 
+ GetDMDColor
+ Sub GetDMDColor
+-Dim WshShell,filecheck,directory
+-Set WshShell = CreateObject("WScript.Shell")
+-If DMDSize then
+-WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
+-WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
+-End if
+-If DMDPosition then
+-WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
+-WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
+-End if
+-WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
+-WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
++' Dim WshShell,filecheck,directory
++' Set WshShell = CreateObject("WScript.Shell")
++' If DMDSize then
++' WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
++' WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
++' End if
++' If DMDPosition then
++' WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
++' WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
++' End if
++' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
++' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
+ End Sub
+ '---------------------------------------------------
+ 
+\ No newline at end of file
+@@ -62802,7 +62802,7 @@
+ 	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+ 	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
+ 	
+-	AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
++	'AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
+ 	bonuspoints(1)=bonuspoints(1)+100000
+ 
+ 
+\ No newline at end of file
