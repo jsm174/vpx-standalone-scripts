@@ -1,5 +1,5 @@
---- Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs.original	2023-07-04 21:55:19
-+++ Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs	2023-07-04 21:42:35
+--- Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs.original	2023-07-05 15:02:27
++++ Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs	2023-07-05 15:01:08
 @@ -1544,7 +1544,8 @@
  		FlBG20.visible = 1 
  		Sound_Flash_Relay enabled, Relay_GI_BG1
@@ -40,11 +40,31 @@
  End Sub
  
  Sub BGLamps
-@@ -2666,7 +2670,40 @@
- '******************************************************
+@@ -2618,9 +2622,9 @@
+ 	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+ 
+ 	Public Sub Update()	'tracks in-ball-velocity
+-		dim str, b, highestID
++		dim str, b, AllBalls, highestID : allBalls = getballs
+ 
+-		for each b in gBOT
++		for each b in allBalls
+ 			if b.id >= HighestID then highestID = b.id
+ 		Next
+ 
+@@ -2628,7 +2632,7 @@
+ 		if uBound(ballvelx) < highestID then redim ballvelx(highestID)	'set bounds
+ 		if uBound(ballvely) < highestID then redim ballvely(highestID)	'set bounds
+ 
+-		for each b in gBOT
++		for each b in allBalls
+ 			ballvel(b.id) = BallSpeed(b)
+ 			ballvelx(b.id) = b.velx
+ 			ballvely(b.id) = b.vely
+@@ -2667,6 +2671,39 @@
  '  DROP TARGETS INITIALIZATION
  '******************************************************
-+
+ 
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -65,7 +85,7 @@
 +  
 +	Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
 +	Public Property Let IsDropped(input): m_isDropped = input: End Property
- 
++  
 +	Public default Function init(primary, secondary, prim, sw, animate, isDropped)
 +	  Set m_primary = primary
 +	  Set m_secondary = secondary
@@ -152,13 +172,14 @@
  	Next
  End Sub
  
-@@ -2992,7 +3029,32 @@
+@@ -2991,8 +3028,33 @@
+ '******************************************************
  '		STAND-UP TARGET INITIALIZATION
  '******************************************************
- 
++
 +Class StandupTarget
 +	Private m_primary, m_prim, m_sw, m_animate
- 
++  
 +	Public Property Get Primary(): Set Primary = m_primary: End Property
 +	Public Property Let Primary(input): Set m_primary = input: End Property
 +  
@@ -170,13 +191,13 @@
 +  
 +	Public Property Get Animate(): Animate = m_animate: End Property
 +	Public Property Let Animate(input): m_animate = input: End Property
-+  
+ 
 +	Public default Function init(primary, prim, sw, animate)
 +	  Set m_primary = primary
 +	  Set m_prim = prim
 +	  m_sw = sw
 +	  m_animate = animate
-+  
+ 
 +	  Set Init = Me
 +	End Function
 +  End Class
