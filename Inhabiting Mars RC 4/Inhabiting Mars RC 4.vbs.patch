@@ -1,0 +1,11 @@
+--- Inhabiting Mars RC 4.vbs.original	2023-07-05 10:49:31
++++ Inhabiting Mars RC 4.vbs	2023-07-05 10:10:21
+@@ -2311,7 +2311,7 @@
+                 DMDScene.GetImage("Dig" & i).SetBounds 2 + i * 13, 3 + 32 + 2, 16, 16
+             Next
+             For i = 20 to 35 ' Bottom
+-                DMDScene.GetImage("Dig" & i).SetBounds (i - 20) * 16, 10, 16, 16
++                DMDScene.GetImage("Dig" & i).SetBounds ((i - 20) * 16), 10, 16, 16
+             Next
+             FlexDMD.LockRenderThread
+             FlexDMD.Stage.AddActor DMDScene
