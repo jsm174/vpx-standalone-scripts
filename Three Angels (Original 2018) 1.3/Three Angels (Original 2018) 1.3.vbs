@@ -291,6 +291,28 @@
 
 Option Explicit				' Force explicit variable declaration
 
+Sub ImplicitDMD_Init
+   Me.x = 30
+   Me.y = 30
+   Me.fontColor = RGB(255, 255, 255)
+   ME.intensityScale = 2
+   Me.width = 128 * 2
+   Me.height = 32 * 2
+   Me.visible = true
+   Me.timerenabled = true
+End Sub
+
+Sub ImplicitDMD_Timer
+   If Not UltraDMD Is Nothing Then
+      Dim DMDp: DMDp = UltraDMD.DmdColoredPixels
+      If Not IsEmpty(DMDp) Then
+         DMDWidth = UltraDMD.Width
+         DMDHeight = UltraDMD.Height
+         DMDColoredPixels = DMDp
+      End If
+   End If
+End Sub
+
 Dim VR_Room
 
 '############-----VR Room-----############
@@ -300,7 +322,7 @@ VR_Room = 0 ' 0 = VR Room off; 1 = VR ROOM on
 
 '---------- UltraDMD Unique Table Color preference -------------
 Dim DMDColor, DMDColorSelect, UseFullColor
-Dim DMDPosition, DMDPosX, DMDPosY, DMDSize, DMDWidth, DMDHeight 
+Dim DMDPosition, DMDPosX, DMDPosY, DMDSize, DMD_Width, DMD_Height 
 
 
 UseFullColor = "True" '                           "True" / "False"
@@ -311,30 +333,27 @@ DMDPosX = 5763                                   ' Position in Decimal
 DMDPosY = 40                                     ' Position in Decimal
 
 DMDSize = False                                     ' Use Manual DMD Size, True / False
-DMDWidth = 1276                                    ' Width in Decimal
-DMDHeight = 684                                   ' Height in Decimal  
+DMD_Width = 1276                                    ' Width in Decimal
+DMD_Height = 684                                   ' Height in Decimal  
 
 'Note open Ultradmd and right click on window to get the various sizes in decimal 
 
 GetDMDColor
 Sub GetDMDColor
-  Dim WshShell,filecheck,directory
-  Set WshShell = CreateObject("WScript.Shell")
-  If Not WshShell Is Nothing Then
-    If DMDSize then
-      WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
-      WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
-    End if
-    If DMDPosition then
-      WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
-      WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
-    End if
-    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
-    WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
-  End If
+Dim WshShell,filecheck,directory
+Set WshShell = CreateObject("WScript.Shell")
+If DMDSize then
+WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMD_Width,"REG_DWORD"
+WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMD_Height,"REG_DWORD"
+End if
+If DMDPosition then
+WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
+WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
+End if
+' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
+' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
 End Sub
 '---------------------------------------------------
-
 
 
 ' Define any Constants 
@@ -2354,9 +2373,9 @@ Sub BootupTimer_Timer()
 
 	Select Case (BootupTimer.UserValue)
 
-	'===========================----------········ · ·   ·     ·
+	'===========================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 	'-=   BOOT UP SEQUENCE  =------
-	'===========================----------········ · ·   ·     ·
+	'===========================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 		Case 0 'Pause
 		
 			BootupTimer.UserValue = BootupTimer.UserValue + 1
@@ -2398,9 +2417,9 @@ Sub BootupTimer_Timer()
 	
 	
 	
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 	'-= POWER OF GOD REACTIVATION DURING REGULAR PLAY =------
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 		Case 100 'RestPOG
 		
 			ActivatePOG()
@@ -2410,9 +2429,9 @@ Sub BootupTimer_Timer()
 		
 	
 
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 	'-= EXTRA ANGEL SMALL ANIMATION =------
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 		Case 200
 		
 				ResetBallSearch() 'We need to reset the ballsearch
@@ -2498,9 +2517,9 @@ Sub BootupTimer_Timer()
 
 
 
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 	'-= 100 SOULS SMALL ANIMATION =------
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 		Case 250
 		
 			'Just in case we were using them
@@ -2585,9 +2604,9 @@ Sub BootupTimer_Timer()
 
 
 
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 	'-= ANGELS DESTROYED ON THE BLOOD EXTRACTOR = DEMON LAf  =------
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 		Case 500
 		
 			PlaySound "vd_laugh1" '04secs
@@ -2613,9 +2632,9 @@ Sub BootupTimer_Timer()
 
 
 
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 	'-= ANGELS ON HELL FOR SLOW MACHINE FPS BOOST =------
-	'==========================================----------········ · ·   ·     ·
+	'==========================================----------Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·   Â·     Â·
 		Case 666
 		
 			'--------------------------------------------
@@ -2721,11 +2740,11 @@ Sub BootupTimer_Timer()
 
 
 
-		'====================---··· ·   ·
-		'========================·· ·===============================------------------------------------
-		'	--=[ WIZARD MODE ]=---    ---=[ DARK SOLDIERS ]=----·· ·   ·
-		'========================·· ·===============================------------------------------------
-		'====================---··· ·   ·
+		'====================---Â·Â·Â· Â·   Â·
+		'========================Â·Â· Â·===============================------------------------------------
+		'	--=[ WIZARD MODE ]=---    ---=[ DARK SOLDIERS ]=----Â·Â· Â·   Â·
+		'========================Â·Â· Â·===============================------------------------------------
+		'====================---Â·Â·Â· Â·   Â·
 		Case 1000
 		
 			If WMYourEnergy <= 30 then 'Only send soldiers when your life > 30
@@ -3328,9 +3347,9 @@ Sub THREEANGELS_KeyDown(ByVal KeyCode)
 				
 				
 				
-				'============================-----------···· ·  ·
+				'============================-----------Â·Â·Â·Â· Â·  Â·
 				' -[ NAIL SOUNDS ]- 2 nails only 1 sound...
-				'============================-----------···· ·  ·
+				'============================-----------Â·Â·Â·Â· Â·  Â·
 				
 				'-----------------------------
 				' **BOTH** NAILS AVAILABLE
@@ -3368,9 +3387,9 @@ Sub THREEANGELS_KeyDown(ByVal KeyCode)
 				End If
 				
 				
-				'============================-----------···· ·  ·
+				'============================-----------Â·Â·Â·Â· Â·  Â·
 				' -[ LEFT NAIL - AVALIABLE ]-
-				'============================-----------···· ·  ·
+				'============================-----------Â·Â·Â·Â· Â·  Â·
 				If NailLAvaliable = TRUE and NailLCharging = FALSE then
 				
 					If NailLRaised = FALSE then
@@ -3401,9 +3420,9 @@ Sub THREEANGELS_KeyDown(ByVal KeyCode)
 				End If
 				
 				
-				'============================-----------···· ·  ·
+				'============================-----------Â·Â·Â·Â· Â·  Â·
 				' -[ RIGHT NAIL - AVALIABLE ]-
-				'============================-----------···· ·  ·
+				'============================-----------Â·Â·Â·Â· Â·  Â·
 				If NailRAvaliable = TRUE and NailRCharging = FALSE then
 				
 					If NailRRaised = FALSE then
@@ -4398,9 +4417,9 @@ Sub CheckTilt
 		TiltRecoveryTimer.Interval = 5000
 		TiltRecoveryTimer.enabled = True
 	' stop any running modes...
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 	
 		vpTilted = FALSE 'No tilts during Wizard Mode!
@@ -4597,9 +4616,9 @@ End Sub
 '
 'Sub FuturePinball_Tilted()
 '
-'	'-·===============·-------------·· ·  ·
-'	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-'	'-·===============·-------------·· ·  ·
+'	'-Â·===============Â·-------------Â·Â· Â·  Â·
+'	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+'	'-Â·===============Â·-------------Â·Â· Â·  Â·
 '	If WizModeActive = TRUE then
 '	
 '		vpTilted = FALSE 'No tilts during Wizard Mode!
@@ -4729,9 +4748,9 @@ Sub threeangels_MusicFinished(ByVal Channel) 'mmUSIC OVER
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeFightingActive = TRUE then
@@ -4752,9 +4771,9 @@ End Sub
 
 
 
-'====================================---------------··· ·  ·
+'====================================---------------Â·Â·Â· Â·  Â·
 '-=: STOP THE FUNKY MUSIC WHITE BOY :=-
-'====================================---------------··· ·  ·
+'====================================---------------Â·Â·Â· Â·  Â·
 Sub StopAllMusicTracks()
 
 '	EffectMusic 1, FadeOutAndStop, 0, StopTracksInSecs
@@ -4770,9 +4789,9 @@ End Sub
 
 
 
-'========================---------------··· ·  ·
+'========================---------------Â·Â·Â· Â·  Â·
 '-=: PLAY THE FUNKY MUSIC WHITE BOY :=-
-'========================---------------··· ·  ·
+'========================---------------Â·Â·Â· Â·  Â·
 Sub AzarMusic()
 
 	'------------------------------------------------------------------
@@ -4806,9 +4825,9 @@ Sub AzarMusic()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BOTH GUARDIANS DESTROYED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GatesOpened = FALSE and GateGuardians = 0 then 'When both guardians have been destroyed but the gates haven't been opened then this one...
 
 		'PlayMusic "3angels\msc_bgm03.mp3"', TRUE, 1 ', 1000 'was 2K
@@ -4889,9 +4908,9 @@ Sub AzarMusic()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GatesOpened = TRUE then 'When both gates are opened the music to play is this one
 
 		'PlayMusic "3angels\msc_gates_opened.mp3"', TRUE, 1 ', 1000 'was 2k
@@ -4904,9 +4923,9 @@ Sub AzarMusic()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' PORTAL READY 2 SUMMON A DEMON
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If PortalReady = TRUE then
 
 		'PlayMusic "3angels\msc_bgm04.mp3"', TRUE, 1 ', 1000 'was 2K
@@ -4921,9 +4940,9 @@ Sub AzarMusic()
 
 
 
-	'=========================--------------------------·· · ·  ·
+	'=========================--------------------------Â·Â· Â· Â·  Â·
 	' RANDOM BACKGROUND ENVIROMENTAL MUSIC 
-	'=========================================--------------·· · ·  ·
+	'=========================================--------------Â·Â· Â· Â·  Â·
 	'----------------------------------
 	' GAME START - DEMONS DESTROYED 00
 	'----------------------------------
@@ -5192,15 +5211,15 @@ End Sub
 
 
 
-'====================================---------------------------···  ·   ·
-' = LOCATING BALLS =------------------------------------------------------····   ·
-'====================================---------------------------···  ·   ·
+'====================================---------------------------Â·Â·Â·  Â·   Â·
+' = LOCATING BALLS =------------------------------------------------------Â·Â·Â·Â·   Â·
+'====================================---------------------------Â·Â·Â·  Â·   Â·
 
 Sub CleanModes() 'This will free any locked balls
 
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 	'--=[ ANGELS IN HELL ]=-----
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 	If WizModeIsOver = FALSE then 'During the Wizamode the angels are liberated. So we dont need to recover'em.
 	'										 We know that we played the WizMode 'cos WizModeIsOver is TRUE.
 
@@ -5233,9 +5252,9 @@ Sub CleanModes() 'This will free any locked balls
 
 
 
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 	' ---==[ S O M E T H I N G   I N S I D E   T H E   T R A P ]=---
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 	If TrapEmpty = FALSE then 'There is something inside the trap
 
 			BallsOnPlayfield = BallsOnPlayfield + 1
@@ -5243,9 +5262,9 @@ Sub CleanModes() 'This will free any locked balls
 	
 	End If
 
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ TRAP - KICKER 001 ]=-----
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	If BITrapKicker1 = TRUE then 'If there is a ball locked in the DEMON MACHINE
 
 		BallsOnPlayfield = BallsOnPlayfield + 1
@@ -5253,9 +5272,9 @@ Sub CleanModes() 'This will free any locked balls
 	
 	End If
 
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ TRAP - KICKER 002 ]=-----
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	If BITrapKicker2 = TRUE then
 
 		BallsOnPlayfield = BallsOnPlayfield + 1
@@ -5263,9 +5282,9 @@ Sub CleanModes() 'This will free any locked balls
 	
 	End If
 
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ TRAP - KICKER 003 ]=-----
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	If BITrapKicker3 = TRUE then
 
 		BallsOnPlayfield = BallsOnPlayfield + 1
@@ -5274,9 +5293,9 @@ Sub CleanModes() 'This will free any locked balls
 	End If
 
 
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' --=[ OPEN TRAP ]=---
-	'------------------------------------····· ·· · ·  ·
+	'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	If TrapEmpty = FALSE or BITrapKicker1 = TRUE or BITrapKicker2 = TRUE or BITrapKicker3 = TRUE then
 
 		'THIS WILL OPEN THE TRAP 'COS THERE IS A BALL INSIDE
@@ -5370,9 +5389,9 @@ End Sub
 
 
 
-'====================================---------------------------···  ·   ·
-'   ---= ALL BALLS LOCATED =------------------------------------------------------····   ·
-'====================================---------------------------···  ·   ·
+'====================================---------------------------Â·Â·Â·  Â·   Â·
+'   ---= ALL BALLS LOCATED =------------------------------------------------------Â·Â·Â·Â·   Â·
+'====================================---------------------------Â·Â·Â·  Â·   Â·
 
 Sub AllBallsLocated()
 
@@ -6618,9 +6637,9 @@ Sub EndOfBall()
 		BonusActive = TRUE 'We are counting the bonus
 		
 		
-		'====================================--------------····
+		'====================================--------------Â·Â·Â·Â·
 		' --=[ WIZARD MODE BONUS ]=---
-		'====================================--------------····		
+		'====================================--------------Â·Â·Â·Â·		
 		If WizModeIsOver = TRUE then
 			DMD_CancelRendering
 			'DMD1.FlushQueue :	'DMD2.FlushQueue
@@ -6633,9 +6652,9 @@ Sub EndOfBall()
 			EndOfBallTimer.Enabled = TRUE '-----=[ WizMODE BONUS COUNT show begin ]=-----
 		
 		
-		'====================================--------------····
+		'====================================--------------Â·Â·Â·Â·
 		' --=[ REGULAR BONUS ]=---
-		'====================================--------------····		
+		'====================================--------------Â·Â·Â·Â·		
 		Else
 			DMD_CancelRendering
 			'DMD1.FlushQueue :	'DMD2.FlushQueue
@@ -6645,50 +6664,50 @@ Sub EndOfBall()
 			'DMD1.QueueText " - BALL  LOST - ", seWipeBarDown, 1000 : 'DMDA.QueueText " - BALL  LOST - ", seWipeBarDown, 1000
 			DMD_DisplayScene "  - BALL  LOST - "," - BALL  LOST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD2.QueueText " - BALL  LOST - ", seWipeBarUP  , 1000 : 'DMDB.QueueText " - BALL  LOST - ", seWipeBarUP  , 1000
-			DMD_DisplayScene " - B·LL  LOST - "," - BALL  L·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " - B·LL  LOST - ", seNone, 100 : 'DMDA.QueueText " - B·LL  LOST - ", seNone, 100
-			DMD_DisplayScene " - B·LL  LOST - "," - BALL  L·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText " - BALL  L·ST - ", seNone, 100 : 'DMDB.QueueText " - BALL  L·ST - ", seNone, 100
-			DMD_DisplayScene " - B LL  LOST - "," - BALL  L·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			DMD_DisplayScene " - BÂ·LL  LOST - "," - BALL  LÂ·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " - BÂ·LL  LOST - ", seNone, 100 : 'DMDA.QueueText " - BÂ·LL  LOST - ", seNone, 100
+			DMD_DisplayScene " - BÂ·LL  LOST - "," - BALL  LÂ·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD2.QueueText " - BALL  LÂ·ST - ", seNone, 100 : 'DMDB.QueueText " - BALL  LÂ·ST - ", seNone, 100
+			DMD_DisplayScene " - B LL  LOST - "," - BALL  LÂ·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD1.QueueText " - B LL  LOST - ", seNone, 90 : 'DMDA.QueueText " - B LL  LOST - ", seNone, 90
-			'DMD2.QueueText " - BALL  L·ST - ", seNone, 90 : 'DMDB.QueueText " - BALL  L·ST - ", seNone, 90
-			DMD_DisplayScene " - B·LL  LOST - "," - BALL  L·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " - B LL  LOS· - ", seNone, 80 : 'DMDA.QueueText " - B LL  LOS· - ", seNone, 80
-			'DMD2.QueueText " - BAL·  L ST - ", seNone, 80 : 'DMDB.QueueText " - BAL·  L ST - ", seNone, 80
-			DMD_DisplayScene " - B LL  LOS· - "," - BAL   L ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " - B LL  LOS· - ", seNone, 70 : 'DMDA.QueueText " - B LL  LOS· - ", seNone, 70
+			'DMD2.QueueText " - BALL  LÂ·ST - ", seNone, 90 : 'DMDB.QueueText " - BALL  LÂ·ST - ", seNone, 90
+			DMD_DisplayScene " - BÂ·LL  LOST - "," - BALL  LÂ·ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " - B LL  LOSÂ· - ", seNone, 80 : 'DMDA.QueueText " - B LL  LOSÂ· - ", seNone, 80
+			'DMD2.QueueText " - BALÂ·  L ST - ", seNone, 80 : 'DMDB.QueueText " - BALÂ·  L ST - ", seNone, 80
+			DMD_DisplayScene " - B LL  LOSÂ· - "," - BAL   L ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " - B LL  LOSÂ· - ", seNone, 70 : 'DMDA.QueueText " - B LL  LOSÂ· - ", seNone, 70
 			'DMD2.QueueText " - BAL   L ST - ", seNone, 70 : 'DMDB.QueueText " - BAL   L ST - ", seNone, 70
-			DMD_DisplayScene " - B LL  LOS  - "," - ·AL   L ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			DMD_DisplayScene " - B LL  LOS  - "," - Â·AL   L ST - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD1.QueueText " - B LL  LOS  - ", seNone, 60 : 'DMDA.QueueText " - B LL  LOS  - ", seNone, 60
-			'DMD2.QueueText " - ·AL   L ST - ", seNone, 60 : 'DMDB.QueueText " - ·AL   L ST - ", seNone, 60
-			DMD_DisplayScene " - B L·  LOS  - "," -  AL   L S· - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " - B L·  LOS  - ", seNone, 50 : 'DMDA.QueueText " - B L·  LOS  - ", seNone, 50
-			'DMD2.QueueText " -  AL   L S· - ", seNone, 50 : 'DMDB.QueueText " -  AL   L S· - ", seNone, 50
-			DMD_DisplayScene " - · L   LOS  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
-			'DMD1.QueueText " - · L   LOS  - ", seNone, 50 : 'DMDA.QueueText " - · L   LOS  - ", seNone, 50
-			'DMD2.QueueText " -  AL   L S· - ", seNone, 50 : 'DMDB.QueueText " -  AL   L S· - ", seNone, 50
-			DMD_DisplayScene " - · L   LOS  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
-			'DMD1.QueueText " - · L   LOS  - ", seNone, 40 : 'DMDA.QueueText " - · L   LOS  - ", seNone, 40
-			'DMD2.QueueText " -  A·   L S  - ", seNone, 40 : 'DMDB.QueueText " -  A·   L S  - ", seNone, 40
-			DMD_DisplayScene " -   L   LO·  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
-			'DMD1.QueueText " -   L   LO·  - ", seNone, 30 : 'DMDA.QueueText " -   L   LO·  - ", seNone, 30
-			'DMD2.QueueText " -  A·   L S  - ", seNone, 30 : 'DMDB.QueueText " -  A·   L S  - ", seNone, 30
-			DMD_DisplayScene " -   L   LO·  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
-			'DMD1.QueueText " -   L   LO·  - ", seNone, 30 : 'DMDA.QueueText " -   L   LO·  - ", seNone, 30
+			'DMD2.QueueText " - Â·AL   L ST - ", seNone, 60 : 'DMDB.QueueText " - Â·AL   L ST - ", seNone, 60
+			DMD_DisplayScene " - B LÂ·  LOS  - "," -  AL   L SÂ· - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " - B LÂ·  LOS  - ", seNone, 50 : 'DMDA.QueueText " - B LÂ·  LOS  - ", seNone, 50
+			'DMD2.QueueText " -  AL   L SÂ· - ", seNone, 50 : 'DMDB.QueueText " -  AL   L SÂ· - ", seNone, 50
+			DMD_DisplayScene " - Â· L   LOS  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
+			'DMD1.QueueText " - Â· L   LOS  - ", seNone, 50 : 'DMDA.QueueText " - Â· L   LOS  - ", seNone, 50
+			'DMD2.QueueText " -  AL   L SÂ· - ", seNone, 50 : 'DMDB.QueueText " -  AL   L SÂ· - ", seNone, 50
+			DMD_DisplayScene " - Â· L   LOS  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
+			'DMD1.QueueText " - Â· L   LOS  - ", seNone, 40 : 'DMDA.QueueText " - Â· L   LOS  - ", seNone, 40
+			'DMD2.QueueText " -  AÂ·   L S  - ", seNone, 40 : 'DMDB.QueueText " -  AÂ·   L S  - ", seNone, 40
+			DMD_DisplayScene " -   L   LOÂ·  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
+			'DMD1.QueueText " -   L   LOÂ·  - ", seNone, 30 : 'DMDA.QueueText " -   L   LOÂ·  - ", seNone, 30
+			'DMD2.QueueText " -  AÂ·   L S  - ", seNone, 30 : 'DMDB.QueueText " -  AÂ·   L S  - ", seNone, 30
+			DMD_DisplayScene " -   L   LOÂ·  - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
+			'DMD1.QueueText " -   L   LOÂ·  - ", seNone, 30 : 'DMDA.QueueText " -   L   LOÂ·  - ", seNone, 30
 			'DMD2.QueueText " -  A    L S  - ", seNone, 30 : 'DMDB.QueueText " -  A    L S  - ", seNone, 30
 			DMD_DisplayScene " -   L   LO   - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
 			'DMD1.QueueText " -   L   LO   - ", seNone, 30 : 'DMDA.QueueText " -   L   LO   - ", seNone, 30
-			'DMD2.QueueText " -  A    · S  - ", seNone, 30 : 'DMDB.QueueText " -  A    · S  - ", seNone, 30
-			DMD_DisplayScene " -   ·   LO   - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
-			'DMD1.QueueText " -   ·   LO   - ", seNone, 30 : 'DMDA.QueueText " -   ·   LO   - ", seNone, 30
+			'DMD2.QueueText " -  A    Â· S  - ", seNone, 30 : 'DMDB.QueueText " -  A    Â· S  - ", seNone, 30
+			DMD_DisplayScene " -   Â·   LO   - ","", UltraDMD_Animation_ScrollOnup, UltraDMD_deOn, UltraDMD_Animation_ScrollOnDown
+			'DMD1.QueueText " -   Â·   LO   - ", seNone, 30 : 'DMDA.QueueText " -   Â·   LO   - ", seNone, 30
 			'DMD2.QueueText " -  A      S  - ", seNone, 30 : 'DMDB.QueueText " -  A      S  - ", seNone, 30
 			'DMD1.QueueText " -       LO   - ", seNone, 30 : 'DMDA.QueueText " -       LO   - ", seNone, 30
-			'DMD2.QueueText " -  A      ·  - ", seNone, 30 : 'DMDB.QueueText " -  A      ·  - ", seNone, 30
-			'DMD1.QueueText " -       ·O   - ", seNone, 30 : 'DMDA.QueueText " -       ·O   - ", seNone, 30
+			'DMD2.QueueText " -  A      Â·  - ", seNone, 30 : 'DMDB.QueueText " -  A      Â·  - ", seNone, 30
+			'DMD1.QueueText " -       Â·O   - ", seNone, 30 : 'DMDA.QueueText " -       Â·O   - ", seNone, 30
 			'DMD2.QueueText " -  A         - ", seNone, 30 : 'DMDB.QueueText " -  A         - ", seNone, 30
 			'DMD1.QueueText " -        O   - ", seNone, 30 : 'DMDA.QueueText " -        O   - ", seNone, 30
-			'DMD2.QueueText " -  ·         - ", seNone, 30 : 'DMDB.QueueText " -  ·         - ", seNone, 30
-			'DMD1.QueueText " -        ·   - ", seNone, 30 : 'DMDA.QueueText " -        ·   - ", seNone, 30
+			'DMD2.QueueText " -  Â·         - ", seNone, 30 : 'DMDB.QueueText " -  Â·         - ", seNone, 30
+			'DMD1.QueueText " -        Â·   - ", seNone, 30 : 'DMDA.QueueText " -        Â·   - ", seNone, 30
 			'DMD2.QueueText " -            - ", seNone, 30 : 'DMDB.QueueText " -            - ", seNone, 30
 			'DMD1.QueueText " -            - ", seNone, 30 : 'DMDA.QueueText " -            - ", seNone, 30
 			'DMD2.QueueText " -            - ", seNone, 30 : 'DMDB.QueueText " -            - ", seNone, 30
@@ -6725,11 +6744,11 @@ End Sub
 '060 - ARMOUR PIECES
 
 '[BONUS]========================================================================================
-' ---------=========================--------·· 
-' ---------=                       =---------· · ·
-'-----====   END OF BALL - BONUS!    =====-----·· ·  ·
-' ---------=                       =---------· · ·
-' ---------=========================--------·· 
+' ---------=========================--------Â·Â· 
+' ---------=                       =---------Â· Â· Â·
+'-----====   END OF BALL - BONUS!    =====-----Â·Â· Â·  Â·
+' ---------=                       =---------Â· Â· Â·
+' ---------=========================--------Â·Â· 
 '===============================================================================================
 
 
@@ -6742,9 +6761,9 @@ Sub EndOfBallTimer_Timer()
 	End If
 
 
-	'====================================-----------··· ·
+	'====================================-----------Â·Â·Â· Â·
 	'-=[ NO ANIMATIONS THANKS ]=-
-	'====================================-----------··· ·
+	'====================================-----------Â·Â·Â· Â·
 	If TrapTimer.Enabled = TRUE then 'The trap is opening and u lost the ball
 	
 		If TrapTimer.UserValue => -1 and TrapTimer.UserValue =< 18 then
@@ -6784,9 +6803,9 @@ Sub EndOfBallTimer_Timer()
 
 	Select Case (EndOfBallTimer.UserValue)
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ TILT = NO BONUS SHOW ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case -50
 		DMD_CancelRendering
 		'DMD1.FlushQueue :	'DMD2.FlushQueue
@@ -6820,9 +6839,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ WIZARD MODE BONUS ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case -12
 
 		Playsound "3angels\msc_bonus_drum_intro-"', FALSE, 1, 0
@@ -6849,9 +6868,9 @@ Sub EndOfBallTimer_Timer()
 		EndOfBallTimer.UserValue = EndOfBallTimer.UserValue + 1
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ WIZARD MODE BONUS ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case -10
 
 		AzarSoundThunder()
@@ -7035,9 +7054,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ BONUS SHOW ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 0
 
 		Playsound "3angels\msc_bonus_drum_intro-"'', FALSE, 1, 0
@@ -7147,9 +7166,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ L O S T  S O U L S ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 10
 
 		AzarSoundThunder()
@@ -7343,9 +7362,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ G A T E  G U A R D I A N S ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 20
 
 		AzarSoundThunder()
@@ -7548,9 +7567,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ D E M O N S  S U M M O N E D ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 30
 
 		AzarSoundThunder()
@@ -7727,9 +7746,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ D E M O N S  E X P E L L E D ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 40
 	
 		AzarSoundThunder()
@@ -7902,9 +7921,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ D E M O N S  D E S T R O Y E D ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 50
 	
 		AzarSoundThunder()
@@ -8074,9 +8093,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ A N G E L S  I N  H E L L ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 60
 
 		AzarSoundThunder()
@@ -8265,9 +8284,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ B L A C K S M I T H ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 70
 
 		AzarSoundThunder()
@@ -8424,9 +8443,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ BONUS COUNTDOWN ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 80
 
 			ImportantDMDMessage = FALSE
@@ -8625,9 +8644,9 @@ Sub EndOfBallTimer_Timer()
 
 
 
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ FINAL BONUS ]=-------
-	'==============================--------····· ·· · ·  ·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 100
 
 			'ImportantDMDMessage = FALSE
@@ -8784,9 +8803,9 @@ End Sub
 
 
 
-'===================-----------------------------------------------·
-' --=[ D M D ]=--··
-'===================-----------------------------------------------·
+'===================-----------------------------------------------Â·
+' --=[ D M D ]=--Â·Â·
+'===================-----------------------------------------------Â·
 
 Sub ShowSCoreOnDMD() 'This will align the score on the DMD
 
@@ -9120,18 +9139,18 @@ Sub EndOfBallComplete()
 		'AddScore(0)
 		
 		
-		'=====================================----------------·· ·  ·
+		'=====================================----------------Â·Â· Â·  Â·
 		' -=[ LAST BALL ]=--
-		'=====================================----------------·· ·  ·
+		'=====================================----------------Â·Â· Â·  Â·
 		If BallsRemaining(1) = 1 then
 		
 			BoomAngel3()
 			
 			'PlaySound "vcr_remember_brothers"
 			
-			'=================-------------------------·
+			'=================-------------------------Â·
 			' [ BAD PLAYER ] --- 15.000 POINTS
-			'=================-------------------------·
+			'=================-------------------------Â·
 			If nvScore(1) < 15000 and nvScore(1) > 5000 then 'If the game is really low, help the player a bit
 			
 				'PlaySound "fx_metal_scrape"
@@ -9176,9 +9195,9 @@ Sub EndOfBallComplete()
 			
 			
 			
-			'=================-------------------------·
+			'=================-------------------------Â·
 			' [ BAD PLAYER ] --- 5.000 POINTS
-			'=================-------------------------·
+			'=================-------------------------Â·
 			ElseIf nvScore(1) =< 5000 then 'Man, this mortal is a really bad pin player...
 			
 				'----------------------------
@@ -9341,11 +9360,11 @@ End Sub
 
 
 
-'=================================-------------------···· ·  ·
-'====================================-------------------···· ·  ·
+'=================================-------------------Â·Â·Â·Â· Â·  Â·
+'====================================-------------------Â·Â·Â·Â· Â·  Â·
 ' ---=[ W O R L D O V E R ]=---
-'====================================-------------------···· ·  ·
-'=================================-------------------···· ·  ·
+'====================================-------------------Â·Â·Â·Â· Â·  Â·
+'=================================-------------------Â·Â·Â·Â· Â·  Â·
 
 ' This frunction is called at the End of the Game, it should reset all
 ' Drop targets, and eject any 'held' balls, start any attract sequences etc..
@@ -9753,15 +9772,15 @@ Sub LostSoulLitesON()
 End Sub
 
 
-'=------------==:··· ·  ·   ·
-'================·· · ·-----------------------------··   ·
-'  [BALLSAVER]=------ - -·· ··  ·
-'================·· · ·-----------------------------··   ·
-'=------------==:··· ·  ·   ·
+'=------------==:Â·Â·Â· Â·  Â·   Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+'  [BALLSAVER]=------ - -Â·Â· Â·Â·  Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+'=------------==:Â·Â·Â· Â·  Â·   Â·
 
-'====================================--------------------------------------····· ·· · ·  ·
+'====================================--------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '  BALL SAVER
-'====================================--------------------------------------····· ·· · ·  ·
+'====================================--------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 Sub ActivateBallSaver() 'This call your Guardian Angel
 
 	BallSaverActive = TRUE
@@ -9787,9 +9806,9 @@ Sub ActivateBallSaver() 'This call your Guardian Angel
 End Sub
 
 
-'================·· · ·-----------------------------··   ·
-' -=[ 15 SECS ]=------ - -·· ··  ·
-'================·· · ·-----------------------------··   ·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+' -=[ 15 SECS ]=------ - -Â·Â· Â·Â·  Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
 Sub ActivateBallSaver15secs()
 
 	BallSaverActive = TRUE 'We must epecificate that the ball saver is active
@@ -9813,9 +9832,9 @@ End Sub
 
 
 
-'================·· · ·-----------------------------··   ·
-' -=[ 25 SECS ]=------ - -·· ··  ·
-'================·· · ·-----------------------------··   ·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+' -=[ 25 SECS ]=------ - -Â·Â· Â·Â·  Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
 Sub ActivateBallSaver25secs()
 
 	BallSaverActive = TRUE 'We must epecificate that the ball saver is active
@@ -9838,9 +9857,9 @@ Sub ActivateBallSaver25secs()
 End Sub
 
 
-'================·· · ·-----------------------------··   ·
-' -=[ 45 SECS ]=------ - -·· ··  ·
-'================·· · ·-----------------------------··   ·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+' -=[ 45 SECS ]=------ - -Â·Â· Â·Â·  Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
 Sub ActivateBallSaver45secs()
 
 	BallSaverActive = TRUE 'We must epecificate that the ball saver is active
@@ -9864,9 +9883,9 @@ End Sub
 
 
 
-'================·· · ·-----------------------------··   ·
-' -=[ 60 SECS ]=------ - -·· ··  ·
-'================·· · ·-----------------------------··   ·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+' -=[ 60 SECS ]=------ - -Â·Â· Â·Â·  Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
 Sub ActivateBallSaver60secs()
 
 	BallSaverActive = TRUE 'We must epecificate that the ball saver is active
@@ -9891,9 +9910,9 @@ End Sub
 
 
 
-'================·· · ·-----------------------------··   ·
-' -=[ TIMER ]=------ - -·· ··  ·
-'================·· · ·-----------------------------··   ·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
+' -=[ TIMER ]=------ - -Â·Â· Â·Â·  Â·
+'================Â·Â· Â· Â·-----------------------------Â·Â·   Â·
 Sub BallSaverTimer_Timer()
 
 '	AddDebugText "T - BALLSAVER"
@@ -10060,9 +10079,9 @@ End Sub
 
 
 
-'============================--------------------·· ·  ·
-' --=[ B A L L S A V E R ]=--·· ·
-'============================--------------------·· ·  ·
+'============================--------------------Â·Â· Â·  Â·
+' --=[ B A L L S A V E R ]=--Â·Â· Â·
+'============================--------------------Â·Â· Â·  Â·
 
 Sub LetTheBallSaverCreateAnotherBall()
 	
@@ -10136,9 +10155,9 @@ Sub LetTheBallSaverCreateAnotherBall()
 		
 		
 		
-		'==================================----·· ·
+		'==================================----Â·Â· Â·
 		' DEMON ROAMING THE PF
-		'==================================----·· ·
+		'==================================----Â·Â· Â·
 		If DemonOnPlayfield = TRUE and DemonInsideTrap = FALSE then 'There is a demon but he is free
 		
 			AzarVoiceScream()
@@ -10255,36 +10274,36 @@ Sub LetTheBallSaverCreateAnotherBall()
 			DMD_DisplayScene " GUARDIAN ANGEL "," GUARDIAN ANGEL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD1.QueueText " GUARDIAN ANGEL ", seNone, 50 : 'DMDA.QueueText " GUARDIAN ANGEL ", seNone, 50
 			'DMD2.QueueText " GUARDIAN ANGEL ", seNone, 50 : 'DMDB.QueueText " GUARDIAN ANGEL ", seNone, 50
-			DMD_DisplayScene " G·ARDIAN ANGE· "," GUARDIAN ·NGEL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " G·ARDIAN ANGE· ", seNone, 50 : 'DMDA.QueueText " G·ARDIAN ANGE· ", seNone, 50
-			'DMD2.QueueText " GUARDIAN ·NGEL ", seNone, 50 : 'DMDB.QueueText " GUARDIAN ·NGEL ", seNone, 50
-			DMD_DisplayScene " G ARD·AN ANGE· "," ·UARDIAN  NGEL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " G ARD·AN ANGE· ", seNone, 50 : 'DMDA.QueueText " G ARD·AN ANGE· ", seNone, 50
-			'DMD2.QueueText " ·UARDIAN  NGEL ", seNone, 50 : 'DMDB.QueueText " ·UARDIAN  NGEL ", seNone, 50
-			DMD_DisplayScene " G ARD·AN A·GE  ","  UA·DIAN  N·EL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " G ARD·AN A·GE  ", seNone, 50 : 'DMDA.QueueText " G ARD·AN A·GE  ", seNone, 50
-			'DMD2.QueueText "  UA·DIAN  N·EL ", seNone, 50 : 'DMDB.QueueText "  UA·DIAN  N·EL ", seNone, 50
-			DMD_DisplayScene " G A·D AN A·GE  ","  UA DI·N  N·EL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " G A·D AN A·GE  ", seNone, 45 : 'DMDA.QueueText " G A·D AN A·GE  ", seNone, 45
-			'DMD2.QueueText "  UA DI·N  N·EL ", seNone, 45 : 'DMDB.QueueText "  UA DI·N  N·EL ", seNone, 45
-			DMD_DisplayScene " G A·D A· A GE  ","  U· DI N  N·EL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
-			'DMD1.QueueText " G A·D A· A GE  ", seNone, 45 : 'DMDA.QueueText " G A·D A· A GE  ", seNone, 45
-			'DMD2.QueueText "  U· DI N  N·EL ", seNone, 45 : 'DMDB.QueueText "  U· DI N  N·EL ", seNone, 45
-			DMD_DisplayScene " · A D ·  A GE  ","  U· DI N  N E· ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText " · A D ·  A GE  ", seNone, 45 : 'DMDA.QueueText " · A D ·  A GE  ", seNone, 45
-			'DMD2.QueueText "  U· DI N  N E· ", seNone, 45 : 'DMDB.QueueText "  U· DI N  N E· ", seNone, 45
-			DMD_DisplayScene "   A D    A ·E  ","  U  ·I N  N ·  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText "   A D    A ·E  ", seNone, 40 : 'DMDA.QueueText "   A D    A ·E  ", seNone, 40
-			'DMD2.QueueText "  U  ·I N  N ·  ", seNone, 40 : 'DMDB.QueueText "  U  ·I N  N ·  ", seNone, 40
-			DMD_DisplayScene "   A D    A  ·  ","  ·   I N  ·    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText "   A D    A  ·  ", seNone, 40 : 'DMDA.QueueText "   A D    A  ·  ", seNone, 40
-			'DMD2.QueueText "  ·   I N  ·    ", seNone, 40 : 'DMDB.QueueText "  ·   I N  ·    ", seNone, 40
-			DMD_DisplayScene "   · D    ·     ","      · N       ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText "   · D    ·     ", seNone, 35 : 'DMDA.QueueText "   · D    ·     ", seNone, 35
-			'DMD2.QueueText "      · N       ", seNone, 35 : 'DMDB.QueueText "      · N       ", seNone, 35
-			DMD_DisplayScene "     D          ","        ·       ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			DMD_DisplayScene " GÂ·ARDIAN ANGEÂ· "," GUARDIAN Â·NGEL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " GÂ·ARDIAN ANGEÂ· ", seNone, 50 : 'DMDA.QueueText " GÂ·ARDIAN ANGEÂ· ", seNone, 50
+			'DMD2.QueueText " GUARDIAN Â·NGEL ", seNone, 50 : 'DMDB.QueueText " GUARDIAN Â·NGEL ", seNone, 50
+			DMD_DisplayScene " G ARDÂ·AN ANGEÂ· "," Â·UARDIAN  NGEL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " G ARDÂ·AN ANGEÂ· ", seNone, 50 : 'DMDA.QueueText " G ARDÂ·AN ANGEÂ· ", seNone, 50
+			'DMD2.QueueText " Â·UARDIAN  NGEL ", seNone, 50 : 'DMDB.QueueText " Â·UARDIAN  NGEL ", seNone, 50
+			DMD_DisplayScene " G ARDÂ·AN AÂ·GE  ","  UAÂ·DIAN  NÂ·EL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " G ARDÂ·AN AÂ·GE  ", seNone, 50 : 'DMDA.QueueText " G ARDÂ·AN AÂ·GE  ", seNone, 50
+			'DMD2.QueueText "  UAÂ·DIAN  NÂ·EL ", seNone, 50 : 'DMDB.QueueText "  UAÂ·DIAN  NÂ·EL ", seNone, 50
+			DMD_DisplayScene " G AÂ·D AN AÂ·GE  ","  UA DIÂ·N  NÂ·EL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " G AÂ·D AN AÂ·GE  ", seNone, 45 : 'DMDA.QueueText " G AÂ·D AN AÂ·GE  ", seNone, 45
+			'DMD2.QueueText "  UA DIÂ·N  NÂ·EL ", seNone, 45 : 'DMDB.QueueText "  UA DIÂ·N  NÂ·EL ", seNone, 45
+			DMD_DisplayScene " G AÂ·D AÂ· A GE  ","  UÂ· DI N  NÂ·EL ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
+			'DMD1.QueueText " G AÂ·D AÂ· A GE  ", seNone, 45 : 'DMDA.QueueText " G AÂ·D AÂ· A GE  ", seNone, 45
+			'DMD2.QueueText "  UÂ· DI N  NÂ·EL ", seNone, 45 : 'DMDB.QueueText "  UÂ· DI N  NÂ·EL ", seNone, 45
+			DMD_DisplayScene " Â· A D Â·  A GE  ","  UÂ· DI N  N EÂ· ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText " Â· A D Â·  A GE  ", seNone, 45 : 'DMDA.QueueText " Â· A D Â·  A GE  ", seNone, 45
+			'DMD2.QueueText "  UÂ· DI N  N EÂ· ", seNone, 45 : 'DMDB.QueueText "  UÂ· DI N  N EÂ· ", seNone, 45
+			DMD_DisplayScene "   A D    A Â·E  ","  U  Â·I N  N Â·  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText "   A D    A Â·E  ", seNone, 40 : 'DMDA.QueueText "   A D    A Â·E  ", seNone, 40
+			'DMD2.QueueText "  U  Â·I N  N Â·  ", seNone, 40 : 'DMDB.QueueText "  U  Â·I N  N Â·  ", seNone, 40
+			DMD_DisplayScene "   A D    A  Â·  ","  Â·   I N  Â·    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText "   A D    A  Â·  ", seNone, 40 : 'DMDA.QueueText "   A D    A  Â·  ", seNone, 40
+			'DMD2.QueueText "  Â·   I N  Â·    ", seNone, 40 : 'DMDB.QueueText "  Â·   I N  Â·    ", seNone, 40
+			DMD_DisplayScene "   Â· D    Â·     ","      Â· N       ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+			'DMD1.QueueText "   Â· D    Â·     ", seNone, 35 : 'DMDA.QueueText "   Â· D    Â·     ", seNone, 35
+			'DMD2.QueueText "      Â· N       ", seNone, 35 : 'DMDB.QueueText "      Â· N       ", seNone, 35
+			DMD_DisplayScene "     D          ","        Â·       ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD1.QueueText "     D          ", seNone, 30 : 'DMDA.QueueText "     D          ", seNone, 30
-			'DMD2.QueueText "        ·       ", seNone, 30 : 'DMDB.QueueText "        ·       ", seNone, 30
+			'DMD2.QueueText "        Â·       ", seNone, 30 : 'DMDB.QueueText "        Â·       ", seNone, 30
 			DMD_DisplayScene "     D          ","                ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD1.QueueText "     D          ", seNone, 30 : 'DMDA.QueueText "     D          ", seNone, 30
 			'DMD2.QueueText "                ", seNone, 30 : 'DMDB.QueueText "                ", seNone, 30
@@ -10473,9 +10492,9 @@ End Sub
 
 '======================================================================
 '              --------------------------------------
-'       · ··---------==========================---------·· · 
-'·  ·· ·····----=====: B A L L   D R A I N S! :=====------····· ··  · 
-'       · ··---------==========================---------·· · 
+'       Â· Â·Â·---------==========================---------Â·Â· Â· 
+'Â·  Â·Â· Â·Â·Â·Â·Â·----=====: B A L L   D R A I N S! :=====------Â·Â·Â·Â·Â· Â·Â·  Â· 
+'       Â· Â·Â·---------==========================---------Â·Â· Â· 
 '              --------------------------------------
 '======================================================================
 
@@ -10495,9 +10514,9 @@ Sub Drain_Hit()
 
 
 
-	'=============================-----··· ·  ·
+	'=============================-----Â·Â·Â· Â·  Â·
 	' BALL MISSING NOW APPEARS!
-	'=============================-----··· ·  ·
+	'=============================-----Â·Â·Â· Â·  Â·
 	If BallsOnPlayfield =< 0 and BSBallsAdded > 0 then 'The ball that was missing suddenly appears. We don't want the engine to be discontrolled.
 
 		Drain.DestroyBall 'WE HAVE TO DESTROY THE BALL!!!!!!!!!!!!!!!!!!!
@@ -10512,11 +10531,11 @@ Sub Drain_Hit()
 
 
 
-	'======================================================-----··· ·  ·
+	'======================================================-----Â·Â·Â· Â·  Â·
 	' BALL HAS ESCAPED FROM THE BLOOD EXTRACTOR...
 	' BUT THE TRAP BALL SEARCH IS STILL LOOKING FOR IT
 	' Similar to -> BallHasEscapedFromTrap()
-	'======================================================-----··· ·  ·
+	'======================================================-----Â·Â·Â· Â·  Â·
 	If BallsOnPlayfield =< 0 then
 
 		'========================------------------------
@@ -10628,9 +10647,9 @@ Sub Drain_Hit()
 
 
 
-'==========================------------------····· ·· · ·  ·
+'==========================------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--= [ DESTROY BALL ]=-------------------------------------------------
-'==========================------------------····· ·· · ·  ·
+'==========================------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 	Drain.DestroyBall
 
@@ -10643,9 +10662,9 @@ Sub Drain_Hit()
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--= [ LOCATING BALLS ]=--------------------------------------------------------------------------------
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 	If Locating > 0 then 'There r balls to be located....
 
@@ -10739,16 +10758,16 @@ Sub Drain_Hit()
 
 
 
-'====================---··· ·   ·
-'========================·· ·===============================------------------------------------
-'	--=[ WIZARD MODE ]=---    ---=[ ]=----·· ·   ·
-'========================·· ·===============================------------------------------------
-'====================---··· ·   ·
+'====================---Â·Â·Â· Â·   Â·
+'========================Â·Â· Â·===============================------------------------------------
+'	--=[ WIZARD MODE ]=---    ---=[ ]=----Â·Â· Â·   Â·
+'========================Â·Â· Â·===============================------------------------------------
+'====================---Â·Â·Â· Â·   Â·
 
 
-	'=====·=================================·=====
+	'=====Â·=================================Â·=====
 	' +++     WISHMASTER ACTIVATE WIZMODE     +++
-	'=====·=================================·=====
+	'=====Â·=================================Â·=====
 	'The WizMode has been activated from the Wish master. So there could be a ball in the trap.
 	'and we need to collect them before starting the final mode.
 
@@ -10806,18 +10825,18 @@ Sub Drain_Hit()
 
 
 
-	'=====·=================================·=====
+	'=====Â·=================================Â·=====
 	' +++         WIZARD MODE ACTIVE          +++
-	'=====·=================================·=====
+	'=====Â·=================================Â·=====
 	If WizModeActive = TRUE then
 
 
 
-		'=====·=================================·=====
-		'-----· ------------------------------- ·-----
+		'=====Â·=================================Â·=====
+		'-----Â· ------------------------------- Â·-----
 		' +++         WIZARD MODE IS OVER         +++
-		'-----· ------------------------------- ·-----
-		'=====·=================================·=====
+		'-----Â· ------------------------------- Â·-----
+		'=====Â·=================================Â·=====
 		If WizModeIsOver = TRUE then
 		
 			WMAngelsOnPF = WMAngelsOnPF - 1
@@ -10828,11 +10847,11 @@ Sub Drain_Hit()
 		
 		
 		
-		'=====·=================================·=====
-		'-----· ------------------------------- ·-----
+		'=====Â·=================================Â·=====
+		'-----Â· ------------------------------- Â·-----
 		' +++     O P E N I N G   W O U N D S     +++
-		'-----· ------------------------------- ·-----
-		'=====·=================================·=====
+		'-----Â· ------------------------------- Â·-----
+		'=====Â·=================================Â·=====
 		If WizModeOpeningWoundActive = TRUE then
 		
 			'---------------------------------------------
@@ -10867,11 +10886,11 @@ Sub Drain_Hit()
 		
 		
 		
-		'=====·=================================·=====
-		'-----· ------------------------------- ·-----
+		'=====Â·=================================Â·=====
+		'-----Â· ------------------------------- Â·-----
 		' +++      F I G H T I N G   E V I L      +++
-		'-----· ------------------------------- ·-----
-		'=====·=================================·=====
+		'-----Â· ------------------------------- Â·-----
+		'=====Â·=================================Â·=====
 		ElseIf WizModeFightingActive = TRUE then
 		
 			If DrainKickerBallIsADemon = TRUE then
@@ -10914,9 +10933,9 @@ Sub Drain_Hit()
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ DEMON IN THE BLOOD EXTRACTOR ]=-------
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 	If DemonInTheBloodExtractor = TRUE then
 
@@ -10947,9 +10966,9 @@ Sub Drain_Hit()
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ DEMON TRYING TO POSSES THE ANGEL ]=-------
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	
 	If DemonTryingToPossesAngel = TRUE then
 
@@ -11017,16 +11036,16 @@ Sub Drain_Hit()
 	
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ MIDNITE DARKNESS ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	
 	If MidnightDarknessActive = TRUE then
 
 		
-		'---------------------·· ·
+		'---------------------Â·Â· Â·
 		'-=[ MD TIME OVER ]=-
-		'---------------------·· ·
+		'---------------------Â·Â· Â·
 		If MidnightDarknessCollectingDemons = TRUE then 'Time to collect the demons
 		
 			MidnightDarknessDemons = MidnightDarknessDemons - 1
@@ -11041,9 +11060,9 @@ Sub Drain_Hit()
 			Exit Sub
 		
 		
-		'---------------------·· ·
+		'---------------------Â·Â· Â·
 		'-=[ DEMON LOST ]=-
-		'---------------------·· ·
+		'---------------------Â·Â· Â·
 		ElseIf MidnightDarknessCollectingDemons = FALSE then 'Day Light aproach, one more less
 		
 			Clock = Clock - 1
@@ -11125,9 +11144,9 @@ Sub Drain_Hit()
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--= [ BALL SAVER ACTIVE ]=--------------------------------------------------------------------------------
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	
 	If BallSaverActive = TRUE and vpTilted = FALSE Then 'If the AngelGuardian is protectin you then...
 
@@ -11186,9 +11205,9 @@ Sub Drain_Hit()
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ BLOOD EXTRACTOR MBALL ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 	If BloodExtractorMballEnabled = TRUE then
 
@@ -11314,9 +11333,9 @@ Sub Drain_Hit()
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ 2A MBALL ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	
 	If TwoAngelsMballActive = TRUE then
 
@@ -11835,9 +11854,9 @@ Sub RegularBallHasBeenLost()
 		
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ PORTAL POWER ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If DemonsDestroyed = 0 then
 		
 			If PortalReady = FALSE then
@@ -11878,9 +11897,9 @@ Sub RegularBallHasBeenLost()
 		
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ QUICKSHOTS ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If QuickShotTimer.Enabled = TRUE then
 			
 				QuickShotTimer.Enabled = FALSE 'We dont want to show SLOW MORTAL when counting bonus :)
@@ -11898,9 +11917,9 @@ Sub RegularBallHasBeenLost()
 		
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ POWER OF GOD ]=--- (ONLY 1 BALL)
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 			If BootupTimer.UserValue = 100 then 'This will reactivate the POG after 5 secs!
 				BootupTimer.Enabled = FALSE
 			End If
@@ -11959,9 +11978,9 @@ Sub RegularBallHasBeenLost()
 		
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ C H R I S T  N A I L S ]=--- ONLY 1 BALL
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If AutomaticNails = TRUE then
 		
 			AutomaticNails = FALSE
@@ -11974,9 +11993,9 @@ Sub RegularBallHasBeenLost()
 		End If
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ NAILS POPING DOWN ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If NailRAvaliable = TRUE then
 		
 			ChristNailRTimer.Enabled = FALSE 'Just in case is charging
@@ -12010,9 +12029,9 @@ Sub RegularBallHasBeenLost()
 		End If
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'--=[ MIDNIGHT DARKNESS 12 BELLS ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If ClockTimer.Enabled = TRUE and ClockTimer.UserValue = 0 then
 		
 			PlaySound "fx_belllong"
@@ -12023,9 +12042,9 @@ Sub RegularBallHasBeenLost()
 		
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'--=[ GUARDIANS ENERGY RECOVERY SYSTEM ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If GuardiansLifeTimer.Enabled = TRUE then
 		
 			'The third time you killed the guardians, they will recover their health. We dont want them to recover it when we are counting the bonus, don't we?
@@ -12038,9 +12057,9 @@ Sub RegularBallHasBeenLost()
 		
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ GATES ANIMATION ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If GatesTimer.Enabled = TRUE then
 		
 			'------------------
@@ -12066,9 +12085,9 @@ Sub RegularBallHasBeenLost()
 		End If
 		
 		
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		'---=[ ACTIVATING TRAP ANIMATION ]=---
-		'====================================-----------··· ·
+		'====================================-----------Â·Â·Â· Â·
 		If TrapTimer.Enabled = TRUE then 'The trap is opening and u lost the ball
 		
 			If TrapTimer.UserValue => -1 and TrapTimer.UserValue =< 18 then
@@ -12708,9 +12727,9 @@ Sub AddScore(points)
 
 		nvScore(1) = nvScore(1) + points
 		
-		'-·===============·-------------·· ·  ·
-		'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-		'-·===============·-------------·· ·  ·
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
+		'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
 		If WizModeActive = TRUE then
 			Exit Sub
 		End If	
@@ -12722,9 +12741,9 @@ Sub AddScore(points)
 			Exit Sub
 		End If	
 		
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		' ANGEL POSSESED
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		If AngelHasBeenPoseesed = TRUE then
 			Exit Sub
 		End If
@@ -12983,9 +13002,9 @@ Sub LeftOutLaneTrigger_Hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -13000,9 +13019,9 @@ Sub LeftOutLaneTrigger_Hit()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		PlaySound "fx_triggermetal001"
@@ -13083,9 +13102,9 @@ Sub LeftOutLaneTrigger_Hit()
 		End If
 		
 		
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		'--=[ BLOOD EXTRACTOR MBALL ]=-----
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		If BloodExtractorMballEnabled = TRUE then
 			Exit Sub
 		End If
@@ -13123,9 +13142,9 @@ Sub LeftInLaneTrigger_Hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -13142,9 +13161,9 @@ Sub LeftInLaneTrigger_Hit()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		PlaySound "fx_triggermetal001"
@@ -13203,9 +13222,9 @@ Sub LeftInLaneTrigger_Hit()
 
 
 
-	'===========================----------------··  ·
-	' -=[ LEFT NAIL ]=-··· ·
-	'===========================----------------··  ·
+	'===========================----------------Â·Â·  Â·
+	' -=[ LEFT NAIL ]=-Â·Â·Â· Â·
+	'===========================----------------Â·Â·  Â·
 	If NailLAvaliable = TRUE then
 
 		If BallLauncFromKickback = FALSE then 'We dont want to activate the nail when the ball is launched from the kickback
@@ -13303,9 +13322,9 @@ Sub LeftInLaneTrigger_Hit()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'PlaySound "fx_triggermetal001"
@@ -13337,9 +13356,9 @@ Sub LeftInLaneTrigger_Hit()
 			Exit Sub
 		End If
 		
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		'--=[ BLOOD EXTRACTOR MBALL ]=-----
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		If BloodExtractorMballEnabled = TRUE then
 			Exit Sub
 		End If
@@ -13378,9 +13397,9 @@ Sub RightInLaneTrigger_Hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -13397,9 +13416,9 @@ Sub RightInLaneTrigger_Hit()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		PlaySound "fx_triggermetal001"
@@ -13457,9 +13476,9 @@ Sub RightInLaneTrigger_Hit()
 
 
 
-	'===========================----------------··  ·
-	' -=[ RIGHT NAIL ]=-··· ·
-	'===========================----------------··  ·
+	'===========================----------------Â·Â·  Â·
+	' -=[ RIGHT NAIL ]=-Â·Â·Â· Â·
+	'===========================----------------Â·Â·  Â·
 	If NailRAvaliable = TRUE then
 
 
@@ -13543,9 +13562,9 @@ Sub RightInLaneTrigger_Hit()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'PlaySound "fx_triggermetal001"
@@ -13576,9 +13595,9 @@ Sub RightInLaneTrigger_Hit()
 			Exit Sub
 		End If
 		
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		'--=[ BLOOD EXTRACTOR MBALL ]=-----
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		If BloodExtractorMballEnabled = TRUE then
 			Exit Sub
 		End If
@@ -13616,9 +13635,9 @@ Sub RightOutLaneTrigger_Hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -13633,9 +13652,9 @@ Sub RightOutLaneTrigger_Hit()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		PlaySound "fx_triggermetal001"
@@ -13712,9 +13731,9 @@ Sub RightOutLaneTrigger_Hit()
 			Exit Sub
 		End If
 		
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		'--=[ BLOOD EXTRACTOR MBALL ]=-----
-		'-----------------------------------·· ·   ·
+		'-----------------------------------Â·Â· Â·   Â·
 		If BloodExtractorMballEnabled = TRUE then
 			Exit Sub
 		End If
@@ -13790,9 +13809,9 @@ Sub CheckLanes()
 		End If
 		
 		
-		'======================================-------------------·· ··  ·  ·
+		'======================================-------------------Â·Â· Â·Â·  Â·  Â·
 		' ---=:::[ E X T R A  B A L L ]:::=---
-		'======================================-------------------·· ··  ·  ·
+		'======================================-------------------Â·Â· Â·Â·  Â·  Â·
 		If BonusMultiplier(1) = 10 and ExtraBallFromBonus = FALSE then
 		
 			PlayerGetAnExtraAngel()
@@ -13921,9 +13940,9 @@ Sub LaneRTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'===========================================------------------------------·· ·   ·
+	'===========================================------------------------------Â·Â· Â·   Â·
 	'-=[ ANGEL SAVED FROM THE OUTLANE ]=-------
-	'===========================================------------------------------·· ·   ·
+	'===========================================------------------------------Â·Â· Â·   Â·
 
 	If RightInLaneTriggerTimer.Enabled = TRUE then 'The angel was going to die and you save it! good job!
 
@@ -14018,9 +14037,9 @@ Sub LaneRTrigger_Hit : StopBallSearchTimer()
 		'PlaySound "fx_metal_door_huge"
 		'PlaySound "3angels\ch_ride"
 		
-		'-·===============·-------------·· ·  ·
-		'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-		'-·===============·-------------·· ·  ·
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
+		'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
 		If WizModeActive = TRUE then
 		
 			Exit Sub 'No quickShots during the mball
@@ -14123,9 +14142,9 @@ Sub LaneLTrigger_Hit : StopBallSearchTimer()
 	BallLauncFromKickback = FALSE 'We dont want to activate the automatic left nail when the ball is launched from the kickback
 
 
-	'===========================================------------------------------·· ·   ·
+	'===========================================------------------------------Â·Â· Â·   Â·
 	'-=[ ANGEL SAVED FROM THE OUTLANE ]=-------
-	'===========================================------------------------------·· ·   ·
+	'===========================================------------------------------Â·Â· Â·   Â·
 	If LeftInLaneTriggerTimer.Enabled = TRUE then
 
 		If NailLAvaliable = TRUE then
@@ -14219,9 +14238,9 @@ Sub LaneLTrigger_Hit : StopBallSearchTimer()
 		'PlaySound "fx_metal_door_huge"
 		'PlaySound "3angels\ch_ride"
 		
-		'-·===============·-------------·· ·  ·
-		'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-		'-·===============·-------------·· ·  ·
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
+		'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
 		If WizModeActive = TRUE then
 		
 			Exit Sub 'No quickShots during the mball
@@ -14351,38 +14370,38 @@ Sub LeftNailDMDText()
 	DMD_DisplayScene "- CHRIST NAIL - ","-- LEFT HAND -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
 	'DMD1.QueueText "- CHRIST NAIL - ", seNone, 100 : 'DMDA.QueueText "- CHRIST NAIL - ", seNone, 100
 	'DMD2.QueueText "-- LEFT HAND -- ", seNone, 100 : 'DMDB.QueueText "-- LEFT HAND -- ", seNone, 100
-	DMD_DisplayScene "- ·HRIST NAIL - ","-- LEFT H·ND -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "- ·HRIST NAIL - ", seNone, 100 : 'DMDA.QueueText "- ·HRIST NAIL - ", seNone, 100
-	'DMD2.QueueText "-- LEFT H·ND -- ", seNone, 100 : 'DMDB.QueueText "-- LEFT H·ND -- ", seNone, 100
-	DMD_DisplayScene "-  HRIST NA·L - ","-- L·FT H ND -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-  HRIST NA·L - ", seNone, 100 : 'DMDA.QueueText "-  HRIST NA·L - ", seNone, 100
-	'DMD2.QueueText "-- L·FT H ND -- ", seNone, 100 : 'DMDB.QueueText "-- L·FT H ND -- ", seNone, 100
+	DMD_DisplayScene "- Â·HRIST NAIL - ","-- LEFT HÂ·ND -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "- Â·HRIST NAIL - ", seNone, 100 : 'DMDA.QueueText "- Â·HRIST NAIL - ", seNone, 100
+	'DMD2.QueueText "-- LEFT HÂ·ND -- ", seNone, 100 : 'DMDB.QueueText "-- LEFT HÂ·ND -- ", seNone, 100
+	DMD_DisplayScene "-  HRIST NAÂ·L - ","-- LÂ·FT H ND -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-  HRIST NAÂ·L - ", seNone, 100 : 'DMDA.QueueText "-  HRIST NAÂ·L - ", seNone, 100
+	'DMD2.QueueText "-- LÂ·FT H ND -- ", seNone, 100 : 'DMDB.QueueText "-- LÂ·FT H ND -- ", seNone, 100
 	DMD_DisplayScene "-  HRIST NA L - ","-- L FT H ND -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-  HRIST NA L - ", seNone, 100 : 'DMDA.QueueText "-  HRIST NA L - ", seNone, 100
 	'DMD2.QueueText "-- L FT H ND -- ", seNone, 100 : 'DMDB.QueueText "-- L FT H ND -- ", seNone, 100
-	DMD_DisplayScene "-  ·RIST NA L - ","-- L FT H N· -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-  ·RIST NA L - ", seNone, 100 : 'DMDA.QueueText "-  ·RIST NA L - ", seNone, 100
-	'DMD2.QueueText "-- L FT H N· -- ", seNone, 100 : 'DMDB.QueueText "-- L FT H N· -- ", seNone, 100
-	DMD_DisplayScene "-   RI·T NA L - ","-- L FT · N  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   RI·T NA L - ", seNone, 100 : 'DMDA.QueueText "-   RI·T NA L - ", seNone, 100
-	'DMD2.QueueText "-- L FT · N  -- ", seNone, 100 : 'DMDB.QueueText "-- L FT · N  -- ", seNone, 100
-	DMD_DisplayScene "-   RI T N· L - ","-- L F·   N  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   RI T N· L - ", seNone, 100 : 'DMDA.QueueText "-   RI T N· L - ", seNone, 100
-	'DMD2.QueueText "-- L F·   N  -- ", seNone, 100 : 'DMDB.QueueText "-- L F·   N  -- ", seNone, 100
-	DMD_DisplayScene "-   R· T N  · - ","-- L F    ·  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   R· T N  · - ", seNone, 100 : 'DMDA.QueueText "-   R· T N  · - ", seNone, 100
-	'DMD2.QueueText "-- L F    ·  -- ", seNone, 100 : 'DMDB.QueueText "-- L F    ·  -- ", seNone, 100
-	DMD_DisplayScene "-   R  · N    - ","-- L F    ·  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   R  · N    - ", seNone, 100 : 'DMDA.QueueText "-   R  · N    - ", seNone, 100
-	'DMD2.QueueText "-- L F    ·  -- ", seNone, 100 : 'DMDB.QueueText "-- L F    ·  -- ", seNone, 100
-	DMD_DisplayScene "-   R    ·    - ","-- · F       -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
-	'DMD1.QueueText "-   R    ·    - ", seNone, 100 : 'DMDA.QueueText "-   R    ·    - ", seNone, 100
-	'DMD2.QueueText "-- · F       -- ", seNone, 100 : 'DMDB.QueueText "-- · F       -- ", seNone, 100
-	DMD_DisplayScene "-   R         - ","--   ·       -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	DMD_DisplayScene "-  Â·RIST NA L - ","-- L FT H NÂ· -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-  Â·RIST NA L - ", seNone, 100 : 'DMDA.QueueText "-  Â·RIST NA L - ", seNone, 100
+	'DMD2.QueueText "-- L FT H NÂ· -- ", seNone, 100 : 'DMDB.QueueText "-- L FT H NÂ· -- ", seNone, 100
+	DMD_DisplayScene "-   RIÂ·T NA L - ","-- L FT Â· N  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   RIÂ·T NA L - ", seNone, 100 : 'DMDA.QueueText "-   RIÂ·T NA L - ", seNone, 100
+	'DMD2.QueueText "-- L FT Â· N  -- ", seNone, 100 : 'DMDB.QueueText "-- L FT Â· N  -- ", seNone, 100
+	DMD_DisplayScene "-   RI T NÂ· L - ","-- L FÂ·   N  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   RI T NÂ· L - ", seNone, 100 : 'DMDA.QueueText "-   RI T NÂ· L - ", seNone, 100
+	'DMD2.QueueText "-- L FÂ·   N  -- ", seNone, 100 : 'DMDB.QueueText "-- L FÂ·   N  -- ", seNone, 100
+	DMD_DisplayScene "-   RÂ· T N  Â· - ","-- L F    Â·  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   RÂ· T N  Â· - ", seNone, 100 : 'DMDA.QueueText "-   RÂ· T N  Â· - ", seNone, 100
+	'DMD2.QueueText "-- L F    Â·  -- ", seNone, 100 : 'DMDB.QueueText "-- L F    Â·  -- ", seNone, 100
+	DMD_DisplayScene "-   R  Â· N    - ","-- L F    Â·  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   R  Â· N    - ", seNone, 100 : 'DMDA.QueueText "-   R  Â· N    - ", seNone, 100
+	'DMD2.QueueText "-- L F    Â·  -- ", seNone, 100 : 'DMDB.QueueText "-- L F    Â·  -- ", seNone, 100
+	DMD_DisplayScene "-   R    Â·    - ","-- Â· F       -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
+	'DMD1.QueueText "-   R    Â·    - ", seNone, 100 : 'DMDA.QueueText "-   R    Â·    - ", seNone, 100
+	'DMD2.QueueText "-- Â· F       -- ", seNone, 100 : 'DMDB.QueueText "-- Â· F       -- ", seNone, 100
+	DMD_DisplayScene "-   R         - ","--   Â·       -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-   R         - ", seNone, 100 : 'DMDA.QueueText "-   R         - ", seNone, 100
-	'DMD2.QueueText "--   ·       -- ", seNone, 100 : 'DMDB.QueueText "--   ·       -- ", seNone, 100
-	DMD_DisplayScene "-   ·         - ","--           -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   ·         - ", seNone, 100 : 'DMDA.QueueText "-   ·         - ", seNone, 100
+	'DMD2.QueueText "--   Â·       -- ", seNone, 100 : 'DMDB.QueueText "--   Â·       -- ", seNone, 100
+	DMD_DisplayScene "-   Â·         - ","--           -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   Â·         - ", seNone, 100 : 'DMDA.QueueText "-   Â·         - ", seNone, 100
 	'DMD2.QueueText "--           -- ", seNone, 100 : 'DMDB.QueueText "--           -- ", seNone, 100
 	DMD_DisplayScene "-             - ","--           -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-             - ", seNone, 100 : 'DMDA.QueueText "-             - ", seNone, 100
@@ -14412,38 +14431,38 @@ Sub RightNailDMDText()
      DMD_DisplayScene "- CHRIST NAIL - ","- RIGHT  HAND - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "- CHRIST NAIL - ", seNone, 100 : 'DMDA.QueueText "- CHRIST NAIL - ", seNone, 100
 	'DMD2.QueueText "- RIGHT  HAND - ", seNone, 100 : 'DMDB.QueueText "- RIGHT  HAND - ", seNone, 100
-	DMD_DisplayScene "- ·HRIST NAIL - ","- RIGHT  H·ND - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "- ·HRIST NAIL - ", seNone, 100 : 'DMDA.QueueText "- ·HRIST NAIL - ", seNone, 100
-	'DMD2.QueueText "- RIGHT  H·ND - ", seNone, 100 : 'DMDB.QueueText "- RIGHT  H·ND - ", seNone, 100
-	DMD_DisplayScene "-  HRIST NA·L - ","- RI·HT  H ND - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-  HRIST NA·L - ", seNone, 100 : 'DMDA.QueueText "-  HRIST NA·L - ", seNone, 100
-	'DMD2.QueueText "- RI·HT  H ND - ", seNone, 100 : 'DMDB.QueueText "- RI·HT  H ND - ", seNone, 100
+	DMD_DisplayScene "- Â·HRIST NAIL - ","- RIGHT  HÂ·ND - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "- Â·HRIST NAIL - ", seNone, 100 : 'DMDA.QueueText "- Â·HRIST NAIL - ", seNone, 100
+	'DMD2.QueueText "- RIGHT  HÂ·ND - ", seNone, 100 : 'DMDB.QueueText "- RIGHT  HÂ·ND - ", seNone, 100
+	DMD_DisplayScene "-  HRIST NAÂ·L - ","- RIÂ·HT  H ND - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-  HRIST NAÂ·L - ", seNone, 100 : 'DMDA.QueueText "-  HRIST NAÂ·L - ", seNone, 100
+	'DMD2.QueueText "- RIÂ·HT  H ND - ", seNone, 100 : 'DMDB.QueueText "- RIÂ·HT  H ND - ", seNone, 100
 	DMD_DisplayScene "-  HRIST NA L - ","-  I HT  H ND - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-  HRIST NA L - ", seNone, 100 : 'DMDA.QueueText "-  HRIST NA L - ", seNone, 100
 	'DMD2.QueueText "-  I HT  H ND - ", seNone, 100 : 'DMDB.QueueText "-  I HT  H ND - ", seNone, 100
-	DMD_DisplayScene "-  ·RIST NA L - ","-  I HT  H N· - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-  ·RIST NA L - ", seNone, 100 : 'DMDA.QueueText "-  ·RIST NA L - ", seNone, 100
-	'DMD2.QueueText "-  I HT  H N· - ", seNone, 100 : 'DMDB.QueueText "-  I HT  H N· - ", seNone, 100
-	DMD_DisplayScene "-   RI·T NA L - ","-  I HT  · N  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
-	'DMD1.QueueText "-   RI·T NA L - ", seNone, 100 : 'DMDA.QueueText "-   RI·T NA L - ", seNone, 100
-	'DMD2.QueueText "-  I HT  · N  - ", seNone, 100 : 'DMDB.QueueText "-  I HT  · N  - ", seNone, 100
-	DMD_DisplayScene "-   RI T N· L - ","-  I H·    N  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   RI T N· L - ", seNone, 100 : 'DMDA.QueueText "-   RI T N· L - ", seNone, 100
-	'DMD2.QueueText "-  I H·    N  - ", seNone, 100 : 'DMDB.QueueText "-  I H·    N  - ", seNone, 100
-	DMD_DisplayScene "-   R· T N  · - ","-  I H     ·  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   R· T N  · - ", seNone, 100 : 'DMDA.QueueText "-   R· T N  · - ", seNone, 100
-	'DMD2.QueueText "-  I H     ·  - ", seNone, 100 : 'DMDB.QueueText "-  I H     ·  - ", seNone, 100
-	DMD_DisplayScene "-   R  · N    - ","-  I H     ·  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   R  · N    - ", seNone, 100 : 'DMDA.QueueText "-   R  · N    - ", seNone, 100
-	'DMD2.QueueText "-  I H     ·  - ", seNone, 100 : 'DMDB.QueueText "-  I H     ·  - ", seNone, 100
-	DMD_DisplayScene "-   R    ·    - ","-  · H        - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   R    ·    - ", seNone, 100 : 'DMDA.QueueText "-   R    ·    - ", seNone, 100
-	'DMD2.QueueText "-  · H        - ", seNone, 100 : 'DMDB.QueueText "-  · H        - ", seNone, 100
-	DMD_DisplayScene "-   R         - ","-    ·        - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	DMD_DisplayScene "-  Â·RIST NA L - ","-  I HT  H NÂ· - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-  Â·RIST NA L - ", seNone, 100 : 'DMDA.QueueText "-  Â·RIST NA L - ", seNone, 100
+	'DMD2.QueueText "-  I HT  H NÂ· - ", seNone, 100 : 'DMDB.QueueText "-  I HT  H NÂ· - ", seNone, 100
+	DMD_DisplayScene "-   RIÂ·T NA L - ","-  I HT  Â· N  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
+	'DMD1.QueueText "-   RIÂ·T NA L - ", seNone, 100 : 'DMDA.QueueText "-   RIÂ·T NA L - ", seNone, 100
+	'DMD2.QueueText "-  I HT  Â· N  - ", seNone, 100 : 'DMDB.QueueText "-  I HT  Â· N  - ", seNone, 100
+	DMD_DisplayScene "-   RI T NÂ· L - ","-  I HÂ·    N  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   RI T NÂ· L - ", seNone, 100 : 'DMDA.QueueText "-   RI T NÂ· L - ", seNone, 100
+	'DMD2.QueueText "-  I HÂ·    N  - ", seNone, 100 : 'DMDB.QueueText "-  I HÂ·    N  - ", seNone, 100
+	DMD_DisplayScene "-   RÂ· T N  Â· - ","-  I H     Â·  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   RÂ· T N  Â· - ", seNone, 100 : 'DMDA.QueueText "-   RÂ· T N  Â· - ", seNone, 100
+	'DMD2.QueueText "-  I H     Â·  - ", seNone, 100 : 'DMDB.QueueText "-  I H     Â·  - ", seNone, 100
+	DMD_DisplayScene "-   R  Â· N    - ","-  I H     Â·  - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   R  Â· N    - ", seNone, 100 : 'DMDA.QueueText "-   R  Â· N    - ", seNone, 100
+	'DMD2.QueueText "-  I H     Â·  - ", seNone, 100 : 'DMDB.QueueText "-  I H     Â·  - ", seNone, 100
+	DMD_DisplayScene "-   R    Â·    - ","-  Â· H        - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText "-   R    Â·    - ", seNone, 100 : 'DMDA.QueueText "-   R    Â·    - ", seNone, 100
+	'DMD2.QueueText "-  Â· H        - ", seNone, 100 : 'DMDB.QueueText "-  Â· H        - ", seNone, 100
+	DMD_DisplayScene "-   R         - ","-    Â·        - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-   R         - ", seNone, 100 : 'DMDA.QueueText "-   R         - ", seNone, 100
-	'DMD2.QueueText "-    ·        - ", seNone, 100 : 'DMDB.QueueText "-    ·        - ", seNone, 100
+	'DMD2.QueueText "-    Â·        - ", seNone, 100 : 'DMDB.QueueText "-    Â·        - ", seNone, 100
 	DMD_DisplayScene "-             - ","-             - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-   ·         - ", seNone, 100 : 'DMDA.QueueText "-   ·         - ", seNone, 100
+	'DMD1.QueueText "-   Â·         - ", seNone, 100 : 'DMDA.QueueText "-   Â·         - ", seNone, 100
 	'DMD2.QueueText "-             - ", seNone, 100 : 'DMDB.QueueText "-             - ", seNone, 100
 	DMD_DisplayScene "-             - ","-             - ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-             - ", seNone, 100 : 'DMDA.QueueText "-             - ", seNone, 100
@@ -14463,10 +14482,10 @@ Sub ChristNailLTimer_Timer()
 
 	Select Case (ChristNailLTimer.UserValue)
 
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	'  ---===:::[ - A U T O M A T I C - ]:::====---	
 	'  ---===:::[   L E F T   N A I L   ]:::====---
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	Case 0
 
 			PopupCNailL.isdropped = false
@@ -14501,9 +14520,9 @@ Sub ChristNailLTimer_Timer()
 
 		PlaySound "fx_scrape1"
 		
-		'-·===============·-------------·· ·  ·
-		'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-		'-·===============·-------------·· ·  ·
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
+		'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
 		If WizModeActive = TRUE then
 		
 			ChristNailLTimer.Interval = 500
@@ -14553,9 +14572,9 @@ Sub ChristNailLTimer_Timer()
 
 
 
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	'  ---===:::[ LEFT NAIL ACTIVATED ]:::====---
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	Case 10
 
 			FlashForms FlasherTrapL, 250, 250, 0
@@ -14689,9 +14708,9 @@ Sub ChristNailLTimer_Timer()
 
 
 
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	' WISHMASTER PRICE CHOSEN - NAIL ANIMATION
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	Case 50
 
 		NailLAvaliable = TRUE
@@ -14755,10 +14774,10 @@ Sub ChristNailRTimer_Timer()
 
 	Select Case (ChristNailRTimer.UserValue)
 
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	'  ---===:::[ - A U T O M A T I C - ]:::====---	
 	'  ---===:::[  R I G H T  N A I L   ]:::====---
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	Case 0
 
 			PopupCNailR.isdropped=false
@@ -14793,9 +14812,9 @@ Sub ChristNailRTimer_Timer()
 
 		PlaySound "fx_scrape1"
 		
-		'-·===============·-------------·· ·  ·
-		'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-		'-·===============·-------------·· ·  ·
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
+		'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
 		If WizModeActive = TRUE then
 		
 			ChristNailRTimer.Interval = 500
@@ -14850,9 +14869,9 @@ Sub ChristNailRTimer_Timer()
 
 
 
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	'  ---===:::[ RIGHT NAIL ACTIVATED ]:::====---
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	Case 10
 
 			FlashForms FlasherSS, 250, 250, 0
@@ -14986,9 +15005,9 @@ Sub ChristNailRTimer_Timer()
 
 
 
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	' WISHMASTER PRICE CHOSEN - NAIL ANIMATION
-	'==============================================---··· ·  ·
+	'==============================================---Â·Â·Â· Â·  Â·
 	Case 50
 
 		NailRAvaliable = TRUE
@@ -15486,9 +15505,9 @@ End Sub
 
 
 
-'====================================--------------------------------------------··· ·   ·
+'====================================--------------------------------------------Â·Â·Â· Â·   Â·
 '  BALL ON PLAYFIELD AGAIN, LET'S CHECK IF THERE IS SOMETHIN' INSIDE THE TRAP
-'====================================--------------------------------------------··· ·   ·
+'====================================--------------------------------------------Â·Â·Â· Â·   Â·
 
 Sub CheckForThingsThatHaveToBeRestarted()
 
@@ -15558,7 +15577,7 @@ Sub CheckForThingsThatHaveToBeRestarted()
 		
 		Select Case (AngelInLevel)
 		'-----------------------------------
-		Case 1 '      ---=[ LEVEL 001 ]=---·
+		Case 1 '      ---=[ LEVEL 001 ]=---Â·
 		'-----------------------------------
 			TrapBlinkInterval = 200
 			UpdateAngelTrapLevelLites()
@@ -15571,7 +15590,7 @@ Sub CheckForThingsThatHaveToBeRestarted()
 		
 		
 		'-----------------------------------
-		Case 2 '      ---=[ LEVEL 002 ]=---·
+		Case 2 '      ---=[ LEVEL 002 ]=---Â·
 		'-----------------------------------
 			TrapBlinkInterval = 200
 			UpdateAngelTrapLevelLites()
@@ -15584,7 +15603,7 @@ Sub CheckForThingsThatHaveToBeRestarted()
 		
 		
 		'-----------------------------------
-		Case 3 '      ---=[ LEVEL 003 ]=---·
+		Case 3 '      ---=[ LEVEL 003 ]=---Â·
 		'-----------------------------------
 		
 			TrapBlinkInterval = 200
@@ -15617,7 +15636,7 @@ Sub CheckForThingsThatHaveToBeRestarted()
 
 		Select Case (DemonInLevel)
 		'-----------------------------------
-		Case 1 '      ---=[ LEVEL 001 ]=---·
+		Case 1 '      ---=[ LEVEL 001 ]=---Â·
 		'-----------------------------------		
 		
 			'If the demon was to flee we raise the trap entrance door. If you lost the ball before the demon fleed the door kept raised and that's wrong.
@@ -15635,7 +15654,7 @@ Sub CheckForThingsThatHaveToBeRestarted()
 			
 		
 		'-----------------------------------
-		Case 2 '      ---=[ LEVEL 002 ]=---·
+		Case 2 '      ---=[ LEVEL 002 ]=---Â·
 		'-----------------------------------
 		
 			TrapBlinkInterval = 200
@@ -15644,7 +15663,7 @@ Sub CheckForThingsThatHaveToBeRestarted()
 		
 		
 		'-----------------------------------
-		Case 3 '      ---=[ LEVEL 003 ]=---·
+		Case 3 '      ---=[ LEVEL 003 ]=---Â·
 		'-----------------------------------		
 		
 			TrapBlinkInterval = 200
@@ -15766,30 +15785,30 @@ Sub SkillShotFailed()
 
 	'MD1.QueueText " - SKILL SHOT - ", seNone, 50
 	'MD2.QueueText " --  FAILED  -- ", seNone, 50
-	'MD1.QueueText " - SK·LL SHOT - ", seNone, 50
-	'MD2.QueueText " --  FAI·ED  -- ", seNone, 50
-	'MD1.QueueText " - SK LL SH·T - ", seNone, 50
+	'MD1.QueueText " - SKÂ·LL SHOT - ", seNone, 50
+	'MD2.QueueText " --  FAIÂ·ED  -- ", seNone, 50
+	'MD1.QueueText " - SK LL SHÂ·T - ", seNone, 50
 	'MD2.QueueText " --  FAI ED  -- ", seNone, 50
-	'MD1.QueueText " - SK L· SH T - ", seNone, 50
-	'MD2.QueueText " --  F·I ED  -- ", seNone, 50
-	'MD1.QueueText " - SK L  S· T - ", seNone, 50
-	'MD2.QueueText " --  F·I ED  -- ", seNone, 50
-	'MD1.QueueText " - S· L  S  T - ", seNone, 50
-	'MD2.QueueText " --  F I ·D  -- ", seNone, 50
-	'MD1.QueueText " - S  L  S  · - ", seNone, 50
-	'MD2.QueueText " --  F I ·D  -- ", seNone, 50
-	'MD1.QueueText " - ·  L  S    - ", seNone, 50
+	'MD1.QueueText " - SK LÂ· SH T - ", seNone, 50
+	'MD2.QueueText " --  FÂ·I ED  -- ", seNone, 50
+	'MD1.QueueText " - SK L  SÂ· T - ", seNone, 50
+	'MD2.QueueText " --  FÂ·I ED  -- ", seNone, 50
+	'MD1.QueueText " - SÂ· L  S  T - ", seNone, 50
+	'MD2.QueueText " --  F I Â·D  -- ", seNone, 50
+	'MD1.QueueText " - S  L  S  Â· - ", seNone, 50
+	'MD2.QueueText " --  F I Â·D  -- ", seNone, 50
+	'MD1.QueueText " - Â·  L  S    - ", seNone, 50
 	'MD2.QueueText " --  F I  D  -- ", seNone, 50
 	'MD1.QueueText " -    L  S    - ", seNone, 50
-	'MD2.QueueText " --  F ·  D  -- ", seNone, 50
-	'MD1.QueueText " -    L  ·    - ", seNone, 50
+	'MD2.QueueText " --  F Â·  D  -- ", seNone, 50
+	'MD1.QueueText " -    L  Â·    - ", seNone, 50
 	'MD2.QueueText " --  F    D  -- ", seNone, 50
 	'MD1.QueueText " -    L       - ", seNone, 50
-	'MD2.QueueText " --  ·    D  -- ", seNone, 50
-	'MD1.QueueText " -    ·       - ", seNone, 50
+	'MD2.QueueText " --  Â·    D  -- ", seNone, 50
+	'MD1.QueueText " -    Â·       - ", seNone, 50
 	'MD2.QueueText " --       D  -- ", seNone, 50
 	'MD1.QueueText " -            - ", seNone, 50
-	'MD2.QueueText " --       ·  -- ", seNone, 50
+	'MD2.QueueText " --       Â·  -- ", seNone, 50
 	'MD1.QueueText " -            - ", seNone, 50
 	'MD2.QueueText " --          -- ", seNone, 50
 	'MD1.QueueText " -            - ", seNone, 50
@@ -15802,42 +15821,42 @@ Sub SkillShotFailed()
 	DMD_DisplayScene " - SKILL SHOT - "," --  FAILED  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText " - SKILL SHOT - ", seNone, 50 : 'DMDA.QueueText " - SKILL SHOT - ", seNone, 50
 	'DMD2.QueueText " --  FAILED  -- ", seNone, 50 : 'DMDB.QueueText " --  FAILED  -- ", seNone, 50
-	DMD_DisplayScene " - SK·LL SHOT - "," --# FAI·ED  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - SK·LL SHOT - ", seNone, 50 : 'DMDA.QueueText " - SK·LL SHOT - ", seNone, 50
-	'DMD2.QueueText " --# FAI·ED  -- ", seNone, 50 : 'DMDB.QueueText " --# FAI·ED  -- ", seNone, 50
-	DMD_DisplayScene " - SK#LL SH·T - "," --# FAI#ED #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - SK#LL SH·T - ", seNone, 50 : 'DMDA.QueueText " - SK#LL SH·T - ", seNone, 50
+	DMD_DisplayScene " - SKÂ·LL SHOT - "," --# FAIÂ·ED  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - SKÂ·LL SHOT - ", seNone, 50 : 'DMDA.QueueText " - SKÂ·LL SHOT - ", seNone, 50
+	'DMD2.QueueText " --# FAIÂ·ED  -- ", seNone, 50 : 'DMDB.QueueText " --# FAIÂ·ED  -- ", seNone, 50
+	DMD_DisplayScene " - SK#LL SHÂ·T - "," --# FAI#ED #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - SK#LL SHÂ·T - ", seNone, 50 : 'DMDA.QueueText " - SK#LL SHÂ·T - ", seNone, 50
 	'DMD2.QueueText " --# FAI#ED #-- ", seNone, 50 : 'DMDB.QueueText " --# FAI#ED #-- ", seNone, 50
-	DMD_DisplayScene " - SK L· SH T - "," --  F·I#ED #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - SK L· SH T - ", seNone, 50 : 'DMDA.QueueText " - SK L· SH T - ", seNone, 50
-	'DMD2.QueueText " --  F·I#ED #-- ", seNone, 50 : 'DMDB.QueueText " --  F·I#ED #-- ", seNone, 50
-	DMD_DisplayScene " - SK L# S· T - "," -- #F·I ED #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - SK L# S· T - ", seNone, 50 : 'DMDA.QueueText " - SK L# S· T - ", seNone, 50
-	'DMD2.QueueText " -- #F·I ED #-- ", seNone, 50 : 'DMDB.QueueText " -- #F·I ED #-- ", seNone, 50
-	DMD_DisplayScene " - S· L #S #T - "," --##F#I ·D  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - S· L #S #T - ", seNone, 50 : 'DMDA.QueueText " - S· L #S #T - ", seNone, 50
-	'DMD2.QueueText " --##F#I ·D  -- ", seNone, 50 : 'DMDB.QueueText " --##F#I ·D  -- ", seNone, 50
-	DMD_DisplayScene " - S# L #S  · - "," --# F I ·D #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - S# L #S  · - ", seNone, 50 : 'DMDA.QueueText " - S# L #S  · - ", seNone, 50
-	'DMD2.QueueText " --# F I ·D #-- ", seNone, 50 : 'DMDB.QueueText " --# F I ·D #-- ", seNone, 50
-	DMD_DisplayScene " - ·  L  S #  - "," -- #F I #D #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " - ·  L  S #  - ", seNone, 50 : 'DMDA.QueueText " - ·  L  S #  - ", seNone, 50
+	DMD_DisplayScene " - SK LÂ· SH T - "," --  FÂ·I#ED #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - SK LÂ· SH T - ", seNone, 50 : 'DMDA.QueueText " - SK LÂ· SH T - ", seNone, 50
+	'DMD2.QueueText " --  FÂ·I#ED #-- ", seNone, 50 : 'DMDB.QueueText " --  FÂ·I#ED #-- ", seNone, 50
+	DMD_DisplayScene " - SK L# SÂ· T - "," -- #FÂ·I ED #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - SK L# SÂ· T - ", seNone, 50 : 'DMDA.QueueText " - SK L# SÂ· T - ", seNone, 50
+	'DMD2.QueueText " -- #FÂ·I ED #-- ", seNone, 50 : 'DMDB.QueueText " -- #FÂ·I ED #-- ", seNone, 50
+	DMD_DisplayScene " - SÂ· L #S #T - "," --##F#I Â·D  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - SÂ· L #S #T - ", seNone, 50 : 'DMDA.QueueText " - SÂ· L #S #T - ", seNone, 50
+	'DMD2.QueueText " --##F#I Â·D  -- ", seNone, 50 : 'DMDB.QueueText " --##F#I Â·D  -- ", seNone, 50
+	DMD_DisplayScene " - S# L #S  Â· - "," --# F I Â·D #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - S# L #S  Â· - ", seNone, 50 : 'DMDA.QueueText " - S# L #S  Â· - ", seNone, 50
+	'DMD2.QueueText " --# F I Â·D #-- ", seNone, 50 : 'DMDB.QueueText " --# F I Â·D #-- ", seNone, 50
+	DMD_DisplayScene " - Â·  L  S #  - "," -- #F I #D #-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " - Â·  L  S #  - ", seNone, 50 : 'DMDA.QueueText " - Â·  L  S #  - ", seNone, 50
 	'DMD2.QueueText " -- #F I #D #-- ", seNone, 50 : 'DMDB.QueueText " -- #F I #D #-- ", seNone, 50
-	DMD_DisplayScene " - #  L  S#   - "," --# F ·  D##-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	DMD_DisplayScene " - #  L  S#   - "," --# F Â·  D##-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText " - #  L  S#   - ", seNone, 50 : 'DMDA.QueueText " - #  L  S#   - ", seNone, 50
-	'DMD2.QueueText " --# F ·  D##-- ", seNone, 50 : 'DMDB.QueueText " --# F ·  D##-- ", seNone, 50
-	DMD_DisplayScene " -    L #·    - "," --# F #  D##-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
-	'DMD1.QueueText " -    L #·    - ", seNone, 50 : 'DMDA.QueueText " -    L #·    - ", seNone, 50
+	'DMD2.QueueText " --# F Â·  D##-- ", seNone, 50 : 'DMDB.QueueText " --# F Â·  D##-- ", seNone, 50
+	DMD_DisplayScene " -    L #Â·    - "," --# F #  D##-- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
+	'DMD1.QueueText " -    L #Â·    - ", seNone, 50 : 'DMDA.QueueText " -    L #Â·    - ", seNone, 50
 	'DMD2.QueueText " --# F #  D##-- ", seNone, 50 : 'DMDB.QueueText " --# F #  D##-- ", seNone, 50
-	DMD_DisplayScene " -  # L  #    - "," --  · #  D  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	DMD_DisplayScene " -  # L  #    - "," --  Â· #  D  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText " -  # L  #    - ", seNone, 50 : 'DMDA.QueueText " -  # L  #    - ", seNone, 50
-	'DMD2.QueueText " --  · #  D  -- ", seNone, 50 : 'DMDB.QueueText " --  · #  D  -- ", seNone, 50
-	DMD_DisplayScene " -    ·  #  # - "," --  # #  D  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " -    ·  #  # - ", seNone, 50 : 'DMDA.QueueText " -    ·  #  # - ", seNone, 50
+	'DMD2.QueueText " --  Â· #  D  -- ", seNone, 50 : 'DMDB.QueueText " --  Â· #  D  -- ", seNone, 50
+	DMD_DisplayScene " -    Â·  #  # - "," --  # #  D  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	'DMD1.QueueText " -    Â·  #  # - ", seNone, 50 : 'DMDA.QueueText " -    Â·  #  # - ", seNone, 50
 	'DMD2.QueueText " --  # #  D  -- ", seNone, 50 : 'DMDB.QueueText " --  # #  D  -- ", seNone, 50
-	DMD_DisplayScene " -  # #    #  - "," --     # ·  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+	DMD_DisplayScene " -  # #    #  - "," --     # Â·  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText " -  # #    #  - ", seNone, 50 : 'DMDA.QueueText " -  # #    #  - ", seNone, 50
-	'DMD2.QueueText " --     # ·  -- ", seNone, 50 : 'DMDB.QueueText " --     # ·  -- ", seNone, 50
+	'DMD2.QueueText " --     # Â·  -- ", seNone, 50 : 'DMDB.QueueText " --     # Â·  -- ", seNone, 50
 	DMD_DisplayScene " -  #  # #    - "," --   #   #  -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText " -  #  # #    - ", seNone, 50 : 'DMDA.QueueText " -  #  # #    - ", seNone, 50
 	'DMD2.QueueText " --   #   #  -- ", seNone, 50 : 'DMDB.QueueText " --   #   #  -- ", seNone, 50
@@ -16097,14 +16116,14 @@ End Sub
 
 
 
-'====================================--------------------------------------····· ·· · ·  ·
+'====================================--------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '  SS KICKERS 001 - 004
-'====================================--------------------------------------····· ·· · ·  ·
+'====================================--------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 ' SSKICKER -=[ 001 ]=-
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 
 Sub SSKicker1_Hit : StopBallSearchTimer()
 
@@ -16192,9 +16211,9 @@ End Sub
 
 
 
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 ' SSKICKER -=[ 002 ]=-
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 
 Sub SSKicker2_Hit : StopBallSearchTimer()
 
@@ -16284,9 +16303,9 @@ End Sub
 
 
 Dim sskicker3KickerBallIsADemon
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 ' SSKICKER -=[ 003 ]=-
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 
 Sub SSKicker3_Hit 
 	StopBallSearchTimer()
@@ -16385,9 +16404,9 @@ End Sub
 
 
 Dim SSKicker4KickerBallIsADemon
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 ' SSKICKER -=[ 004 ]=-
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 
 Sub SSKicker4_Hit 
 	StopBallSearchTimer()
@@ -16489,9 +16508,9 @@ End Sub
 
 
 
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 ' SSTARGET -=[ 005 ]=-
-'===================================-----·· ·   ·
+'===================================-----Â·Â· Â·   Â·
 
 Sub SS5Target_Hit : StopBallSearchTimer()
 
@@ -16988,9 +17007,9 @@ Sub StartQuickShot2MysteryFromSkillShotKickers()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		Exit Sub
@@ -17100,9 +17119,9 @@ Sub StartQuickShot2TrapFromSkillShotKickers()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		Exit Sub
@@ -17179,11 +17198,11 @@ End Sub
 
 
 
-'==================================-------·· ·   ·
-'================================================-----··  ·
+'==================================-------Â·Â· Â·   Â·
+'================================================-----Â·Â·  Â·
 '*  L o s t S o u L R a m P Q u i c k S h o t  *-------------------------------------------------------------------------------------
-'================================================-----··  ·
-'==================================-------·· ·   ·
+'================================================-----Â·Â·  Â·
+'==================================-------Â·Â· Â·   Â·
 
 Sub LeftRampTrigger_Hit : StopBallSearchTimer()
 
@@ -17192,9 +17211,9 @@ Sub LeftRampTrigger_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -17209,9 +17228,9 @@ Sub LeftRampTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		Exit Sub 'Ball needs to be drained
@@ -17220,9 +17239,9 @@ Sub LeftRampTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		Exit Sub
 	End If
@@ -18807,9 +18826,9 @@ Sub LostLaneTrigger_Hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -18843,16 +18862,16 @@ Sub LostLaneTrigger_Hit()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 		Exit Sub 'Ball needs to be drained
 	End If
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		Exit Sub
 	End If
@@ -18931,9 +18950,9 @@ Sub KickbackEntrance_Hit
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -18966,17 +18985,17 @@ Sub KickbackEntrance_Hit
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 		Exit Sub 'Ball needs to be drained
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		Exit Sub
 	End If
@@ -19034,9 +19053,9 @@ End Sub
 
 
 
-'==============================---------------··  ·   ·
+'==============================---------------Â·Â·  Â·   Â·
 '--=[ KICKBACK HIT ]=--
-'==============================---------------··  ·   ·
+'==============================---------------Â·Â·  Â·   Â·
 
 Sub KickbackTrigger_Hit 
 		StopBallSearchTimer()
@@ -19216,9 +19235,9 @@ End Sub
 
 
 
-'==============================---------------··  ·   ·
+'==============================---------------Â·Â·  Â·   Â·
 '--=[ KICKBACK TIMER ]=--
-'==============================---------------··  ·   ·
+'==============================---------------Â·Â·  Â·   Â·
 
 Sub KickbackTimer_Timer()
 
@@ -19499,13 +19518,13 @@ End Sub
 
 
 
-'[POG]=============================================---------------------------····· ·· · ·  ·
-'===========================================-····· ·· · ·  ·
-'·														····· ·· · ·  ·
+'[POG]=============================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+'===========================================-Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+'Â·														Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '*     P O W E R  O F  G O D    - P O G -  *
-'·														····· ·· · ·  ·
-'===========================================-····· ·· · ·  ·
-'==================================================---------------------------····· ·· · ·  ·
+'Â·														Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+'===========================================-Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+'==================================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub ActivatePOG()
 
@@ -19680,9 +19699,9 @@ End Sub
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ POG SLINGS ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub POGSlingL_slingshot 
 		StopBallSearchTimer()
@@ -19693,9 +19712,9 @@ Sub POGSlingL_slingshot
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		POGSlingL.collidable = false
@@ -19728,9 +19747,9 @@ Sub POGSlingL_slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		POGSlingL.collidable = false
@@ -19740,9 +19759,9 @@ Sub POGSlingL_slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then
 
 		POGSlingL.collidable = false
@@ -19750,9 +19769,9 @@ Sub POGSlingL_slingshot
 
 	End If
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 
 		POGSlingL.collidable = false
@@ -19793,9 +19812,9 @@ Sub POGSlingL_slingshot
 
 
 
-	'==============================------------------------------------·· ·
+	'==============================------------------------------------Â·Â· Â·
 	'--=[ POG ACTIVE ]=-----
-	'==============================------------------------------------·· ·
+	'==============================------------------------------------Â·Â· Â·
 	If PowerOfGodActive = TRUE then
 
 		POGSlingL.collidable = true
@@ -19850,9 +19869,9 @@ Sub POGSlingR_Slingshot : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		POGSlingr.collidable = false
@@ -19885,9 +19904,9 @@ Sub POGSlingR_Slingshot : StopBallSearchTimer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		POGSlingr.collidable = false
@@ -19896,9 +19915,9 @@ Sub POGSlingR_Slingshot : StopBallSearchTimer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then
 
 		POGSlingr.collidable = false
@@ -19906,9 +19925,9 @@ Sub POGSlingR_Slingshot : StopBallSearchTimer()
 
 	End If
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 
 		POGSlingr.collidable = false
@@ -19949,9 +19968,9 @@ Sub POGSlingR_Slingshot : StopBallSearchTimer()
 
 
 
-	'==============================------------------------------------·· ·
+	'==============================------------------------------------Â·Â· Â·
 	'--=[ POG ACTIVE ]=-----
-	'==============================------------------------------------·· ·
+	'==============================------------------------------------Â·Â· Â·
 	If PowerOfGodActive = TRUE then
 
 		POGSlingr.collidable = false
@@ -20271,9 +20290,9 @@ Sub MysteryKicker_hit
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -20524,20 +20543,20 @@ End Sub
 
 
 
-'[TELEPORT]=====================================·· ·
-'==================================================·· ·
+'[TELEPORT]=====================================Â·Â· Â·
+'==================================================Â·Â· Â·
 '*						      	 						    *
 '*  T E L E P O R T S   &   Q U I C K S H O T S  *-------------------------------------------------------------------------------------
 '*														 	    *
-'==================================================·· ·
-'===============================================·· ·
+'==================================================Â·Â· Â·
+'===============================================Â·Â· Â·
 
 
 
 
-'======================================------------------------··   ·
+'======================================------------------------Â·Â·   Â·
 '--=[ FROM --- MYSTERY KICKER ]=-----
-'======================================------------------------·  ·
+'======================================------------------------Â·  Â·
 
 Sub TeleportBall2UpperPlayFieldFromMystery()
 
@@ -20621,9 +20640,9 @@ End If
 	
 	
 	
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		Exit Sub 'No quickShots during the mball
@@ -20704,9 +20723,9 @@ End If
 				QShootTeleportRTimer.Enabled = TRUE
 			
 			
-			'--------------------------·· · ·  ·
+			'--------------------------Â·Â· Â· Â·  Â·
 			'---=[ GATES OPENED ]=---------------------
-			'--------------------------·· · ·  ·
+			'--------------------------Â·Â· Â· Â·  Â·
 			ElseIf GatesOpened = TRUE then 'When both gates are opened there r no QS but we show the way with the flashers
 			
 				If TwoAngelsMballActive = TRUE then 'During the 2AMball the gates r closed!
@@ -20760,9 +20779,9 @@ End If
 			
 			
 		
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		'---=[ MIDNIGHT DARKNESS ]=---------------------
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		ElseIf MidnightDarknessActive = TRUE then 'Show the way to Hell with the flashers
 			DMD_CancelRendering	
 			''DMD1.FlushQueue : 'DMD2.FlushQueue
@@ -20791,9 +20810,9 @@ End Sub
 
 
 
-'======================================------------------------··   ·
+'======================================------------------------Â·Â·   Â·
 '--=[ FROM --- SS KICKERS ]=-----
-'======================================------------------------·  ·
+'======================================------------------------Â·  Â·
 
 Sub TeleportBall2UpperPlayFieldFromSkillShot()
 	
@@ -20819,9 +20838,9 @@ Sub TeleportBall2UpperPlayFieldFromSkillShot()
 	
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -20923,9 +20942,9 @@ Sub TeleportBall2UpperPlayFieldFromSkillShot()
 			''DMDA.QueueText "-TRAP LOST SOUL-", seWipeBarDown, 700
 			
 			
-			'--------------------------·· · ·  ·
+			'--------------------------Â·Â· Â· Â·  Â·
 			'---=[ GATES OPENED ]=---------------------
-			'--------------------------·· · ·  ·
+			'--------------------------Â·Â· Â· Â·  Â·
 			ElseIf GatesOpened = TRUE then 'When both gates are opened there r no QS but we show the way with the flashers
 			
 				If TwoAngelsMballActive = TRUE then 'During the 2AMball the gates r closed!
@@ -20978,9 +20997,9 @@ Sub TeleportBall2UpperPlayFieldFromSkillShot()
 			End If
 		
 		
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		'---=[ MIDNIGHT DARKNESS ]=---------------------
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		ElseIf MidnightDarknessActive = TRUE then 'Show the way to Hell with the flashers
 		
 			If ClockTimer.UserValue > 60 then 'We dont want to open the doors during the MD initial show!
@@ -21400,9 +21419,9 @@ Sub QShootTeleportRTimer_Timer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Case 100 'When the gates r opened there are no quickshoot. But we show the way with the flashers!
 
 		OpenHellDoors() 'Just in case
@@ -21435,9 +21454,9 @@ Sub QShootTeleportRTimer_Timer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Case 200 'When its 12:00 oclock you have to send the demons back to hell
 
 		OpenHellDoors() 'Just in case
@@ -23202,11 +23221,11 @@ End Sub
 
 
 
-'==========================================================================-----------------------·
-'											------------------------------------------------------------------··
-'																			 				 -----=[ CHECK RIGHT GATE ]=-----···
-'											------------------------------------------------------------------··
-'==========================================================================-----------------------·
+'==========================================================================-----------------------Â·
+'											------------------------------------------------------------------Â·Â·
+'																			 				 -----=[ CHECK RIGHT GATE ]=-----Â·Â·Â·
+'											------------------------------------------------------------------Â·Â·
+'==========================================================================-----------------------Â·
 
 Sub CheckRightGate()
 
@@ -23585,11 +23604,11 @@ End Sub
 
 
 
-'==========================================================================-----------------------·
-'											------------------------------------------------------------------··
-'																			 				 -----=[ CHECK LEFT GATE ]=-----···
-'											------------------------------------------------------------------··
-'==========================================================================-----------------------·
+'==========================================================================-----------------------Â·
+'											------------------------------------------------------------------Â·Â·
+'																			 				 -----=[ CHECK LEFT GATE ]=-----Â·Â·Â·
+'											------------------------------------------------------------------Â·Â·
+'==========================================================================-----------------------Â·
 
 Sub CheckLeftGate()
 
@@ -24009,22 +24028,22 @@ Sub OneGateHasBeenBroken()
 		'DMD1.QueueText "  GATE  BROKEN  ", seBlinkMask, 1000 : 'DMDA.QueueText "  GATE  BROKEN  ", seBlinkMask, 1000
 		'DMD2.QueueText "  GATE  BROKEN  ", seBlinkMask, 1000 : 'DMDB.QueueText "  GATE  BROKEN  ", seBlinkMask, 1000
 		DMD_DisplayScene "- GATE  BROKEN -","- GATE  BROKEN -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-		'DMD1.QueueText "- G·TE  BROKEN -", seNone, 80 : 'DMDA.QueueText "- G·TE  BROKEN -", seNone, 80
+		'DMD1.QueueText "- GÂ·TE  BROKEN -", seNone, 80 : 'DMDA.QueueText "- GÂ·TE  BROKEN -", seNone, 80
 		'DMD2.QueueText "- GATE  BROKEN -", seNone, 80 : 'DMDB.QueueText "- GATE  BROKEN -", seNone, 80
 		'DMD1.QueueText "- G TE  BROKEN -", seNone, 80 : 'DMDA.QueueText "- G TE  BROKEN -", seNone, 80
-		'DMD2.QueueText "- GAT·  BROKEN -", seNone, 80 : 'DMDB.QueueText "- GAT·  BROKEN -", seNone, 80
-		'DMD1.QueueText "- · TE  BROKEN -", seNone, 80 : 'DMDA.QueueText "- · TE  BROKEN -", seNone, 80
+		'DMD2.QueueText "- GATÂ·  BROKEN -", seNone, 80 : 'DMDB.QueueText "- GATÂ·  BROKEN -", seNone, 80
+		'DMD1.QueueText "- Â· TE  BROKEN -", seNone, 80 : 'DMDA.QueueText "- Â· TE  BROKEN -", seNone, 80
 		'DMD2.QueueText "- GAT   BROKEN -", seNone, 80 : 'DMDB.QueueText "- GAT   BROKEN -", seNone, 80
 		'DMD1.QueueText "-   TE  BROKEN -", seNone, 80 : 'DMDA.QueueText "-   TE  BROKEN -", seNone, 80
-		'DMD2.QueueText "- G·T   BROKEN -", seNone, 80 : 'DMDB.QueueText "- G·T   BROKEN -", seNone, 80
-		'DMD1.QueueText "-   ·E  BROKEN -", seNone, 80 : 'DMDA.QueueText "-   ·E  BROKEN -", seNone, 80
+		'DMD2.QueueText "- GÂ·T   BROKEN -", seNone, 80 : 'DMDB.QueueText "- GÂ·T   BROKEN -", seNone, 80
+		'DMD1.QueueText "-   Â·E  BROKEN -", seNone, 80 : 'DMDA.QueueText "-   Â·E  BROKEN -", seNone, 80
 		'DMD2.QueueText "- G T   BROKEN -", seNone, 80 : 'DMDB.QueueText "- G T   BROKEN -", seNone, 80
 		'DMD1.QueueText "-    E  BROKEN -", seNone, 80 : 'DMDA.QueueText "-    E  BROKEN -", seNone, 80
-		'DMD2.QueueText "- · T   BROKEN -", seNone, 80 : 'DMDB.QueueText "- · T   BROKEN -", seNone, 80
-		'DMD1.QueueText "-    ·  BROKEN -", seNone, 80 : 'DMDA.QueueText "-    ·  BROKEN -", seNone, 80
+		'DMD2.QueueText "- Â· T   BROKEN -", seNone, 80 : 'DMDB.QueueText "- Â· T   BROKEN -", seNone, 80
+		'DMD1.QueueText "-    Â·  BROKEN -", seNone, 80 : 'DMDA.QueueText "-    Â·  BROKEN -", seNone, 80
 		'DMD2.QueueText "-   T   BROKEN -", seNone, 80 : 'DMDB.QueueText "-   T   BROKEN -", seNone, 80
 		'DMD1.QueueText "-       BROKEN -", seNone, 80 : 'DMDA.QueueText "-       BROKEN -", seNone, 80
-		'DMD2.QueueText "-   ·   BROKEN -", seNone, 80 : 'DMDB.QueueText "-   ·   BROKEN -", seNone, 80
+		'DMD2.QueueText "-   Â·   BROKEN -", seNone, 80 : 'DMDB.QueueText "-   Â·   BROKEN -", seNone, 80
 		'DMD1.QueueText "-      B ROKEN -", seNone, 80 : 'DMDA.QueueText "-      B ROKEN -", seNone, 80
 		'DMD2.QueueText "-      B ROKEN -", seNone, 80 : 'DMDB.QueueText "-      B ROKEN -", seNone, 80
 		'DMD1.QueueText "-     B R OKEN -", seNone, 80 : 'DMDA.QueueText "-     B R OKEN -", seNone, 80
@@ -26028,9 +26047,9 @@ Sub PortalKicker_Hit : StopBallSearchTimer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If	BIPortalKicker = TRUE then
@@ -26045,7 +26064,7 @@ Sub PortalKicker_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -26084,7 +26103,7 @@ Sub PortalKicker_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -26194,9 +26213,9 @@ Sub PortalKicker_Hit : StopBallSearchTimer()
 
 
 
-	'====================================================-------------------····  ··  ·    ·
+	'====================================================-------------------Â·Â·Â·Â·  Â·Â·  Â·    Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'====================================================-------------------····  ··  ·    ·
+	'====================================================-------------------Â·Â·Â·Â·  Â·Â·  Â·    Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		If BIPortalKicker = TRUE then
@@ -26516,9 +26535,9 @@ Sub PortalKicker_Hit : StopBallSearchTimer()
 
 
 
-	'=================================---------------------------------··· · ·   ·
+	'=================================---------------------------------Â·Â·Â· Â· Â·   Â·
 	'--=[ PORTAL READY ]=-----
-	'=================================---------------------------------··· · ·   ·
+	'=================================---------------------------------Â·Â·Â· Â· Â·   Â·
 	If PortalReady = TRUE and BIPortalKicker = FALSE then
 
 		BIPortalKicker = TRUE
@@ -26697,9 +26716,9 @@ End Sub
 '															4.- 
 
 
-'===============================================-------------------·······  ·   ·   ·
+'===============================================-------------------Â·Â·Â·Â·Â·Â·Â·  Â·   Â·   Â·
 '--=[ LEFT SPINNER ]=-----
-'===============================================-------------------·······  ·   ·   ·
+'===============================================-------------------Â·Â·Â·Â·Â·Â·Â·  Â·   Â·   Â·
 
 Sub SpinnerL_Spin : StopBallSearchTimer()
 
@@ -26708,9 +26727,9 @@ Sub SpinnerL_Spin : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -26718,7 +26737,7 @@ Sub SpinnerL_Spin : StopBallSearchTimer()
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -26741,7 +26760,7 @@ Sub SpinnerL_Spin : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -26817,9 +26836,9 @@ Sub SpinnerL_Spin : StopBallSearchTimer()
 
 
 
-	'============================================--------------------···  ·   ·
+	'============================================--------------------Â·Â·Â·  Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'============================================--------------------···  ·   ·
+	'============================================--------------------Â·Â·Â·  Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		If BIPortalKicker = FALSE then
@@ -27019,9 +27038,9 @@ End Sub
 
 
 
-'===============================================-------------------·······  ·   ·   ·
+'===============================================-------------------Â·Â·Â·Â·Â·Â·Â·  Â·   Â·   Â·
 '--=[ RIGHT SPINNER ]=-----
-'===============================================-------------------·······  ·   ·   ·
+'===============================================-------------------Â·Â·Â·Â·Â·Â·Â·  Â·   Â·   Â·
 
 Sub SpinnerR_Spin : StopBallSearchTimer()
 
@@ -27030,9 +27049,9 @@ Sub SpinnerR_Spin : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -27040,7 +27059,7 @@ Sub SpinnerR_Spin : StopBallSearchTimer()
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -27063,7 +27082,7 @@ Sub SpinnerR_Spin : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -27150,9 +27169,9 @@ Sub SpinnerR_Spin : StopBallSearchTimer()
 
 
 
-	'============================================--------------------···  ·   ·
+	'============================================--------------------Â·Â·Â·  Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'============================================--------------------···  ·   ·
+	'============================================--------------------Â·Â·Â·  Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		If BIPortalKicker = FALSE then
@@ -27339,9 +27358,9 @@ End Sub
 
 
 
-'========================================---------------------·· ·  ·
+'========================================---------------------Â·Â· Â·  Â·
 ' -==::[ T H E  D A R K  P O R T A L ]::==--
-'========================================---------------------·· ·  ·
+'========================================---------------------Â·Â· Â·  Â·
 
 Sub CheckPortal()
 
@@ -27425,9 +27444,9 @@ Sub CheckPortal()
 
 	
 
-	'======================================================-----------------···
+	'======================================================-----------------Â·Â·Â·
 	' --=[ P O R T A L  P O W E R ]=--
-	'======================================================-----------------···
+	'======================================================-----------------Â·Â·Â·
 	Select Case (PortalPower)
 
 		Case 0
@@ -27803,9 +27822,9 @@ Sub CheckPortal()
 				FlashForms FlasherCentral, 2000, 50, 0
 				
 				
-				'--------------------------·· · ·  ·
+				'--------------------------Â·Â· Â· Â·  Â·
 				' MUSIC CHANGE
-				'--------------------------·· · ·  ·
+				'--------------------------Â·Â· Â· Â·  Â·
 				If GatesOpened = FALSE and GateGuardians = 0 then 'Both guardians destroyed.
 				
 					'No music change thanks. The one thats playing is cooler.
@@ -27871,9 +27890,9 @@ Sub CheckPortal()
 
 
 	
-	'======================================-----------------·· ·
+	'======================================-----------------Â·Â· Â·
 	' ---===[ P O R T A L R E A D Y ]===---
-	'======================================-----------------·· ·
+	'======================================-----------------Â·Â· Â·
 
 	If PortalPower > 22 and PortalReady = FALSE then 'Better this way. The spinner could spin to max and jump the 20's
 
@@ -27899,34 +27918,34 @@ Sub CheckPortal()
 		'DMD1.QueueText "  PORTAL READY  ", seBlinkMask, 1000 : 'DMDA.QueueText "  PORTAL READY  ", seBlinkMask, 1000
 		'DMD2.QueueText "  PORTAL READY  ", seBlinkMask, 1000 : 'DMDB.QueueText "  PORTAL READY  ", seBlinkMask, 1000
 		DMD_DisplayScene "- PORTAL READY -","- PORTAL READY -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-		'DMD1.QueueText "- ·ORTAL READY -", seNone, 100 : 'DMDA.QueueText "- ·ORTAL READY -", seNone, 100
-		'DMD2.QueueText "- PORTAL READ· -", seNone, 100 : 'DMDB.QueueText "- PORTAL READ· -", seNone, 100
-		'DMD1.QueueText "-  ORTAL RE·DY -", seNone, 100 : 'DMDA.QueueText "-  ORTAL RE·DY -", seNone, 100
-		'DMD2.QueueText "- PORT·L READ  -", seNone, 100 : 'DMDB.QueueText "- PORT·L READ  -", seNone, 100
-		'DMD1.QueueText "-  OR·AL RE DY -", seNone, 100 : 'DMDA.QueueText "-  OR·AL RE DY -", seNone, 100
-		'DMD2.QueueText "- PORT L ·EAD  -", seNone, 100 : 'DMDB.QueueText "- PORT L ·EAD  -", seNone, 100
-		'DMD1.QueueText "-  OR AL ·E DY -", seNone, 100 : 'DMDA.QueueText "-  OR AL ·E DY -", seNone, 100
-		'DMD2.QueueText "- PO·T L  EAD  -", seNone, 100 : 'DMDB.QueueText "- PO·T L  EAD  -", seNone, 100
-		'DMD1.QueueText "-  ·R AL  E DY -", seNone, 100 : 'DMDA.QueueText "-  ·R AL  E DY -", seNone, 100
-		'DMD2.QueueText "- PO T ·  EAD  -", seNone, 100 : 'DMDB.QueueText "- PO T ·  EAD  -", seNone, 100
-		'DMD1.QueueText "-   R AL  E ·Y -", seNone, 100 : 'DMDA.QueueText "-   R AL  E ·Y -", seNone, 100
-		'DMD2.QueueText "- PO T    ·AD  -", seNone, 100 : 'DMDB.QueueText "- PO T    ·AD  -", seNone, 100
-		'DMD1.QueueText "-   R ·L  E  Y -", seNone, 100 : 'DMDA.QueueText "-   R ·L  E  Y -", seNone, 100
-		'DMD2.QueueText "- ·O T     AD  -", seNone, 100 : 'DMDB.QueueText "- ·O T     AD  -", seNone, 100
-		'DMD1.QueueText "-   R  ·  E  Y -", seNone, 100 : 'DMDA.QueueText "-   R  ·  E  Y -", seNone, 100
-		'DMD2.QueueText "-  O T     A·  -", seNone, 100 : 'DMDB.QueueText "-  O T     A·  -", seNone, 100
-		'DMD1.QueueText "-   R     E  · -", seNone, 100 : 'DMDA.QueueText "-   R     E  · -", seNone, 100
-		'DMD2.QueueText "-  · T     A   -", seNone, 100 : 'DMDB.QueueText "-  · T     A   -", seNone, 100
-		'DMD1.QueueText "-   ·     E    -", seNone, 100 : 'DMDA.QueueText "-   ·     E    -", seNone, 100
+		'DMD1.QueueText "- Â·ORTAL READY -", seNone, 100 : 'DMDA.QueueText "- Â·ORTAL READY -", seNone, 100
+		'DMD2.QueueText "- PORTAL READÂ· -", seNone, 100 : 'DMDB.QueueText "- PORTAL READÂ· -", seNone, 100
+		'DMD1.QueueText "-  ORTAL REÂ·DY -", seNone, 100 : 'DMDA.QueueText "-  ORTAL REÂ·DY -", seNone, 100
+		'DMD2.QueueText "- PORTÂ·L READ  -", seNone, 100 : 'DMDB.QueueText "- PORTÂ·L READ  -", seNone, 100
+		'DMD1.QueueText "-  ORÂ·AL RE DY -", seNone, 100 : 'DMDA.QueueText "-  ORÂ·AL RE DY -", seNone, 100
+		'DMD2.QueueText "- PORT L Â·EAD  -", seNone, 100 : 'DMDB.QueueText "- PORT L Â·EAD  -", seNone, 100
+		'DMD1.QueueText "-  OR AL Â·E DY -", seNone, 100 : 'DMDA.QueueText "-  OR AL Â·E DY -", seNone, 100
+		'DMD2.QueueText "- POÂ·T L  EAD  -", seNone, 100 : 'DMDB.QueueText "- POÂ·T L  EAD  -", seNone, 100
+		'DMD1.QueueText "-  Â·R AL  E DY -", seNone, 100 : 'DMDA.QueueText "-  Â·R AL  E DY -", seNone, 100
+		'DMD2.QueueText "- PO T Â·  EAD  -", seNone, 100 : 'DMDB.QueueText "- PO T Â·  EAD  -", seNone, 100
+		'DMD1.QueueText "-   R AL  E Â·Y -", seNone, 100 : 'DMDA.QueueText "-   R AL  E Â·Y -", seNone, 100
+		'DMD2.QueueText "- PO T    Â·AD  -", seNone, 100 : 'DMDB.QueueText "- PO T    Â·AD  -", seNone, 100
+		'DMD1.QueueText "-   R Â·L  E  Y -", seNone, 100 : 'DMDA.QueueText "-   R Â·L  E  Y -", seNone, 100
+		'DMD2.QueueText "- Â·O T     AD  -", seNone, 100 : 'DMDB.QueueText "- Â·O T     AD  -", seNone, 100
+		'DMD1.QueueText "-   R  Â·  E  Y -", seNone, 100 : 'DMDA.QueueText "-   R  Â·  E  Y -", seNone, 100
+		'DMD2.QueueText "-  O T     AÂ·  -", seNone, 100 : 'DMDB.QueueText "-  O T     AÂ·  -", seNone, 100
+		'DMD1.QueueText "-   R     E  Â· -", seNone, 100 : 'DMDA.QueueText "-   R     E  Â· -", seNone, 100
+		'DMD2.QueueText "-  Â· T     A   -", seNone, 100 : 'DMDB.QueueText "-  Â· T     A   -", seNone, 100
+		'DMD1.QueueText "-   Â·     E    -", seNone, 100 : 'DMDA.QueueText "-   Â·     E    -", seNone, 100
 		'DMD2.QueueText "-    T     A   -", seNone, 100 : 'DMDB.QueueText "-    T     A   -", seNone, 100
 		'DMD1.QueueText "-         E    -", seNone, 100 : 'DMDA.QueueText "-         E    -", seNone, 100
-		'DMD2.QueueText "-    T     ·   -", seNone, 100 : 'DMDB.QueueText "-    T     ·   -", seNone, 100
-		'DMD1.QueueText "-         ·    -", seNone, 100 : 'DMDA.QueueText "-         ·    -", seNone, 100
+		'DMD2.QueueText "-    T     Â·   -", seNone, 100 : 'DMDB.QueueText "-    T     Â·   -", seNone, 100
+		'DMD1.QueueText "-         Â·    -", seNone, 100 : 'DMDA.QueueText "-         Â·    -", seNone, 100
 		'DMD2.QueueText "-    T         -", seNone, 100 : 'DMDB.QueueText "-    T         -", seNone, 100
 		'DMD1.QueueText "-              -", seNone, 100 : 'DMDA.QueueText "-              -", seNone, 100
-		'DMD2.QueueText "-    ·         -", seNone, 100 : 'DMDB.QueueText "-    ·         -", seNone, 100
+		'DMD2.QueueText "-    Â·         -", seNone, 100 : 'DMDB.QueueText "-    Â·         -", seNone, 100
 		'DMD1.QueueText "-              -", seNone, 100 : 'DMDA.QueueText "-              -", seNone, 100
-		'DMD2.QueueText "-    ·         -", seNone, 100 : 'DMDB.QueueText "-    ·         -", seNone, 100
+		'DMD2.QueueText "-    Â·         -", seNone, 100 : 'DMDB.QueueText "-    Â·         -", seNone, 100
 		
 		AddScore(0)
 		
@@ -28088,11 +28107,11 @@ End Sub
 
 
 
-'========================================---------------------········· · ·    ·
-'========================================---------------------····666······ · ·    ·
+'========================================---------------------Â·Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·    Â·
+'========================================---------------------Â·Â·Â·Â·666Â·Â·Â·Â·Â·Â· Â· Â·    Â·
 Sub SummonAamon()
-'========================================---------------------····666······ · ·    ·
-'========================================---------------------········· · ·    ·
+'========================================---------------------Â·Â·Â·Â·666Â·Â·Â·Â·Â·Â· Â· Â·    Â·
+'========================================---------------------Â·Â·Â·Â·Â·Â·Â·Â·Â· Â· Â·    Â·
 
 	'Aamon has forty legions of demons under his command, having the title of prince. Commander of the first legion of Hell.
 	'Piece of cake for Sam Thorne, ain't? I mean piece of cake for the Angels... ops! my fault, wrong game ;)
@@ -28165,18 +28184,18 @@ Sub SummonAamon()
 	
 	DMD_DisplayScene "-OPENING PORTAL-","-OPENING PORTAL-", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	DMD_DisplayScene "-OPENING PORTAL-","-OPENING PORTAL-", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	''DMD1.QueueText "- ············ -", seNone, 300
-	''DMD2.QueueText "- ············ -", seNone, 300
-	''DMD1.QueueText "- #·····#····· -", seNone, 300
-	''DMD2.QueueText "- #·····#····· -", seNone, 300
-	''DMD1.QueueText "- D#····P····# -", seNone, 300
-	''DMD2.QueueText "- D#····P····# -", seNone, 300
-	''DMD1.QueueText "- DA·#··P#···L -", seNone, 300
-	''DMD2.QueueText "- DA·#··P#···L -", seNone, 300
-	''DMD1.QueueText "- DA#K··PO·#·L -", seNone, 300
-	''DMD2.QueueText "- DA#K··PO·#·L -", seNone, 300
-	''DMD1.QueueText "- DARK··PO#T#L -", seNone, 300
-	''DMD2.QueueText "- DARK··PO#T#L -", seNone, 300
+	''DMD1.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 300
+	''DMD2.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 300
+	''DMD1.QueueText "- #Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â· -", seNone, 300
+	''DMD2.QueueText "- #Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â· -", seNone, 300
+	''DMD1.QueueText "- D#Â·Â·Â·Â·PÂ·Â·Â·Â·# -", seNone, 300
+	''DMD2.QueueText "- D#Â·Â·Â·Â·PÂ·Â·Â·Â·# -", seNone, 300
+	''DMD1.QueueText "- DAÂ·#Â·Â·P#Â·Â·Â·L -", seNone, 300
+	''DMD2.QueueText "- DAÂ·#Â·Â·P#Â·Â·Â·L -", seNone, 300
+	''DMD1.QueueText "- DA#KÂ·Â·POÂ·#Â·L -", seNone, 300
+	''DMD2.QueueText "- DA#KÂ·Â·POÂ·#Â·L -", seNone, 300
+	''DMD1.QueueText "- DARKÂ·Â·PO#T#L -", seNone, 300
+	''DMD2.QueueText "- DARKÂ·Â·PO#T#L -", seNone, 300
 	''DMD1.QueueText "- DARK  PORTAL -", seNone, 300
 	''DMD2.QueueText "- DARK  PORTAL -", seNone, 300
 	''DMD1.QueueText "  DARK  PORTAL  ", seBlinkMask, 1400
@@ -28186,32 +28205,32 @@ Sub SummonAamon()
 	DMD_DisplayScene "-OPENING PORTAL-","-OPENING PORTAL-", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	DMD_DisplayScene "-OPENING PORTAL-","-OPENING PORTAL-", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 
-	'DMD1.QueueText "-··············-", seNone, 300 : 'DMDA.QueueText "-··············-", seNone, 300
-	'DMD2.QueueText "-··············-", seNone, 300 : 'DMDB.QueueText "-··············-", seNone, 300
-	'DMD1.QueueText "-#············#-", seNone, 300 : 'DMDA.QueueText "-#············#-", seNone, 300
-	'DMD2.QueueText "-#············#-", seNone, 300 : 'DMDB.QueueText "-#············#-", seNone, 300
-	'DMD1.QueueText "-O#·····#·····L-", seNone, 300 : 'DMDA.QueueText "-O#·····#·····L-", seNone, 300
-	'DMD2.QueueText "-O#·····#·····L-", seNone, 300 : 'DMDB.QueueText "-O#·····#·····L-", seNone, 300
-	'DMD1.QueueText "-OP···········L-", seNone, 300 : 'DMDA.QueueText "-OP···········L-", seNone, 300
-	'DMD2.QueueText "-OP···········L-", seNone, 300 : 'DMDB.QueueText "-OP···········L-", seNone, 300
-	'DMD1.QueueText "-OP··#·······#L-", seNone, 300 : 'DMDA.QueueText "-OP··#·······#L-", seNone, 300
-	'DMD2.QueueText "-OP··#·······#L-", seNone, 300 : 'DMDB.QueueText "-OP··#·······#L-", seNone, 300
-	'DMD1.QueueText "-OP··I·······AL-", seNone, 300 : 'DMDA.QueueText "-OP··I·······AL-", seNone, 300
-	'DMD2.QueueText "-OP#·I·······AL-", seNone, 300 : 'DMDB.QueueText "-OP#·I·······AL-", seNone, 300
-	'DMD1.QueueText "-OP#·I···#···AL-", seNone, 300 : 'DMDA.QueueText "-OP#·I···#···AL-", seNone, 300
-	'DMD2.QueueText "-OP#·I···#···AL-", seNone, 300 : 'DMDB.QueueText "-OP#·I···#···AL-", seNone, 300
-	'DMD1.QueueText "-OPE#I···P···AL-", seNone, 300 : 'DMDA.QueueText "-OPE#I···P···AL-", seNone, 300
-	'DMD2.QueueText "-OPENI···P···AL-", seNone, 300 : 'DMDB.QueueText "-OPENI···P···AL-", seNone, 300
-	'DMD1.QueueText "-OPE#I···P·#·AL-", seNone, 300 : 'DMDA.QueueText "-OPE#I···P·#·AL-", seNone, 300
-	'DMD2.QueueText "-OPE#I···P·#·AL-", seNone, 300 : 'DMDB.QueueText "-OPE#I···P·#·AL-", seNone, 300
-	'DMD1.QueueText "-OPENI·#·P·R·AL-", seNone, 300 : 'DMDA.QueueText "-OPENI·#·P·R·AL-", seNone, 300
-	'DMD2.QueueText "-OP#NI·#·P#R·AL-", seNone, 300 : 'DMDB.QueueText "-OP#NI·#·P#R·AL-", seNone, 300
-	'DMD1.QueueText "-OPENI·G·P#R#AL-", seNone, 300 : 'DMDA.QueueText "-OPENI·G·P#R#AL-", seNone, 300
-	'DMD2.QueueText "-OPENI·#·POR#AL-", seNone, 300 : 'DMDB.QueueText "-OPENI·#·POR#AL-", seNone, 300
-	'DMD1.QueueText "-OPENI·G·POR#AL-", seNone, 300 : 'DMDA.QueueText "-OPENI·G·POR#AL-", seNone, 300
-	'DMD2.QueueText "-OPENI·G·PORTAL-", seNone, 300 : 'DMDB.QueueText "-OPENI·G·PORTAL-", seNone, 300
-	'DMD1.QueueText "-OPENI#G·PORTAL-", seNone, 300 : 'DMDA.QueueText "-OPENI#G·PORTAL-", seNone, 300
-	'DMD2.QueueText "-OPENI#G·PORTAL-", seNone, 300 : 'DMDB.QueueText "-OPENI#G·PORTAL-", seNone, 300
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 300 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 300
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 300 : 'DMDB.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 300
+	'DMD1.QueueText "-#Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·#-", seNone, 300 : 'DMDA.QueueText "-#Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·#-", seNone, 300
+	'DMD2.QueueText "-#Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·#-", seNone, 300 : 'DMDB.QueueText "-#Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·#-", seNone, 300
+	'DMD1.QueueText "-O#Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â·L-", seNone, 300 : 'DMDA.QueueText "-O#Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â·L-", seNone, 300
+	'DMD2.QueueText "-O#Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â·L-", seNone, 300 : 'DMDB.QueueText "-O#Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â·L-", seNone, 300
+	'DMD1.QueueText "-OPÂ·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·L-", seNone, 300 : 'DMDA.QueueText "-OPÂ·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·L-", seNone, 300
+	'DMD2.QueueText "-OPÂ·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·L-", seNone, 300 : 'DMDB.QueueText "-OPÂ·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·L-", seNone, 300
+	'DMD1.QueueText "-OPÂ·Â·#Â·Â·Â·Â·Â·Â·Â·#L-", seNone, 300 : 'DMDA.QueueText "-OPÂ·Â·#Â·Â·Â·Â·Â·Â·Â·#L-", seNone, 300
+	'DMD2.QueueText "-OPÂ·Â·#Â·Â·Â·Â·Â·Â·Â·#L-", seNone, 300 : 'DMDB.QueueText "-OPÂ·Â·#Â·Â·Â·Â·Â·Â·Â·#L-", seNone, 300
+	'DMD1.QueueText "-OPÂ·Â·IÂ·Â·Â·Â·Â·Â·Â·AL-", seNone, 300 : 'DMDA.QueueText "-OPÂ·Â·IÂ·Â·Â·Â·Â·Â·Â·AL-", seNone, 300
+	'DMD2.QueueText "-OP#Â·IÂ·Â·Â·Â·Â·Â·Â·AL-", seNone, 300 : 'DMDB.QueueText "-OP#Â·IÂ·Â·Â·Â·Â·Â·Â·AL-", seNone, 300
+	'DMD1.QueueText "-OP#Â·IÂ·Â·Â·#Â·Â·Â·AL-", seNone, 300 : 'DMDA.QueueText "-OP#Â·IÂ·Â·Â·#Â·Â·Â·AL-", seNone, 300
+	'DMD2.QueueText "-OP#Â·IÂ·Â·Â·#Â·Â·Â·AL-", seNone, 300 : 'DMDB.QueueText "-OP#Â·IÂ·Â·Â·#Â·Â·Â·AL-", seNone, 300
+	'DMD1.QueueText "-OPE#IÂ·Â·Â·PÂ·Â·Â·AL-", seNone, 300 : 'DMDA.QueueText "-OPE#IÂ·Â·Â·PÂ·Â·Â·AL-", seNone, 300
+	'DMD2.QueueText "-OPENIÂ·Â·Â·PÂ·Â·Â·AL-", seNone, 300 : 'DMDB.QueueText "-OPENIÂ·Â·Â·PÂ·Â·Â·AL-", seNone, 300
+	'DMD1.QueueText "-OPE#IÂ·Â·Â·PÂ·#Â·AL-", seNone, 300 : 'DMDA.QueueText "-OPE#IÂ·Â·Â·PÂ·#Â·AL-", seNone, 300
+	'DMD2.QueueText "-OPE#IÂ·Â·Â·PÂ·#Â·AL-", seNone, 300 : 'DMDB.QueueText "-OPE#IÂ·Â·Â·PÂ·#Â·AL-", seNone, 300
+	'DMD1.QueueText "-OPENIÂ·#Â·PÂ·RÂ·AL-", seNone, 300 : 'DMDA.QueueText "-OPENIÂ·#Â·PÂ·RÂ·AL-", seNone, 300
+	'DMD2.QueueText "-OP#NIÂ·#Â·P#RÂ·AL-", seNone, 300 : 'DMDB.QueueText "-OP#NIÂ·#Â·P#RÂ·AL-", seNone, 300
+	'DMD1.QueueText "-OPENIÂ·GÂ·P#R#AL-", seNone, 300 : 'DMDA.QueueText "-OPENIÂ·GÂ·P#R#AL-", seNone, 300
+	'DMD2.QueueText "-OPENIÂ·#Â·POR#AL-", seNone, 300 : 'DMDB.QueueText "-OPENIÂ·#Â·POR#AL-", seNone, 300
+	'DMD1.QueueText "-OPENIÂ·GÂ·POR#AL-", seNone, 300 : 'DMDA.QueueText "-OPENIÂ·GÂ·POR#AL-", seNone, 300
+	'DMD2.QueueText "-OPENIÂ·GÂ·PORTAL-", seNone, 300 : 'DMDB.QueueText "-OPENIÂ·GÂ·PORTAL-", seNone, 300
+	'DMD1.QueueText "-OPENI#GÂ·PORTAL-", seNone, 300 : 'DMDA.QueueText "-OPENI#GÂ·PORTAL-", seNone, 300
+	'DMD2.QueueText "-OPENI#GÂ·PORTAL-", seNone, 300 : 'DMDB.QueueText "-OPENI#GÂ·PORTAL-", seNone, 300
 	'DMD1.QueueText "-OPENING PORTAL-", seNone, 300 : 'DMDA.QueueText "-OPENING PORTAL-", seNone, 300
 	'DMD2.QueueText "-OPENING PORTAL-", seNone, 300 : 'DMDB.QueueText "-OPENING PORTAL-", seNone, 300
 	'DMD1.QueueText " OPENING PORTAL ", seBlinkMask, 300 : 'DMDA.QueueText " OPENING PORTAL ", seBlinkMask, 300
@@ -28275,9 +28294,9 @@ Sub PortalTimer_Timer()
 
 	Select Case (PortalTimer.UserValue)
 
-	'====================================---------------------------··  ·    ·
+	'====================================---------------------------Â·Â·  Â·    Â·
 	' -=[ THE PORTAL WILL CLOSE IF ANGEL DONT PUMP IT ]=---
-	'====================================---------------------------··  ·    ·
+	'====================================---------------------------Â·Â·  Â·    Â·
 	Case 0
 
 		If PortalReady = TRUE then
@@ -28388,12 +28407,12 @@ Sub PortalTimer_Timer()
 
 
 
-	'====================================---------------------------··  ·    ·
+	'====================================---------------------------Â·Â·  Â·    Â·
 	' -=[   BLOOD EXTRACTOR MULTIBALL HELP   ]=---
 	'---------------------------------------------------------------
 	' DURING THE B.EX.MBALL BALL WILL BE KEEPED IN THE PORTAL KICKER
 	'     FOR A WHILE TO HELP THE PLAYER MAKING THE JACKPOTS
-	'====================================---------------------------··  ·    ·
+	'====================================---------------------------Â·Â·  Â·    Â·
 	Case 100
 
 		FlashForms RampLight3, 1000, 100, 0
@@ -28458,11 +28477,11 @@ Sub PortalTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ WOUND OPEN 004 ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ WOUND OPEN 004 ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 670 'WMRelease5
 
 		'If WishMasterTimer.Enabled = FALSE then 'We use this when Angel or Luzbel has been hit. We dont want to mix voices!
@@ -28518,11 +28537,11 @@ Sub SummonDemonTimer_Timer()
 
 	Select Case (SummonDemonTimer.UserValue)
 
-	'--------------------------·· ·  ·
-	'-·====================================================·-------------·· ·  ·
-	Case -50	'--=[ 2A MULTIBALL 2xJACKPOT COUNT DOWN ]=·-·---·---------------------------------------
-	'-·====================================================·-------------·· ·  ·
-	'--------------------------·· ·  ·
+	'--------------------------Â·Â· Â·  Â·
+	'-Â·====================================================Â·-------------Â·Â· Â·  Â·
+	Case -50	'--=[ 2A MULTIBALL 2xJACKPOT COUNT DOWN ]=Â·-Â·---Â·---------------------------------------
+	'-Â·====================================================Â·-------------Â·Â· Â·  Â·
+	'--------------------------Â·Â· Â·  Â·
 		'We run out of objects, so we have to "reuse" the other timers. '2AcountDown
 		'We use this one for the DOUBLE JACKPOT count down during the 2ANGELS MBALL
 		
@@ -28552,9 +28571,9 @@ Sub SummonDemonTimer_Timer()
 		'DMD1.Text = "-- 2X JACKPOT --"
 		'MD2.Text   "  01 = 00 = 00  "
 		
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		'--=[ DMD CLOCK ]=---
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		If ClockSec <10 then	
 			DMD_DisplayScene "0","="& ClockMin & ClockSec & ClockMSec, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD2.Text   = "0" & ClockMin & "=" & "0" & ClockSec & "=" & ClockMSec
@@ -28568,9 +28587,9 @@ Sub SummonDemonTimer_Timer()
 		End IF
 		
 		
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		'--=[ TIME IS OVER ]=---
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		If ClockMin = -1 then 'Time's over!
 		
 			FlashForms ShootAgainLight1, 500,50, 0
@@ -28620,11 +28639,11 @@ Sub SummonDemonTimer_Timer()
 
 
 
-	'================================---------------------------··  ·    ·
-	'====================================---------------------------··  ·    ·
+	'================================---------------------------Â·Â·  Â·    Â·
+	'====================================---------------------------Â·Â·  Â·    Â·
 	' -=[ BRING A DEMON TO OUR PLANE ]=---
-	'====================================---------------------------··  ·    ·
-	'================================---------------------------··  ·    ·
+	'====================================---------------------------Â·Â·  Â·    Â·
+	'================================---------------------------Â·Â·  Â·    Â·
 	Case 0
 
 		'AzarSoundHitChimes()
@@ -29130,11 +29149,11 @@ Sub SummonDemonTimer_Timer()
 
 
 
-	'====================================·· ·
+	'====================================Â·Â· Â·
 	' -- W I Z A R D M O D E --
-	'===-----------------------------====·· ·
+	'===-----------------------------====Â·Â· Â·
 	' -=[ TURN OFF LIGHT SEQUENCER ]=--
-	'====================================·· ·
+	'====================================Â·Â· Â·
 	Case 666 '
 
 		LightSeqTilt.StopPlay
@@ -29234,9 +29253,9 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		TeleportBall2UpperPlayFieldFromTrap()
@@ -29271,7 +29290,7 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 		BITrapEntranceKicker = TRUE
 		
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -29287,7 +29306,7 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -29353,9 +29372,9 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	'==[ TRAP MAKING MAINTENANCE OR ACTIVATING ]=---
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	If TrapPROBLEMTimer.Enabled = TRUE then
 
 		'The AntiJamminTimer is used when something has been trapped (an angel or a demon) to allow only 1ball to enter in the trap.
@@ -29371,9 +29390,9 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 	End If
 
 
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	'--= 2 BALLS INSIDE THE TRAP! =-----------------------
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	If PROBLEM2BallsInsideTheTrap = TRUE then
 
 		TeleportBall2UpperPlayFieldFromTrap() 'So better teleport ball.
@@ -29383,9 +29402,9 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 	End If
 
 
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	'--= BALL INSIDE WITHOUT PERMISSION! =-----------------------
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	If PROBLEMSomethingInsideTrapWOPermission = TRUE then
 
 		TeleportBall2UpperPlayFieldFromTrap() 'So better teleport ball.
@@ -29395,9 +29414,9 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 	End If
 
 
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	'--= BALL INSIDE WHEN CLOSING TRAP! =-----------------------
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	If PROBLEMBallInsideWhenClosingTrap = TRUE then
 
 		TeleportBall2UpperPlayFieldFromTrap() 'So better teleport ball.
@@ -29419,14 +29438,14 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	'==[ TRAP ON ]=---
-	'======================================---------------··· ·   ·
+	'======================================---------------Â·Â·Â· Â·   Â·
 	If TrapTurnedON = TRUE then
 
-		'========================================--------------·· ·
+		'========================================--------------Â·Â· Â·
 		'--=[ TRAP EMPTY AND READY TO CATCH SOMETHING ]=----------------------------
-		'========================================--------------·· ·
+		'========================================--------------Â·Â· Â·
 		If TrapEmpty = TRUE then 'There is nothing inside the trap, not an Angel neither a Demon
 		
 			
@@ -29522,9 +29541,9 @@ Sub TrapEntranceKicker_Hit : StopBallSearchTimer()
 
 
 
-		'========================================--------------·· ·
-		'--=[ SOMETHING INSIDE THE TRAP ]=----------------------------···  ·  ·
-		'========================================--------------·· ·
+		'========================================--------------Â·Â· Â·
+		'--=[ SOMETHING INSIDE THE TRAP ]=----------------------------Â·Â·Â·  Â·  Â·
+		'========================================--------------Â·Â· Â·
 		ElseIf TrapEmpty = FALSE then 'There is something inside the TRAP
 		
 			'-------------------------------
@@ -29871,9 +29890,9 @@ Sub TeleportBall2UpperPlayFieldFromTrap()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -29922,9 +29941,9 @@ Sub TeleportBall2UpperPlayFieldFromTrap()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		FlashForMs FlasherTrapL, 800, 800, 0
@@ -30026,9 +30045,9 @@ Sub TeleportBall2UpperPlayFieldFromTrap()
 				QShootTeleportTimer.Enabled = TRUE
 				
 			
-			'--------------------------·· · ·  ·
+			'--------------------------Â·Â· Â· Â·  Â·
 			'---=[ GATES OPENED ]=---------------------
-			'--------------------------·· · ·  ·
+			'--------------------------Â·Â· Â· Â·  Â·
 			ElseIf GatesOpened = TRUE then 'When both gates are opened there r no QS but we show the way with the flashers
 			
 				If TwoAngelsMballActive = TRUE then 'During the 2AMball the gates r closed!
@@ -30082,9 +30101,9 @@ Sub TeleportBall2UpperPlayFieldFromTrap()
 			End If
 		
 		
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		'---=[ MIDNIGHT DARKNESS ]=---------------------
-		'--------------------------·· · ·  ·
+		'--------------------------Â·Â· Â· Â·  Â·
 		ElseIf MidnightDarknessActive = TRUE then 'Show the way to Hell with the flashers
 		
 			If ClockTimer.UserValue > 60 then 'We dont want to open the doors during the MD initial show!
@@ -30346,9 +30365,9 @@ Sub TrapSECEntranceTimer_Timer()
 		TrapSECEntranceTimer.UserValue = TrapSECEntranceTimer.UserValue + 1
 
 
-	'-------------------------------------------------------------··  ·	
+	'-------------------------------------------------------------Â·Â·  Â·	
 	Case 3 'BALL HAS 7 SECs TO REACH THE 1ST TRIGGER
-	'-------------------------------------------------------------··  ·	
+	'-------------------------------------------------------------Â·Â·  Â·	
 
 		'**IMPORTANT** Ball has 7 secs to reach the trigger001 on the trap.
 		'When ball reach that trigger the Angel will be trapped, we open the door and the timmer should stop.
@@ -30369,10 +30388,10 @@ Sub TrapSECEntranceTimer_Timer()
 		TrapSECEntranceTimer.UserValue = TrapSECEntranceTimer.UserValue + 1
 
 
-	'==============================-------------------------··  ·
+	'==============================-------------------------Â·Â·  Â·
 	' AFTER 7 SECs THE BALL DIDNT REACH THE 1st TRAP TRIGGER
 	' WHY? ... WE DUNNO! SO WE HAVE TO OPEN THE TRAP AGAIN
-	'==============================-------------------------··  ·
+	'==============================-------------------------Â·Â·  Â·
 	Case 5
 
 		'We need to set trap to empty because:
@@ -30427,7 +30446,7 @@ End Sub
 
 
 
-'[TRAPPED - DEMON]==============---------··  ·   ·
+'[TRAPPED - DEMON]==============---------Â·Â·  Â·   Â·
 '===========================================-----
 '*     DEMON TRAPPED 		       	  	 	 *-------------------------------------------------------------------------------------
 '===========================================-----
@@ -30574,11 +30593,11 @@ End Sub
 
 
 
-'[TRAPPED - ANGEL]==============---------··  ·   ·
-'===========================================-----··· ··  · 
+'[TRAPPED - ANGEL]==============---------Â·Â·  Â·   Â·
+'===========================================-----Â·Â·Â· Â·Â·  Â· 
 '*     ANGEL TRAPPED 		       	  	 	 *-------------------------------------------------------------------------------------
-'===========================================-----··· ··  ·
-'===============================---------··  ·   ·
+'===========================================-----Â·Â·Â· Â·Â·  Â·
+'===============================---------Â·Â·  Â·   Â·
 
 Sub AngelHasBeenTrapped()
 
@@ -30683,11 +30702,11 @@ End Sub
 
 
 
-'[PROBLEMS, TRAP]================---------··  ·   ·
-'===========================================-----··· ··  · 
+'[PROBLEMS, TRAP]================---------Â·Â·  Â·   Â·
+'===========================================-----Â·Â·Â· Â·Â·  Â· 
 '*  BALL JAMMED IN THE TRAP	  	 	 *-------------------------------------------------------------------------------------
-'===========================================-----··· ··  ·
-'===============================---------··  ·   ·
+'===========================================-----Â·Â·Â· Â·Â·  Â·
+'===============================---------Â·Â·  Â·   Â·
 
 
 '=============================================================---------------------
@@ -31131,11 +31150,11 @@ Sub TrapPROBLEMTimer_Timer()
 
 
 
-	'========================------------··  ·
-	'=====================================-----------------------------···  ·
+	'========================------------Â·Â·  Â·
+	'=====================================-----------------------------Â·Â·Â·  Â·
 	'----=[ CHECKING IF A BALL IS STUCKED OR FLEED FROM THE TRAP ]=--
-	'=====================================-----------------------------···  ·
-	'========================------------··  ·
+	'=====================================-----------------------------Â·Â·Â·  Â·
+	'========================------------Â·Â·  Â·
 		Case 0
 		
 			'If the ball is pressing a trigger there is no need to keep checking for missing balls... is pressing the trigger, aint?
@@ -31416,11 +31435,11 @@ Sub TrapPROBLEMTimer_Timer()
 
 
 
-	'========================------------··· ·  ·
-	'==================================================-----------------------··· ··  ·
+	'========================------------Â·Â·Â· Â·  Â·
+	'==================================================-----------------------Â·Â·Â· Â·Â·  Â·
 	'----=[ THERE ARE TWO BALLS INSIDE THE TRAP!!!]=--
-	'==================================================-----------------------··· ··  ·
-	'========================------------··· ·  ·
+	'==================================================-----------------------Â·Â·Â· Â·Â·  Â·
+	'========================------------Â·Â·Â· Â·  Â·
 		Case 50
 		
 			'We must open the trap to let the balls go back to the pf again.
@@ -31539,11 +31558,11 @@ End Sub
 
 
 
-'[ESCAPED - DEMON]==============---------··  ·   ·
-'===========================================-----··· ··  · 
+'[ESCAPED - DEMON]==============---------Â·Â·  Â·   Â·
+'===========================================-----Â·Â·Â· Â·Â·  Â· 
 '*     DEMON ESCAPE 		       	  	 	 *-------------------------------------------------------------------------------------
-'===========================================-----··· ··  ·
-'===============================---------··  ·   ·
+'===========================================-----Â·Â·Â· Â·Â·  Â·
+'===============================---------Â·Â·  Â·   Â·
 
 Sub DemonEscapedCompleted()
 	
@@ -31618,11 +31637,11 @@ End Sub
 
 
 
-'[ESCAPED - ANGEL]==============---------··  ·   ·
-'===========================================-----··· ··  · 
+'[ESCAPED - ANGEL]==============---------Â·Â·  Â·   Â·
+'===========================================-----Â·Â·Â· Â·Â·  Â· 
 '*     ANGEL ESCAPE 		       	  	 	 *-------------------------------------------------------------------------------------
-'===========================================-----··· ··  ·
-'===============================---------··  ·   ·
+'===========================================-----Â·Â·Â· Â·Â·  Â·
+'===============================---------Â·Â·  Â·   Â·
 
 Sub AngelEscaped()
 
@@ -31754,9 +31773,9 @@ End Sub
 
 Sub UpdateTrapEntranceLites()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -32029,13 +32048,13 @@ Sub TrapDT1_hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -32174,9 +32193,9 @@ Sub TrapDT1_hit()
 
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP OPENING/CLOSING ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapTimer.Enabled = TRUE then
 
 		TrapDT1.IsDropped = false
@@ -32187,9 +32206,9 @@ Sub TrapDT1_hit()
 	End If
 
 	
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP IDENTIFYING A BALL ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapSECEntranceTimer.Enabled = TRUE then
 
 		TrapDT1.IsDropped = false
@@ -32203,9 +32222,9 @@ Sub TrapDT1_hit()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then
 
 		AddScore(100)
@@ -32282,9 +32301,9 @@ Sub TrapDT1_hit()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP ON ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	ElseIf TrapTurnedON = TRUE then
 
 		'-------------------------------------------		
@@ -32314,9 +32333,9 @@ Sub TrapDT1_hit()
 		
 		
 		
-		'================================-----------··· ·
-		'-=[ TRAP ON ]==[ DEMON INSIDE ]=--------------------···  ·  ·
-		'================================-----------··· ·
+		'================================-----------Â·Â·Â· Â·
+		'-=[ TRAP ON ]==[ DEMON INSIDE ]=--------------------Â·Â·Â·  Â·  Â·
+		'================================-----------Â·Â·Â· Â·
 		If DemonInsideTrap = TRUE then
 		
 			If TrapDT2Active = TRUE or TrapDT3Active = TRUE then 'Another switch has been hit. Do nothing or the ball could be lost.
@@ -32344,9 +32363,9 @@ Sub TrapDT1_hit()
 			FlashForms TK1L1, 1000, 100, 1
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ DEMON IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			If DemonInLevel = 1 then
 			
 				FlashForms TrapTrigger1Bulb, 1000, 100, 1
@@ -32362,9 +32381,9 @@ Sub TrapDT1_hit()
 				ActivateDiverterWithDemonSoundsAndGFX()
 				
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ DEMON **NOT** IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			Else
 			
 				FlashForms TrapTrigger1Bulb, 500, 500, 1
@@ -32382,9 +32401,9 @@ Sub TrapDT1_hit()
 		
 		
 		
-		'================================-----------··· ·
-		'-=[ TRAP ON ]==[ ANGEL INSIDE ]=--------------------···  ·  ·
-		'================================-----------··· ·
+		'================================-----------Â·Â·Â· Â·
+		'-=[ TRAP ON ]==[ ANGEL INSIDE ]=--------------------Â·Â·Â·  Â·  Â·
+		'================================-----------Â·Â·Â· Â·
 		ElseIf AngelInsideTrap = TRUE then
 		
 				TrapDT1Active = TRUE 'Which switch has been hit?
@@ -32405,14 +32424,14 @@ Sub TrapDT1_hit()
 			FlashForms TK1L1, 500, 500, 1
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ ANGEL IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			If AngelInLevel = 1 then
 				
-				'---------------------------·· ·
+				'---------------------------Â·Â· Â·
 				': SMALL BALLSAVER :-
-				'---------------------------·· ·
+				'---------------------------Â·Â· Â·
 				If BallSaverActive = FALSE then 'Ball could be lost before the ball reach the kicker, and everything will get messed
 				
 					BallSaverActive = TRUE 'Avoid problems calling Mr. BallSaver 
@@ -32441,9 +32460,9 @@ Sub TrapDT1_hit()
 				FlashForms FlasherTrapR, 1000, 1000, 0
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ ANGEL **NOT** IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			Else
 			
 				FlashForms FlasherTrapL, 200, 50, 0
@@ -32517,13 +32536,13 @@ Sub TrapDT2_hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -32658,9 +32677,9 @@ Sub TrapDT2_hit()
 
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP OPENING/CLOSING ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapTimer.Enabled = TRUE then
 
 		TrapDT2.IsDropped = false
@@ -32671,9 +32690,9 @@ Sub TrapDT2_hit()
 	End If
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP IDENTIFYING A BALL ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapSECEntranceTimer.Enabled = TRUE then
 
 		TrapDT2.IsDropped = false
@@ -32687,15 +32706,15 @@ Sub TrapDT2_hit()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then
 
 
-		'------------------------------------··· · · ·· ·      ·
+		'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 		'--=[ SMALL BALLSAVER ]=-----
-		'------------------------------------··· · · ·· ·      ·
+		'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 		If BallSaverActive = FALSE and DemonOnPlayfield = FALSE then
 		
 			BallSaverActive = TRUE 'A direct hit to this target is very dangerous...
@@ -32787,14 +32806,14 @@ Sub TrapDT2_hit()
 
 	
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP ON ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	ElseIf TrapTurnedON = TRUE then
 
-		'------------------------------------··· · · ·· ·      ·
+		'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 		'--=[ SMALL BALLSAVER ]=-----
-		'------------------------------------··· · · ·· ·      ·
+		'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 		If BallSaverActive = FALSE then
 		
 			If TrapEmpty = FALSE then
@@ -32841,9 +32860,9 @@ Sub TrapDT2_hit()
 		
 		
 		
-		'================================-----------··· ·
-		'-=[ TRAP ON ]==[ DEMON INSIDE ]=--------------------···  ·  ·
-		'================================-----------··· ·
+		'================================-----------Â·Â·Â· Â·
+		'-=[ TRAP ON ]==[ DEMON INSIDE ]=--------------------Â·Â·Â·  Â·  Â·
+		'================================-----------Â·Â·Â· Â·
 		If DemonInsideTrap = TRUE then
 		
 			If TrapDT1Active = TRUE or TrapDT3Active = TRUE then 'Another switch has been hit. Do nothing or the ball could be lost.
@@ -32872,9 +32891,9 @@ Sub TrapDT2_hit()
 			FlashForms TK2L2, 1000, 100, 1
 			FlashForms TK2L1, 1000, 100, 1
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ DEMON IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			If DemonInLevel = 2 then
 			
 				FlashForms TrapTrigger2Bulb, 1000, 100, 1
@@ -32890,9 +32909,9 @@ Sub TrapDT2_hit()
 				ActivateDiverterWithDemonSoundsAndGFX()
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ DEMON **NOT** IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			Else
 			
 				FlashForms TrapTrigger2Bulb, 500, 500, 1
@@ -32909,9 +32928,9 @@ Sub TrapDT2_hit()
 		
 		
 		
-		'================================-----------··· ·
-		'-=[ TRAP ON ]==[ ANGEL INSIDE ]=--------------------···  ·  ·
-		'================================-----------··· ·
+		'================================-----------Â·Â·Â· Â·
+		'-=[ TRAP ON ]==[ ANGEL INSIDE ]=--------------------Â·Â·Â·  Â·  Â·
+		'================================-----------Â·Â·Â· Â·
 		ElseIf AngelInsideTrap = TRUE then
 		
 				TrapDT2Active = TRUE 'Which switch has been hit?
@@ -32932,9 +32951,9 @@ Sub TrapDT2_hit()
 			FlashForms TK2L1, 500, 500, 1
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ ANGEL IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			If AngelInLevel = 2 then
 			
 				FlashForms SoulTargetL2Light,  500, 50, SoulTargetL2Light.State
@@ -32950,9 +32969,9 @@ Sub TrapDT2_hit()
 				FlashForms FlasherTrapR, 1000, 1000, 0
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ ANGEL **NOT** IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			Else
 			
 				FlashForms FlasherTrapL, 200, 50, 0
@@ -32992,13 +33011,13 @@ Sub TrapDT3_hit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -33132,9 +33151,9 @@ Sub TrapDT3_hit()
 
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP OPENING/CLOSING ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapTimer.Enabled = TRUE then
 
 		TrapDT3.IsDropped = false
@@ -33145,9 +33164,9 @@ Sub TrapDT3_hit()
 	End If
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP IDENTIFYING A BALL ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapSECEntranceTimer.Enabled = TRUE then
 
 		TrapDT3.IsDropped = false
@@ -33161,9 +33180,9 @@ Sub TrapDT3_hit()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then
 
 		AddScore(100)
@@ -33243,9 +33262,9 @@ Sub TrapDT3_hit()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP ON ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	ElseIf TrapTurnedON = TRUE then
 
 		'-------------------------------------------		
@@ -33275,9 +33294,9 @@ Sub TrapDT3_hit()
 		
 		
 		
-		'================================-----------··· ·
-		'-=[ TRAP ON ]==[ DEMON INSIDE ]=--------------------···  ·  ·
-		'================================-----------··· ·
+		'================================-----------Â·Â·Â· Â·
+		'-=[ TRAP ON ]==[ DEMON INSIDE ]=--------------------Â·Â·Â·  Â·  Â·
+		'================================-----------Â·Â·Â· Â·
 		If DemonInsideTrap = TRUE then
 		
 			If TrapDT1Active = TRUE or TrapDT2Active = TRUE then 'Another switch has been hit. Do nothing or the ball could be lost.
@@ -33305,14 +33324,14 @@ Sub TrapDT3_hit()
 			FlashForms TK3L2, 1000, 100, 1
 			FlashForms TK3L1, 1000, 100, 1
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ DEMON IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			If DemonInLevel = 3 then
 			
-				'---------------------------·· ·
+				'---------------------------Â·Â· Â·
 				': SMALL BALLSAVER :-
-				'---------------------------·· ·
+				'---------------------------Â·Â· Â·
 				If BallSaverActive = FALSE then 'Ball could be lost before the ball reach the kicker, and everything will get messed
 				
 					BallSaverActive = TRUE 'Avoid problems calling Mr. BallSaver 
@@ -33336,9 +33355,9 @@ Sub TrapDT3_hit()
 				ActivateDiverterWithDemonSoundsAndGFX()
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ DEMON **NOT** IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			Else
 			
 				FlashForms TrapTrigger3Bulb, 500, 500, 1
@@ -33356,9 +33375,9 @@ Sub TrapDT3_hit()
 		
 		
 		
-		'================================-----------··· ·
-		'-=[ TRAP ON ]==[ ANGEL INSIDE ]=--------------------···  ·  ·
-		'================================-----------··· ·
+		'================================-----------Â·Â·Â· Â·
+		'-=[ TRAP ON ]==[ ANGEL INSIDE ]=--------------------Â·Â·Â·  Â·  Â·
+		'================================-----------Â·Â·Â· Â·
 		ElseIf AngelInsideTrap = TRUE then
 		
 				TrapDT3Active = TRUE 'Which switch has been hit?
@@ -33379,9 +33398,9 @@ Sub TrapDT3_hit()
 			FlashForms TK3L1, 500, 500, 1
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ ANGEL IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			If AngelInLevel = 3 then
 			
 				FlashForms SoulTargetL3Light,  500, 50, SoulTargetL3Light.State
@@ -33397,9 +33416,9 @@ Sub TrapDT3_hit()
 				FlashForms FlasherTrapR, 1000, 1000, 0
 			
 			
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			'--=[ ANGEL **NOT** IN THiS LEVEL ]=---
-			'------------------------------------··· · · ·· ·      ·
+			'------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 			Else
 			
 				FlashForms FlasherTrapL, 200, 50, 0
@@ -33481,13 +33500,13 @@ Sub TrapDT1UP_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -33520,7 +33539,7 @@ Sub TrapDT1UP_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 
@@ -33589,9 +33608,9 @@ Sub TrapDT1UP_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		'---------------------------------
@@ -33651,9 +33670,9 @@ Sub TrapDT1UP_Hit : StopBallSearchTimer()
 
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP MOVING ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapTimer.Enabled = TRUE then
 
 		TrapDT1UP.IsDropped = false
@@ -33669,9 +33688,9 @@ Sub TrapDT1UP_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE Then
 
 		If BITrapKicker1 = TRUE then 'There could be a ball already on that kicker (ie: 2 time you activate the trap)
@@ -33787,13 +33806,13 @@ Sub TrapDT2UP_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -33826,7 +33845,7 @@ Sub TrapDT2UP_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -33894,9 +33913,9 @@ Sub TrapDT2UP_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		'---------------------------------
@@ -33955,9 +33974,9 @@ Sub TrapDT2UP_Hit : StopBallSearchTimer()
 
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP MOVING ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapTimer.Enabled = TRUE then
 
 		TrapDT2UP.IsDropped = false
@@ -33971,9 +33990,9 @@ Sub TrapDT2UP_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE Then
 	
 		If BITrapKicker2 = TRUE then 'There could be a ball already on that kicker (ie: 2 time you activate the trap)
@@ -34088,13 +34107,13 @@ Sub TrapDT3UP_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -34127,7 +34146,7 @@ Sub TrapDT3UP_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -34195,9 +34214,9 @@ Sub TrapDT3UP_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		'---------------------------------
@@ -34257,9 +34276,9 @@ Sub TrapDT3UP_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-------------------------------------·
+	'-------------------------------------Â·
 	'--=[ TRAP MOVING ]=-----
-	'-------------------------------------·
+	'-------------------------------------Â·
 	If TrapTimer.Enabled = TRUE then
 
 		TrapDT3UP.IsDropped = false
@@ -34271,9 +34290,9 @@ Sub TrapDT3UP_Hit : StopBallSearchTimer()
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE Then
 
 		If BITrapKicker3 = TRUE then 'There could be a ball already on that kicker (ie: 2 time you activate the trap)
@@ -34618,11 +34637,11 @@ End Sub
 
 
 
-'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------···· ·
+'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------Â·Â·Â·Â· Â·
 '--=[ TRAP KICKER - 001 ]=------------------------------------------------------------------------------------
-'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------···· ·
+'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------Â·Â·Â·Â· Â·
 
-Sub TrapKicker1_Hit : StopBallSearchTimer() '-----------------------------------------------------=[ KICKER·001 ]=--
+Sub TrapKicker1_Hit : StopBallSearchTimer() '-----------------------------------------------------=[ KICKERÂ·001 ]=--
 
 	'If fpballid = 666 then
 	if activeball.image = "bo" then
@@ -34646,15 +34665,15 @@ Sub TrapKicker1_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 			BITrapKicker1 = TRUE
 		
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -34676,7 +34695,7 @@ Sub TrapKicker1_Hit : StopBallSearchTimer() '-----------------------------------
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -34766,9 +34785,9 @@ Sub TrapKicker1_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		'---------------------------------
@@ -34834,9 +34853,9 @@ Sub TrapKicker1_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then
 	
 		'-----------------------------
@@ -34929,11 +34948,11 @@ End Sub
 
 
 
-'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------···· ·
+'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------Â·Â·Â·Â· Â·
 '--=[ TRAP KICKER - 002 ]=------------------------------------------------------------------------------------
-'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------···· ·
+'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------Â·Â·Â·Â· Â·
 
-Sub TrapKicker2_Hit : StopBallSearchTimer() '-----------------------------------------------------=[ KICKER·002 ]=--
+Sub TrapKicker2_Hit : StopBallSearchTimer() '-----------------------------------------------------=[ KICKERÂ·002 ]=--
 
 	'If fpballid = 666 then
 	if activeball.image = "bo" then
@@ -34959,15 +34978,15 @@ Sub TrapKicker2_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 	
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 			BITrapKicker2 = TRUE
 		
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -34989,7 +35008,7 @@ Sub TrapKicker2_Hit : StopBallSearchTimer() '-----------------------------------
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -35075,9 +35094,9 @@ Sub TrapKicker2_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		'---------------------------------
@@ -35141,9 +35160,9 @@ Sub TrapKicker2_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then
 	
 		'-----------------------------
@@ -35235,11 +35254,11 @@ End Sub
 
 
 
-'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------···· ·
+'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------Â·Â·Â·Â· Â·
 '--=[ TRAP KICKER - 003 ]=------------------------------------------------------------------------------------
-'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------···· ·
+'+=+=+=+=+=+=+=+=+=+=+=+=+=========-----------Â·Â·Â·Â· Â·
 
-Sub TrapKicker3_Hit : StopBallSearchTimer() '-----------------------------------------------------=[ KICKER·003 ]=--
+Sub TrapKicker3_Hit : StopBallSearchTimer() '-----------------------------------------------------=[ KICKERÂ·003 ]=--
 
 	'If fpballid = 666 then
 	if activeball.image = "bo" then
@@ -35263,15 +35282,15 @@ Sub TrapKicker3_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 			BITrapKicker3 = TRUE
 		
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -35293,7 +35312,7 @@ Sub TrapKicker3_Hit : StopBallSearchTimer() '-----------------------------------
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -35383,9 +35402,9 @@ Sub TrapKicker3_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		'---------------------------------
@@ -35450,9 +35469,9 @@ Sub TrapKicker3_Hit : StopBallSearchTimer() '-----------------------------------
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then
 	
 		'-----------------------------
@@ -35735,9 +35754,9 @@ Sub Banktimer_timer()' This is a DELAY so drop targets have time to reset
 	Banktimer.enabled = False
 	PlaySound "fx_motor_saber"
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ TRAP OFF ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If TrapTurnedON = FALSE then 'TRAP is OFF
 
 		x = 0
@@ -36788,7 +36807,7 @@ Sub TrapTimer_Timer()
 
 
 	
-	Case 100 '----------------------------------- - - -> JUMP FROM 50 <- - ----·· ·  ·
+	Case 100 '----------------------------------- - - -> JUMP FROM 50 <- - ----Â·Â· Â·  Â·
 
 		LightSeqTilt.StopPlay
 		
@@ -37144,9 +37163,9 @@ Sub TrapTimer_Timer()
 		TrapTimer.UserValue = TrapTimer.UserValue + 1
 
 
-	'-------------------------------------···  ·   ·
+	'-------------------------------------Â·Â·Â·  Â·   Â·
 	' CREATES ANOTHER BALL
-	'-------------------------------------···  ·   ·
+	'-------------------------------------Â·Â·Â·  Â·   Â·
 	Case 131 
 
 		TrapTurnedON = TRUE 'The Trap is on
@@ -37347,9 +37366,9 @@ Sub TrapTimer_Timer()
 
 
 
-	'===================================-------------·· ·  ·
+	'===================================-------------Â·Â· Â·  Â·
 	'--=[ LOCATING BALLS INSIDE THE TRAP - CLEANING MODES ]=--
-	'===================================-------------·· ·  ·
+	'===================================-------------Â·Â· Â·  Â·
 	Case 1000
 
 			TrapStairDT1.IsDropped = True 'WAS SolenoidON!
@@ -37505,11 +37524,11 @@ Sub TrapTimer_Timer()
 
 
 
-	'====================-----------------··  ·
-	'=====================================-----------------------------·· ·  ·
+	'====================-----------------Â·Â·  Â·
+	'=====================================-----------------------------Â·Â· Â·  Â·
 	'---=[ E X T R A C T I N G -=:: D E M O N ::=- B L O O D ]=----
-	'=============================----------------------------·· ·  ·
-	'====================-----------------··  ·
+	'=============================----------------------------Â·Â· Â·  Â·
+	'====================-----------------Â·Â·  Â·
 	'ExtractingDemonBlood()
 
 	'--------------------------------------------------
@@ -38574,9 +38593,9 @@ Sub TrapTimer_Timer()
 		TrapTimer.UserValue = TrapTimer.UserValue + 1
 
 
-	'==============================================-----------------···· · ·
+	'==============================================-----------------Â·Â·Â·Â· Â· Â·
 	Case 1137 '--=[ RESET TRAP + DEMON + CREATE NEW BALL ]=--
-	'==============================================-----------------···· · ·
+	'==============================================-----------------Â·Â·Â·Â· Â· Â·
 
 		FlippersActive = TRUE 'Flipper were inactive
 		
@@ -38634,11 +38653,11 @@ Sub TrapTimer_Timer()
 
 
 
-	'====================-----------------··  ·
-	'========================================================----------·· ·  ·
+	'====================-----------------Â·Â·  Â·
+	'========================================================----------Â·Â· Â·  Â·
 	'---=[ OLD EXTRACTING -=:: A N G E L ::=- B L O O D ]=----
-	'========================================================----------·· ·  ·
-	'====================-----------------··  ·
+	'========================================================----------Â·Â· Â·  Â·
+	'====================-----------------Â·Â·  Â·
 	Case 2000
 
 			TurnOFFTrapLites()
@@ -39244,11 +39263,11 @@ Sub TrapTimer_Timer()
 
 
 
-	'====================-----------------··  ·
-	'========================================================----------·· ·  ·
+	'====================-----------------Â·Â·  Â·
+	'========================================================----------Â·Â· Â·  Â·
 	'---=[ E X T R A C T I N G -=:: A N G E L ::=- B L O O D ]=----
-	'========================================================----------·· ·  ·
-	'====================-----------------··  ·
+	'========================================================----------Â·Â· Â·  Â·
+	'====================-----------------Â·Â·  Â·
 	'ExtractingAngelBlood()
 
 	'--------------------------------------------------
@@ -40283,9 +40302,9 @@ Sub TrapTimer_Timer()
 		TrapTimer.UserValue = TrapTimer.UserValue + 1
 
 
-	'==============================================-----------------···· · ·
+	'==============================================-----------------Â·Â·Â·Â· Â· Â·
 	Case 3148 '--=[ RESET TRAP + END OF BALL ]=--
-	'==============================================-----------------···· · ·
+	'==============================================-----------------Â·Â·Â·Â· Â· Â·
 
 		TrapTimer.Interval = 1000
 		TrapTimer.UserValue = TrapTimer.UserValue + 1
@@ -40329,10 +40348,10 @@ Sub TrapTimer_Timer()
 '[3DMBALL
 
 
-	'===========================================================---··· ·  ·
+	'===========================================================---Â·Â·Â· Â·  Â·
 	'  ---===:::[  B L O O D  E X T R A C T O R   ]:::====---	
 	'  ---===:::[   - -  M U L T I B A L L - -    ]:::====---
-	'===========================================================---··· ·  ·
+	'===========================================================---Â·Â·Â· Â·  Â·
 
 	'-------------------------------------------------------------
 	Case 3900 '--=[ OPENING BLOOD EXTRACTOR :: LV 001 :: ]=---
@@ -40859,9 +40878,9 @@ Sub TrapTimer_Timer()
 
 
 
-	'=============================================-------------------·· ·  ·
+	'=============================================-------------------Â·Â· Â·  Â·
 	' --=[ JACKPOTS DURING MULTIBALL ]=--
-	'=============================================-------------------·· ·  ·
+	'=============================================-------------------Â·Â· Â·  Â·
 	Case 4100 'BEMBallJackpot()
 
 		LightSeqTilt.StopPlay
@@ -40870,9 +40889,9 @@ Sub TrapTimer_Timer()
 		TrapTimer.Enabled = FALSE
 
 
-	'=============================================-------------------·· ·  ·
+	'=============================================-------------------Â·Â· Â·  Â·
 	' --=[ BLOODEXTRACTOR MBALL OVER + EXTRABALL ]=--
-	'=============================================-------------------·· ·  ·
+	'=============================================-------------------Â·Â· Â·  Â·
 	Case 4200 'BloodExtractorMballOverCosBallHasBeenLost()
 
 		RegularBallHasBeenLost()
@@ -40883,9 +40902,9 @@ Sub TrapTimer_Timer()
 
 
 
-	'=============================================-------------------·· ·  ·
-	'--=[ BLOODEXTRACTOR MBALL OVER + RECOVER BALLS FROM TRAP ]=---·
-	'=============================================-------------------·· ·  ·
+	'=============================================-------------------Â·Â· Â·  Â·
+	'--=[ BLOODEXTRACTOR MBALL OVER + RECOVER BALLS FROM TRAP ]=---Â·
+	'=============================================-------------------Â·Â· Â·  Â·
 	Case 4300 'BloodExtractorMballOver()
 
 			ResetBallSearch() 'We need to reset the ballsearch
@@ -41030,11 +41049,11 @@ Sub TrapTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ WOUND OPEN 001 ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ WOUND OPEN 001 ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 6666 'WMReleaseTrap
 
 		'If WishMasterTimer.Enabled = FALSE then 'We use this when Angel or Luzbel has been hit. We dont want to mix voices!
@@ -41105,9 +41124,9 @@ Sub TrapTrigger1_UnHit()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -41160,9 +41179,9 @@ Sub TrapTrigger2_UnHit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -41209,9 +41228,9 @@ Sub TrapTrigger3_UnHit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -41264,9 +41283,9 @@ Sub TrapEntranceOpto_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		Exit Sub
@@ -41380,9 +41399,9 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -41397,9 +41416,9 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 
 	
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		Exit Sub
 	End If
@@ -41528,9 +41547,9 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 
 
 
-	'================================------------··  · ·
+	'================================------------Â·Â·  Â· Â·
 	'--= TRAP ON ===---------------------------------------
-	'================================------------··  · ·
+	'================================------------Â·Â·  Â· Â·
 	If TrapTurnedON = TRUE then
 
 
@@ -41564,18 +41583,18 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 		
 		
 		
-		'==============================------··  · ·
-		'------==================================------··  · ·
+		'==============================------Â·Â·  Â· Â·
+		'------==================================------Â·Â·  Â· Â·
 		'-----:[                             ]:------------------
 		'----=:[   D E M O N   I N S I D E   ]:=-----
 		'-----:[                             ]:------------------
-		'------==================================------··  · ·
-		'==============================------··  · ·
+		'------==================================------Â·Â·  Â· Â·
+		'==============================------Â·Â·  Â· Â·
 		If DemonInsideTrap = TRUE then
 		
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' DEMON IS **NOT** FLEEING
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			If DemonTrying2Escape = FALSE then
 			
 				If DemonInLevel <> 1 then 'Player could nudge the table so we must avoid 2 comments lites...etc
@@ -41599,9 +41618,9 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 				End If
 			
 			
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' DEMON IS **FLEEING**
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			ElseIf DemonTrying2Escape = TRUE then
 			
 				'----------------------------
@@ -41686,22 +41705,22 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 
 
 
-	'==============================------··  · ·
-	'------==================================------··  · ·
+	'==============================------Â·Â·  Â· Â·
+	'------==================================------Â·Â·  Â· Â·
 	'-----:[                             ]:------------------
 	'----=:[   A N G E L   I N S I D E   ]:=-----
 	'-----:[                             ]:------------------
-	'------==================================------··  · ·
-	'==============================------··  · ·
+	'------==================================------Â·Â·  Â· Â·
+	'==============================------Â·Â·  Â· Â·
 
 	If TrapTurnedON = TRUE then
 
 		If AngelInsideTrap = TRUE then
 		
 		
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' ANGEL IS **NOT** FLEEING
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			If AngelInLevel = 0 then 'Player could nudge the table so we must avoid 2 comments lites...etc
 			
 				AngelInLevel = 1
@@ -41714,9 +41733,9 @@ Sub TrapTrigger1_Hit ': StopBallSearchTimer()
 				'We dont have to do nothing here, 'cos if you go a couple of lines up. You will see that when the trigger has been pressed
 				'we called the AngelHasBeenTrapped() subrutine. So really, nothin' here... trust me!
 			
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' ANGEL IS **FLEEING**
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			ElseIf AngelInLevel => 2 then 'Angel comming from 2nd level
 			
 				AngelInLevel = 1
@@ -41775,9 +41794,9 @@ Sub TrapTrigger2_Hit ': StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -41791,9 +41810,9 @@ Sub TrapTrigger2_Hit ': StopBallSearchTimer()
 	End If
 
 	
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		Exit Sub
 	End If
@@ -41915,20 +41934,20 @@ Sub TrapTrigger2_Hit ': StopBallSearchTimer()
 
 
 
-	'==============================------··  · ·
-	'------==================================------··  · ·
+	'==============================------Â·Â·  Â· Â·
+	'------==================================------Â·Â·  Â· Â·
 	'-----:[                             ]:------------------
 	'----=:[   D E M O N   I N S I D E   ]:=-----
 	'-----:[                             ]:------------------
-	'------==================================------··  · ·
-	'==============================------··  · ·
+	'------==================================------Â·Â·  Â· Â·
+	'==============================------Â·Â·  Â· Â·
 	If TrapTurnedON = TRUE then
 
 		If DemonInsideTrap = TRUE then
 		
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' DEMON IS **NOT** FLEEING
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			If DemonTrying2Escape = FALSE then
 			
 				If DemonInLevel = 1 then 'Player could nudge the table so we must avoid 2 comments lites...etc
@@ -41951,9 +41970,9 @@ Sub TrapTrigger2_Hit ': StopBallSearchTimer()
 				End If
 			
 			
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' DEMON IS **FLEEING**
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			ElseIf DemonTrying2Escape = TRUE then
 			
 				'----------------------------
@@ -42036,22 +42055,22 @@ Sub TrapTrigger2_Hit ': StopBallSearchTimer()
 
 
 
-	'==============================------··  · ·
-	'------==================================------··  · ·
+	'==============================------Â·Â·  Â· Â·
+	'------==================================------Â·Â·  Â· Â·
 	'-----:[                             ]:------------------
 	'----=:[   A N G E L   I N S I D E   ]:=-----
 	'-----:[                             ]:------------------
-	'------==================================------··  · ·
-	'==============================------··  · ·
+	'------==================================------Â·Â·  Â· Â·
+	'==============================------Â·Â·  Â· Â·
 
 	If TrapTurnedON = TRUE then
 
 		If AngelInsideTrap = TRUE then
 		
 		
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' ANGEL IS **NOT** FLEEING
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			If AngelInLevel = 1 then 'Player could nudge the table so we must avoid 2 comments lites...etc
 			
 				AngelInLevel = 2
@@ -42073,9 +42092,9 @@ Sub TrapTrigger2_Hit ': StopBallSearchTimer()
 					TrapGoingUpDownTimer.Enabled = TRUE
 			
 			
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' ANGEL IS **FLEEING**
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			ElseIf AngelInLevel = 3 then
 			
 				AngelInLevel = 2
@@ -42127,9 +42146,9 @@ Sub TrapTrigger3_Hit ': StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -42143,9 +42162,9 @@ Sub TrapTrigger3_Hit ': StopBallSearchTimer()
 	End If
 
 	
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		Exit Sub
 	End If
@@ -42273,21 +42292,21 @@ Sub TrapTrigger3_Hit ': StopBallSearchTimer()
 
 
 
-	'==============================------··  · ·
-	'------==================================------··  · ·
+	'==============================------Â·Â·  Â· Â·
+	'------==================================------Â·Â·  Â· Â·
 	'-----:[                             ]:------------------
 	'----=:[   D E M O N   I N S I D E   ]:=-----
 	'-----:[                             ]:------------------
-	'------==================================------··  · ·
-	'==============================------··  · ·
+	'------==================================------Â·Â·  Â· Â·
+	'==============================------Â·Â·  Â· Â·
 
 	If TrapTurnedON = TRUE then
 
 		If DemonInsideTrap = TRUE then
 		
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' DEMON IS **NOT** FLEEING
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			If DemonTrying2Escape = FALSE then
 			
 				'----------------------------
@@ -42329,9 +42348,9 @@ Sub TrapTrigger3_Hit ': StopBallSearchTimer()
 			
 			
 			
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' DEMON IS **FLEEING**
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			ElseIf DemonTrying2Escape = TRUE then
 			
 				'----------------------------
@@ -42378,21 +42397,21 @@ Sub TrapTrigger3_Hit ': StopBallSearchTimer()
 
 
 
-	'==============================------··  · ·
-	'------==================================------··  · ·
+	'==============================------Â·Â·  Â· Â·
+	'------==================================------Â·Â·  Â· Â·
 	'-----:[                             ]:------------------
 	'----=:[   A N G E L   I N S I D E   ]:=-----
 	'-----:[                             ]:------------------
-	'------==================================------··  · ·
-	'==============================------··  · ·
+	'------==================================------Â·Â·  Â· Â·
+	'==============================------Â·Â·  Â· Â·
 	If TrapTurnedON = TRUE then
 
 		If AngelInsideTrap = TRUE then
 		
 		
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' ANGEL IS **NOT** FLEEING
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			If AngelInLevel =< 2 then 'Player could nudge the table so we must avoid 2 comments lites...etc
 			
 				AngelInLevel = 3
@@ -42416,9 +42435,9 @@ Sub TrapTrigger3_Hit ': StopBallSearchTimer()
 					TrapGoingUpDownTimer.Enabled = TRUE
 			
 			
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			' BALL HAS MISSED THE KICKER
-			'=============================-----·· ·   ·
+			'=============================-----Â·Â· Â·   Â·
 			ElseIf AngelInLevel = 3 then
 			
 				If TrapGoingUpDownTimer.UserValue => 153 then 'BALL HAS NOT ENTERED, OR PLAYER IS NUDGING THE PIN... SO TRY AGAIN!
@@ -42448,11 +42467,11 @@ End Sub
 
 
 
-'=======================================----··  ·
-'---------------------------------------------·· ··  ·
+'=======================================----Â·Â·  Â·
+'---------------------------------------------Â·Â· Â·Â·  Â·
 ' DEMON / ANGEL TRAP LITES
-'---------------------------------------------·· ··  ·
-'=======================================----··  ·
+'---------------------------------------------Â·Â· Â·Â·  Â·
+'=======================================----Â·Â·  Â·
 
 Sub TurnOFFTrapLites()
 
@@ -42572,9 +42591,9 @@ Sub UpdateAngelTrapLevelLites()
 
 	TurnOFFTrapLites() '1st we turn'em off
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	'---=[ TRAP ON BUT EMPTY ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	If TrapTurnedON = TRUE and TrapEmpty = TRUE then
 	
 		TrapKicker1Bulb.State = 1
@@ -42593,9 +42612,9 @@ Sub UpdateAngelTrapLevelLites()
 
 	Select Case (AngelInLevel)
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 0 '---=[ LEVEL 000 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		TrapTrigger1Bulb.State = 1
 		TrapTrigger2Bulb.State = 1
@@ -42603,9 +42622,9 @@ Sub UpdateAngelTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 1 '---=[ LEVEL 001 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If AngelInsideTrap = TRUE then
 			BoomAngelTrappedLevel01()
@@ -42647,9 +42666,9 @@ Sub UpdateAngelTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 2 '---=[ LEVEL 002 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 		If AngelInsideTrap = TRUE then
 			BoomAngelTrappedLevel02()
 		End If
@@ -42691,9 +42710,9 @@ Sub UpdateAngelTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 3 '---=[ LEVEL 003 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If AngelInsideTrap = TRUE then
 			BoomAngelTrappedLevel03()
@@ -42751,9 +42770,9 @@ Sub UpdateDemonTrapLevelLites()
 
 	TurnOFFTrapLites() '1st we turn'em off
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	'---=[ TRAP ON BUT EMPTY ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	If TrapTurnedON = TRUE and TrapEmpty = TRUE then
 	
 		TrapKicker1Bulb.State = 1
@@ -42773,9 +42792,9 @@ Sub UpdateDemonTrapLevelLites()
 
 	Select Case (DemonInLevel)
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 0 '---=[ LEVEL 000 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		TurnOFFTrapLites()
 		
@@ -42785,9 +42804,9 @@ Sub UpdateDemonTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 1 '---=[ LEVEL 001 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If DemonInsideTrap = TRUE then
 			BoomDemonTrappedLevel01()
@@ -42827,9 +42846,9 @@ Sub UpdateDemonTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 2 '---=[ LEVEL 002 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If DemonInsideTrap = TRUE then
 			BoomDemonTrappedLevel02()
@@ -42868,9 +42887,9 @@ Sub UpdateDemonTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 3 '---=[ LEVEL 003 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If DemonInsideTrap = TRUE then
 			BoomDemonTrappedLevel03()
@@ -42930,9 +42949,9 @@ Sub UpdateDemonFleeingTrapLevelLites()
 
 	TurnOFFTrapLites() '1st we turn'em off
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	'---=[ TRAP ON BUT EMPTY ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	If TrapTurnedON = TRUE and TrapEmpty = TRUE then
 	
 		TrapKicker1Bulb.State = 1
@@ -42951,9 +42970,9 @@ Sub UpdateDemonFleeingTrapLevelLites()
 
 	Select Case (DemonInLevel)
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 0 '---=[ LEVEL 000 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		TrapTrigger1Bulb.State = 1
 		TrapTrigger2Bulb.State = 1
@@ -42961,9 +42980,9 @@ Sub UpdateDemonFleeingTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 1 '---=[ LEVEL 001 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If DemonInsideTrap = TRUE then
 			BoomDemonTrappedLevel01()
@@ -43005,9 +43024,9 @@ Sub UpdateDemonFleeingTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 2 '---=[ LEVEL 002 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 		If DemonInsideTrap = TRUE then
 			BoomDemonTrappedLevel02()
 		End If
@@ -43049,9 +43068,9 @@ Sub UpdateDemonFleeingTrapLevelLites()
 
 
 
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 	Case 3 '---=[ LEVEL 003 ]=----
-	'================================-----····  ·
+	'================================-----Â·Â·Â·Â·  Â·
 
 		If DemonInsideTrap = TRUE then
 			BoomDemonTrappedLevel03()
@@ -43149,9 +43168,9 @@ End Sub
 
 Sub TrapDivertersTimer_Timer()
 
-	'========================================--------------·· ·
+	'========================================--------------Â·Â· Â·
 	'--=[ MIDNIGHT DARKNESS OR POSSESION ]=----------------------------
-	'========================================--------------·· ·
+	'========================================--------------Â·Â· Â·
 	If MidnightDarknessActive = TRUE or PossesionTimer.Enabled = TRUE then 'We dont want the balls to be stucked
 
 		TrapDT1.IsDropped = false 'There could be that the ball is trapped, between the diverters and the target.
@@ -43170,9 +43189,9 @@ Sub TrapDivertersTimer_Timer()
 
 
 
-	'========================================--------------·· ·
+	'========================================--------------Â·Â· Â·
 	'--=[ 1 OR 2 DEMONS DESTROYED ]=----------------------------
-	'========================================--------------·· ·
+	'========================================--------------Â·Â· Â·
 	If TrapNeedsSeveralHitsToStart = TRUE then
 
 		If TrapDT1Active = TRUE then
@@ -43253,9 +43272,9 @@ Sub TrapDivertersTimer_Timer()
 	
 
 
-	'========================================--------------·· ·
+	'========================================--------------Â·Â· Â·
 	'--=[ TRAP EMPTY ]=----------------------------
-	'========================================--------------·· ·
+	'========================================--------------Â·Â· Â·
 	If TrapEmpty = TRUE then 'There is nothing inside the trap, not an Angel neither a Demon
 
 		TrapDT1.IsDropped = false 'There could be that the ball is trapped, between the diverters and the target.
@@ -43276,11 +43295,11 @@ Sub TrapDivertersTimer_Timer()
 
 
 
-	'===============================---------··· ·   ·
-	'====----------------====================----------------------··· ·   ·
+	'===============================---------Â·Â·Â· Â·   Â·
+	'====----------------====================----------------------Â·Â·Â· Â·   Â·
 	'---=[ DEMON INSIDE ]=-------
-	'====----------------====================----------------------··· ·   ·
-	'===============================---------··· ·   ·
+	'====----------------====================----------------------Â·Â·Â· Â·   Â·
+	'===============================---------Â·Â·Â· Â·   Â·
 	If DemonInsideTrap = TRUE then
 	
 		'--------------------------
@@ -43429,11 +43448,11 @@ Sub TrapDivertersTimer_Timer()
 
 
 
-	'===============================---------··· ·   ·
-	'====----------------====================----------------------··· ·   ·
+	'===============================---------Â·Â·Â· Â·   Â·
+	'====----------------====================----------------------Â·Â·Â· Â·   Â·
 	'---=[ ANGEL INSIDE ]=-------
-	'====----------------====================----------------------··· ·   ·
-	'===============================---------··· ·   ·
+	'====----------------====================----------------------Â·Â·Â· Â·   Â·
+	'===============================---------Â·Â·Â· Â·   Â·
 	ElseIf AngelInsideTrap = TRUE then
 
 		'--------------------------
@@ -43762,11 +43781,11 @@ Sub TrapGoingUpDownTimer_Timer()
 
 
 
-	'=============================-----·· ·
-	'========================================-----------------------··· ··  ·
+	'=============================-----Â·Â· Â·
+	'========================================-----------------------Â·Â·Â· Â·Â·  Â·
 	'---=[ TRAP LEVEL 003 ]=----- DEMON GOING DOWN 
-	'========================================-----------------------··· ··  ·
-	'=============================-----·· ·
+	'========================================-----------------------Â·Â·Â· Â·Â·  Â·
+	'=============================-----Â·Â· Â·
 
 		'---------------------------------------------------
 		Case 0 'FLASHING - 125
@@ -44101,11 +44120,11 @@ Sub TrapGoingUpDownTimer_Timer()
 
 
 
-	'=============================-----·· ·
-	'========================================-----------------------··· ··  ·
+	'=============================-----Â·Â· Â·
+	'========================================-----------------------Â·Â·Â· Â·Â·  Â·
 	'---=[ TRAP LEVEL 002 ]=----- DEMON GOING DOWN 
-	'========================================-----------------------··· ··  ·
-	'=============================-----·· ·
+	'========================================-----------------------Â·Â·Â· Â·Â·  Â·
+	'=============================-----Â·Â· Â·
 
 		'---------------------------------------------------
 		Case 10 'FLASHING - 125
@@ -44441,11 +44460,11 @@ Sub TrapGoingUpDownTimer_Timer()
 
 
 
-	'=============================-----·· ·
-	'========================================-----------------------··· ··  ·
+	'=============================-----Â·Â· Â·
+	'========================================-----------------------Â·Â·Â· Â·Â·  Â·
 	'---=[ TRAP LEVEL 001 ]=----- DEMON GOING DOWN 
-	'========================================-----------------------··· ··  ·
-	'=============================-----·· ·
+	'========================================-----------------------Â·Â·Â· Â·Â·  Â·
+	'=============================-----Â·Â· Â·
 
 		'---------------------------------------------------
 		Case 20 'FLASHING - 125
@@ -46149,9 +46168,9 @@ Sub TrapGoingUpDownTimer_Timer()
 			
 			PlaySound "fx_motor_locking"
 
-				'---------------------------·· ·
+				'---------------------------Â·Â· Â·
 				': SMALL BALLSAVER :-
-				'---------------------------·· ·
+				'---------------------------Â·Â· Â·
 				If BallSaverActive = FALSE then 'Ball could be lost before the ball reach the kicker, and everything will get messed
 				
 					BallSaverActive = TRUE 'Avoid problems calling Mr. BallSaver 
@@ -46852,9 +46871,9 @@ End Sub
 
 
 
-'=====================================-------------------------··· ·
+'=====================================-------------------------Â·Â·Â· Â·
 ' H E A R T F R O M D A R K N E S S
-'=====================================-------------------------··· ·
+'=====================================-------------------------Â·Â·Â· Â·
 
 Sub TrapHeartTimer_Timer()
 
@@ -46877,9 +46896,9 @@ Sub TrapHeartTimer_Timer()
 
 
 
-	'====================================================----------··· ·   ·
-	'··--=[ D E M O N  D A R K  B E A T ]=----·· ·  ·
-	'====================================================----------··· ·   ·
+	'====================================================----------Â·Â·Â· Â·   Â·
+	'Â·Â·--=[ D E M O N  D A R K  B E A T ]=----Â·Â· Â·  Â·
+	'====================================================----------Â·Â·Â· Â·   Â·
 
 	'-----------------------------------------
 	' ----> HEART FADE IN =----:: 04.60 SEC:: 
@@ -46943,9 +46962,9 @@ Sub TrapHeartTimer_Timer()
 
 
 
-	'====================================================----------··· ·   ·
-	'··--=[ A N G E L  B R E A T H I N G ]=----·· ·  ·
-	'====================================================----------··· ·   ·
+	'====================================================----------Â·Â·Â· Â·   Â·
+	'Â·Â·--=[ A N G E L  B R E A T H I N G ]=----Â·Â· Â·  Â·
+	'====================================================----------Â·Â·Â· Â·   Â·
 	Case 9
 
 		'We need a sec to adjust breathing sounds when the angel raise to the second or third level.
@@ -46953,9 +46972,9 @@ Sub TrapHeartTimer_Timer()
 		TrapHeartTimer.Interval = 4000
 		TrapHeartTimer.UserValue = TrapHeartTimer.UserValue + 1
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 10' -=[ BREATH 001 ]=----:: 07.00 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath001_7sec"
 		
@@ -46963,9 +46982,9 @@ Sub TrapHeartTimer_Timer()
 		TrapHeartTimer.UserValue = TrapHeartTimer.UserValue + 1
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 11' -=[ BREATH 002 ]=----:: 06.50 SECS ::
-	'========================-----------======·· ·  ·	
+	'========================-----------======Â·Â· Â·  Â·	
 
 		PlaySound "fx_breath002_65sec"
 		
@@ -46973,9 +46992,9 @@ Sub TrapHeartTimer_Timer()
 		TrapHeartTimer.UserValue = TrapHeartTimer.UserValue + 1
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 12' -=[ BREATH 003 ]=----:: 03.00 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath003_3sec"
 		
@@ -46983,27 +47002,27 @@ Sub TrapHeartTimer_Timer()
 		TrapHeartTimer.UserValue = TrapHeartTimer.UserValue + 1
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 13' -=[ BREATH 004 ]=----:: 02.90 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath004_3sec"
 		
 		TrapHeartTimer.Interval = 2900
 		TrapHeartTimer.UserValue = TrapHeartTimer.UserValue + 1
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 14' -=[ BREATH 005 ]=----:: 02.70 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath005_3sec"
 		
 		TrapHeartTimer.Interval = 2700
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 15 ' -=[ FADE OUT 006 ]=----:: 06.30 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath006_fade"
 		
@@ -47018,11 +47037,11 @@ Sub TrapHeartTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ ATTRACT MODE ]=---    ---=[ LUZBEL'S HEART ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ ATTRACT MODE ]=---    ---=[ LUZBEL'S HEART ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 600 'LuzHeart
 
 		PlaySound "fx_heart_br_wm"
@@ -47148,11 +47167,11 @@ Sub TrapHeartTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ LUZBEL'S HEART ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ LUZBEL'S HEART ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 666
 
 		PlaySound "fx_heart_br_wm"
@@ -47170,44 +47189,44 @@ Sub TrapHeartTimer_Timer()
 
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 101' -=[ BREATH 001 ]=----:: 07.00 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath001_7sec"
 		
 		TrapHeartTimer.Interval = 7000
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 102' -=[ BREATH 002 ]=----:: 06.50 SECS ::
-	'========================-----------======·· ·  ·	
+	'========================-----------======Â·Â· Â·  Â·	
 
 		PlaySound "fx_breath002_65sec"
 		
 		TrapHeartTimer.Interval = 6500
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 103' -=[ BREATH 003 ]=----:: 03.00 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath003_3sec"
 		
 		TrapHeartTimer.Interval = 3000
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 104' -=[ BREATH 004 ]=----:: 02.90 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath004_3sec"
 		
 		TrapHeartTimer.Interval = 2900
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 105' -=[ BREATH 005 ]=----:: 02.70 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath005_3sec"
 		
@@ -47215,9 +47234,9 @@ Sub TrapHeartTimer_Timer()
 
 
 
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 	Case 110 ' -=[ FADE OUT 006 ]=----:: 06.30 SECS ::
-	'========================-----------======·· ·  ·
+	'========================-----------======Â·Â· Â·  Â·
 
 		PlaySound "fx_breath006_fade"
 		
@@ -47284,9 +47303,9 @@ Sub TrapDoorDT_Hit
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		TrapDoorDT.IsDropped = True
@@ -47369,11 +47388,11 @@ End Sub
 
 
 
-'[BLOOD EXTRACTOR]==========================================--------------------··· ·
-'============================================================------------------------··· ·   ·
+'[BLOOD EXTRACTOR]==========================================--------------------Â·Â·Â· Â·
+'============================================================------------------------Â·Â·Â· Â·   Â·
 '=----::[  B L O O D   E X T R A C T O R   M E C H  ]::----
-'============================================================------------------------··· ·   ·
-'============================================================--------------------··· ·
+'============================================================------------------------Â·Â·Â· Â·   Â·
+'============================================================--------------------Â·Â·Â· Â·
 
 Sub BloodExtractorKicker_Hit : StopBallSearchTimer()
 
@@ -47419,9 +47438,9 @@ Sub BloodExtractorKicker_Hit : StopBallSearchTimer()
 
 
 
-	'=====================================----------···  ·
+	'=====================================----------Â·Â·Â·  Â·
 	'-=[ DEMON ON THE BLOOD EXTRACTOR ]=----------
-	'=====================================----------···  ·
+	'=====================================----------Â·Â·Â·  Â·
 	If BloodExtractorKickerBallIsADemon = TRUE then
 
 			DemonInTheBloodExtractor = TRUE
@@ -47452,9 +47471,9 @@ Sub BloodExtractorKicker_Hit : StopBallSearchTimer()
 
 
 
-	'=====================================----------···  ·
+	'=====================================----------Â·Â·Â·  Â·
 	'-=[ ANGEL ON THE BLOOD EXTRACTOR ]=----------
-	'=====================================----------···  ·
+	'=====================================----------Â·Â·Â·  Â·
 	ElseIf BloodExtractorKickerBallIsADemon = FALSE then
 
 			AngelInTheBloodExtractor = TRUE
@@ -47494,11 +47513,11 @@ End Sub
 
 
 
-'=====================================----------···  ·
-'==-------------------------------------------------------···  ·
+'=====================================----------Â·Â·Â·  Â·
+'==-------------------------------------------------------Â·Â·Â·  Â·
 '-=[** D E M O N **]- ON THE BLOOD EXTRACTOR ----------
-'==-------------------------------------------------------···  ·
-'=====================================----------···  ·
+'==-------------------------------------------------------Â·Â·Â·  Â·
+'=====================================----------Â·Â·Â·  Â·
 
 Sub ExtractingDemonBlood()
 
@@ -47886,44 +47905,44 @@ Sub ExtBloodBloodBathDMDText()
 	DMD_DisplayScene "   BLOOD BATH   ","    FINISHED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-- BLOOD BATH --", seNone, 150 : 'DMDA.QueueText "-- BLOOD BATH --", seNone, 150
 	'DMD2.QueueText "--  FINISHED  --", seNone, 150 : 'DMDB.QueueText "--  FINISHED  --", seNone, 150
-	'DMD1.QueueText "-- B·OOD BATH --", seNone, 150 : 'DMDA.QueueText "-- B·OOD BATH --", seNone, 150
+	'DMD1.QueueText "-- BÂ·OOD BATH --", seNone, 150 : 'DMDA.QueueText "-- BÂ·OOD BATH --", seNone, 150
 	'DMD2.QueueText "--  FINISHED  --", seNone, 150 : 'DMDB.QueueText "--  FINISHED  --", seNone, 150
-	'DMD1.QueueText "-- B·OOD BATH --", seNone, 150 : 'DMDA.QueueText "-- B·OOD BATH --", seNone, 150
-	'DMD2.QueueText "--  FINISHED· --", seNone, 150 : 'DMDB.QueueText "--  FINISHED· --", seNone, 150
+	'DMD1.QueueText "-- BÂ·OOD BATH --", seNone, 150 : 'DMDA.QueueText "-- BÂ·OOD BATH --", seNone, 150
+	'DMD2.QueueText "--  FINISHEDÂ· --", seNone, 150 : 'DMDB.QueueText "--  FINISHEDÂ· --", seNone, 150
 	'DMD1.QueueText "-- B OOD BATH --", seNone, 150 : 'DMDA.QueueText "-- B OOD BATH --", seNone, 150
-	'DMD2.QueueText "-- ·FINISHED· --", seNone, 150 : 'DMDB.QueueText "-- ·FINISHED· --", seNone, 150
-	'DMD1.QueueText "-- B OOD B·TH --", seNone, 150 : 'DMDA.QueueText "-- B OOD B·TH --", seNone, 150
-	'DMD2.QueueText "-- ·FINISHED  --", seNone, 150 : 'DMDB.QueueText "-- ·FINISHED  --", seNone, 150
-	'DMD1.QueueText "-- B OOD B·TH --", seNone, 150 : 'DMDA.QueueText "-- B OOD B·TH --", seNone, 150
-	'DMD2.QueueText "--  FIN·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN·SHED  --", seNone, 150
-	'DMD1.QueueText "-- · OOD B TH --", seNone, 150 : 'DMDA.QueueText "-- · OOD B TH --", seNone, 150
-	'DMD2.QueueText "--  FIN·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN·SHED  --", seNone, 150
-	'DMD1.QueueText "-- · OOD B T· --", seNone, 150 : 'DMDA.QueueText "-- · OOD B T· --", seNone, 150
+	'DMD2.QueueText "-- Â·FINISHEDÂ· --", seNone, 150 : 'DMDB.QueueText "-- Â·FINISHEDÂ· --", seNone, 150
+	'DMD1.QueueText "-- B OOD BÂ·TH --", seNone, 150 : 'DMDA.QueueText "-- B OOD BÂ·TH --", seNone, 150
+	'DMD2.QueueText "-- Â·FINISHED  --", seNone, 150 : 'DMDB.QueueText "-- Â·FINISHED  --", seNone, 150
+	'DMD1.QueueText "-- B OOD BÂ·TH --", seNone, 150 : 'DMDA.QueueText "-- B OOD BÂ·TH --", seNone, 150
+	'DMD2.QueueText "--  FINÂ·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FINÂ·SHED  --", seNone, 150
+	'DMD1.QueueText "-- Â· OOD B TH --", seNone, 150 : 'DMDA.QueueText "-- Â· OOD B TH --", seNone, 150
+	'DMD2.QueueText "--  FINÂ·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FINÂ·SHED  --", seNone, 150
+	'DMD1.QueueText "-- Â· OOD B TÂ· --", seNone, 150 : 'DMDA.QueueText "-- Â· OOD B TÂ· --", seNone, 150
 	'DMD2.QueueText "--  FIN SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHED  --", seNone, 150
-	'DMD1.QueueText "--   OO· B T· --", seNone, 150 : 'DMDA.QueueText "--   OO· B T· --", seNone, 150
+	'DMD1.QueueText "--   OOÂ· B TÂ· --", seNone, 150 : 'DMDA.QueueText "--   OOÂ· B TÂ· --", seNone, 150
 	'DMD2.QueueText "--  FIN SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHED  --", seNone, 150
-	'DMD1.QueueText "--   OO· B T  --", seNone, 150 : 'DMDA.QueueText "--   OO· B T  --", seNone, 150
-	'DMD2.QueueText "--  FIN SHE·  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHE·  --", seNone, 150
+	'DMD1.QueueText "--   OOÂ· B T  --", seNone, 150 : 'DMDA.QueueText "--   OOÂ· B T  --", seNone, 150
+	'DMD2.QueueText "--  FIN SHEÂ·  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHEÂ·  --", seNone, 150
 	'DMD1.QueueText "--   OO  B T  --", seNone, 150 : 'DMDA.QueueText "--   OO  B T  --", seNone, 150
-	'DMD2.QueueText "--  F·N SHE·  --", seNone, 150 : 'DMDB.QueueText "--  F·N SHE·  --", seNone, 150
+	'DMD2.QueueText "--  FÂ·N SHEÂ·  --", seNone, 150 : 'DMDB.QueueText "--  FÂ·N SHEÂ·  --", seNone, 150
 	'DMD1.QueueText "--   OO  B T  --", seNone, 150 : 'DMDA.QueueText "--   OO  B T  --", seNone, 150
-	'DMD2.QueueText "--  F·N S·E   --", seNone, 150 : 'DMDB.QueueText "--  F·N S·E   --", seNone, 150
-	'DMD1.QueueText "--   O·  B T  --", seNone, 150 : 'DMDA.QueueText "--   O·  B T  --", seNone, 150
-	'DMD2.QueueText "--  F N S·E   --", seNone, 150 : 'DMDB.QueueText "--  F N S·E   --", seNone, 150
-	'DMD1.QueueText "--   O·  B ·  --", seNone, 150 : 'DMDA.QueueText "--   O·  B ·  --", seNone, 150
+	'DMD2.QueueText "--  FÂ·N SÂ·E   --", seNone, 150 : 'DMDB.QueueText "--  FÂ·N SÂ·E   --", seNone, 150
+	'DMD1.QueueText "--   OÂ·  B T  --", seNone, 150 : 'DMDA.QueueText "--   OÂ·  B T  --", seNone, 150
+	'DMD2.QueueText "--  F N SÂ·E   --", seNone, 150 : 'DMDB.QueueText "--  F N SÂ·E   --", seNone, 150
+	'DMD1.QueueText "--   OÂ·  B Â·  --", seNone, 150 : 'DMDA.QueueText "--   OÂ·  B Â·  --", seNone, 150
 	'DMD2.QueueText "--  F N S E   --", seNone, 150 : 'DMDB.QueueText "--  F N S E   --", seNone, 150
-	'DMD1.QueueText "--   O   B ·  --", seNone, 150 : 'DMDA.QueueText "--   O   B ·  --", seNone, 150
-	'DMD2.QueueText "--  · N S E   --", seNone, 150 : 'DMDB.QueueText "--  · N S E   --", seNone, 150
-	'DMD1.QueueText "--   O   ·    --", seNone, 150 : 'DMDA.QueueText "--   O   ·    --", seNone, 150
-	'DMD2.QueueText "--  · N S E   --", seNone, 150 : 'DMDB.QueueText "--  · N S E   --", seNone, 150
-	'DMD1.QueueText "--   O   ·    --", seNone, 150 : 'DMDA.QueueText "--   O   ·    --", seNone, 150
-	'DMD2.QueueText "--    · S E   --", seNone, 150 : 'DMDB.QueueText "--    · S E   --", seNone, 150
+	'DMD1.QueueText "--   O   B Â·  --", seNone, 150 : 'DMDA.QueueText "--   O   B Â·  --", seNone, 150
+	'DMD2.QueueText "--  Â· N S E   --", seNone, 150 : 'DMDB.QueueText "--  Â· N S E   --", seNone, 150
+	'DMD1.QueueText "--   O   Â·    --", seNone, 150 : 'DMDA.QueueText "--   O   Â·    --", seNone, 150
+	'DMD2.QueueText "--  Â· N S E   --", seNone, 150 : 'DMDB.QueueText "--  Â· N S E   --", seNone, 150
+	'DMD1.QueueText "--   O   Â·    --", seNone, 150 : 'DMDA.QueueText "--   O   Â·    --", seNone, 150
+	'DMD2.QueueText "--    Â· S E   --", seNone, 150 : 'DMDB.QueueText "--    Â· S E   --", seNone, 150
 	'DMD1.QueueText "--   O        --", seNone, 150 : 'DMDA.QueueText "--   O        --", seNone, 150
-	'DMD2.QueueText "--    · S ·   --", seNone, 150 : 'DMDB.QueueText "--    · S ·   --", seNone, 150
+	'DMD2.QueueText "--    Â· S Â·   --", seNone, 150 : 'DMDB.QueueText "--    Â· S Â·   --", seNone, 150
 	'DMD1.QueueText "--   O        --", seNone, 150 : 'DMDA.QueueText "--   O        --", seNone, 150
-	'DMD2.QueueText "--      · ·   --", seNone, 150 : 'DMDB.QueueText "--      · ·   --", seNone, 150
-	'DMD1.QueueText "--   ·        --", seNone, 150 : 'DMDA.QueueText "--   ·        --", seNone, 150
-	'DMD2.QueueText "--      ·     --", seNone, 150 : 'DMDB.QueueText "--      ·     --", seNone, 150
+	'DMD2.QueueText "--      Â· Â·   --", seNone, 150 : 'DMDB.QueueText "--      Â· Â·   --", seNone, 150
+	'DMD1.QueueText "--   Â·        --", seNone, 150 : 'DMDA.QueueText "--   Â·        --", seNone, 150
+	'DMD2.QueueText "--      Â·     --", seNone, 150 : 'DMDB.QueueText "--      Â·     --", seNone, 150
 	'DMD1.QueueText "--            --", seNone, 150 : 'DMDA.QueueText "--            --", seNone, 150
 	'DMD2.QueueText "--            --", seNone, 150 : 'DMDB.QueueText "--            --", seNone, 150
 	DMD_DisplayScene "   BLOOD BATH   ","    FINISHED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -47942,44 +47961,44 @@ Sub ExtBloodBloodBathDMDTextANGEL()
 	DMD_DisplayScene "  ANNIHILATION  ","    FINISHED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "- ANNIHILATION -", seNone, 150 : 'DMDA.QueueText "- ANNIHILATION -", seNone, 150
 	'DMD2.QueueText "--  FINISHED  --", seNone, 150 : 'DMDB.QueueText "--  FINISHED  --", seNone, 150
-	'DMD1.QueueText "- AN·IHILATION -", seNone, 150 : 'DMDA.QueueText "- AN·IHILATION -", seNone, 150
+	'DMD1.QueueText "- ANÂ·IHILATION -", seNone, 150 : 'DMDA.QueueText "- ANÂ·IHILATION -", seNone, 150
 	'DMD2.QueueText "--  FINISHED  --", seNone, 150 : 'DMDB.QueueText "--  FINISHED  --", seNone, 150
-	'DMD1.QueueText "- AN·IHILATIO· -", seNone, 150 : 'DMDA.QueueText "- AN·IHILATIO· -", seNone, 150
-	'DMD2.QueueText "--  FINISHED· --", seNone, 150 : 'DMDB.QueueText "--  FINISHED· --", seNone, 150
-	'DMD1.QueueText "- AN IHILATIO· -", seNone, 150 : 'DMDA.QueueText "- AN IHILATIO· -", seNone, 150
-	'DMD2.QueueText "-- ·FINISHED· --", seNone, 150 : 'DMDB.QueueText "-- ·FINISHED· --", seNone, 150
-	'DMD1.QueueText "- AN IHILA·IO  -", seNone, 150 : 'DMDA.QueueText "- AN IHILA·IO  -", seNone, 150
-	'DMD2.QueueText "-- ·FINISHED  --", seNone, 150 : 'DMDB.QueueText "-- ·FINISHED  --", seNone, 150
-	'DMD1.QueueText "- AN IHILA·IO  -", seNone, 150 : 'DMDA.QueueText "- AN IHILA·IO  -", seNone, 150
-	'DMD2.QueueText "--  FIN·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN·SHED  --", seNone, 150
-	'DMD1.QueueText "- A· IHI·A IO  -", seNone, 150 : 'DMDA.QueueText "- A· IHI·A IO  -", seNone, 150
-	'DMD2.QueueText "--  FIN·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN·SHED  --", seNone, 150
-	'DMD1.QueueText "- A· IHI·A I·  -", seNone, 150 : 'DMDA.QueueText "- A· IHI·A I·  -", seNone, 150
+	'DMD1.QueueText "- ANÂ·IHILATIOÂ· -", seNone, 150 : 'DMDA.QueueText "- ANÂ·IHILATIOÂ· -", seNone, 150
+	'DMD2.QueueText "--  FINISHEDÂ· --", seNone, 150 : 'DMDB.QueueText "--  FINISHEDÂ· --", seNone, 150
+	'DMD1.QueueText "- AN IHILATIOÂ· -", seNone, 150 : 'DMDA.QueueText "- AN IHILATIOÂ· -", seNone, 150
+	'DMD2.QueueText "-- Â·FINISHEDÂ· --", seNone, 150 : 'DMDB.QueueText "-- Â·FINISHEDÂ· --", seNone, 150
+	'DMD1.QueueText "- AN IHILAÂ·IO  -", seNone, 150 : 'DMDA.QueueText "- AN IHILAÂ·IO  -", seNone, 150
+	'DMD2.QueueText "-- Â·FINISHED  --", seNone, 150 : 'DMDB.QueueText "-- Â·FINISHED  --", seNone, 150
+	'DMD1.QueueText "- AN IHILAÂ·IO  -", seNone, 150 : 'DMDA.QueueText "- AN IHILAÂ·IO  -", seNone, 150
+	'DMD2.QueueText "--  FINÂ·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FINÂ·SHED  --", seNone, 150
+	'DMD1.QueueText "- AÂ· IHIÂ·A IO  -", seNone, 150 : 'DMDA.QueueText "- AÂ· IHIÂ·A IO  -", seNone, 150
+	'DMD2.QueueText "--  FINÂ·SHED  --", seNone, 150 : 'DMDB.QueueText "--  FINÂ·SHED  --", seNone, 150
+	'DMD1.QueueText "- AÂ· IHIÂ·A IÂ·  -", seNone, 150 : 'DMDA.QueueText "- AÂ· IHIÂ·A IÂ·  -", seNone, 150
 	'DMD2.QueueText "--  FIN SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHED  --", seNone, 150
-	'DMD1.QueueText "- A  IH· A I·  -", seNone, 150 : 'DMDA.QueueText "- A  IH· A I·  -", seNone, 150
+	'DMD1.QueueText "- A  IHÂ· A IÂ·  -", seNone, 150 : 'DMDA.QueueText "- A  IHÂ· A IÂ·  -", seNone, 150
 	'DMD2.QueueText "--  FIN SHED  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHED  --", seNone, 150
-	'DMD1.QueueText "- A  IH· A I   -", seNone, 150 : 'DMDA.QueueText "- A  IH· A I   -", seNone, 150
-	'DMD2.QueueText "--  FIN SHE·  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHE·  --", seNone, 150
-	'DMD1.QueueText "- ·  IH  A I   -", seNone, 150 : 'DMDA.QueueText "- ·  IH  A I   -", seNone, 150
-	'DMD2.QueueText "--  F·N SHE·  --", seNone, 150 : 'DMDB.QueueText "--  F·N SHE·  --", seNone, 150
-	'DMD1.QueueText "- ·  IH  A I   -", seNone, 150 : 'DMDA.QueueText "- ·  IH  A I   -", seNone, 150
-	'DMD2.QueueText "--  F·N S·E   --", seNone, 150 : 'DMDB.QueueText "--  F·N S·E   --", seNone, 150
-	'DMD1.QueueText "-    I·  A I   -", seNone, 150 : 'DMDA.QueueText "-    I·  A I   -", seNone, 150
-	'DMD2.QueueText "--  F N S·E   --", seNone, 150 : 'DMDB.QueueText "--  F N S·E   --", seNone, 150
-	'DMD1.QueueText "-    I·  A ·   -", seNone, 150 : 'DMDA.QueueText "-    I·  A ·   -", seNone, 150
+	'DMD1.QueueText "- A  IHÂ· A I   -", seNone, 150 : 'DMDA.QueueText "- A  IHÂ· A I   -", seNone, 150
+	'DMD2.QueueText "--  FIN SHEÂ·  --", seNone, 150 : 'DMDB.QueueText "--  FIN SHEÂ·  --", seNone, 150
+	'DMD1.QueueText "- Â·  IH  A I   -", seNone, 150 : 'DMDA.QueueText "- Â·  IH  A I   -", seNone, 150
+	'DMD2.QueueText "--  FÂ·N SHEÂ·  --", seNone, 150 : 'DMDB.QueueText "--  FÂ·N SHEÂ·  --", seNone, 150
+	'DMD1.QueueText "- Â·  IH  A I   -", seNone, 150 : 'DMDA.QueueText "- Â·  IH  A I   -", seNone, 150
+	'DMD2.QueueText "--  FÂ·N SÂ·E   --", seNone, 150 : 'DMDB.QueueText "--  FÂ·N SÂ·E   --", seNone, 150
+	'DMD1.QueueText "-    IÂ·  A I   -", seNone, 150 : 'DMDA.QueueText "-    IÂ·  A I   -", seNone, 150
+	'DMD2.QueueText "--  F N SÂ·E   --", seNone, 150 : 'DMDB.QueueText "--  F N SÂ·E   --", seNone, 150
+	'DMD1.QueueText "-    IÂ·  A Â·   -", seNone, 150 : 'DMDA.QueueText "-    IÂ·  A Â·   -", seNone, 150
 	'DMD2.QueueText "--  F N S E   --", seNone, 150 : 'DMDB.QueueText "--  F N S E   --", seNone, 150
-	'DMD1.QueueText "-    I   A ·   -", seNone, 150 : 'DMDA.QueueText "-    I   A ·   -", seNone, 150
-	'DMD2.QueueText "--  · N S E   --", seNone, 150 : 'DMDB.QueueText "--  · N S E   --", seNone, 150
-	'DMD1.QueueText "-    I   ·     -", seNone, 150 : 'DMDA.QueueText "-    I   ·     -", seNone, 150
-	'DMD2.QueueText "--  · N S E   --", seNone, 150 : 'DMDB.QueueText "--  · N S E   --", seNone, 150
-	'DMD1.QueueText "-    I   ·     -", seNone, 150 : 'DMDA.QueueText "-    I   ·     -", seNone, 150
-	'DMD2.QueueText "--    · S E   --", seNone, 150 : 'DMDB.QueueText "--    · S E   --", seNone, 150
+	'DMD1.QueueText "-    I   A Â·   -", seNone, 150 : 'DMDA.QueueText "-    I   A Â·   -", seNone, 150
+	'DMD2.QueueText "--  Â· N S E   --", seNone, 150 : 'DMDB.QueueText "--  Â· N S E   --", seNone, 150
+	'DMD1.QueueText "-    I   Â·     -", seNone, 150 : 'DMDA.QueueText "-    I   Â·     -", seNone, 150
+	'DMD2.QueueText "--  Â· N S E   --", seNone, 150 : 'DMDB.QueueText "--  Â· N S E   --", seNone, 150
+	'DMD1.QueueText "-    I   Â·     -", seNone, 150 : 'DMDA.QueueText "-    I   Â·     -", seNone, 150
+	'DMD2.QueueText "--    Â· S E   --", seNone, 150 : 'DMDB.QueueText "--    Â· S E   --", seNone, 150
 	'DMD1.QueueText "-    I         -", seNone, 150 : 'DMDA.QueueText "-    I         -", seNone, 150
-	'DMD2.QueueText "--    · S ·   --", seNone, 150 : 'DMDB.QueueText "--    · S ·   --", seNone, 150
+	'DMD2.QueueText "--    Â· S Â·   --", seNone, 150 : 'DMDB.QueueText "--    Â· S Â·   --", seNone, 150
 	'DMD1.QueueText "-    I         -", seNone, 150 : 'DMDA.QueueText "-    I         -", seNone, 150
-	'DMD2.QueueText "--      · ·   --", seNone, 150 : 'DMDB.QueueText "--      · ·   --", seNone, 150
-	'DMD1.QueueText "-    ·         -", seNone, 150 : 'DMDA.QueueText "-    ·         -", seNone, 150
-	'DMD2.QueueText "--      ·     --", seNone, 150 : 'DMDB.QueueText "--      ·     --", seNone, 150
+	'DMD2.QueueText "--      Â· Â·   --", seNone, 150 : 'DMDB.QueueText "--      Â· Â·   --", seNone, 150
+	'DMD1.QueueText "-    Â·         -", seNone, 150 : 'DMDA.QueueText "-    Â·         -", seNone, 150
+	'DMD2.QueueText "--      Â·     --", seNone, 150 : 'DMDB.QueueText "--      Â·     --", seNone, 150
 	'DMD1.QueueText "-              -", seNone, 150 : 'DMDA.QueueText "-              -", seNone, 150
 	'DMD2.QueueText "--            --", seNone, 150 : 'DMDB.QueueText "--            --", seNone, 150
 	DMD_DisplayScene "  ANNIHILATION  ","    FINISHED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -47987,11 +48006,11 @@ Sub ExtBloodBloodBathDMDTextANGEL()
 End Sub
 
 
-'=====================================----------···  ·
-'==-------------------------------------------------------···  ·
+'=====================================----------Â·Â·Â·  Â·
+'==-------------------------------------------------------Â·Â·Â·  Â·
 '-=[** A N G E L **]- ON THE BLOOD EXTRACTOR ----------
-'==-------------------------------------------------------···  ·
-'=====================================----------···  ·
+'==-------------------------------------------------------Â·Â·Â·  Â·
+'=====================================----------Â·Â·Â·  Â·
 
 Sub ExtractingAngelBlood()
 
@@ -48112,9 +48131,9 @@ Sub TrapStairDT1_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		TrapStairDT1.IsDropped = False
@@ -48235,9 +48254,9 @@ Sub TrapStairDT2_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		TrapStairDT2.IsDropped = False
@@ -48359,9 +48378,9 @@ Sub TrapStairDT3_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		TrapStairDT3.IsDropped = False
@@ -48489,9 +48508,9 @@ Sub DTHelp1_hit : StopBallSearchTimer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		DTHelp1.IsDropped = False
@@ -48641,9 +48660,9 @@ Sub DTHelp2_hit : StopBallSearchTimer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		DTHelp2.IsDropped = False
@@ -48791,9 +48810,9 @@ Sub BloodExtractorEntrance_hit : StopBallSearchTimer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		BloodExtractorEntrance.IsDropped = False
@@ -49720,9 +49739,9 @@ Sub AnvilTargetL_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		PlaySound "droptargetdropped"
@@ -49731,9 +49750,9 @@ Sub AnvilTargetL_Hit
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		AnvilTargetL.IsDropped = False
@@ -49791,9 +49810,9 @@ Sub AnvilTargetL_Hit
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ 2A MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If TwoAngelsMballActive = TRUE then
 
 		FlashForms FlasherGateL, 500, 50, 0
@@ -49850,9 +49869,9 @@ Sub AnvilTargetL_Hit
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ BLACKSMITH ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If BlackSmithEntranceReady = FALSE then
 
 		FlashForms FlasherGateL, 500, 50, 0
@@ -49898,9 +49917,9 @@ Sub AnvilTargetR_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		PlaySound "droptargetdropped"
@@ -49909,9 +49928,9 @@ Sub AnvilTargetR_Hit
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		AnvilTargetR.IsDropped = False
@@ -49973,9 +49992,9 @@ Sub AnvilTargetR_Hit
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ 2A MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If TwoAngelsMballActive = TRUE then
 
 		FlashForms FlasherGateR, 500, 50, 0
@@ -50030,9 +50049,9 @@ Sub AnvilTargetR_Hit
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ BLACKSMITH ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If BlackSmithEntranceReady = FALSE then
 
 		FlashForms FlasherGateR, 500, 50, 0
@@ -50153,18 +50172,18 @@ End Sub
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '-=[ BLACKSMITH TIMER ]=--
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub BlackSmithTimer_Timer()
 
 	Select Case (BlackSmithTimer.UserValue)
 	Case 0
 
-	'=======================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'  ENTRANCE READY 
-	'=======================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 50
 
 			BoomBlackSmithReady()
@@ -50231,9 +50250,9 @@ Sub BlackSmithTimer_Timer()
 
 
 
-	'=======================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'  TRAP BALL 
-	'=======================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 80
 
 		HellDT1L.IsDropped = True : HellDT1L.IsDropped = True
@@ -50326,11 +50345,11 @@ Sub BlackSmithTimer_Timer()
 
 
 
-	'[BLACKSMITH]==============================--------····· ·· · ·  ·
-	'==============================--------····· ·· · ·  ·
+	'[BLACKSMITH]==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+	'==============================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' -=[ RANDON DMD PLAY ]=-
-	'=======================--------····· ·· · ·  ·
-	'==========================================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+	'==========================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 90
 
 		'THIS KIND OF COMMENTS R TOO REPETITIVE
@@ -50499,9 +50518,9 @@ Sub BlackSmithTimer_Timer()
 
 
 
-	'=======================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 100
-	'=======================--------····· ·· · ·  ·
+	'=======================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 		FlashForms FlasherUPR, 600, 600, 0
 		FlashForms FlasherUPL, 600, 600, 0
@@ -50586,9 +50605,9 @@ Sub BlackSmithTimer_Timer()
 		
 		
 		
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 		' ACTIVATE RAMP QUICKSHOT TO --=[ TRAP KICKER ]=-		'
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 		If RampDiverter2theRight = TRUE then 
 		
 			RampDiverter2theRight = FALSE
@@ -50612,9 +50631,9 @@ Sub BlackSmithTimer_Timer()
 		
 		
 		ElseIf RampDiverter2theRight = FALSE then 
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 		' ACTIVATE RAMP QUICKSHOT TO --=[ MYSTERY KICKER ]=-		'
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 			RampDiverter2theRight = TRUE
 			RampDiverter.rotatetoend 'Balls to the RIGHT this did block the right
 			'RampDiverter1.isdropped=false ' added wall to right
@@ -50734,9 +50753,9 @@ End Sub
 
 
 
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 '--=[ BLACKSMITH - LEFT RAMP ]=-----
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 
 Sub BlackSmithRampTriggerL_Hit
 PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
@@ -50747,9 +50766,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		BlackSmithPostL.IsDropped = true
@@ -50777,9 +50796,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		BlackSmithPostL.IsDropped = true
@@ -50789,17 +50808,17 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'--------------------------------·· · ·  ·
+	'--------------------------------Â·Â· Â· Â·  Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'--------------------------------·· · ·  ·
+	'--------------------------------Â·Â· Â· Â·  Â·
 	If BloodExtractorMballEnabled = TRUE then
 		BlackSmithPostL.IsDropped = true
 		Exit Sub 'No messing with God's Armour during midnite!
 	End If
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		BlackSmithPostL.IsDropped = true
 		Exit Sub
@@ -50860,9 +50879,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ 2A MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If TwoAngelsMballActive = TRUE then
 
 			BlackSmithPostL.isdropped = false	'STOP THE BALL (just in case)
@@ -50878,9 +50897,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ BLACKSMITH ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 		BlackSmithPostL.isdropped=false	'STOP THE BALL (just in case)
 
 	LightSeqTilt.Play SeqAllON
@@ -50933,9 +50952,9 @@ End Sub
 
 
 
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 '--=[ BLACKSMITH - RIGHT RAMP ]=-----
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 
 Sub BlackSmithRampTriggerR_Hit
 PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
@@ -50945,9 +50964,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		BlackSmithPostR.isdropped=true
@@ -50974,9 +50993,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		BlackSmithPostR.isdropped=true
@@ -50984,9 +51003,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 	End If
 
-	'--------------------------------·· · ·  ·
+	'--------------------------------Â·Â· Â· Â·  Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'--------------------------------·· · ·  ·
+	'--------------------------------Â·Â· Â· Â·  Â·
 	If BloodExtractorMballEnabled = TRUE then
 		BlackSmithPostR.isdropped=true
 		Exit Sub 'No messing with God's Armour during midnite!
@@ -50994,9 +51013,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		BlackSmithPostR.isdropped=true
 		Exit Sub 'No messing with God's Armour during midnite!
@@ -51078,9 +51097,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ 2A MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If TwoAngelsMballActive = TRUE then
 
 			BlackSmithPostR.isdropped=false
@@ -51096,9 +51115,9 @@ PlaySound SoundFXDOF("droptargetreset", 111, DOFPulse, DOFContactors)
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ BLACKSMITH ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 
 		BlackSmithPostR.isdropped=false	'STOP THE BALL (just in case)
 
@@ -51170,9 +51189,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		BlackSmithPostL.isdropped=true
@@ -51219,9 +51238,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		BlackSmithPostL.isdropped=true
@@ -51233,9 +51252,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 
 		BlackSmithPostL.isdropped=true
@@ -51253,9 +51272,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 	FlashForms RightSlingshotUPBulb1, 500, 50, RightSlingshotUPBulb1.State
 
 
-	'--------------------------------·· · ·  ·
+	'--------------------------------Â·Â· Â· Â·  Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'--------------------------------·· · ·  ·
+	'--------------------------------Â·Â· Â· Â·  Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		BlackSmithPostL.isdropped=true
@@ -51416,9 +51435,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'====================================-----------··· ·
+	'====================================-----------Â·Â·Â· Â·
 	'---=[ GATES ANIMATION ]=---
-	'====================================-----------··· ·
+	'====================================-----------Â·Â·Â· Â·
 	If GatesTimer.Enabled = TRUE then
 
 		'------------------
@@ -51449,9 +51468,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ 2A MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If TwoAngelsMballActive = TRUE then
 
 		PlaySound "fx_hit_super"
@@ -51472,9 +51491,9 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ BLACKSMITH ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	
 		BoomTimer.Enabled = FALSE 'No need to disconnect the DMD now...
 		BoomBlackSmith()
@@ -51502,24 +51521,24 @@ Sub BlackSmithEntranceTrigger_Hit : StopBallSearchTimer()
 	DMD_CancelRendering
 	'DMD1.FlushQueue : 'DMD2.FlushQueue : 'DMDA.FlushQueue : 'DMDB.FlushQueue
 	DMD_DisplayScene "-= BLACKSMITH =-","-- BLACKSMITH --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-= ·········· =-", seWipeBarUp  , 100 : 'DMDA.QueueText "-= ·········· =-", seWipeBarUp  , 100
-	'DMD2.QueueText "-- ·········· --", seWipeBarDown, 100 : 'DMDB.QueueText "-- ·········· --", seWipeBarDown, 100
-	'DMD1.QueueText "-= B····S···· =-", seNone, 200 : 'DMDA.QueueText "-= B····S···· =-", seNone, 200
-	'DMD2.QueueText "-- ·L·······H --", seNone, 200 : 'DMDB.QueueText "-- ·L·······H --", seNone, 200
-	'DMD1.QueueText "-= B·A··S···· =-", seNone, 200 : 'DMDA.QueueText "-= B·A··S···· =-", seNone, 200
-	'DMD2.QueueText "-- ·L··K····H --", seNone, 200 : 'DMDB.QueueText "-- ·L··K····H --", seNone, 200
-	'DMD1.QueueText "-= B·A··SM··· =-", seNone, 200 : 'DMDA.QueueText "-= B·A··SM··· =-", seNone, 200
-	'DMD2.QueueText "-- ·L··K··I·H --", seNone, 200 : 'DMDB.QueueText "-- ·L··K··I·H --", seNone, 200
-	'DMD1.QueueText "-= B·AC·SM··· =-", seNone, 200 : 'DMDA.QueueText "-= B·AC·SM··· =-", seNone, 200
-	'DMD2.QueueText "-- ·L··K·MI·H --", seNone, 200 : 'DMDB.QueueText "-- ·L··K·MI·H --", seNone, 200
-	'DMD1.QueueText "-= B·AC·SM·T· =-", seNone, 200 : 'DMDA.QueueText "-= B·AC·SM·T· =-", seNone, 200
-	'DMD2.QueueText "-- ·L·CK·MI·H --", seNone, 200 : 'DMDB.QueueText "-- ·L·CK·MI·H --", seNone, 200
-	'DMD1.QueueText "-= B·AC·SM·TH =-", seNone, 200 : 'DMDA.QueueText "-= B·AC·SM·TH =-", seNone, 200
-	'DMD2.QueueText "-- ·LACK·MI·H --", seNone, 200 : 'DMDB.QueueText "-- ·LACK·MI·H --", seNone, 200
-	'DMD1.QueueText "-= B·ACKSM·TH =-", seNone, 200 : 'DMDA.QueueText "-= B·ACKSM·TH =-", seNone, 200
-	'DMD2.QueueText "-- BLACK·MI·H --", seNone, 200 : 'DMDB.QueueText "-- BLACK·MI·H --", seNone, 200
-	'DMD1.QueueText "-= BLACKSM·TH =-", seNone, 200 : 'DMDA.QueueText "-= BLACKSM·TH =-", seNone, 200
-	'DMD2.QueueText "-- BLACK·MITH --", seNone, 200 : 'DMDB.QueueText "-- BLACK·MITH --", seNone, 200
+	'DMD1.QueueText "-= Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· =-", seWipeBarUp  , 100 : 'DMDA.QueueText "-= Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· =-", seWipeBarUp  , 100
+	'DMD2.QueueText "-- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· --", seWipeBarDown, 100 : 'DMDB.QueueText "-- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· --", seWipeBarDown, 100
+	'DMD1.QueueText "-= BÂ·Â·Â·Â·SÂ·Â·Â·Â· =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·Â·Â·Â·SÂ·Â·Â·Â· =-", seNone, 200
+	'DMD2.QueueText "-- Â·LÂ·Â·Â·Â·Â·Â·Â·H --", seNone, 200 : 'DMDB.QueueText "-- Â·LÂ·Â·Â·Â·Â·Â·Â·H --", seNone, 200
+	'DMD1.QueueText "-= BÂ·AÂ·Â·SÂ·Â·Â·Â· =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·AÂ·Â·SÂ·Â·Â·Â· =-", seNone, 200
+	'DMD2.QueueText "-- Â·LÂ·Â·KÂ·Â·Â·Â·H --", seNone, 200 : 'DMDB.QueueText "-- Â·LÂ·Â·KÂ·Â·Â·Â·H --", seNone, 200
+	'DMD1.QueueText "-= BÂ·AÂ·Â·SMÂ·Â·Â· =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·AÂ·Â·SMÂ·Â·Â· =-", seNone, 200
+	'DMD2.QueueText "-- Â·LÂ·Â·KÂ·Â·IÂ·H --", seNone, 200 : 'DMDB.QueueText "-- Â·LÂ·Â·KÂ·Â·IÂ·H --", seNone, 200
+	'DMD1.QueueText "-= BÂ·ACÂ·SMÂ·Â·Â· =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·ACÂ·SMÂ·Â·Â· =-", seNone, 200
+	'DMD2.QueueText "-- Â·LÂ·Â·KÂ·MIÂ·H --", seNone, 200 : 'DMDB.QueueText "-- Â·LÂ·Â·KÂ·MIÂ·H --", seNone, 200
+	'DMD1.QueueText "-= BÂ·ACÂ·SMÂ·TÂ· =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·ACÂ·SMÂ·TÂ· =-", seNone, 200
+	'DMD2.QueueText "-- Â·LÂ·CKÂ·MIÂ·H --", seNone, 200 : 'DMDB.QueueText "-- Â·LÂ·CKÂ·MIÂ·H --", seNone, 200
+	'DMD1.QueueText "-= BÂ·ACÂ·SMÂ·TH =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·ACÂ·SMÂ·TH =-", seNone, 200
+	'DMD2.QueueText "-- Â·LACKÂ·MIÂ·H --", seNone, 200 : 'DMDB.QueueText "-- Â·LACKÂ·MIÂ·H --", seNone, 200
+	'DMD1.QueueText "-= BÂ·ACKSMÂ·TH =-", seNone, 200 : 'DMDA.QueueText "-= BÂ·ACKSMÂ·TH =-", seNone, 200
+	'DMD2.QueueText "-- BLACKÂ·MIÂ·H --", seNone, 200 : 'DMDB.QueueText "-- BLACKÂ·MIÂ·H --", seNone, 200
+	'DMD1.QueueText "-= BLACKSMÂ·TH =-", seNone, 200 : 'DMDA.QueueText "-= BLACKSMÂ·TH =-", seNone, 200
+	'DMD2.QueueText "-- BLACKÂ·MITH --", seNone, 200 : 'DMDB.QueueText "-- BLACKÂ·MITH --", seNone, 200
 	'DMD1.QueueText "-= BLACKSMITH =-", seNone, 200 : 'DMDA.QueueText "-= BLACKSMITH =-", seNone, 200
 	'DMD2.QueueText "-- BLACKSMITH --", seNone, 200 : 'DMDB.QueueText "-- BLACKSMITH --", seNone, 200
 	'DMD1.QueueText "   BLACKSMITH   ", seBlinkMask, 500 : 'DMDA.QueueText "   BLACKSMITH   ", seBlinkMask, 500
@@ -51535,9 +51554,9 @@ End Sub
 
 
 
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 '--=[ BLACKSMITH - PIECE COLLECTED ]=-----
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 
 Sub BlackSmithGivesPrice()
 
@@ -51546,9 +51565,9 @@ Sub BlackSmithGivesPrice()
 	BoomTimer.Enabled = FALSE
 
 
-	'=================================--------------·· ·
+	'=================================--------------Â·Â· Â·
 	' ---=[ 08 PIECES COLLECTED! ]=---
-	'=================================--------------·· ·
+	'=================================--------------Â·Â· Â·
 	If BlackSmithPiecesCollected = 8 then
 
 		BlackSmithTimesCompleted = BlackSmithTimesCompleted + 1
@@ -51644,9 +51663,9 @@ Sub BlackSmithGivesPrice()
 
 
 
-	'=================================--------------·· ·
+	'=================================--------------Â·Â· Â·
 	' ---=[ LESS THAN 08 PIECES ]=---
-	'=================================--------------·· ·
+	'=================================--------------Â·Â· Â·
 	Else
 
 		'PlaySound "vd_what_did_u_see"
@@ -51721,7 +51740,7 @@ Sub SelectRandomArmourPieceLeft()
 
 	Select Case (Azar)
 
-	Case 1 '--=[ CUIRASS ]=---------------------------------·· · ·  ·
+	Case 1 '--=[ CUIRASS ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour1Collected = TRUE then
 		
@@ -51740,16 +51759,16 @@ Sub SelectRandomArmourPieceLeft()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText "  NIGHT ARMOUR  ", seWipeBarDown, 1000 : 'DMDB.QueueText "  NIGHT ARMOUR  ", seWipeBarDown, 1000
 			DMD_DisplayScene "-= BLACKSMITH =-","  NIGHT ARMOUR  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText "  NI·HT AR·OUR  ", seNone, 200 : 'DMDB.QueueText "  NI·HT AR·OUR  ", seNone, 200
-			'DMD2.QueueText "  ·I HT ·R OUR  ", seNone, 150 : 'DMDB.QueueText "  ·I HT ·R OUR  ", seNone, 150
-			'DMD2.QueueText "   I HT ·R OU·  ", seNone, 140 : 'DMDB.QueueText "   I HT ·R OU·  ", seNone, 140
-			'DMD2.QueueText "   I ·T  R OU·  ", seNone, 130 : 'DMDB.QueueText "   I ·T  R OU·  ", seNone, 130
-			'DMD2.QueueText "   I ·T  R ·U   ", seNone, 120 : 'DMDB.QueueText "   I ·T  R ·U   ", seNone, 120
-			'DMD2.QueueText "   ·  T  R ·U   ", seNone, 110 : 'DMDB.QueueText "   ·  T  R ·U   ", seNone, 110
-			'DMD2.QueueText "   ·  T  ·  U   ", seNone, 100 : 'DMDB.QueueText "   ·  T  ·  U   ", seNone, 100
-			'DMD2.QueueText "      T  ·  ·   ", seNone, 100 : 'DMDB.QueueText "      T  ·  ·   ", seNone, 100
-			'DMD2.QueueText "      T     ·   ", seNone, 100 : 'DMDB.QueueText "      T     ·   ", seNone, 100
-			'DMD2.QueueText "      ·         ", seNone, 100 : 'DMDB.QueueText "      ·         ", seNone, 100
+			'DMD2.QueueText "  NIÂ·HT ARÂ·OUR  ", seNone, 200 : 'DMDB.QueueText "  NIÂ·HT ARÂ·OUR  ", seNone, 200
+			'DMD2.QueueText "  Â·I HT Â·R OUR  ", seNone, 150 : 'DMDB.QueueText "  Â·I HT Â·R OUR  ", seNone, 150
+			'DMD2.QueueText "   I HT Â·R OUÂ·  ", seNone, 140 : 'DMDB.QueueText "   I HT Â·R OUÂ·  ", seNone, 140
+			'DMD2.QueueText "   I Â·T  R OUÂ·  ", seNone, 130 : 'DMDB.QueueText "   I Â·T  R OUÂ·  ", seNone, 130
+			'DMD2.QueueText "   I Â·T  R Â·U   ", seNone, 120 : 'DMDB.QueueText "   I Â·T  R Â·U   ", seNone, 120
+			'DMD2.QueueText "   Â·  T  R Â·U   ", seNone, 110 : 'DMDB.QueueText "   Â·  T  R Â·U   ", seNone, 110
+			'DMD2.QueueText "   Â·  T  Â·  U   ", seNone, 100 : 'DMDB.QueueText "   Â·  T  Â·  U   ", seNone, 100
+			'DMD2.QueueText "      T  Â·  Â·   ", seNone, 100 : 'DMDB.QueueText "      T  Â·  Â·   ", seNone, 100
+			'DMD2.QueueText "      T     Â·   ", seNone, 100 : 'DMDB.QueueText "      T     Â·   ", seNone, 100
+			'DMD2.QueueText "      Â·         ", seNone, 100 : 'DMDB.QueueText "      Â·         ", seNone, 100
 			'DMD2.QueueText "                ", seNone, 100 : 'DMDB.QueueText "                ", seNone, 100
 			DMD_DisplayScene "-= BLACKSMITH =-","  NIGHT ARMOUR  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			AddScore(0)
@@ -51758,7 +51777,7 @@ Sub SelectRandomArmourPieceLeft()
 
 
 	
-	Case 2 '--=[ SHIELD ]=---------------------------------·· · ·  ·
+	Case 2 '--=[ SHIELD ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour2Collected = TRUE then
 		
@@ -51777,16 +51796,16 @@ Sub SelectRandomArmourPieceLeft()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText " GOLDEN  SHIELD ", seWipeBarDown, 1000 : 'DMD2.QueueText " GOLDEN  SHIELD ", seWipeBarDown, 1000
 			DMD_DisplayScene " GOLDEN  SHIELD "," GOLDEN  SHIELD ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText " GOL·EN  S·IELD ", seNone, 150 : 
-			'DMD2.QueueText "  ·L EN  S IEL  ", seNone, 150 : 
-			'DMD2.QueueText "   L EN  S IE·  ", seNone, 150 : 
-			'DMD2.QueueText "   L ·N  S IE·  ", seNone, 150 : 
-			'DMD2.QueueText "   L ·N  R ·E   ", seNone, 150 : 
-			'DMD2.QueueText "   ·  N  S ·E   ", seNone, 150 : 
-			'DMD2.QueueText "   ·  N  ·  E   ", seNone, 150 : 
-			'DMD2.QueueText "      N  ·  ·   ", seNone, 150 : 
-			'DMD2.QueueText "      N     ·   ", seNone, 150 : 
-			'DMD2.QueueText "      ·         ", seNone, 150 : 
+			'DMD2.QueueText " GOLÂ·EN  SÂ·IELD ", seNone, 150 : 
+			'DMD2.QueueText "  Â·L EN  S IEL  ", seNone, 150 : 
+			'DMD2.QueueText "   L EN  S IEÂ·  ", seNone, 150 : 
+			'DMD2.QueueText "   L Â·N  S IEÂ·  ", seNone, 150 : 
+			'DMD2.QueueText "   L Â·N  R Â·E   ", seNone, 150 : 
+			'DMD2.QueueText "   Â·  N  S Â·E   ", seNone, 150 : 
+			'DMD2.QueueText "   Â·  N  Â·  E   ", seNone, 150 : 
+			'DMD2.QueueText "      N  Â·  Â·   ", seNone, 150 : 
+			'DMD2.QueueText "      N     Â·   ", seNone, 150 : 
+			'DMD2.QueueText "      Â·         ", seNone, 150 : 
 			
 			'DMD1.QueueText "                ", seNone, 150 : 
 			'DMD2.QueueText "                ", seNone, 150 : 
@@ -51797,7 +51816,7 @@ Sub SelectRandomArmourPieceLeft()
 
 
 
-	Case 3 '--=[ GAUNTLETS ]=--------------------------------·· · ·  ·
+	Case 3 '--=[ GAUNTLETS ]=--------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour3Collected = TRUE then
 		
@@ -51816,16 +51835,16 @@ Sub SelectRandomArmourPieceLeft()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText " GOLD GAUNTLETS ", seWipeBarDown, 1000 : 'DMDB.QueueText " GOLD GAUNTLETS ", seWipeBarDown, 1000
 			DMD_DisplayScene "-= BLACKSMITH =-"," GOLD GAUNTLETS ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText " GOLD GAUN·LETS ", seNone, 200 : 'DMDB.QueueText " GOLD GAUN·LETS ", seNone, 200
-			'DMD2.QueueText " GOL· GAUN LETS ", seNone, 150 : 'DMDB.QueueText " GOL· GAUN LETS ", seNone, 150
-			'DMD2.QueueText " G·L· GAUN LE·S ", seNone, 140 : 'DMDB.QueueText " G·L· GAUN LE·S ", seNone, 140
-			'DMD2.QueueText " G·L  GAUN LE·S ", seNone, 130 : 'DMDB.QueueText " G·L  GAUN LE·S ", seNone, 130
-			'DMD2.QueueText " · L  G·UN ·E · ", seNone, 120 : 'DMDB.QueueText " · L  G·UN ·E · ", seNone, 120
-			'DMD2.QueueText " · ·  G·UN ·E   ", seNone, 110 : 'DMDB.QueueText " · ·  G·UN ·E   ", seNone, 110
-			'DMD2.QueueText "   ·  G U·  E   ", seNone, 100 : 'DMDB.QueueText "   ·  G U·  E   ", seNone, 100
-			'DMD2.QueueText "      G ··  ·   ", seNone, 100 : 'DMDB.QueueText "      G ··  ·   ", seNone, 100
-			'DMD2.QueueText "      G ·   ·   ", seNone, 100 : 'DMDB.QueueText "      G ·   ·   ", seNone, 100
-			'DMD2.QueueText "      ·         ", seNone, 100 : 'DMDB.QueueText "      ·         ", seNone, 100
+			'DMD2.QueueText " GOLD GAUNÂ·LETS ", seNone, 200 : 'DMDB.QueueText " GOLD GAUNÂ·LETS ", seNone, 200
+			'DMD2.QueueText " GOLÂ· GAUN LETS ", seNone, 150 : 'DMDB.QueueText " GOLÂ· GAUN LETS ", seNone, 150
+			'DMD2.QueueText " GÂ·LÂ· GAUN LEÂ·S ", seNone, 140 : 'DMDB.QueueText " GÂ·LÂ· GAUN LEÂ·S ", seNone, 140
+			'DMD2.QueueText " GÂ·L  GAUN LEÂ·S ", seNone, 130 : 'DMDB.QueueText " GÂ·L  GAUN LEÂ·S ", seNone, 130
+			'DMD2.QueueText " Â· L  GÂ·UN Â·E Â· ", seNone, 120 : 'DMDB.QueueText " Â· L  GÂ·UN Â·E Â· ", seNone, 120
+			'DMD2.QueueText " Â· Â·  GÂ·UN Â·E   ", seNone, 110 : 'DMDB.QueueText " Â· Â·  GÂ·UN Â·E   ", seNone, 110
+			'DMD2.QueueText "   Â·  G UÂ·  E   ", seNone, 100 : 'DMDB.QueueText "   Â·  G UÂ·  E   ", seNone, 100
+			'DMD2.QueueText "      G Â·Â·  Â·   ", seNone, 100 : 'DMDB.QueueText "      G Â·Â·  Â·   ", seNone, 100
+			'DMD2.QueueText "      G Â·   Â·   ", seNone, 100 : 'DMDB.QueueText "      G Â·   Â·   ", seNone, 100
+			'DMD2.QueueText "      Â·         ", seNone, 100 : 'DMDB.QueueText "      Â·         ", seNone, 100
 			
 			'DMD1.QueueText "                ", seNone, 150 : 'DMDA.QueueText "                ", seNone, 150
 			'DMD2.QueueText "                ", seNone, 150 : 'DMDB.QueueText "                ", seNone, 150
@@ -51836,7 +51855,7 @@ Sub SelectRandomArmourPieceLeft()
 
 
 
-	Case 4 '--=[ HELM ]=---------------------------------·· · ·  ·
+	Case 4 '--=[ HELM ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour4Collected = TRUE then
 		
@@ -51855,16 +51874,16 @@ Sub SelectRandomArmourPieceLeft()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText "  SILVER  HELM  ", seWipeBarDown, 1000 : 'DMD2.QueueText "  SILVER  HELM  ", seWipeBarDown, 1000
 			DMD_DisplayScene "-= BLACKSMITH =-","  SILVER  HELM  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText "  SI·VER  ·ELM  ", seNone, 200 : 'DMDB.QueueText "  SI·VER  ·ELM  ", seNone, 200
-			'DMD2.QueueText "  ·I VER   ELM  ", seNone, 150 : 'DMDB.QueueText "  ·I VER   ELM  ", seNone, 150
-			'DMD2.QueueText "   I VER   EL·  ", seNone, 140 : 'DMDB.QueueText "   I VER   EL·  ", seNone, 140
-			'DMD2.QueueText "   I ·ER   EL·  ", seNone, 130 : 'DMDB.QueueText "   I ·ER   EL·  ", seNone, 130
-			'DMD2.QueueText "   I ·ER   ·L   ", seNone, 120 : 'DMDB.QueueText "   I ·ER   ·L   ", seNone, 120
-			'DMD2.QueueText "   ·  ER   ·L   ", seNone, 110 : 'DMDB.QueueText "   ·  ER   ·L   ", seNone, 110
-			'DMD2.QueueText "   ·  E·    L   ", seNone, 100 : 'DMDB.QueueText "   ·  E·    L   ", seNone, 100
-			'DMD2.QueueText "      E·    ·   ", seNone, 100 : 'DMDB.QueueText "      E·    ·   ", seNone, 100
-			'DMD2.QueueText "      E     ·   ", seNone, 100 : 'DMDB.QueueText "      E     ·   ", seNone, 100
-			'DMD2.QueueText "      ·         ", seNone, 100 : 'DMDB.QueueText "      ·         ", seNone, 100
+			'DMD2.QueueText "  SIÂ·VER  Â·ELM  ", seNone, 200 : 'DMDB.QueueText "  SIÂ·VER  Â·ELM  ", seNone, 200
+			'DMD2.QueueText "  Â·I VER   ELM  ", seNone, 150 : 'DMDB.QueueText "  Â·I VER   ELM  ", seNone, 150
+			'DMD2.QueueText "   I VER   ELÂ·  ", seNone, 140 : 'DMDB.QueueText "   I VER   ELÂ·  ", seNone, 140
+			'DMD2.QueueText "   I Â·ER   ELÂ·  ", seNone, 130 : 'DMDB.QueueText "   I Â·ER   ELÂ·  ", seNone, 130
+			'DMD2.QueueText "   I Â·ER   Â·L   ", seNone, 120 : 'DMDB.QueueText "   I Â·ER   Â·L   ", seNone, 120
+			'DMD2.QueueText "   Â·  ER   Â·L   ", seNone, 110 : 'DMDB.QueueText "   Â·  ER   Â·L   ", seNone, 110
+			'DMD2.QueueText "   Â·  EÂ·    L   ", seNone, 100 : 'DMDB.QueueText "   Â·  EÂ·    L   ", seNone, 100
+			'DMD2.QueueText "      EÂ·    Â·   ", seNone, 100 : 'DMDB.QueueText "      EÂ·    Â·   ", seNone, 100
+			'DMD2.QueueText "      E     Â·   ", seNone, 100 : 'DMDB.QueueText "      E     Â·   ", seNone, 100
+			'DMD2.QueueText "      Â·         ", seNone, 100 : 'DMDB.QueueText "      Â·         ", seNone, 100
 			
 			'DMD1.QueueText "                ", seNone, 150 : 'DMDA.QueueText "                ", seNone, 150
 			'DMD2.QueueText "                ", seNone, 150 : 'DMDB.QueueText "                ", seNone, 150
@@ -51889,7 +51908,7 @@ Sub SelectRandomArmourPieceRight()
 
 	Select Case (Azar)
 
-	Case 5 '--=[ WINGS ]=---------------------------------·· · ·  ·
+	Case 5 '--=[ WINGS ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour5Collected = TRUE then
 		
@@ -51908,16 +51927,16 @@ Sub SelectRandomArmourPieceRight()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText "  SACRED WINGS  ", seWipeBarDown, 1000 : 'DMD2.QueueText "  SACRED WINGS  ", seWipeBarDown, 1000
 			DMD_DisplayScene "-= BLACKSMITH =-","  SACRED WINGS  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText "  SA·RED W·NGS  ", seNone, 200 : 'DMDB.QueueText "  SA·RED W·NGS  ", seNone, 200
-			'DMD2.QueueText "  ·A RE· W NGS  ", seNone, 150 : 'DMDB.QueueText "  ·A RE· W NGS  ", seNone, 150
-			'DMD2.QueueText "   A RE· W NG·  ", seNone, 140 : 'DMDB.QueueText "   A RE· W NG·  ", seNone, 140
-			'DMD2.QueueText "   A ·E  W NG·  ", seNone, 130 : 'DMDB.QueueText "   A ·E  W NG·  ", seNone, 130
-			'DMD2.QueueText "   A ·E  W ·G   ", seNone, 120 : 'DMDB.QueueText "   A ·E  W ·G   ", seNone, 120
-			'DMD2.QueueText "   ·  E  W ·G   ", seNone, 110 : 'DMDB.QueueText "   ·  E  W ·G   ", seNone, 110
-			'DMD2.QueueText "   ·  E  ·  G   ", seNone, 100 : 'DMDB.QueueText "   ·  E  ·  G   ", seNone, 100
-			'DMD2.QueueText "      E  ·  ·   ", seNone, 100 : 'DMDB.QueueText "      E  ·  ·   ", seNone, 100
-			'DMD2.QueueText "      E     ·   ", seNone, 100 : 'DMDB.QueueText "      E     ·   ", seNone, 100
-			'DMD2.QueueText "      ·         ", seNone, 100 : 'DMDB.QueueText "      ·         ", seNone, 100
+			'DMD2.QueueText "  SAÂ·RED WÂ·NGS  ", seNone, 200 : 'DMDB.QueueText "  SAÂ·RED WÂ·NGS  ", seNone, 200
+			'DMD2.QueueText "  Â·A REÂ· W NGS  ", seNone, 150 : 'DMDB.QueueText "  Â·A REÂ· W NGS  ", seNone, 150
+			'DMD2.QueueText "   A REÂ· W NGÂ·  ", seNone, 140 : 'DMDB.QueueText "   A REÂ· W NGÂ·  ", seNone, 140
+			'DMD2.QueueText "   A Â·E  W NGÂ·  ", seNone, 130 : 'DMDB.QueueText "   A Â·E  W NGÂ·  ", seNone, 130
+			'DMD2.QueueText "   A Â·E  W Â·G   ", seNone, 120 : 'DMDB.QueueText "   A Â·E  W Â·G   ", seNone, 120
+			'DMD2.QueueText "   Â·  E  W Â·G   ", seNone, 110 : 'DMDB.QueueText "   Â·  E  W Â·G   ", seNone, 110
+			'DMD2.QueueText "   Â·  E  Â·  G   ", seNone, 100 : 'DMDB.QueueText "   Â·  E  Â·  G   ", seNone, 100
+			'DMD2.QueueText "      E  Â·  Â·   ", seNone, 100 : 'DMDB.QueueText "      E  Â·  Â·   ", seNone, 100
+			'DMD2.QueueText "      E     Â·   ", seNone, 100 : 'DMDB.QueueText "      E     Â·   ", seNone, 100
+			'DMD2.QueueText "      Â·         ", seNone, 100 : 'DMDB.QueueText "      Â·         ", seNone, 100
 			
 			'DMD1.QueueText "                ", seNone, 150 : 'DMDA.QueueText "                ", seNone, 150
 			'DMD2.QueueText "                ", seNone, 150 : 'DMDB.QueueText "                ", seNone, 150
@@ -51928,7 +51947,7 @@ Sub SelectRandomArmourPieceRight()
 
 
 
-	Case 6 '--=[ SWORD ]=---------------------------------·· · ·  ·
+	Case 6 '--=[ SWORD ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour6Collected = TRUE then
 		
@@ -51947,16 +51966,16 @@ Sub SelectRandomArmourPieceRight()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText " SWORD OF LIGHT ", seWipeBarDown, 1000 : 'DMDB.QueueText " SWORD OF LIGHT ", seWipeBarDown, 1000
 			DMD_DisplayScene "-= BLACKSMITH =-"," SWORD OF LIGHT ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText " SWORD OF ·IGHT ", seNone, 200 : 'DMDB.QueueText " SWORD OF ·IGHT ", seNone, 200
-			'DMD2.QueueText " SWO·D OF  IGHT ", seNone, 150 : 'DMDB.QueueText " SWO·D OF  IGHT ", seNone, 150
-			'DMD2.QueueText " S·O·D OF  IG·T ", seNone, 140 : 'DMDB.QueueText " S·O·D OF  IG·T ", seNone, 140
-			'DMD2.QueueText " S·O D OF  IG·T ", seNone, 130 : 'DMDB.QueueText " S·O D OF  IG·T ", seNone, 130
-			'DMD2.QueueText " · O D ·F  ·G · ", seNone, 120 : 'DMDB.QueueText " · O D ·F  ·G · ", seNone, 120
-			'DMD2.QueueText " · · D ·F  ·G   ", seNone, 110 : 'DMDB.QueueText " · · D ·F  ·G   ", seNone, 110
-			'DMD2.QueueText "   · D  F   G   ", seNone, 100 : 'DMDB.QueueText "   · D  F   G   ", seNone, 100
-			'DMD2.QueueText "     D  ·   ·   ", seNone, 100 : 'DMDB.QueueText "     D  ·   ·   ", seNone, 100
-			'DMD2.QueueText "     ·  ·   ·   ", seNone, 100 : 'DMDB.QueueText "     ·  ·   ·   ", seNone, 100
-			'DMD2.QueueText "     ·          ", seNone, 100 : 'DMDB.QueueText "     ·          ", seNone, 100
+			'DMD2.QueueText " SWORD OF Â·IGHT ", seNone, 200 : 'DMDB.QueueText " SWORD OF Â·IGHT ", seNone, 200
+			'DMD2.QueueText " SWOÂ·D OF  IGHT ", seNone, 150 : 'DMDB.QueueText " SWOÂ·D OF  IGHT ", seNone, 150
+			'DMD2.QueueText " SÂ·OÂ·D OF  IGÂ·T ", seNone, 140 : 'DMDB.QueueText " SÂ·OÂ·D OF  IGÂ·T ", seNone, 140
+			'DMD2.QueueText " SÂ·O D OF  IGÂ·T ", seNone, 130 : 'DMDB.QueueText " SÂ·O D OF  IGÂ·T ", seNone, 130
+			'DMD2.QueueText " Â· O D Â·F  Â·G Â· ", seNone, 120 : 'DMDB.QueueText " Â· O D Â·F  Â·G Â· ", seNone, 120
+			'DMD2.QueueText " Â· Â· D Â·F  Â·G   ", seNone, 110 : 'DMDB.QueueText " Â· Â· D Â·F  Â·G   ", seNone, 110
+			'DMD2.QueueText "   Â· D  F   G   ", seNone, 100 : 'DMDB.QueueText "   Â· D  F   G   ", seNone, 100
+			'DMD2.QueueText "     D  Â·   Â·   ", seNone, 100 : 'DMDB.QueueText "     D  Â·   Â·   ", seNone, 100
+			'DMD2.QueueText "     Â·  Â·   Â·   ", seNone, 100 : 'DMDB.QueueText "     Â·  Â·   Â·   ", seNone, 100
+			'DMD2.QueueText "     Â·          ", seNone, 100 : 'DMDB.QueueText "     Â·          ", seNone, 100
 			
 			'DMD1.QueueText "                ", seNone, 150 : 'DMDA.QueueText "                ", seNone, 150
 			'DMD2.QueueText "                ", seNone, 150 : 'DMDB.QueueText "                ", seNone, 150
@@ -51967,7 +51986,7 @@ Sub SelectRandomArmourPieceRight()
 
 
 
-	Case 7 '--=[ AXE ]=---------------------------------·· · ·  ·
+	Case 7 '--=[ AXE ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		If Armour7Collected = TRUE then
 		
@@ -51986,16 +52005,16 @@ Sub SelectRandomArmourPieceRight()
 			'DMD1.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250 : 'DMDA.QueueText "-= BLACKSMITH =-", seWipeBarUp, 2250
 			'DMD2.QueueText "   DEMONS AXE   ", seWipeBarDown, 1000 : 'DMDB.QueueText "   DEMONS AXE   ", seWipeBarDown, 1000
 			DMD_DisplayScene "-= BLACKSMITH =-","   DEMONS AXE   ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD2.QueueText "   D·MONS AXE   ", seNone, 200 : 'DMDB.QueueText "   D·MONS AXE   ", seNone, 200
-			'DMD2.QueueText "   D MONS ·XE   ", seNone, 150 : 'DMDB.QueueText "   D MONS ·XE   ", seNone, 150
-			'DMD2.QueueText "   D VERS ·XE   ", seNone, 140 : 'DMDB.QueueText "   D VERS ·XE   ", seNone, 140
-			'DMD2.QueueText "   D ·ERS  XE   ", seNone, 130 : 'DMDB.QueueText "   D ·ERS  XE   ", seNone, 130
-			'DMD2.QueueText "   D ·ER·  ·E   ", seNone, 120 : 'DMDB.QueueText "   D ·ER·  ·E   ", seNone, 120
-			'DMD2.QueueText "   ·  ER·  ·E   ", seNone, 110 : 'DMDB.QueueText "   ·  ER·  ·E   ", seNone, 110
-			'DMD2.QueueText "   ·  E·    E   ", seNone, 100 : 'DMDB.QueueText "   ·  E·    E   ", seNone, 100
-			'DMD2.QueueText "      E·    ·   ", seNone, 100 : 'DMDB.QueueText "      E·    ·   ", seNone, 100
-			'DMD2.QueueText "      E     ·   ", seNone, 100 : 'DMDB.QueueText "      E     ·   ", seNone, 100
-			'DMD2.QueueText "      ·         ", seNone, 100 : 'DMDB.QueueText "      ·         ", seNone, 100
+			'DMD2.QueueText "   DÂ·MONS AXE   ", seNone, 200 : 'DMDB.QueueText "   DÂ·MONS AXE   ", seNone, 200
+			'DMD2.QueueText "   D MONS Â·XE   ", seNone, 150 : 'DMDB.QueueText "   D MONS Â·XE   ", seNone, 150
+			'DMD2.QueueText "   D VERS Â·XE   ", seNone, 140 : 'DMDB.QueueText "   D VERS Â·XE   ", seNone, 140
+			'DMD2.QueueText "   D Â·ERS  XE   ", seNone, 130 : 'DMDB.QueueText "   D Â·ERS  XE   ", seNone, 130
+			'DMD2.QueueText "   D Â·ERÂ·  Â·E   ", seNone, 120 : 'DMDB.QueueText "   D Â·ERÂ·  Â·E   ", seNone, 120
+			'DMD2.QueueText "   Â·  ERÂ·  Â·E   ", seNone, 110 : 'DMDB.QueueText "   Â·  ERÂ·  Â·E   ", seNone, 110
+			'DMD2.QueueText "   Â·  EÂ·    E   ", seNone, 100 : 'DMDB.QueueText "   Â·  EÂ·    E   ", seNone, 100
+			'DMD2.QueueText "      EÂ·    Â·   ", seNone, 100 : 'DMDB.QueueText "      EÂ·    Â·   ", seNone, 100
+			'DMD2.QueueText "      E     Â·   ", seNone, 100 : 'DMDB.QueueText "      E     Â·   ", seNone, 100
+			'DMD2.QueueText "      Â·         ", seNone, 100 : 'DMDB.QueueText "      Â·         ", seNone, 100
 			
 			'DMD1.QueueText "                ", seNone, 150 : 'DMDA.QueueText "                ", seNone, 150
 			'DMD2.QueueText "                ", seNone, 150 : 'DMDB.QueueText "                ", seNone, 150
@@ -52033,7 +52052,7 @@ Sub RandomArmourPieceDMDShow()
 	' - L E F T  S I D E -
 	'========================----------------------
 
-	Case 1 '--=[ CUIRASS ]=---------------------------------·· · ·  ·
+	Case 1 '--=[ CUIRASS ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour1Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52051,7 +52070,7 @@ Sub RandomArmourPieceDMDShow()
 		'End If
 		
 
-	Case 2 '--=[ SHIELD ]=---------------------------------·· · ·  ·
+	Case 2 '--=[ SHIELD ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour2Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52069,7 +52088,7 @@ Sub RandomArmourPieceDMDShow()
 		'End If
 		
 
-	Case 3 '--=[ GAUNTLETS ]=--------------------------------·· · ·  ·
+	Case 3 '--=[ GAUNTLETS ]=--------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour3Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52087,7 +52106,7 @@ Sub RandomArmourPieceDMDShow()
 		'End If
 		
 
-	Case 4 '--=[ HELM ]=---------------------------------·· · ·  ·
+	Case 4 '--=[ HELM ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour4Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52109,7 +52128,7 @@ Sub RandomArmourPieceDMDShow()
 	'========================----------------------
 	' - R I G H T  S I D E -
 	'========================----------------------
-	Case 5 '--=[ WINGS ]=---------------------------------·· · ·  ·
+	Case 5 '--=[ WINGS ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour5Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52127,7 +52146,7 @@ Sub RandomArmourPieceDMDShow()
 		'End If
 
 
-	Case 6 '--=[ SWORD ]=---------------------------------·· · ·  ·
+	Case 6 '--=[ SWORD ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour6Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52145,7 +52164,7 @@ Sub RandomArmourPieceDMDShow()
 		'End If
 
 
-	Case 7 '--=[ AXE ]=---------------------------------·· · ·  ·
+	Case 7 '--=[ AXE ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour7Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52163,7 +52182,7 @@ Sub RandomArmourPieceDMDShow()
 		'End If
 
 
-	Case 8 '--=[ CHEST ]=---------------------------------·· · ·  ·
+	Case 8 '--=[ CHEST ]=---------------------------------Â·Â· Â· Â·  Â·
 
 		'If Armour7Collected = TRUE then
 		'	RandomArmourPieceDMDShow()
@@ -52394,9 +52413,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - DEMON STOP FLEE ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarVoiceKickbackBotheringGirl()
 
@@ -52602,9 +52621,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - DEMON STOP FLEE ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceStopFleeing()
 
@@ -52671,9 +52690,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - ANGEL ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarSoundAngelTrapped()
 
@@ -52763,9 +52782,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - ANGEL UP ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceTrapAngelUP()
 
@@ -53031,9 +53050,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - DEMON TRAPPED ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceTrapped()
 
@@ -53096,9 +53115,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - DEMON UP ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceTrapDemonUP()
 
@@ -53161,9 +53180,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE TRAP - DEMON DW ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceTrapDemonDOWN()
 
@@ -53193,9 +53212,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE DEMON LAF ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceLaf()
 
@@ -53216,9 +53235,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ ANGEL ARGH ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarAngelHitArgh()
 
@@ -53284,9 +53303,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE FEAR ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarVoiceFear()
 
@@ -53429,9 +53448,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE FEAR POSSESION ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarVoiceFearPossesion()
 
@@ -53551,9 +53570,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE MAD ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarVoiceMad()
 
@@ -53723,9 +53742,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE CRAZY ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarVoiceCrazyTotal()
 
@@ -53854,9 +53873,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE DEMON TAUNT - GATES HIT ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceTauntHitGates()
 
@@ -53907,9 +53926,9 @@ End Sub
 
 
 
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE DEMON TAUNT - GATE OPEN ]=-----
-'================================----------------------------------------------···  ·   ·
+'================================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceTauntGateOpen()
 
@@ -54371,9 +54390,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ GUARDIANS ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarDemonVoiceGuardianReturns()
 
@@ -54519,9 +54538,9 @@ End Sub
 
 
 
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 '--=[ VOICE GUARDIAN MAD ]=-----
-'========================----------------------------------------------···  ·   ·
+'========================----------------------------------------------Â·Â·Â·  Â·   Â·
 
 Sub AzarVoiceGuardianMad()
 
@@ -55832,9 +55851,9 @@ Sub LeftSlingshot_Slingshot
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		LeftSlingshot.collidable = false
@@ -55882,9 +55901,9 @@ Sub LeftSlingshot_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		LeftSlingshot.collidable = false
@@ -55893,17 +55912,17 @@ Sub LeftSlingshot_Slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MD - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessCollectingDemons = TRUE then 'Time's over we need to collect the demons
 		LeftSlingshot.collidable = false
 		Exit Sub
 	End If
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		LeftSlingshot.collidable = false
 		Exit Sub
@@ -55949,9 +55968,9 @@ Sub LeftSlingshot_Slingshot
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		SlingshotBloodSound()
 		Exit Sub
@@ -55984,9 +56003,9 @@ Sub LeftSlingshot_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	'  RANDOM SOUNDS 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Azar = int (rnd * 5)
 	If azar = 0 then
 
@@ -56031,9 +56050,9 @@ Sub RightSlingshot_Slingshot
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		RightSlingshot.collidable = false
@@ -56080,9 +56099,9 @@ Sub RightSlingshot_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		RightSlingshot.collidable = false
@@ -56091,18 +56110,18 @@ Sub RightSlingshot_Slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MD - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessCollectingDemons = TRUE then 'Time's over we need to collect the demons
 		RightSlingshot.collidable = false
 		Exit Sub
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		RightSlingshot.collidable = false
 		Exit Sub
@@ -56160,9 +56179,9 @@ Dim RStep, Lstep
 	End If
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		SlingshotBloodSound()
 		Exit Sub
@@ -56193,9 +56212,9 @@ Dim RStep, Lstep
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	'  RANDOM SOUNDS 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Azar = int (rnd * 5)
 	If azar = 0 then
 
@@ -56219,9 +56238,9 @@ Sub SoundTimer_Timer()
 	POGDrainComment = FALSE 'We said a comment if the balls drains after hittin the PoG, this will disconnect it
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -56253,9 +56272,9 @@ Sub SoundTimer_Timer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then
 
 		Azar = int (rnd * 4)
@@ -56331,9 +56350,9 @@ Sub SoundTimer_Timer()
 
 
 
-	'==================================----·· ·  ·
+	'==================================----Â·Â· Â·  Â·
 	' -=[ BUMPER HELP ]=-
-	'==================================----·· ·  ·
+	'==================================----Â·Â· Â·  Â·
 	Select Case (SoundTimer.UserValue)
 	Case 666
 
@@ -56364,9 +56383,9 @@ Sub MedSlingshot_Timer
 End Sub
 
 
-'=========================---------·· ·  ·
+'=========================---------Â·Â· Â·  Â·
 '---=[ MED PLAYFIELD ]=---------------------------------------------------------------------------------=[ MED PLAYFIELD ]=--
-'=========================---------·· ·  ·
+'=========================---------Â·Â· Â·  Â·
 
 Sub MedSlingshot_Slingshot
 		StopBallSearchTimer()
@@ -56385,9 +56404,9 @@ Sub MedSlingshot_Slingshot
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		MedSlingshot.collidable = false
@@ -56436,9 +56455,9 @@ Sub MedSlingshot_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		MedSlingshot.collidable = false
@@ -56447,18 +56466,18 @@ Sub MedSlingshot_Slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MD - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessCollectingDemons = TRUE then 'Time's over we need to collect the demons
 		MedSlingshot.collidable = false
 		Exit Sub
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		MedSlingshot.collidable = false
 		Exit Sub
@@ -56502,9 +56521,9 @@ Sub MedSlingshot_Slingshot
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		SlingshotBloodSound()
 		Exit Sub
@@ -56536,9 +56555,9 @@ Sub MedSlingshot_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	'  RANDOM SOUNDS 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Azar = int (rnd * 5)
 	If azar = 0 then
 
@@ -56566,9 +56585,9 @@ End Sub
 
 
 
-'===========================-------··· ·· ·  ·
+'===========================-------Â·Â·Â· Â·Â· Â·  Â·
 '---=[ UPPER PLAYFIELD ]=---------------------------------------------------------------------------------=[ UPPER PLAYFIELD ]=--
-'===========================-------··· ·· ·  ·
+'===========================-------Â·Â·Â· Â·Â· Â·  Â·
 dim rustep
 
 Sub RightSlingShotup_Timer 
@@ -56590,9 +56609,9 @@ Sub RightSlingshotUP_Slingshot
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		RightSlingshotup.collidable = false
@@ -56642,9 +56661,9 @@ Sub RightSlingshotUP_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		RightSlingshotup.collidable = false
@@ -56653,9 +56672,9 @@ Sub RightSlingshotUP_Slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		RightSlingshotup.collidable = false
 		Exit Sub
@@ -56681,17 +56700,17 @@ Sub RightSlingshotUP_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GatesOpened = TRUE then 'When the gates r opened the disk r spining
 		Exit Sub
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then 'During MD the SDs are spinnin'
 		Exit Sub
 	End If
@@ -56718,9 +56737,9 @@ Sub RightSlingshotUP_Slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GUARDIANS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GateGuardians = 0 and RightGateBroken = FALSE then
 
 		azar = int (rnd*2)
@@ -56746,9 +56765,9 @@ Sub RightSlingshotUP_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	'  RANDOM SOUNDS 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	azar = int (rnd*4)
 	If azar = 1 then
 
@@ -56768,9 +56787,9 @@ Sub RightSlingshotUP_Slingshot
 
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		SlingshotBloodSound()
 		Exit Sub
@@ -56811,9 +56830,9 @@ Sub LeftSlingshotUP_Slingshot
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		LeftSlingshotup.collidable = false
@@ -56860,9 +56879,9 @@ Sub LeftSlingshotUP_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 
 		LeftSlingshotup.collidable = false
@@ -56872,9 +56891,9 @@ Sub LeftSlingshotUP_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		RightSlingshotup.collidable = false
 		Exit Sub
@@ -56902,17 +56921,17 @@ Sub LeftSlingshotUP_Slingshot
 
 
 	
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GatesOpened = TRUE then 'When the gates r opened the disk r spining
 		Exit Sub
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then 'During MD the SDs are spinnin'
 		Exit Sub
 	End If
@@ -56939,9 +56958,9 @@ Sub LeftSlingshotUP_Slingshot
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GUARDIANS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GateGuardians = 0 and LeftGateBroken = FALSE then
 
 		azar = int (rnd*2)
@@ -56967,9 +56986,9 @@ Sub LeftSlingshotUP_Slingshot
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	'  RANDOM SOUNDS 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	azar = int (rnd*4)
 	If azar = 1 then
 
@@ -56999,9 +57018,9 @@ Sub LeftSlingshotUP_Slingshot
 	End If
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		SlingshotBloodSound()
 		Exit Sub
@@ -57809,9 +57828,9 @@ Sub SoulTarget1_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -57956,9 +57975,9 @@ Sub SoulTarget2_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -58100,9 +58119,9 @@ Sub SoulTarget3_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -58244,9 +58263,9 @@ Sub SoulTarget4_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -58383,9 +58402,9 @@ End Sub
 
 Sub CheckSoulTargetSound()
 
-	'------------------------------------·· ·   ·
+	'------------------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'------------------------------------·· ·   ·
+	'------------------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		AddScore(100)
@@ -58423,9 +58442,9 @@ End Sub
 
 Sub CheckSoulTargetsLeft()
 
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 		
 		azar = int (rnd*3)
@@ -58496,15 +58515,15 @@ End Sub
 
 
 
-'===========================================---··· · ·  ·
+'===========================================---Â·Â·Â· Â· Â·  Â·
 '---=[ ALL SOUL TARGETS COMPLETED? ]=-------------------------------------------------------------------------------------
-'===========================================---··· · ·  ·
+'===========================================---Â·Â·Â· Â· Â·  Â·
 
 Sub CheckSoulTargetsCompleted()
 
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 	
 		azar = int (rnd*3)
@@ -58560,38 +58579,38 @@ Sub CheckSoulTargetsCompleted()
 			DMD_CancelRendering
 			'DMD1.FlushQueue : 'DMD2.FlushQueue : 'DMDA.FlushQueue : 'DMDB.FlushQueue
 			DMD_DisplayScene "- WISH  MASTER -","- IS READY NOW -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText "- ·            -", seNone, 50 : 'DMDA.QueueText "- ·            -", seNone, 50
-			'DMD2.QueueText "-    ·         -", seNone, 50 : 'DMDB.QueueText "-    ·         -", seNone, 50
-			'DMD1.QueueText "- W          · -", seNone, 50 : 'DMDA.QueueText "- W          · -", seNone, 50
-			'DMD2.QueueText "-    R     ·   -", seNone, 50 : 'DMDB.QueueText "-    R     ·   -", seNone, 50
-			'DMD1.QueueText "- W     ·    R -", seNone, 50 : 'DMDA.QueueText "- W     ·    R -", seNone, 50
-			'DMD2.QueueText "-  · R     N   -", seNone, 50 : 'DMDB.QueueText "-  · R     N   -", seNone, 50
-			'DMD1.QueueText "- W  ·  M    R -", seNone, 50 : 'DMDA.QueueText "- W  ·  M    R -", seNone, 50
-			'DMD2.QueueText "-  S R     N · -", seNone, 50 : 'DMDB.QueueText "-  S R     N · -", seNone, 50
+			'DMD1.QueueText "- Â·            -", seNone, 50 : 'DMDA.QueueText "- Â·            -", seNone, 50
+			'DMD2.QueueText "-    Â·         -", seNone, 50 : 'DMDB.QueueText "-    Â·         -", seNone, 50
+			'DMD1.QueueText "- W          Â· -", seNone, 50 : 'DMDA.QueueText "- W          Â· -", seNone, 50
+			'DMD2.QueueText "-    R     Â·   -", seNone, 50 : 'DMDB.QueueText "-    R     Â·   -", seNone, 50
+			'DMD1.QueueText "- W     Â·    R -", seNone, 50 : 'DMDA.QueueText "- W     Â·    R -", seNone, 50
+			'DMD2.QueueText "-  Â· R     N   -", seNone, 50 : 'DMDB.QueueText "-  Â· R     N   -", seNone, 50
+			'DMD1.QueueText "- W  Â·  M    R -", seNone, 50 : 'DMDA.QueueText "- W  Â·  M    R -", seNone, 50
+			'DMD2.QueueText "-  S R     N Â· -", seNone, 50 : 'DMDB.QueueText "-  S R     N Â· -", seNone, 50
 			'DMD1.QueueText "- W  H  M    R -", seNone, 50 : 'DMDA.QueueText "- W  H  M    R -", seNone, 50
-			'DMD2.QueueText "- ·S R     N W -", seNone, 50 : 'DMDB.QueueText "- ·S R     N W -", seNone, 50
-			'DMD1.QueueText "- W  H  M·   R -", seNone, 50 : 'DMDA.QueueText "- W  H  M·   R -", seNone, 50
+			'DMD2.QueueText "- Â·S R     N W -", seNone, 50 : 'DMDB.QueueText "- Â·S R     N W -", seNone, 50
+			'DMD1.QueueText "- W  H  MÂ·   R -", seNone, 50 : 'DMDA.QueueText "- W  H  MÂ·   R -", seNone, 50
 			'DMD2.QueueText "- IS R     N W -", seNone, 50 : 'DMDB.QueueText "- IS R     N W -", seNone, 50
 			'DMD1.QueueText "- W  H  MA   R -", seNone, 50 : 'DMDA.QueueText "- W  H  MA   R -", seNone, 50
-			'DMD2.QueueText "- IS R ·   N W -", seNone, 50 : 'DMDB.QueueText "- IS R ·   N W -", seNone, 50
-			'DMD1.QueueText "- W  H  MA · R -", seNone, 50 : 'DMDA.QueueText "- W  H  MA · R -", seNone, 50
+			'DMD2.QueueText "- IS R Â·   N W -", seNone, 50 : 'DMDB.QueueText "- IS R Â·   N W -", seNone, 50
+			'DMD1.QueueText "- W  H  MA Â· R -", seNone, 50 : 'DMDA.QueueText "- W  H  MA Â· R -", seNone, 50
 			'DMD2.QueueText "- IS R A   N W -", seNone, 50 : 'DMDB.QueueText "- IS R A   N W -", seNone, 50
 			'DMD1.QueueText "- W  H  MA T R -", seNone, 50 : 'DMDA.QueueText "- W  H  MA T R -", seNone, 50
-			'DMD2.QueueText "- IS R A·  N W -", seNone, 50 : 'DMDB.QueueText "- IS R A·  N W -", seNone, 50
-			'DMD1.QueueText "- W· H  MA T R -", seNone, 50 : 'DMDA.QueueText "- W· H  MA T R -", seNone, 50
+			'DMD2.QueueText "- IS R AÂ·  N W -", seNone, 50 : 'DMDB.QueueText "- IS R AÂ·  N W -", seNone, 50
+			'DMD1.QueueText "- WÂ· H  MA T R -", seNone, 50 : 'DMDA.QueueText "- WÂ· H  MA T R -", seNone, 50
 			'DMD2.QueueText "- IS R AD  N W -", seNone, 50 : 'DMDB.QueueText "- IS R AD  N W -", seNone, 50
 			'DMD1.QueueText "- WI H  MA T R -", seNone, 50 : 'DMDA.QueueText "- WI H  MA T R -", seNone, 50
-			'DMD2.QueueText "- IS R AD· N W -", seNone, 50 : 'DMDB.QueueText "- IS R AD· N W -", seNone, 50
-			'DMD1.QueueText "- WI·H  MA T R -", seNone, 50 : 'DMDA.QueueText "- WI·H  MA T R -", seNone, 50
+			'DMD2.QueueText "- IS R ADÂ· N W -", seNone, 50 : 'DMDB.QueueText "- IS R ADÂ· N W -", seNone, 50
+			'DMD1.QueueText "- WIÂ·H  MA T R -", seNone, 50 : 'DMDA.QueueText "- WIÂ·H  MA T R -", seNone, 50
 			'DMD2.QueueText "- IS R ADY N W -", seNone, 50 : 'DMDB.QueueText "- IS R ADY N W -", seNone, 50
 			'DMD1.QueueText "- WISH  MA T R -", seNone, 50 : 'DMDA.QueueText "- WISH  MA T R -", seNone, 50
-			'DMD2.QueueText "- IS R ADY N·W -", seNone, 50 : 'DMDB.QueueText "- IS R ADY N·W -", seNone, 50
+			'DMD2.QueueText "- IS R ADY NÂ·W -", seNone, 50 : 'DMDB.QueueText "- IS R ADY NÂ·W -", seNone, 50
 			DMD_DisplayScene "- WISH  MASTER -","- IS READY NOW -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 			'DMD1.QueueText "- WISH  MA T R -", seNone, 50 : 'DMDA.QueueText "- WISH  MA T R -", seNone, 50
-			'DMD2.QueueText "- IS R·ADY NOW -", seNone, 50 : 'DMDB.QueueText "- IS R·ADY NOW -", seNone, 50
-			'DMD1.QueueText "- WISH  MA·T R -", seNone, 50 : 'DMDA.QueueText "- WISH  MA·T R -", seNone, 50
+			'DMD2.QueueText "- IS RÂ·ADY NOW -", seNone, 50 : 'DMDB.QueueText "- IS RÂ·ADY NOW -", seNone, 50
+			'DMD1.QueueText "- WISH  MAÂ·T R -", seNone, 50 : 'DMDA.QueueText "- WISH  MAÂ·T R -", seNone, 50
 			'DMD2.QueueText "- IS READY NOW -", seNone, 50 : 'DMDB.QueueText "- IS READY NOW -", seNone, 50
-			'DMD1.QueueText "- WISH  MAST·R -", seNone, 50 : 'DMDA.QueueText "- WISH  MAST·R -", seNone, 50
+			'DMD1.QueueText "- WISH  MASTÂ·R -", seNone, 50 : 'DMDA.QueueText "- WISH  MASTÂ·R -", seNone, 50
 			'DMD2.QueueText "- IS READY NOW -", seNone, 50 : 'DMDB.QueueText "- IS READY NOW -", seNone, 50
 			'DMD1.QueueText "- WISH  MASTER -", seNone, 50 : 'DMDA.QueueText "- WISH  MASTER -", seNone, 50
 			'DMD2.QueueText "- IS READY NOW -", seNone, 50 : 'DMDB.QueueText "- IS READY NOW -", seNone, 50
@@ -59404,9 +59423,9 @@ Sub QShootTeleportTimer_Timer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Case 100 'When the gates r opened there are no quickshoot. But we show the way with the flashers!
 
 		OpenHellDoors() 'Just in case
@@ -59436,9 +59455,9 @@ Sub QShootTeleportTimer_Timer()
 		QShootTeleportTimer.Enabled = FALSE
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	Case 200 'When its 12:00 oclock you have to send the demons back to hell
 
 		OpenHellDoors() 'Just in case
@@ -60333,18 +60352,18 @@ End Sub
 
 
 
-'-----============================---------------····· ··  ·
-'============================================---------------····· ·  ·    ·
+'-----============================---------------Â·Â·Â·Â·Â· Â·Â·  Â·
+'============================================---------------Â·Â·Â·Â·Â· Â·  Â·    Â·
 ' --=[ THE DRUMS FROM HELL ]=--
-'============================================---------------····· ·  ·    ·
-'-----============================---------------····· ··  ·
+'============================================---------------Â·Â·Â·Â·Â· Â·  Â·    Â·
+'-----============================---------------Â·Â·Â·Â·Â· Â·Â·  Â·
 
 Sub CheckMusicDuringBloodExtractorMball()
 
 	Select Case (BEMBallsLeftOnPF)
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 	Case 3 '--=[ 03 BALLS LEFT ]=---
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 
 		If BEMBallsLocked = 2 then
 		
@@ -60360,9 +60379,9 @@ Sub CheckMusicDuringBloodExtractorMball()
 		
 		End If
 	
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 	Case 2 '--=[ 02 BALLS LEFT ]=---
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 
 		If BEMBallsLocked = 1 then
 		
@@ -60379,9 +60398,9 @@ Sub CheckMusicDuringBloodExtractorMball()
 		End If
 
 
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 	Case 1 '--=[ 01 BALL LEFT ]=---
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 
 		'EffectMusic 1, FadeVolume, 0.0, 1 'PlayMusic 1, "3angels\msc_loop_battery1", TRUE, 0.0, 1
 		'EffectMusic 2, FadeVolume, 0.8, 1 'PlayMusic 2, "3angels\msc_loop_battery2", TRUE, 0.8, 1
@@ -60394,11 +60413,11 @@ End Sub
 
 
 
-'-----============================---------------····· ··  ·
-'============================================---------------····· ·  ·    ·
+'-----============================---------------Â·Â·Â·Â·Â· Â·Â·  Â·
+'============================================---------------Â·Â·Â·Â·Â· Â·  Â·    Â·
 ' --=[ BLOOD EXTRACTOR JACKPOT CHECK ]=--
-'============================================---------------····· ·  ·    ·
-'-----============================---------------····· ··  ·
+'============================================---------------Â·Â·Â·Â·Â· Â·  Â·    Â·
+'-----============================---------------Â·Â·Â·Â·Â· Â·Â·  Â·
 
 Sub CheckBloodExtractorJackpots()
 
@@ -60463,9 +60482,9 @@ Sub CheckBloodExtractorJackpots()
 
 
 	Select Case (BEMBallsLeftOnPF)
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 	Case 3 '--=[ 03 BALLS LEFT ]=---
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 
 		'-----------------------------
 		' BALL KEPT ON THE PORTAL
@@ -60518,9 +60537,9 @@ Sub CheckBloodExtractorJackpots()
 
 
 
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 	Case 2 '--=[ 02 BALLS LEFT ]=---
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 
 		'-----------------------------
 		' BALL KEPT ON THE PORTAL
@@ -60586,9 +60605,9 @@ Sub CheckBloodExtractorJackpots()
 
 
 
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 	Case 1 '--=[ 01 BALL LEFT ]=---
-	'==============================================-------- --- -·  ·
+	'==============================================-------- --- -Â·  Â·
 
 		If BEMBallsLocked = 1 then
 		
@@ -60613,10 +60632,10 @@ End Sub
 
 
 
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[    BLOOD BATH MULTIBALL   ]=--
 ' --=[ ::: 3 X J A C K P O T ::: ]=--
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 Sub BEMBall3XJackpot() '3 demon multiball TRIPLE blood fest jackpot!!!
 
 	azar = int (rnd*2)
@@ -60732,10 +60751,10 @@ End Sub
 
 
 
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[    BLOOD BATH MULTIBALL   ]=--
 ' --=[ ::: 2 X J A C K P O T ::: ]=--
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 Sub BEMBall2XJackpot()
 
 	'---------------------------------------------------
@@ -60934,10 +60953,10 @@ End Sub
 
 
 
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[    BLOOD BATH MULTIBALL   ]=--
 ' --=[  :::  J A C K P O T   ::: ]=--
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 Sub BEMBallJackpot()
 
 	'BoomBloodBathJackpot()
@@ -61068,12 +61087,12 @@ End Sub
 
 
 
-'-----------------------------------------------------·· ·    ·
-'================================================--------------·· ·    ·
+'-----------------------------------------------------Â·Â· Â·    Â·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[ BLOOD BATH MULTIBALL ]=--
 ' --=[ :: LOCK 001 TIMER :: ]=--
-'================================================--------------·· ·    ·
-'-----------------------------------------------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
+'-----------------------------------------------------Â·Â· Â·    Â·
 Sub BEMBallLock1Timer_Timer()
 
 	Select Case (BEMBallLock1Timer.UserValue)
@@ -61243,11 +61262,11 @@ Sub BEMBallLock1Timer_Timer()
 
 
 
-	'------------------------------------·· ·
+	'------------------------------------Â·Â· Â·
 	' -- W I Z A R D M O D E --
-	'====================----------------·· ·
+	'====================----------------Â·Â· Â·
 	' -=[ TRAP KICKER 001 ]=--
-	'====================----------------·· ·
+	'====================----------------Â·Â· Â·
 	Case 666 'WMRelease1
 
 		'If WishMasterTimer.Enabled = FALSE then 'We use this when Angel or Luzbel has been hit. We dont want to mix voices!
@@ -61319,12 +61338,12 @@ End Sub
 
 
 
-'-----------------------------------------------------·· ·    ·
-'================================================--------------·· ·    ·
+'-----------------------------------------------------Â·Â· Â·    Â·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[ BLOOD BATH MULTIBALL ]=--
 ' --=[ :: LOCK 002 TIMER :: ]=--
-'================================================--------------·· ·    ·
-'-----------------------------------------------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
+'-----------------------------------------------------Â·Â· Â·    Â·
 Sub BEMBallLock2Timer_Timer()
 
 	Select Case (BEMBallLock2Timer.UserValue)
@@ -61494,11 +61513,11 @@ Sub BEMBallLock2Timer_Timer()
 
 
 
-	'------------------------------------·· ·
+	'------------------------------------Â·Â· Â·
 	' -- W I Z A R D M O D E --
-	'====================----------------·· ·
+	'====================----------------Â·Â· Â·
 	' -=[ TRAP KICKER 002 ]=--
-	'====================----------------·· ·
+	'====================----------------Â·Â· Â·
 	Case 666 'WMRelease2
 
 		'If WishMasterTimer.Enabled = FALSE then 'We use this when Angel or Luzbel has been hit. We dont want to mix voices!
@@ -61571,12 +61590,12 @@ End Sub
 
 
 
-'-----------------------------------------------------·· ·    ·
-'================================================--------------·· ·    ·
+'-----------------------------------------------------Â·Â· Â·    Â·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[ BLOOD BATH MULTIBALL ]=--
 ' --=[ :: LOCK 003 TIMER :: ]=--
-'================================================--------------·· ·    ·
-'-----------------------------------------------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
+'-----------------------------------------------------Â·Â· Â·    Â·
 
 Sub BEMBallLock3Timer_Timer()
 
@@ -61744,11 +61763,11 @@ Sub BEMBallLock3Timer_Timer()
 
 
 
-	'------------------------------------·· ·
+	'------------------------------------Â·Â· Â·
 	' -- W I Z A R D M O D E --
-	'====================----------------·· ·
+	'====================----------------Â·Â· Â·
 	' -=[ TRAP KICKER 003 ]=--
-	'====================----------------·· ·
+	'====================----------------Â·Â· Â·
 	Case 666 'WMRelease3
 
 		'If WishMasterTimer.Enabled = FALSE then 'We use this when Angel or Luzbel has been hit. We dont want to mix voices!
@@ -61821,10 +61840,10 @@ End Sub
 
 
 
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[ BLOOD BATH MULTIBALL ]=--
 ' --=[ ::   TRAP LITES   :: ]=--
-'================================================--------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
 
 Sub UpdateTrapLitesDuringBloodBathMball()
 
@@ -61988,12 +62007,12 @@ End Sub
 
 
 
-'-----------------------------------------------------·· ·    ·
-'================================================--------------·· ·    ·
+'-----------------------------------------------------Â·Â· Â·    Â·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[ BLOOD BATH MULTIBALL ]=--
 ' --=[ ::  C H O I R S   :: ]=--
-'================================================--------------·· ·    ·
-'-----------------------------------------------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
+'-----------------------------------------------------Â·Â· Â·    Â·
 Sub BEMballChoirs()
 
 	BloodExtractorMballChoirs = BloodExtractorMballChoirs + 1
@@ -62028,11 +62047,11 @@ End Sub
 
 
 
-'-----------------------------------------------------·· ·    ·
-'================================================--------------·· ·    ·
+'-----------------------------------------------------Â·Â· Â·    Â·
+'================================================--------------Â·Â· Â·    Â·
 ' --=[ BLOOD EXTRACTOR MULTIBALL OVER ]=--
-'================================================--------------·· ·    ·
-'-----------------------------------------------------·· ·    ·
+'================================================--------------Â·Â· Â·    Â·
+'-----------------------------------------------------Â·Â· Â·    Â·
 
 Sub BloodExtractorMballOverCosBallHasBeenLost()
 
@@ -63711,15 +63730,15 @@ End Sub
 
 
 
-'=======================================--------------------- --- -·· ·   ·
-'--=[ BONUS ANIMATION ]=---- - ·  ·
-'=======================================--------------------- --- -·· ·   ·
+'=======================================--------------------- --- -Â·Â· Â·   Â·
+'--=[ BONUS ANIMATION ]=---- - Â·  Â·
+'=======================================--------------------- --- -Â·Â· Â·   Â·
 
 Sub BonusLitesTimer_Timer()
 	
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 			BonusLitesTimer.Enabled = FALSE
@@ -63729,9 +63748,9 @@ Sub BonusLitesTimer_Timer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then
 	
 			UpdateBonusLites()
@@ -63755,9 +63774,9 @@ Sub BonusLitesTimer_Timer()
 	End If
 
 
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'======================================---------------------------·· ·   ·
+	'======================================---------------------------Â·Â· Â·   Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 			UpdateBonusLites()
@@ -63780,7 +63799,7 @@ Sub BonusLitesTimer_Timer()
 	
 	'===========================================================----------------------
 	'=-
-	'=- B O N U S L I T E S A N I M A T I O N -=-----·· ·
+	'=- B O N U S L I T E S A N I M A T I O N -=-----Â·Â· Â·
 	'=- 
 	'===========================================================----------------------
 		Case -1
@@ -63917,7 +63936,7 @@ Sub BonusLitesTimer_Timer()
 
 	'===========================================================----------------------
 	'=-
-	'=- P L A Y I N G  W I T H  T H E  P L A Y E R S -=-----·· ·
+	'=- P L A Y I N G  W I T H  T H E  P L A Y E R S -=-----Â·Â· Â·
 	'=- 
 	'===========================================================----------------------
 
@@ -64449,11 +64468,11 @@ Sub WizardModeTimer_Timer()
 
 	Select Case (WizardModeTimer.UserValue)
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ 001 - P R E P A R I N G ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ 001 - P R E P A R I N G ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case -1
 
 		'BoomWMWelcomeHell()
@@ -64584,9 +64603,9 @@ Sub WizardModeTimer_Timer()
 		WizardModeTimer.UserValue = WizardModeTimer.UserValue + 1
 
 
-	'==============================-------------------·· ·  ·
+	'==============================-------------------Â·Â· Â·  Â·
 	Case 5 '----=[ 1st ANGEL ]=----
-	'==============================-------------------·· ·  ·
+	'==============================-------------------Â·Â· Â·  Â·
 
 		FlippersActive = TRUE
 		
@@ -64656,9 +64675,9 @@ Sub WizardModeTimer_Timer()
 		
 
 
-	'==============================-------------------·· ·  ·
+	'==============================-------------------Â·Â· Â·  Â·
 	Case 6 '----=[ 2nd ANGEL ]=----
-	'==============================-------------------·· ·  ·
+	'==============================-------------------Â·Â· Â·  Â·
 
 		PlaySound "fx_thunder11"
 		DMD_CancelRendering
@@ -64715,9 +64734,9 @@ Sub WizardModeTimer_Timer()
 		End If
 
 
-	'==============================-------------------·· ·  ·
+	'==============================-------------------Â·Â· Â·  Â·
 	Case 7 '----=[ 3rd ANGEL ]=----
-	'==============================-------------------·· ·  ·
+	'==============================-------------------Â·Â· Â·  Â·
 		DMD_CancelRendering
 		'DMD1.FlushQueue : 'DMD2.FlushQueue
 		DMD_DisplayScene "- THIRD  ANGEL -","- THIRD  ANGEL -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -64808,11 +64827,11 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ FIGHTING VS EVIL ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ FIGHTING VS EVIL ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 
 	Case 99 'MortalKombat!
 
@@ -65139,13 +65158,13 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ OPENING WOUNDS ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ OPENING WOUNDS ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 	Case 150 '--=[ 00:14'5 ]=-- ' WOUND#01 - TRAP 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 
 			'WMWoundsOpened = 6 'ALL WOUNDS ARE OPENED
 			'We change this 'cos it is much fun.
@@ -65171,9 +65190,9 @@ Sub WizardModeTimer_Timer()
 		WizardModeTimer.UserValue = WizardModeTimer.UserValue + 1
 
 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 	Case 151 '--=[ 00:15'5 ]=-- ' WOUND#02 = TRAP 01
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 
 		FlashForms FlasherTrapL, 1000, 100, 0
 		FlashForms FlasherTrapR, 1000, 100, 0
@@ -65242,9 +65261,9 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 	Case 153 '--=[ 00:17'1 ]=-- ' WOUND#03 = TRAP 02
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 
 		FlashForms FlasherTrapL, 1000, 100, 0
 		FlashForms FlasherTrapR, 1000, 100, 0
@@ -65318,9 +65337,9 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 	Case 155 '--=[ 00:18'5 ]=-- ' WOUND#04 = TRAP 03
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 
 		'FlasherTrapL.FlashForms 1000, 100, 0
 		'FlasherTrapR.FlashForms 1000, 100, 0
@@ -65429,9 +65448,9 @@ Sub WizardModeTimer_Timer()
 		WizardModeTimer.UserValue = WizardModeTimer.UserValue + 1
 
 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 	Case 159 '--=[ 00:20'7 ]=-- ' WOUND#05 = PORTAL
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 
 		FlashForms FlasherTrapL, 500, 500, 0
 		FlashForms FlasherTrapR, 500, 350, 0
@@ -65483,9 +65502,9 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 	Case 161 '--=[ 00:21'4 ]=-- ' WOUND#06 = HELL
-	'===================------------·· ·
+	'===================------------Â·Â· Â·
 
 			LightSeqTilt.StopPlay
 			LightSeqDW.StopPlay
@@ -65613,9 +65632,9 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ 1ST ANGEL ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ 1ST ANGEL ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
 	Case 200 '--=[ 00:23'2 ]=--
 
 			FlashForms FlasherUPR, 1600, 32, 0
@@ -65631,9 +65650,9 @@ Sub WizardModeTimer_Timer()
 		
 
 
-		'=========================-------------------·· ·  ·
-		' --=[ CREATE 1st ANGEL ]=---·· ·
-		'=========================-------------------·· ·  ·
+		'=========================-------------------Â·Â· Â·  Â·
+		' --=[ CREATE 1st ANGEL ]=---Â·Â· Â·
+		'=========================-------------------Â·Â· Â·  Â·
 			WMAngelsOnPF = WMAngelsOnPF + 1
 			
 			SkillShotActive = FALSE
@@ -65678,11 +65697,11 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ COMMENTS DURING FIGHT ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ COMMENTS DURING FIGHT ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 
 	Case 400
 
@@ -65705,11 +65724,11 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ ANGEL DIE ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ ANGEL DIE ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 666 'AngelKilled
 
 		PlaySound "fx_hit_blood_long"
@@ -65762,11 +65781,11 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ DEMON DIE ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ DEMON DIE ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 1666 'AngelWon
 
 			LightSeqTilt.Play SeqAllON
@@ -65909,11 +65928,11 @@ Sub WizardModeTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ C R E D I T S ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ C R E D I T S ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 2000 'wizcredits
 
 		'-----------------
@@ -67098,11 +67117,11 @@ End Sub
 
 
 
-'====================---··· ·   ·
-'========================·· ·===============================------------------------------------
-'	--=[ WIZARD MODE ]=---    ---=[ WOUND OPENED ]=----·· ·   ·
-'========================·· ·===============================------------------------------------
-'====================---··· ·   ·
+'====================---Â·Â·Â· Â·   Â·
+'========================Â·Â· Â·===============================------------------------------------
+'	--=[ WIZARD MODE ]=---    ---=[ WOUND OPENED ]=----Â·Â· Â·   Â·
+'========================Â·Â· Â·===============================------------------------------------
+'====================---Â·Â·Â· Â·   Â·
 
 Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
@@ -67211,9 +67230,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 	AddScore(50000)
 	
 
-	'=========================-------------------·· ·  ·
-	' --=[ CREATE NEW BALL ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	' --=[ CREATE NEW BALL ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 	'	BallsOnPlayfield = BallsOnPlayfield - 1 'The ball is locked
 	'	
 	'	SkillShotActive = FALSE
@@ -67221,9 +67240,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
 
 
-	'=========================-------------------·· ·  ·
-	' --=[ C L O C K ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	' --=[ C L O C K ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMCollectingWoundsBalls = FALSE then 'You could hit the kicker after the time was over...
 
 		ClockSec = ClockSec + 15 'was 10
@@ -67255,9 +67274,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
 
 
-	'=========================-------------------·· ·  ·
-	' --=[ PLAYFIELD ON ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	' --=[ PLAYFIELD ON ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 	LightSeqTilt.Play SeqAllON	'Turn ON all the lights
 
 	Select Case (WMWoundsOpened)		
@@ -67281,9 +67300,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
 
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ DMD SHOW ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 
 		'Select Case (WMWoundsOpened)
 		'Case 1 : BoomSWArmour7() '------------------------------------=[ DEMON AXE ]=-------
@@ -67306,9 +67325,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
 	Select Case (WMWoundsOpened)
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ WOUND 001 ]=---=[ TRAP ENTRANCE KICKER ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	Case 1
 
 		SummonDemonTimer.UserValue = 666
@@ -67400,9 +67419,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 			TrapTimer.Enabled = TRUE 'This will release the ball that is in the entrance
 
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ WOUND 002 ]=---=[ TRAP KICKER 001 ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	Case 2
 			myPlayMusicForMode(3)
 			'PlayMusic "3angels\ch_mantra2.mp3"', TRUE, 0.6, 1
@@ -67500,9 +67519,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 			BEMBallLock1Timer.Enabled = TRUE 'This will release the ball that is in the entrance
 
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ WOUND 003 ]=---=[ TRAP KICKER 002 ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	Case 3
 
 		FlashForms FlasherTrapR, 5000, 5000, 0
@@ -67616,9 +67635,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
 
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ WOUND 004 ]=---=[ TRAP KICKER 003 ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	Case 4
 			myPlayMusicForMode(5)
 			'PlayMusic 1, "3angels\ch_mantra4", TRUE, 0.6, 1
@@ -67732,9 +67751,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 			End If
 
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ WOUND 005 ]=---=[ PORTAL KICKER ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	Case 5
 			myPlayMusicForMode(6)
 			'PlayMusic 1, "3angels\ch_mantra5", TRUE, 0.7, 1
@@ -67839,9 +67858,9 @@ Sub WMaWoundHasBeenOpened()  'This will raise the mantra!
 
 
 
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	' --=[ WOUND 005 ]=---=[ HELL KICKER ]=--
-	'====·===========·==============================----------·· ·  ·
+	'====Â·===========Â·==============================----------Â·Â· Â·  Â·
 	Case 6
 			myPlayMusicForMode(7)
 			'PlayMusic 1, "3angels\ch_mantra6", TRUE, 0.8, 1
@@ -68021,11 +68040,11 @@ Sub StopBlinkingTheWoundsShots() 'We dont want the wounds to continue blinking
 End Sub
 
 
-'====================---··· ·   ·
-'========================·· ·===============================------------------------------------
-'	--=[ WIZARD MODE ]=---    ---=[ ALL WOUNDS OPENED!! ]=----·· ·   ·
-'========================·· ·===============================------------------------------------
-'====================---··· ·   ·
+'====================---Â·Â·Â· Â·   Â·
+'========================Â·Â· Â·===============================------------------------------------
+'	--=[ WIZARD MODE ]=---    ---=[ ALL WOUNDS OPENED!! ]=----Â·Â· Â·   Â·
+'========================Â·Â· Â·===============================------------------------------------
+'====================---Â·Â·Â· Â·   Â·
 
 Sub WMAllWoundsOpened()
 
@@ -68327,9 +68346,9 @@ Sub CheckAnotherAngelCreation()
 
 
 	Select Case (WMTimesYouHitLuzbel)
-	'=========================-------------------·· ·  ·
-	Case 1 ' --=[ CREATE ANGEL N.002 ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	Case 1 ' --=[ CREATE ANGEL N.002 ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 
 		'No good!
 		'PlaySound "vc_heroes_arrive"
@@ -68348,9 +68367,9 @@ Sub CheckAnotherAngelCreation()
 		End If
 
 
-	'=========================-------------------·· ·  ·
-	Case 3 ' --=[ CREATE ANGEL N.003 ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	Case 3 ' --=[ CREATE ANGEL N.003 ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 
 		'PlaySound "vc_heroes_arrive"
 		
@@ -68371,9 +68390,9 @@ Sub CheckAnotherAngelCreation()
 
 
 
-	'=========================-------------------·· ·  ·
-	' --=[ CREATE ANGEL N.004 ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	' --=[ CREATE ANGEL N.004 ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMEvilEnergy =< 600 and WMAngelsOnPF = 3 then
 
 		WMAngelsOnPF = WMAngelsOnPF + 1
@@ -68386,9 +68405,9 @@ Sub CheckAnotherAngelCreation()
 		'CreateNewBall()
 
 
-	'=========================-------------------·· ·  ·
-	' --=[ CREATE ANGEL N.005 ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	' --=[ CREATE ANGEL N.005 ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 	ElseIf WMEvilEnergy =< 300 and WMAngelsOnPF = 4 then
 
 		WMAngelsOnPF = WMAngelsOnPF + 1
@@ -68472,11 +68491,11 @@ End Sub
 
 
 
-'============================---------·· ·   ·
-'============================---···
-'-==[ L U Z B E L ]==- H I T -=--·---------------------------------------------------------------------
-'============================---···
-'============================---------·· ·   ·
+'============================---------Â·Â· Â·   Â·
+'============================---Â·Â·Â·
+'-==[ L U Z B E L ]==- H I T -=--Â·---------------------------------------------------------------------
+'============================---Â·Â·Â·
+'============================---------Â·Â· Â·   Â·
 
 Sub LuzbelHasBeenHit()
 
@@ -68511,10 +68530,10 @@ Sub LuzbelHasBeenHit()
 	DMD_DisplayScene " -- EVIL HIT -- "," -- EVIL HIT -- ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	'  - ADJUSTING EVIL PAIN -
 	' MAKING GAME MORE THRILLED
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMEvilEnergy => 700 and WMYourEnergy =< 20 then
 
 		WMEvilEnergy = WMEvilEnergy - 50
@@ -68582,9 +68601,9 @@ Sub LuzbelHasBeenHit()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' HIT FX 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 
 		azar = int (rnd*2)
 		If azar = 0 then
@@ -68602,9 +68621,9 @@ Sub LuzbelHasBeenHit()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' DEMON COMMENTS - WHAT R U DOING?
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	WMDemonComments = WMDemonComments + 1
 
 	If WMDemonComments => 5 then 'Better NOT comment everytime luzbel is hit
@@ -68620,9 +68639,9 @@ Sub LuzbelHasBeenHit()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' LIGHT SHOW
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	FlashForms FlasherUPR, 1100, 1100, 0
 	FlashForms FlasherUPC, 1100, 1100, 0
 	FlashForms FlasherUPL, 1100, 1100, 0
@@ -68683,9 +68702,9 @@ Sub LuzbelHearthHasBeenHit()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' LIGHT SHOW
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	FlashForms FlasherUPR, 1100, 1100, 0
 	FlashForms FlasherUPC, 1100, 1100, 0
 	FlashForms FlasherUPL, 1100, 1100, 0
@@ -68721,11 +68740,11 @@ End Sub
 
 
 
-'============================---···--------------------·· ·   ·
-'============================---···
-'-==[ L U Z B E L  D I E S ? -=--·---------------------------------------------------------------------
-'============================---···
-'============================---···--------------------·· ·   ·
+'============================---Â·Â·Â·--------------------Â·Â· Â·   Â·
+'============================---Â·Â·Â·
+'-==[ L U Z B E L  D I E S ? -=--Â·---------------------------------------------------------------------
+'============================---Â·Â·Â·
+'============================---Â·Â·Â·--------------------Â·Â· Â·   Â·
 Sub CheckLuzbelDeath()
 
 	If WizModeIsOver = TRUE then
@@ -68737,9 +68756,9 @@ Sub CheckLuzbelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
-	' --=[ MUSIC CHANGE ]=---·· ·
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
+	' --=[ MUSIC CHANGE ]=---Â·Â· Â·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMEvilEnergy =< 250 then 'When demon is going to die we introduce a more thrilled music track!
 
 		If LastBGM = "WM01" then 'If we are playing the 1st part of the WM soundtrack... we change it for a thriller one!
@@ -68761,10 +68780,10 @@ Sub CheckLuzbelDeath()
 
 
 
-	'=========================---------------------------------·· ·  ·
+	'=========================---------------------------------Â·Â· Â·  Â·
 	' THE DARK SOLDIERS WILL HELP THE ONE THAT CANNOT BE NAMED
 	' The will be summoned if the player is good
-	'=========================---------------------------------·· ·  ·
+	'=========================---------------------------------Â·Â· Â·  Â·
 	'If WMEvilEnergy <= 300 then
 	'
 	'	If WMYourEnergy => 70 then 'Only send soldiers when player is so good
@@ -68789,9 +68808,9 @@ Sub CheckLuzbelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' ADJUSTING BALL RELEASING TIME
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' When you Hit LuzBell the ball stays locked for a bit and then it is released
 	' When you are playing and Luzbel life decrease, we make that locked time shorter to thrill a bit the gameplay
 
@@ -68855,9 +68874,9 @@ Sub CheckLuzbelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' LUZBEL DIES!!!!
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMEvilEnergy =< 0 then
 
 		PlaySound "3angels\ch_end"
@@ -68872,9 +68891,9 @@ Sub CheckLuzbelDeath()
 
 	Else
 
-		'=========================-------------------·· ·  ·
+		'=========================-------------------Â·Â· Â·  Â·
 		' LIFE LEFT ON DMD
-		'=========================-------------------·· ·  ·
+		'=========================-------------------Â·Â· Â·  Â·
 		'MD1.Text = "YOUR LIFE = 080 "
 		'MD2.Text = "EVIL LIFE = 900 "
 		
@@ -68918,17 +68937,17 @@ End Sub
 
 
 
-'=======================================================------------------------------------··· ·   ·
+'=======================================================------------------------------------Â·Â·Â· Â·   Â·
 ' --=[ W I Z A R D M O D E ]=---
 ' --=[ CREATE DARK SOLDIER ]=---
-'=======================================================------------------------------------··· ·   ·
+'=======================================================------------------------------------Â·Â·Â· Â·   Â·
 Sub CreateSoldier() 'Creates a demon soldier who fights against you
 
 		Exit Sub
 
-	'------------------------ ·
+	'------------------------ Â·
 	' --=[ DARK DEMON ]=---
-	'------------------------ ·
+	'------------------------ Â·
 	BallsOnPlayfield = BallsOnPlayfield + 1
 	WMSoldiersOnPF = WMSoldiersOnPF + 1
 	
@@ -68952,10 +68971,10 @@ End Sub
 
 
 
-'=======================================================------------------------------------··· ·   ·
+'=======================================================------------------------------------Â·Â·Â· Â·   Â·
 ' --=[ W I Z A R D M O D E ]=---
 ' --=[ DARK SOLDIER KILLED ]=---
-'=======================================================------------------------------------··· ·   ·
+'=======================================================------------------------------------Â·Â·Â· Â·   Â·
 Sub DemonSoldierDestroyed()
 
 		BIHellKicker = FALSE
@@ -68996,9 +69015,9 @@ Sub DemonSoldierDestroyed()
 	PlaySound "fx_demon_squeal3"
 
 
-	'===================================------------------·· ·
+	'===================================------------------Â·Â· Â·
 	' IF ANGELS DESTROY A SOLDIER, THEY RECEIVE HIS LIFE :?
-	'===================================------------------·· ·	
+	'===================================------------------Â·Â· Â·	
 	If WMYourEnergy => 10 and WMYourEnergy =< 90 then
 
 		WMYourEnergy = WMYourEnergy + 10 'if you kill a demon you recover a bit of life!
@@ -69036,12 +69055,12 @@ End Sub
 
 
 
-'============================---------·· ·   ·
-'============================---···
+'============================---------Â·Â· Â·   Â·
+'============================---Â·Â·Â·
 '	         WIZARD  MODE        
 '         A N G E L  H I T         
-'============================---···
-'============================---------·· ·   ·
+'============================---Â·Â·Â·
+'============================---------Â·Â· Â·   Â·
 
 Sub AngelHasBeenHitByASoldier()
 
@@ -69078,11 +69097,11 @@ End Sub
 
 
 
-'============================---···--------------------·· ·   ·
-'============================---···
-'-==[ A N G E L S  D I E ? -=--·---------------------------------------------------------------------
-'============================---···
-'============================---···--------------------·· ·   ·
+'============================---Â·Â·Â·--------------------Â·Â· Â·   Â·
+'============================---Â·Â·Â·
+'-==[ A N G E L S  D I E ? -=--Â·---------------------------------------------------------------------
+'============================---Â·Â·Â·
+'============================---Â·Â·Â·--------------------Â·Â· Â·   Â·
 Sub CheckAngelDeath()
 
 	If WizModeIsOver = TRUE then
@@ -69095,9 +69114,9 @@ Sub CheckAngelDeath()
 	'MD1.QueueText "YOUR LIFE =  100" , seWipeRadarRight, 100, TRUE
 	'MD2.QueueText "EVIL LIFE = 1000" , seWipeRadarRight, 100, TRUE
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' LIFE LEFT ON DMD
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	'MD1.Text = "YOUR LIFE = 080 "
 	'MD2.Text = "EVIL LIFE = 900 "
 
@@ -69128,9 +69147,9 @@ Sub CheckAngelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' ADJUSTING ANGEL BREATH
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	Select Case (WMYourEnergy)
 	Case 50 :
 
@@ -69166,9 +69185,9 @@ Sub CheckAngelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' MUSIC CHANGE
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMYourEnergy = 30 then
 
 		If LastBGM = "WM01" then 'If we are playing the 1st part of the WM soundtrack... we change it for a thriller one!
@@ -69187,9 +69206,9 @@ Sub CheckAngelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' ANGEL FX SOUNDS
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 
 		'AzarVoiceHelp()
 		AzarDemonVoiceLaf()
@@ -69215,9 +69234,9 @@ Sub CheckAngelDeath()
 		PlaySound "fx_hit_fadeout2"
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' LIGHTSHOW
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 		FlashForms FlasherUPR, 600, 10, 0
 		FlashForms FlasherUPC, 700, 10, 0
 		FlashForms FlasherUPL, 600, 50, 0
@@ -69231,9 +69250,9 @@ Sub CheckAngelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' DEMON COMMENTS - THE DARK ONE DISCOURAGED PLAYER
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	WishMasterTimer.UserValue = -666
 	WishMasterTimer.Interval = 3000
 	WishMasterTimer.Enabled = TRUE 'Demon comment!
@@ -69251,9 +69270,9 @@ Sub CheckAngelDeath()
 
 
 
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	' ANGEL DIE
-	'=========================-------------------·· ·  ·
+	'=========================-------------------Â·Â· Â·  Â·
 	If WMYourEnergy =< 0 then 'U 're dead!
 
 		WizardModeFailed()
@@ -70337,9 +70356,9 @@ End sub
 
 Sub BoomTimer_Timer()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 		blankvideo()
 		BoomBlankDMD()
@@ -74356,9 +74375,9 @@ Sub AttractTimer_Timer()
 
 
 
-	'======================================--------·· · ·   ·
-	'··-==[ THUNDER #001 ]==---··· · 
-	'======================================--------·· · ·   ·
+	'======================================--------Â·Â· Â· Â·   Â·
+	'Â·Â·-==[ THUNDER #001 ]==---Â·Â·Â· Â· 
+	'======================================--------Â·Â· Â· Â·   Â·
 	Case 100 : '----------===> [ HELL ] <=----------
 
 		FlashForms FlasherUPL, 100, 10, 0
@@ -74491,9 +74510,9 @@ Sub AttractTimer_Timer()
 
 
 
-	'======================================--------·· · ·   ·
-	'··-==[ THUNDER #002 ]==---··· · 
-	'======================================--------·· · ·   ·
+	'======================================--------Â·Â· Â· Â·   Â·
+	'Â·Â·-==[ THUNDER #002 ]==---Â·Â·Â· Â· 
+	'======================================--------Â·Â· Â· Â·   Â·
 
 	Case 150: '----------===> [ THUNDER #2 ] <===---------------- LOWER RIGHT
 
@@ -74855,9 +74874,9 @@ Sub SafeScapeTrigger_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -74882,16 +74901,16 @@ Sub SafeScapeTrigger_Hit : StopBallSearchTimer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then
 		Exit Sub
 	End If
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 
 		PlaySound "vd_blasfemy"
@@ -74977,30 +74996,30 @@ Sub Sacrilegium()
 	'DMD1.QueueText "  SACRILEGIOUS  ", seBlinkMask, 500 : 'DMDA.QueueText "  SACRILEGIOUS  ", seBlinkMask, 500
 	'DMD2.QueueText "  SACRILEGIOUS  ", seBlinkMask, 500 : 'DMDB.QueueText "  SACRILEGIOUS  ", seBlinkMask, 500
 
-	'DMD1.QueueText "  SACRI·EGIOUS  ", seNone, 50 : 'DMDA.QueueText "  SACRI·EGIOUS  ", seNone, 50
-	'DMD2.QueueText "  SACRILEGI·US  ", seNone, 50 : 'DMDB.QueueText "  SACRILEGI·US  ", seNone, 50
-	'DMD1.QueueText "  SACRI·EGIOUS  ", seNone, 50 : 'DMDA.QueueText "  SACRI·EGIOUS  ", seNone, 50
-	'DMD2.QueueText "  SA·RILEGI·US  ", seNone, 50 : 'DMDB.QueueText "  SA·RILEGI·US  ", seNone, 50
-	'DMD1.QueueText "  SAC·I·EGIOUS  ", seNone, 45 : 'DMDA.QueueText "  SAC·I·EGIOUS  ", seNone, 45
-	'DMD2.QueueText "  SA·RILEGI·US  ", seNone, 45 : 'DMDB.QueueText "  SA·RILEGI·US  ", seNone, 45
-	'DMD1.QueueText "  SAC·I EGIOUS  ", seNone, 40 : 'DMDA.QueueText "  SAC·I EGIOUS  ", seNone, 40
-	'DMD2.QueueText "  SA·RIL·GI US  ", seNone, 40 : 'DMDB.QueueText "  SA·RIL·GI US  ", seNone, 40
-	'DMD1.QueueText "  SAC I E·IOUS  ", seNone, 40 : 'DMDA.QueueText "  SAC I E·IOUS  ", seNone, 40
-	'DMD2.QueueText "  SA RIL·GI US  ", seNone, 40 : 'DMDB.QueueText "  SA RIL·GI US  ", seNone, 40
-	'DMD1.QueueText "  S·C I E IOU·  ", seNone, 40 : 'DMDA.QueueText "  S·C I E IOU·  ", seNone, 40
-	'DMD2.QueueText "  SA R·L GI US  ", seNone, 40 : 'DMDB.QueueText "  SA R·L GI US  ", seNone, 40
-	'DMD1.QueueText "  S C I E IOU·  ", seNone, 35 : 'DMDA.QueueText "  S C I E IOU·  ", seNone, 35
-	'DMD2.QueueText "  ·A R L GI US  ", seNone, 35 : 'DMDB.QueueText "  ·A R L GI US  ", seNone, 35
-	'DMD1.QueueText "  S C · E ·OU   ", seNone, 30 : 'DMDA.QueueText "  S C · E ·OU   ", seNone, 30
-	'DMD2.QueueText "   A · L GI US  ", seNone, 30 : 'DMDB.QueueText "   A · L GI US  ", seNone, 30
-	'DMD1.QueueText "  · C · E  OU   ", seNone, 30 : 'DMDA.QueueText "  · C · E  OU   ", seNone, 30
-	'DMD2.QueueText "   A   · GI US  ", seNone, 30 : 'DMDB.QueueText "   A   · GI US  ", seNone, 30
-	'DMD1.QueueText "    C   E  O·   ", seNone, 25 : 'DMDA.QueueText "    C   E  O·   ", seNone, 25
-	'DMD2.QueueText "   ·     ·I US  ", seNone, 25 : 'DMDB.QueueText "   ·     ·I US  ", seNone, 25
-	'DMD1.QueueText "    ·   ·  O    ", seNone, 25 : 'DMDA.QueueText "    ·   ·  O    ", seNone, 25
-	'DMD2.QueueText "          I U·  ", seNone, 25 : 'DMDB.QueueText "          I U·  ", seNone, 25
-	'DMD1.QueueText "           ·    ", seNone, 20 : 'DMDA.QueueText "           ·    ", seNone, 20
-	'DMD2.QueueText "          · U   ", seNone, 20 : 'DMDB.QueueText "          · U   ", seNone, 20
+	'DMD1.QueueText "  SACRIÂ·EGIOUS  ", seNone, 50 : 'DMDA.QueueText "  SACRIÂ·EGIOUS  ", seNone, 50
+	'DMD2.QueueText "  SACRILEGIÂ·US  ", seNone, 50 : 'DMDB.QueueText "  SACRILEGIÂ·US  ", seNone, 50
+	'DMD1.QueueText "  SACRIÂ·EGIOUS  ", seNone, 50 : 'DMDA.QueueText "  SACRIÂ·EGIOUS  ", seNone, 50
+	'DMD2.QueueText "  SAÂ·RILEGIÂ·US  ", seNone, 50 : 'DMDB.QueueText "  SAÂ·RILEGIÂ·US  ", seNone, 50
+	'DMD1.QueueText "  SACÂ·IÂ·EGIOUS  ", seNone, 45 : 'DMDA.QueueText "  SACÂ·IÂ·EGIOUS  ", seNone, 45
+	'DMD2.QueueText "  SAÂ·RILEGIÂ·US  ", seNone, 45 : 'DMDB.QueueText "  SAÂ·RILEGIÂ·US  ", seNone, 45
+	'DMD1.QueueText "  SACÂ·I EGIOUS  ", seNone, 40 : 'DMDA.QueueText "  SACÂ·I EGIOUS  ", seNone, 40
+	'DMD2.QueueText "  SAÂ·RILÂ·GI US  ", seNone, 40 : 'DMDB.QueueText "  SAÂ·RILÂ·GI US  ", seNone, 40
+	'DMD1.QueueText "  SAC I EÂ·IOUS  ", seNone, 40 : 'DMDA.QueueText "  SAC I EÂ·IOUS  ", seNone, 40
+	'DMD2.QueueText "  SA RILÂ·GI US  ", seNone, 40 : 'DMDB.QueueText "  SA RILÂ·GI US  ", seNone, 40
+	'DMD1.QueueText "  SÂ·C I E IOUÂ·  ", seNone, 40 : 'DMDA.QueueText "  SÂ·C I E IOUÂ·  ", seNone, 40
+	'DMD2.QueueText "  SA RÂ·L GI US  ", seNone, 40 : 'DMDB.QueueText "  SA RÂ·L GI US  ", seNone, 40
+	'DMD1.QueueText "  S C I E IOUÂ·  ", seNone, 35 : 'DMDA.QueueText "  S C I E IOUÂ·  ", seNone, 35
+	'DMD2.QueueText "  Â·A R L GI US  ", seNone, 35 : 'DMDB.QueueText "  Â·A R L GI US  ", seNone, 35
+	'DMD1.QueueText "  S C Â· E Â·OU   ", seNone, 30 : 'DMDA.QueueText "  S C Â· E Â·OU   ", seNone, 30
+	'DMD2.QueueText "   A Â· L GI US  ", seNone, 30 : 'DMDB.QueueText "   A Â· L GI US  ", seNone, 30
+	'DMD1.QueueText "  Â· C Â· E  OU   ", seNone, 30 : 'DMDA.QueueText "  Â· C Â· E  OU   ", seNone, 30
+	'DMD2.QueueText "   A   Â· GI US  ", seNone, 30 : 'DMDB.QueueText "   A   Â· GI US  ", seNone, 30
+	'DMD1.QueueText "    C   E  OÂ·   ", seNone, 25 : 'DMDA.QueueText "    C   E  OÂ·   ", seNone, 25
+	'DMD2.QueueText "   Â·     Â·I US  ", seNone, 25 : 'DMDB.QueueText "   Â·     Â·I US  ", seNone, 25
+	'DMD1.QueueText "    Â·   Â·  O    ", seNone, 25 : 'DMDA.QueueText "    Â·   Â·  O    ", seNone, 25
+	'DMD2.QueueText "          I UÂ·  ", seNone, 25 : 'DMDB.QueueText "          I UÂ·  ", seNone, 25
+	'DMD1.QueueText "           Â·    ", seNone, 20 : 'DMDA.QueueText "           Â·    ", seNone, 20
+	'DMD2.QueueText "          Â· U   ", seNone, 20 : 'DMDB.QueueText "          Â· U   ", seNone, 20
 	'DMD1.QueueText "                ", seNone, 20 : 'DMDA.QueueText "                ", seNone, 20
 	'DMD2.QueueText "                ", seNone, 20 : 'DMDB.QueueText "                ", seNone, 20
 	DMD_DisplayScene "  SACRILEGIOUS  ","  SACRILEGIOUS  ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -75323,9 +75342,9 @@ Sub LostSoulCaptured() '---------------------------=[ 01 LS CAPTURED ]=--
 
 	AzarSoundLostSoul()
 
-	'----------------------·· ·
+	'----------------------Â·Â· Â·
 	' DEMON ON PF
-	'----------------------·· ·
+	'----------------------Â·Â· Â·
 	If DemonOnPlayfield = TRUE and DemonInsideTrap = FALSE then 'There is a demon but he is free
 	
 		AzarVoiceScream()
@@ -75385,9 +75404,9 @@ Sub LostSoulCaptured2() '---------------------------=[ 02 LS CAPTURED ]=--
 
 	AzarSoundLostSoul()
 
-	'----------------------·· ·
+	'----------------------Â·Â· Â·
 	' DEMON ON PF
-	'----------------------·· ·
+	'----------------------Â·Â· Â·
 	If DemonOnPlayfield = TRUE and DemonInsideTrap = FALSE then 'There is a demon but he is free
 	
 		AzarVoiceScream()
@@ -75745,9 +75764,9 @@ End Sub
 Sub WishMasterEntrance_Hit 
 		StopBallSearchTimer()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		WishMasterEntrance.IsDropped = False
@@ -76038,9 +76057,9 @@ Sub WishMasterKicker_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		WishMasterTimer.UserValue = -50
@@ -76199,9 +76218,9 @@ Sub WishMasterKicker_Hit : StopBallSearchTimer()
 
 
 
-	'=====================================================----------------------··· · ·   ·
+	'=====================================================----------------------Â·Â·Â· Â· Â·   Â·
 	' 1.- DEMON INSIDE THE WISHMASTER PIT
-	'=====================================================----------------------··· · ·   ·
+	'=====================================================----------------------Â·Â·Â· Â· Â·   Â·
 	If PitKickerBallIsADemon = TRUE then
 
 		PlaySound "vd_not you"
@@ -76217,9 +76236,9 @@ Sub WishMasterKicker_Hit : StopBallSearchTimer()
 
 
 
-	'=====================================================----------------------··· · ·   ·
+	'=====================================================----------------------Â·Â·Â· Â· Â·   Â·
 	' 2.- ANGEL INSIDE THE WISHMASTER PIT
-	'=====================================================----------------------··· · ·   ·
+	'=====================================================----------------------Â·Â·Â· Â· Â·   Â·
 	ElseIf PitKickerBallIsADemon = FALSE then
 
 		If QShootTeleportRTimer.Enabled = TRUE then 'We dont want to show SLOW MORTAL when the Wishmaster is active, dont we?
@@ -76259,31 +76278,31 @@ Sub WishMasterKicker_Hit : StopBallSearchTimer()
 		'DMD1.QueueText " WELCOME TO THE ", seBlinkMask,  1500 : 'DMDA.QueueText " WELCOME TO THE ", seBlinkMask,  1500
 		'DMD2.QueueText " WELL OF WISHES ", seBlinkMask,  1500 : 'DMDB.QueueText " WELL OF WISHES ", seBlinkMask,  1500
 		DMD_DisplayScene " WELCOME TO THE "," WELL OF WISHES ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-		'MD1.QueueText " ·ELCOME TO THE ", seNone, 50
-		'MD2.QueueText " WELL OF WI·HES ", seNone, 50
-		'MD1.QueueText "  EL·OME TO THE ", seNone, 50
-		'MD2.QueueText " WELL OF WI HE· ", seNone, 50
-		'MD1.QueueText "  EL OM· TO T·E ", seNone, 50
-		'MD2.QueueText " WE·L OF WI HE  ", seNone, 50
-		'MD1.QueueText "  E· OM  TO T E ", seNone, 50
-		'MD2.QueueText " WE L OF ·I HE  ", seNone, 50
+		'MD1.QueueText " Â·ELCOME TO THE ", seNone, 50
+		'MD2.QueueText " WELL OF WIÂ·HES ", seNone, 50
+		'MD1.QueueText "  ELÂ·OME TO THE ", seNone, 50
+		'MD2.QueueText " WELL OF WI HEÂ· ", seNone, 50
+		'MD1.QueueText "  EL OMÂ· TO TÂ·E ", seNone, 50
+		'MD2.QueueText " WEÂ·L OF WI HE  ", seNone, 50
+		'MD1.QueueText "  EÂ· OM  TO T E ", seNone, 50
+		'MD2.QueueText " WE L OF Â·I HE  ", seNone, 50
 		'MD1.QueueText "  E  OM  TO T E ", seNone, 50
 		'MD2.QueueText " WE L OF  I HE  ", seNone, 50
-		'MD1.QueueText "  E  OM  T· T E ", seNone, 50
-		'MD2.QueueText " W· L OF  I HE  ", seNone, 50
-		'MD1.QueueText "  E  OM  T  T · ", seNone, 50
-		'MD2.QueueText " W  L O·  I HE  ", seNone, 50
-		'MD1.QueueText "  E  O·  T  T   ", seNone, 50
-		'MD2.QueueText " ·  L O   I HE  ", seNone, 50
-		'MD1.QueueText "  E  ·   T  T   ", seNone, 50
-		'MD2.QueueText "    L O   I H·  ", seNone, 50
-		'MD1.QueueText "  E      T  ·   ", seNone, 50
-		'MD2.QueueText "    L ·   I H   ", seNone, 50
-		'MD1.QueueText "  ·      T      ", seNone, 50
-		'MD2.QueueText "    L     I ·   ", seNone, 50
+		'MD1.QueueText "  E  OM  TÂ· T E ", seNone, 50
+		'MD2.QueueText " WÂ· L OF  I HE  ", seNone, 50
+		'MD1.QueueText "  E  OM  T  T Â· ", seNone, 50
+		'MD2.QueueText " W  L OÂ·  I HE  ", seNone, 50
+		'MD1.QueueText "  E  OÂ·  T  T   ", seNone, 50
+		'MD2.QueueText " Â·  L O   I HE  ", seNone, 50
+		'MD1.QueueText "  E  Â·   T  T   ", seNone, 50
+		'MD2.QueueText "    L O   I HÂ·  ", seNone, 50
+		'MD1.QueueText "  E      T  Â·   ", seNone, 50
+		'MD2.QueueText "    L Â·   I H   ", seNone, 50
+		'MD1.QueueText "  Â·      T      ", seNone, 50
+		'MD2.QueueText "    L     I Â·   ", seNone, 50
 		'MD1.QueueText "         T      ", seNone, 50
-		'MD2.QueueText "    ·     ·     ", seNone, 50
-		'MD1.QueueText "         ·      ", seNone, 50
+		'MD2.QueueText "    Â·     Â·     ", seNone, 50
+		'MD1.QueueText "         Â·      ", seNone, 50
 		'MD2.QueueText "                ", seNone, 50
 		'MD1.QueueText "                ", seNone, 50
 		'MD2.QueueText "                ", seNone, 50
@@ -76409,9 +76428,9 @@ Sub WishMasterTimer_Timer()
 	Select Case (WishMasterTimer.UserValue)
 
 
-	'-·===============·-----------------------------·· ·  ·
-	Case -666 '--=[ WIZ MODE - ANGEL HIT COMMENT ]=----·-·---·---------------------------------------
-	'-·===============·-----------------------------·· ·  ·
+	'-Â·===============Â·-----------------------------Â·Â· Â·  Â·
+	Case -666 '--=[ WIZ MODE - ANGEL HIT COMMENT ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-----------------------------Â·Â· Â·  Â·
 		'We run out of objects, so we have to "reuse" the other timers.
 		'We use this one for Luzbel Comments when the Angel has been Hit
 
@@ -76439,9 +76458,9 @@ Sub WishMasterTimer_Timer()
 
 
 
-	'-·===============·-----------------------------·· ·  ·
-	Case -667 '--=[ WIZ MODE - LUZBEL HIT COMMENT ]=----·-·---·---------------------------------------
-	'-·===============·-----------------------------·· ·  ·
+	'-Â·===============Â·-----------------------------Â·Â· Â·  Â·
+	Case -667 '--=[ WIZ MODE - LUZBEL HIT COMMENT ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-----------------------------Â·Â· Â·  Â·
 		'We run out of objects, so we have to "reuse" the other timers.
 		'We use this one for Luzbel Comments when the Angel has been Hit
 		
@@ -76500,9 +76519,9 @@ Sub WishMasterTimer_Timer()
 
 	Case -48
 
-		'-·===============·-------------·· ·  ·
-		'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-		'-·===============·-------------·· ·  ·
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
+		'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+		'-Â·===============Â·-------------Â·Â· Â·  Â·
 		If WizModeActive = TRUE then
 		
 			WishMasterEntrance.IsDropped = False
@@ -77076,28 +77095,28 @@ Sub WishMasterTimer_Timer()
 			'DMD2.QueueText "   COME LATER   ", seBlinkMask, 500 : 'DMDB.QueueText "   COME LATER   ", seBlinkMask, 500
 			DMD_CancelRendering
 			DMD_DisplayScene "- NO SACRIFICE -","-  COME LATER  -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-			'DMD1.QueueText "- ·O SACRIFICE -", seNone, 100 : 'DMDA.QueueText "- ·O SACRIFICE -", seNone, 100
-			'DMD2.QueueText "-  COME LA·ER  -", seNone, 100 : 'DMDB.QueueText "-  COME LA·ER  -", seNone, 100
-			'DMD1.QueueText "-  O SACRI·ICE -", seNone, 100 : 'DMDA.QueueText "-  O SACRI·ICE -", seNone, 100
-			'DMD2.QueueText "-  C·ME LA ER  -", seNone, 100 : 'DMDB.QueueText "-  C·ME LA ER  -", seNone, 100
-			'DMD1.QueueText "-  O SACRI IC· -", seNone, 100 : 'DMDA.QueueText "-  O SACRI IC· -", seNone, 100
-			'DMD2.QueueText "-  · ME LA ER  -", seNone, 100 : 'DMDB.QueueText "-  · ME LA ER  -", seNone, 100
-			'DMD1.QueueText "-  O S·CRI IC  -", seNone, 100 : 'DMDA.QueueText "-  O S·CRI IC  -", seNone, 100
-			'DMD2.QueueText "-    ME LA E·  -", seNone, 100 : 'DMDB.QueueText "-    ME LA E·  -", seNone, 100
-			'DMD1.QueueText "-  O S CR· IC  -", seNone, 100 : 'DMDA.QueueText "-  O S CR· IC  -", seNone, 100
-			'DMD2.QueueText "-    ·E LA E   -", seNone, 100 : 'DMDB.QueueText "-    ·E LA E   -", seNone, 100
-			'DMD1.QueueText "-  · S CR  IC  -", seNone, 100 : 'DMDA.QueueText "-  · S CR  IC  -", seNone, 100
-			'DMD2.QueueText "-     E L· E   -", seNone, 100 : 'DMDB.QueueText "-     E L· E   -", seNone, 100
-			'DMD1.QueueText "-    S CR  ·C  -", seNone, 100 : 'DMDA.QueueText "-    S CR  ·C  -", seNone, 100
-			'DMD2.QueueText "-     · L  E   -", seNone, 100 : 'DMDB.QueueText "-     · L  E   -", seNone, 100
-			'DMD1.QueueText "-    S ·R   C  -", seNone, 100 : 'DMDA.QueueText "-    S ·R   C  -", seNone, 100
-			'DMD2.QueueText "-       L  ·   -", seNone, 100 : 'DMDB.QueueText "-       L  ·   -", seNone, 100
-			'DMD1.QueueText "-    S  ·   C  -", seNone, 100 : 'DMDA.QueueText "-    S  ·   C  -", seNone, 100
-			'DMD2.QueueText "-       L  ·   -", seNone, 100 : 'DMDB.QueueText "-       L  ·   -", seNone, 100
-			'DMD1.QueueText "-    ·      C  -", seNone, 100 : 'DMDA.QueueText "-    ·      C  -", seNone, 100
-			'DMD2.QueueText "-       ·      -", seNone, 100 : 'DMDB.QueueText "-       ·      -", seNone, 100
-			'DMD1.QueueText "-           ·  -", seNone, 100 : 'DMDA.QueueText "-           ·  -", seNone, 100
-			'DMD2.QueueText "-       ·      -", seNone, 100 : 'DMDB.QueueText "-       ·      -", seNone, 100
+			'DMD1.QueueText "- Â·O SACRIFICE -", seNone, 100 : 'DMDA.QueueText "- Â·O SACRIFICE -", seNone, 100
+			'DMD2.QueueText "-  COME LAÂ·ER  -", seNone, 100 : 'DMDB.QueueText "-  COME LAÂ·ER  -", seNone, 100
+			'DMD1.QueueText "-  O SACRIÂ·ICE -", seNone, 100 : 'DMDA.QueueText "-  O SACRIÂ·ICE -", seNone, 100
+			'DMD2.QueueText "-  CÂ·ME LA ER  -", seNone, 100 : 'DMDB.QueueText "-  CÂ·ME LA ER  -", seNone, 100
+			'DMD1.QueueText "-  O SACRI ICÂ· -", seNone, 100 : 'DMDA.QueueText "-  O SACRI ICÂ· -", seNone, 100
+			'DMD2.QueueText "-  Â· ME LA ER  -", seNone, 100 : 'DMDB.QueueText "-  Â· ME LA ER  -", seNone, 100
+			'DMD1.QueueText "-  O SÂ·CRI IC  -", seNone, 100 : 'DMDA.QueueText "-  O SÂ·CRI IC  -", seNone, 100
+			'DMD2.QueueText "-    ME LA EÂ·  -", seNone, 100 : 'DMDB.QueueText "-    ME LA EÂ·  -", seNone, 100
+			'DMD1.QueueText "-  O S CRÂ· IC  -", seNone, 100 : 'DMDA.QueueText "-  O S CRÂ· IC  -", seNone, 100
+			'DMD2.QueueText "-    Â·E LA E   -", seNone, 100 : 'DMDB.QueueText "-    Â·E LA E   -", seNone, 100
+			'DMD1.QueueText "-  Â· S CR  IC  -", seNone, 100 : 'DMDA.QueueText "-  Â· S CR  IC  -", seNone, 100
+			'DMD2.QueueText "-     E LÂ· E   -", seNone, 100 : 'DMDB.QueueText "-     E LÂ· E   -", seNone, 100
+			'DMD1.QueueText "-    S CR  Â·C  -", seNone, 100 : 'DMDA.QueueText "-    S CR  Â·C  -", seNone, 100
+			'DMD2.QueueText "-     Â· L  E   -", seNone, 100 : 'DMDB.QueueText "-     Â· L  E   -", seNone, 100
+			'DMD1.QueueText "-    S Â·R   C  -", seNone, 100 : 'DMDA.QueueText "-    S Â·R   C  -", seNone, 100
+			'DMD2.QueueText "-       L  Â·   -", seNone, 100 : 'DMDB.QueueText "-       L  Â·   -", seNone, 100
+			'DMD1.QueueText "-    S  Â·   C  -", seNone, 100 : 'DMDA.QueueText "-    S  Â·   C  -", seNone, 100
+			'DMD2.QueueText "-       L  Â·   -", seNone, 100 : 'DMDB.QueueText "-       L  Â·   -", seNone, 100
+			'DMD1.QueueText "-    Â·      C  -", seNone, 100 : 'DMDA.QueueText "-    Â·      C  -", seNone, 100
+			'DMD2.QueueText "-       Â·      -", seNone, 100 : 'DMDB.QueueText "-       Â·      -", seNone, 100
+			'DMD1.QueueText "-           Â·  -", seNone, 100 : 'DMDA.QueueText "-           Â·  -", seNone, 100
+			'DMD2.QueueText "-       Â·      -", seNone, 100 : 'DMDB.QueueText "-       Â·      -", seNone, 100
 			'DMD1.QueueText "-              -", seNone, 100 : 'DMDA.QueueText "-              -", seNone, 100
 			'DMD2.QueueText "-              -", seNone, 100 : 'DMDB.QueueText "-              -", seNone, 100
 			'DMD1.QueueText "                ", seNone, 100 : 'DMDA.QueueText "                ", seNone, 100
@@ -77534,30 +77553,30 @@ Sub WishMasterTimer_Timer()
 		'DMD1.QueueText "NOT ENOUGH SOULS", seBlinkMask,  1500 : 'DMDA.QueueText "NOT ENOUGH SOULS", seBlinkMask,  1500
 		'DMD2.QueueText "NOT ENOUGH SOULS", seBlinkMask,  1500 : 'DMDB.QueueText "NOT ENOUGH SOULS", seBlinkMask,  1500
 		DMD_DisplayScene "NOT ENOUGH SOULS","NOT ENOUGH SOULS", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-		'DMD1.QueueText "·OT ENOUGH SOUL·", seNone, 100 : 'DMDA.QueueText "·OT ENOUGH SOUL·", seNone, 100
-		'DMD2.QueueText "NOT ENOUG· SOULS", seNone, 100 : 'DMDB.QueueText "NOT ENOUG· SOULS", seNone, 100
-		'DMD1.QueueText " OT ENO·GH SOUL ", seNone, 100 : 'DMDA.QueueText " OT ENO·GH SOUL ", seNone, 100
-		'DMD2.QueueText "NOT E·OUG  SOUL·", seNone, 100 : 'DMDB.QueueText "NOT E·OUG  SOUL·", seNone, 100
-		'DMD1.QueueText " OT E·O GH SO·L ", seNone, 100 : 'DMDA.QueueText " OT E·O GH SO·L ", seNone, 100
-		'DMD2.QueueText "·OT E OUG  SOUL ", seNone, 100 : 'DMDB.QueueText "·OT E OUG  SOUL ", seNone, 100
-		'DMD1.QueueText " ·T E O GH SO L ", seNone, 100 : 'DMDA.QueueText " ·T E O GH SO L ", seNone, 100
-		'DMD2.QueueText " OT E OU·  SOU· ", seNone, 100 : 'DMDB.QueueText " OT E OU·  SOU· ", seNone, 100
-		'DMD1.QueueText "  T E O G· SO L ", seNone, 100 : 'DMDA.QueueText "  T E O G· SO L ", seNone, 100
-		'DMD2.QueueText " O· E OU   ·OU  ", seNone, 100 : 'DMDB.QueueText " O· E OU   ·OU  ", seNone, 100
-		'DMD1.QueueText "  T · O G  S· L ", seNone, 100 : 'DMDA.QueueText "  T · O G  S· L ", seNone, 100
-		'DMD2.QueueText " O  E ·U    OU  ", seNone, 100 : 'DMDB.QueueText " O  E ·U    OU  ", seNone, 100
-		'DMD1.QueueText "  T   · G  S  L ", seNone, 100 : 'DMDA.QueueText "  T   · G  S  L ", seNone, 100
-		'DMD2.QueueText " O  ·  U    O·  ", seNone, 100 : 'DMDB.QueueText " O  ·  U    O·  ", seNone, 100
-		'DMD1.QueueText "  T     G  S  · ", seNone, 100 : 'DMDA.QueueText "  T     G  S  · ", seNone, 100
-		'DMD2.QueueText " ·     U    O   ", seNone, 100 : 'DMDB.QueueText " ·     U    O   ", seNone, 100
-		'DMD1.QueueText "  ·     G  S    ", seNone, 100 : 'DMDA.QueueText "  ·     G  S    ", seNone, 100
-		'DMD2.QueueText "       U    ·   ", seNone, 100 : 'DMDB.QueueText "       U    ·   ", seNone, 100
-		'DMD1.QueueText "        ·  ·    ", seNone, 100 : 'DMDA.QueueText "        ·  ·    ", seNone, 100
+		'DMD1.QueueText "Â·OT ENOUGH SOULÂ·", seNone, 100 : 'DMDA.QueueText "Â·OT ENOUGH SOULÂ·", seNone, 100
+		'DMD2.QueueText "NOT ENOUGÂ· SOULS", seNone, 100 : 'DMDB.QueueText "NOT ENOUGÂ· SOULS", seNone, 100
+		'DMD1.QueueText " OT ENOÂ·GH SOUL ", seNone, 100 : 'DMDA.QueueText " OT ENOÂ·GH SOUL ", seNone, 100
+		'DMD2.QueueText "NOT EÂ·OUG  SOULÂ·", seNone, 100 : 'DMDB.QueueText "NOT EÂ·OUG  SOULÂ·", seNone, 100
+		'DMD1.QueueText " OT EÂ·O GH SOÂ·L ", seNone, 100 : 'DMDA.QueueText " OT EÂ·O GH SOÂ·L ", seNone, 100
+		'DMD2.QueueText "Â·OT E OUG  SOUL ", seNone, 100 : 'DMDB.QueueText "Â·OT E OUG  SOUL ", seNone, 100
+		'DMD1.QueueText " Â·T E O GH SO L ", seNone, 100 : 'DMDA.QueueText " Â·T E O GH SO L ", seNone, 100
+		'DMD2.QueueText " OT E OUÂ·  SOUÂ· ", seNone, 100 : 'DMDB.QueueText " OT E OUÂ·  SOUÂ· ", seNone, 100
+		'DMD1.QueueText "  T E O GÂ· SO L ", seNone, 100 : 'DMDA.QueueText "  T E O GÂ· SO L ", seNone, 100
+		'DMD2.QueueText " OÂ· E OU   Â·OU  ", seNone, 100 : 'DMDB.QueueText " OÂ· E OU   Â·OU  ", seNone, 100
+		'DMD1.QueueText "  T Â· O G  SÂ· L ", seNone, 100 : 'DMDA.QueueText "  T Â· O G  SÂ· L ", seNone, 100
+		'DMD2.QueueText " O  E Â·U    OU  ", seNone, 100 : 'DMDB.QueueText " O  E Â·U    OU  ", seNone, 100
+		'DMD1.QueueText "  T   Â· G  S  L ", seNone, 100 : 'DMDA.QueueText "  T   Â· G  S  L ", seNone, 100
+		'DMD2.QueueText " O  Â·  U    OÂ·  ", seNone, 100 : 'DMDB.QueueText " O  Â·  U    OÂ·  ", seNone, 100
+		'DMD1.QueueText "  T     G  S  Â· ", seNone, 100 : 'DMDA.QueueText "  T     G  S  Â· ", seNone, 100
+		'DMD2.QueueText " Â·     U    O   ", seNone, 100 : 'DMDB.QueueText " Â·     U    O   ", seNone, 100
+		'DMD1.QueueText "  Â·     G  S    ", seNone, 100 : 'DMDA.QueueText "  Â·     G  S    ", seNone, 100
+		'DMD2.QueueText "       U    Â·   ", seNone, 100 : 'DMDB.QueueText "       U    Â·   ", seNone, 100
+		'DMD1.QueueText "        Â·  Â·    ", seNone, 100 : 'DMDA.QueueText "        Â·  Â·    ", seNone, 100
 		'DMD2.QueueText "       U        ", seNone, 100 : 'DMDB.QueueText "       U        ", seNone, 100
-		'DMD1.QueueText "           ·    ", seNone, 100 : 'DMDA.QueueText "           ·    ", seNone, 100
-		'DMD2.QueueText "       ·        ", seNone, 100 : 'DMDB.QueueText "       ·        ", seNone, 100
+		'DMD1.QueueText "           Â·    ", seNone, 100 : 'DMDA.QueueText "           Â·    ", seNone, 100
+		'DMD2.QueueText "       Â·        ", seNone, 100 : 'DMDB.QueueText "       Â·        ", seNone, 100
 		'DMD1.QueueText "                ", seNone, 100 : 'DMDA.QueueText "                ", seNone, 100
-		'DMD2.QueueText "       ·        ", seNone, 100 : 'DMDB.QueueText "       ·        ", seNone, 100
+		'DMD2.QueueText "       Â·        ", seNone, 100 : 'DMDB.QueueText "       Â·        ", seNone, 100
 		'DMD1.QueueText "                ", seNone, 100 : 'DMDA.QueueText "                ", seNone, 100
 		'DMD2.QueueText "                ", seNone, 100 : 'DMDB.QueueText "                ", seNone, 100
 		DMD_DisplayScene "NOT ENOUGH SOULS","NOT ENOUGH SOULS", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -77865,11 +77884,11 @@ Sub WishMasterTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WISH MASTER ]=---    ---=[ WIZARD MODE START! ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WISH MASTER ]=---    ---=[ WIZARD MODE START! ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 665 'LethalWish
 
 		StopTracksInSecs = 2000
@@ -77944,15 +77963,15 @@ Sub WishMasterTimer_Timer()
 		WishMasterTimer.UserValue = WishMasterTimer.UserValue + 1
 
 
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 	Case 667 ' ---==[ S O M E T H I N G   I N S I D E   T H E   T R A P ]=---
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 
 		'We have to check if there are some balls inside the trap before starting the WizMode
 		
-		'========================------------·· ·
+		'========================------------Â·Â· Â·
 		' DEMON OR ANGEL INSIDE TRAP
-		'========================------------·· ·
+		'========================------------Â·Â· Â·
 		If TrapEmpty = FALSE then 'There is something inside the trap
 		
 			BallsOnPlayfield = BallsOnPlayfield + 1
@@ -77960,9 +77979,9 @@ Sub WishMasterTimer_Timer()
 		
 		End If
 		
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		'--=[ TRAP - KICKER 001 ]=-----
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		If BITrapKicker1 = TRUE then 'If there is a ball locked in the DEMON MACHINE
 		
 			BallsOnPlayfield = BallsOnPlayfield + 1
@@ -77970,9 +77989,9 @@ Sub WishMasterTimer_Timer()
 		
 		End If
 		
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		'--=[ TRAP - KICKER 002 ]=-----
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		If BITrapKicker2 = TRUE then
 		
 			BallsOnPlayfield = BallsOnPlayfield + 1
@@ -77980,9 +77999,9 @@ Sub WishMasterTimer_Timer()
 		
 		End If
 		
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		'--=[ TRAP - KICKER 003 ]=-----
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		If BITrapKicker3 = TRUE then
 		
 			BallsOnPlayfield = BallsOnPlayfield + 1
@@ -77992,9 +78011,9 @@ Sub WishMasterTimer_Timer()
 		
 		
 		
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		' --=[ OPEN TRAP ]=---
-		'------------------------------------····· ·· · ·  ·
+		'------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 		If TrapEmpty = FALSE or BITrapKicker1 = TRUE or BITrapKicker2 = TRUE or BITrapKicker3 = TRUE then
 			DMD_CancelRendering
 			'DMD1.FlushQueue : 'DMD2.FlushQueue
@@ -78034,14 +78053,14 @@ Sub WishMasterTimer_Timer()
 
 
 
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 	Case 669 ' ---==[ ANGELS IN HELL? ]=---
-	'==========================================================------------------···· ·   ·
+	'==========================================================------------------Â·Â·Â·Â· Â·   Â·
 		'We have to check if there are some balls inside hell before starting the WizMode
 
-		'========================------------·· ·
+		'========================------------Â·Â· Â·
 		' ANGELS IN HELL 
-		'========================------------·· ·
+		'========================------------Â·Â· Â·
 		If AngelsInHell => 1 then
 		
 			BallsOnPlayfield = BallsOnPlayfield + AngelsInHell
@@ -78765,9 +78784,9 @@ Sub WishMasterPriceActivation()
 			
 			End If
 			
-			'======================================-------------------·· ··  ·  ·
+			'======================================-------------------Â·Â· Â·Â·  Â·  Â·
 			' ---=:::[ E X T R A  B A L L ]:::=---
-			'======================================-------------------·· ··  ·  ·
+			'======================================-------------------Â·Â· Â·Â·  Â·  Â·
 			If BonusMultiplier(1) = 10 and ExtraBallFromBonus = FALSE then
 			
 				PlayerGetAnExtraAngel()
@@ -79309,9 +79328,9 @@ End Sub
 
 
 
-'==========================================================----------··  ·
+'==========================================================----------Â·Â·  Â·
 ' CHRIST'S NAILS --=[ LEFT ]=--
-'==========================================================----------··  · 
+'==========================================================----------Â·Â·  Â· 
 Sub RaiseLeftChristNail()
 	
 	If NailLAvaliable = FALSE then
@@ -79351,9 +79370,9 @@ End Sub
 
 
 
-'==========================================================----------··  ·
+'==========================================================----------Â·Â·  Â·
 ' CHRIST'S NAILS --=[ RIGHT ]=--
-'==========================================================----------··  · 
+'==========================================================----------Â·Â·  Â· 
 
 Sub RaiseRightChristNail()
 
@@ -79477,9 +79496,9 @@ Sub RampOptoTrigger_hit : StopBallSearchTimer()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
 	End If
@@ -79489,18 +79508,18 @@ Sub RampOptoTrigger_hit : StopBallSearchTimer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' BLOOD EXTRACTOR - COLLECTING
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If DemonInTheBloodExtractor = TRUE or AngelInTheBloodExtractor = TRUE then 
 		Exit Sub 'Ball needs to be drained
 	End If
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' ANGEL POSSESED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If AngelHasBeenPoseesed = TRUE then
 		Exit Sub
 	End If
@@ -79747,11 +79766,11 @@ Sub RampOptoTrigger_hit : StopBallSearchTimer()
 
 
 
-	'==========----------------------------------------------------··· · · ·· ·      ·
-	'===================================================================---··· · · ·· ·      ·
+	'==========----------------------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
+	'===================================================================---Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 	'--=[ BALL IS COMMING FROM UPPER PF AND THE BALL SAVER IS OFF ]=-----
-	'===================================================================---··· · · ·· ·      ·
-	'==========----------------------------------------------------··· · · ·· ·      ·
+	'===================================================================---Â·Â·Â· Â· Â· Â·Â· Â·      Â·
+	'==========----------------------------------------------------Â·Â·Â· Â· Â· Â·Â· Â·      Â·
 	If BallSaverActive = FALSE then
 
 			'ShootAgainLight1.FlashForms 2000, 2000, ShootAgainLight1.State
@@ -79868,9 +79887,9 @@ Sub HellDT1L_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		HellDT1L.IsDropped = False
@@ -80019,9 +80038,9 @@ Sub HellDT2L_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		HellDT2L.IsDropped = False
@@ -80161,9 +80180,9 @@ Sub HellDT3L_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		HellDT3L.IsDropped = False
@@ -80305,9 +80324,9 @@ Sub HellDT4L_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		HellDT4L.IsDropped = False
@@ -80485,9 +80504,9 @@ Sub HellDT5L_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		HellDT5L.IsDropped = False
@@ -80662,9 +80681,9 @@ Sub HellDT6L_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		HellDT6L.IsDropped = False
@@ -80849,9 +80868,9 @@ Sub HellDT1R_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -80979,9 +80998,9 @@ Sub HellDT2R_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -81109,9 +81128,9 @@ Sub HellDT3R_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -81237,9 +81256,9 @@ Sub HellDT4R_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -81404,9 +81423,9 @@ Sub HellDT5R_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -81572,9 +81591,9 @@ Sub HellDT6R_Hit : StopBallSearchTimer()
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If WizModeOpeningWoundActive = TRUE then
@@ -81734,11 +81753,11 @@ End Sub
 
 
 
-'========================-------------------------···  ·
-'============================-------------------------··· ·  ·
+'========================-------------------------Â·Â·Â·  Â·
+'============================-------------------------Â·Â·Â· Â·  Â·
 ' S H O W T H E H E L L L I T E S
-'============================-------------------------··· ·  ·
-'========================-------------------------···  ·
+'============================-------------------------Â·Â·Â· Â·  Â·
+'========================-------------------------Â·Â·Â·  Â·
 Sub ShowHellEntranceLites() 'This will turn on the hell entrance lights!
 
 	
@@ -81930,13 +81949,13 @@ End Sub
 
 
 
-'===========================================-· ·
-'===========================================--·· ·
-'*														 *---··· ·
+'===========================================-Â· Â·
+'===========================================--Â·Â· Â·
+'*														 *---Â·Â·Â· Â·
 '*      T H E  P I T  T O  H E L L    	 	 *-------------------------------------------------------------------------------------
-'*														 *---··· ·
-'===========================================--·· ·
-'===========================================-· ·
+'*														 *---Â·Â·Â· Â·
+'===========================================--Â·Â· Â·
+'===========================================-Â· Â·
 
 Sub HellKicker_Hit : StopBallSearchTimer()
 
@@ -81954,9 +81973,9 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		If	BIHellKicker = TRUE then
@@ -81970,7 +81989,7 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 		End If
 		
 		'---------------------------------
-		' ··:: OPENING WOUNDS ::··
+		' Â·Â·:: OPENING WOUNDS ::Â·Â·
 		'---------------------------------
 		If WizModeOpeningWoundActive = TRUE then
 		
@@ -82008,7 +82027,7 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 		
 		
 		'---------------------------------
-		' ··:: FIGHTING EVIL ::··
+		' Â·Â·:: FIGHTING EVIL ::Â·Â·
 		'---------------------------------
 		ElseIf WizModeFightingActive = TRUE then
 		
@@ -82040,9 +82059,9 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 
 
 
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	'--=[ MIDNITE MADNESS ]=-----
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then
 
 			GatesTimer.Enabled = FALSE 'We raised the posts to trap he ball, and we pop'em down with the Gates Timer. And its not necessary anymore!
@@ -82056,9 +82075,9 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 
 
 
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	'--=[ DEMON POSSESING ANGEL ]=-----
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	IF PossesionTimer.Enabled = TRUE then
 
 			GatesTimer.Enabled = FALSE 'We raised the posts to trap he ball, and we pop'em down with the Gates Timer. And its not necessary anymore!
@@ -82071,10 +82090,10 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 	End If
 
 
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	'--=[ ANGEL POSSESED!!! ]=-----
 	' !!! DEMON DESTROYED IN THE LAST SEC!!!
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	'Player have been possesed, but manage to send the demon back to hell when the time is over!!!
 	
 	If AngelHasBeenPoseesed = TRUE then
@@ -82098,9 +82117,9 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 
 
 
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	' -=[ HELL GATES OPENED ]=---
-	'============================================-----------·· · ·  ·
+	'============================================-----------Â·Â· Â· Â·  Â·
 	If GatesOpened = TRUE then 'Angel is going to hell
 
 		HellPopupL1.IsDropped = false 'Posts should be raised
@@ -82138,9 +82157,9 @@ Sub HellKicker_Hit : StopBallSearchTimer()
 
 
 
-	'=================================================-----------·· · ·  ·
+	'=================================================-----------Â·Â· Â· Â·  Â·
 	' -=[ HELL GATES CLOSED!!!! YOU CHEAT Dr. JONES! ]=---
-	'=================================================-----------·· · ·  ·
+	'=================================================-----------Â·Â· Â· Â·  Â·
 	ElseIf GatesOpened = FALSE then 'You cheat Dr. Jones!
 
 		If HellKickerBallIsADemon = FALSE then
@@ -82167,10 +82186,10 @@ End Sub
 
 
 
-'===========================================-----···  ·
+'===========================================-----Â·Â·Â·  Â·
 '*   O N E  D E M O N  I N  H E L L 	 	 *-------------------------------------------------------------------------------------
 '*		 ( When the gates r opened ) 			 *-------------------------------------------------------------------------------------
-'===========================================-----···  ·
+'===========================================-----Â·Â·Â·  Â·
 Sub OneDemonHasEnteredInHell()
 	'If the gates are opened and you summon a demon the gates kept open.
 	'So if you send the demon into the gates the demon goes back to hell... 
@@ -82779,28 +82798,28 @@ Sub GatesTimer_Timer()
 		'DMD2.QueueText "- GATES  READY -" , seBlink, 1400 : 'DMDB.QueueText "- GATES  READY -" , seBlink, 1400
 		DMD_DisplayScene "- GATES  READY -","- GATES  READY -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		'DMD1.QueueText "- GATES  READY -", seNone, 100 : 'DMDA.QueueText "- GATES  READY -", seNone, 100
-		'DMD2.QueueText "- GATES  READ· -", seNone, 100 : 'DMDB.QueueText "- GATES  READ· -", seNone, 100
-		'DMD1.QueueText "- GATES  RE·DY -", seNone, 100 : 'DMDA.QueueText "- GATES  RE·DY -", seNone, 100
-		'DMD2.QueueText "- GATE·  READ  -", seNone, 100 : 'DMDB.QueueText "- GATE·  READ  -", seNone, 100
-		'DMD1.QueueText "- ·ATES  RE DY -", seNone, 100 : 'DMDA.QueueText "- ·ATES  RE DY -", seNone, 100
-		'DMD2.QueueText "- GATE   ·EAD  -", seNone, 100 : 'DMDB.QueueText "- GATE   ·EAD  -", seNone, 100
-		'DMD1.QueueText "-  AT·S  RE DY -", seNone, 100 : 'DMDA.QueueText "-  AT·S  RE DY -", seNone, 100
-		'DMD2.QueueText "- GATE    EA·  -", seNone, 100 : 'DMDB.QueueText "- GATE    EA·  -", seNone, 100
-		'DMD1.QueueText "-  AT S  ·E DY -", seNone, 100 : 'DMDA.QueueText "-  AT S  ·E DY -", seNone, 100
-		'DMD2.QueueText "- G·TE    EA   -", seNone, 100 : 'DMDB.QueueText "- G·TE    EA   -", seNone, 100
-		'DMD1.QueueText "-  AT S   E D· -", seNone, 100 : 'DMDA.QueueText "-  AT S   E D· -", seNone, 100
-		'DMD2.QueueText "- G ·E    EA   -", seNone, 100 : 'DMDB.QueueText "- G ·E    EA   -", seNone, 100
-		'DMD1.QueueText "-  A· S   E D  -", seNone, 100 : 'DMDA.QueueText "-  A· S   E D  -", seNone, 100
-		'DMD2.QueueText "- G  E    ·A   -", seNone, 100 : 'DMDB.QueueText "- G  E    ·A   -", seNone, 100
-		'DMD1.QueueText "-  A  S   E ·  -", seNone, 100 : 'DMDA.QueueText "-  A  S   E ·  -", seNone, 100
-		'DMD2.QueueText "- G  ·     A   -", seNone, 100 : 'DMDB.QueueText "- G  ·     A   -", seNone, 100
-		'DMD1.QueueText "-  ·  S   E    -", seNone, 100 : 'DMDA.QueueText "-  ·  S   E    -", seNone, 100
-		'DMD2.QueueText "- G        ·   -", seNone, 100 : 'DMDB.QueueText "- G        ·   -", seNone, 100
-		'DMD1.QueueText "-     S   ·    -", seNone, 100 : 'DMDA.QueueText "-     S   ·    -", seNone, 100
+		'DMD2.QueueText "- GATES  READÂ· -", seNone, 100 : 'DMDB.QueueText "- GATES  READÂ· -", seNone, 100
+		'DMD1.QueueText "- GATES  REÂ·DY -", seNone, 100 : 'DMDA.QueueText "- GATES  REÂ·DY -", seNone, 100
+		'DMD2.QueueText "- GATEÂ·  READ  -", seNone, 100 : 'DMDB.QueueText "- GATEÂ·  READ  -", seNone, 100
+		'DMD1.QueueText "- Â·ATES  RE DY -", seNone, 100 : 'DMDA.QueueText "- Â·ATES  RE DY -", seNone, 100
+		'DMD2.QueueText "- GATE   Â·EAD  -", seNone, 100 : 'DMDB.QueueText "- GATE   Â·EAD  -", seNone, 100
+		'DMD1.QueueText "-  ATÂ·S  RE DY -", seNone, 100 : 'DMDA.QueueText "-  ATÂ·S  RE DY -", seNone, 100
+		'DMD2.QueueText "- GATE    EAÂ·  -", seNone, 100 : 'DMDB.QueueText "- GATE    EAÂ·  -", seNone, 100
+		'DMD1.QueueText "-  AT S  Â·E DY -", seNone, 100 : 'DMDA.QueueText "-  AT S  Â·E DY -", seNone, 100
+		'DMD2.QueueText "- GÂ·TE    EA   -", seNone, 100 : 'DMDB.QueueText "- GÂ·TE    EA   -", seNone, 100
+		'DMD1.QueueText "-  AT S   E DÂ· -", seNone, 100 : 'DMDA.QueueText "-  AT S   E DÂ· -", seNone, 100
+		'DMD2.QueueText "- G Â·E    EA   -", seNone, 100 : 'DMDB.QueueText "- G Â·E    EA   -", seNone, 100
+		'DMD1.QueueText "-  AÂ· S   E D  -", seNone, 100 : 'DMDA.QueueText "-  AÂ· S   E D  -", seNone, 100
+		'DMD2.QueueText "- G  E    Â·A   -", seNone, 100 : 'DMDB.QueueText "- G  E    Â·A   -", seNone, 100
+		'DMD1.QueueText "-  A  S   E Â·  -", seNone, 100 : 'DMDA.QueueText "-  A  S   E Â·  -", seNone, 100
+		'DMD2.QueueText "- G  Â·     A   -", seNone, 100 : 'DMDB.QueueText "- G  Â·     A   -", seNone, 100
+		'DMD1.QueueText "-  Â·  S   E    -", seNone, 100 : 'DMDA.QueueText "-  Â·  S   E    -", seNone, 100
+		'DMD2.QueueText "- G        Â·   -", seNone, 100 : 'DMDB.QueueText "- G        Â·   -", seNone, 100
+		'DMD1.QueueText "-     S   Â·    -", seNone, 100 : 'DMDA.QueueText "-     S   Â·    -", seNone, 100
 		'DMD2.QueueText "- G            -", seNone, 100 : 'DMDB.QueueText "- G            -", seNone, 100
 		'DMD1.QueueText "-     S        -", seNone, 100 : 'DMDA.QueueText "-     S        -", seNone, 100
-		'DMD2.QueueText "- ·            -", seNone, 100 : 'DMDB.QueueText "- ·            -", seNone, 100
-		'DMD1.QueueText "-     ·        -", seNone, 100 : 'DMDA.QueueText "-     ·        -", seNone, 100
+		'DMD2.QueueText "- Â·            -", seNone, 100 : 'DMDB.QueueText "- Â·            -", seNone, 100
+		'DMD1.QueueText "-     Â·        -", seNone, 100 : 'DMDA.QueueText "-     Â·        -", seNone, 100
 		'DMD2.QueueText "-              -", seNone, 100 : 'DMDB.QueueText "-              -", seNone, 100
 		'DMD1.QueueText "-              -", seNone, 100 : 'DMDA.QueueText "-              -", seNone, 100
 		'DMD2.QueueText "-              -", seNone, 100 : 'DMDB.QueueText "-              -", seNone, 100
@@ -82879,9 +82898,9 @@ Sub GatesTimer_Timer()
 
 
 
-	'============================================----------------------··· ·· ·  ·
+	'============================================----------------------Â·Â·Â· Â·Â· Â·  Â·
 	'--=[ BOTH GATES BROKEN! ]=-----
-	'============================================----------------------··· ·· ·  ·
+	'============================================----------------------Â·Â·Â· Â·Â· Â·  Â·
 	Case 100 'BothGatesHaveBeenBroken()
 
 			LightSeqTilt.StopPlay
@@ -83203,9 +83222,9 @@ Sub GatesTimer_Timer()
 
 
 
-	'==========================================------------------------··· ·· ·  ·
+	'==========================================------------------------Â·Â·Â· Â·Â· Â·  Â·
 	'--=[ ANGEL INTO HELL! v1.0 ]=-----
-	'==========================================------------------------··· ·· ·  ·
+	'==========================================------------------------Â·Â·Â· Â·Â· Â·  Â·
 	Case 200 '-=[ 00:50 ]=-
 
 		Azar = int (rnd * 2)
@@ -83379,11 +83398,11 @@ Sub GatesTimer_Timer()
 
 
 
-	'=============================---------· ·
-	'==========================================------------------------··· ·· ·  ·
+	'=============================---------Â· Â·
+	'==========================================------------------------Â·Â·Â· Â·Â· Â·  Â·
 	'--=[ ANGEL INTO HELL V2.0! ]=----- U R NOT PREPARE!
-	'==========================================------------------------··· ·· ·  ·
-	'=============================---------· ·
+	'==========================================------------------------Â·Â·Â· Â·Â· Â·  Â·
+	'=============================---------Â· Â·
 	Case 300 'OneAngelHasEnteredInHell()
 
 		PlaySound "vd_ur_not_prepare"
@@ -83408,9 +83427,9 @@ Sub GatesTimer_Timer()
 		GatesTimer.Enabled = TRUE
 
 
-	'====================================---------------------------··  ·
+	'====================================---------------------------Â·Â·  Â·
 	'  START THE LIGHT RAY SHOW
-	'====================================---------------------------··  ·
+	'====================================---------------------------Â·Â·  Â·
 	Case 310
 
 		GatesTimer.Interval = 200
@@ -84149,9 +84168,9 @@ Sub GatesTimer_Timer()
 
 
 
-	'==========================================------------------------··· ·· ·  ·
+	'==========================================------------------------Â·Â·Â· Â·Â· Â·  Â·
 	'--=[ TRAP ANGEL WITH HELL POST ]=-----
-	'==========================================------------------------··· ·· ·  ·
+	'==========================================------------------------Â·Â·Â· Â·Â· Â·  Â·
 	Case 666
 
 		HellPopupL1.IsDropped = true 'We raise the post to "trap" the ball in Hell... but...
@@ -84175,15 +84194,15 @@ End Sub
 
 
 
-'=====================================---------------------------------··· ·  ·
+'=====================================---------------------------------Â·Â·Â· Â·  Â·
 '--=[ HELL ENTRANCE TRIGGERS ]=---
-'=====================================---------------------------------··· ·  ·
+'=====================================---------------------------------Â·Â·Â· Â·  Â·
 
 Sub HellEntranceTriggerL_Hit : StopBallSearchTimer()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 	
 		If WizModeOpeningWoundActive = TRUE then
@@ -84209,9 +84228,9 @@ Sub HellEntranceTriggerL_Hit : StopBallSearchTimer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GatesOpened = TRUE then 'Angel is going to hell
 
 		FlashForms FlasherGateR, 500, 50, 0
@@ -84228,9 +84247,9 @@ Sub HellEntranceTriggerL_Hit : StopBallSearchTimer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then 'During MD the SDs are spinnin'
 
 		FlashForms FlasherUPC, 500, 500, 0
@@ -84263,9 +84282,9 @@ End Sub
 
 Sub HellEntranceTriggerR_Hit : StopBallSearchTimer()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 	
 		If WizModeOpeningWoundActive = TRUE then
@@ -84291,9 +84310,9 @@ Sub HellEntranceTriggerR_Hit : StopBallSearchTimer()
 
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' GATES OPENED
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If GatesOpened = TRUE then 'Angel is going to hell
 
 		FlashForms FlasherGateR, 500, 50, 0
@@ -84311,9 +84330,9 @@ Sub HellEntranceTriggerR_Hit : StopBallSearchTimer()
 	End If
 
 
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	' MIDNIGHT DARKNESS
-	'--------------------------·· · ·  ·
+	'--------------------------Â·Â· Â· Â·  Â·
 	If MidnightDarknessActive = TRUE then 'During MD the SDs are spinnin'
 
 		FlashForms FlasherUPC, 500, 500, 0
@@ -84563,11 +84582,11 @@ End Sub
 
 
 
-'========================================---------------------------------··· ·  ·
-'   · · ··-- -   G. E. R. S.  - --·· · ·
-'========================================---------------------------------··· ·  ·
+'========================================---------------------------------Â·Â·Â· Â·  Â·
+'   Â· Â· Â·Â·-- -   G. E. R. S.  - --Â·Â· Â· Â·
+'========================================---------------------------------Â·Â·Â· Â·  Â·
 '--=[ GUARDIANS ENERGY RECOVERY SYSTEM ]=---
-'========================================---------------------------------··· ·  ·
+'========================================---------------------------------Â·Â·Â· Â·  Â·
 
 Sub GuardiansLifeTimer_Timer()
 
@@ -84831,18 +84850,18 @@ End Sub
 
 
 
-'=====================================---------------------------------··· ·  ·
+'=====================================---------------------------------Â·Â·Â· Â·  Â·
 '--=[ RIGHT - GUARDIAN ENERGY ]=---
-'=====================================---------------------------------··· ·  ·
+'=====================================---------------------------------Â·Â·Â· Â·  Â·
 
 Sub CheckRightGuardianEnergy()
 
 	AddScore(500)
 
 	Select Case (AngelsInHell)
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 	Case 0: '--=[ NO ANGELS IN HELL YET ]=--
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 
 		PlaySound "fx_hit_demon"
 		
@@ -84861,9 +84880,9 @@ Sub CheckRightGuardianEnergy()
 
 
 
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 	Case 1: '--=[  01 ANGEL - IN HELL ]=--
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 
 		'PlaySound "fx_hit_bloodyn0"
 		PlaySound "fx_hit_demon"
@@ -84895,9 +84914,9 @@ Sub CheckRightGuardianEnergy()
 		
 
 
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 	Case 2: '--=[  02 ANGELS - IN HELL ]=--
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 
 		'PlaySound "fx_hit_bloodyn0"
 		PlaySound "fx_hit_demon"
@@ -84946,18 +84965,18 @@ End Sub
 
 
 
-'=====================================---------------------------------··· ·  ·
+'=====================================---------------------------------Â·Â·Â· Â·  Â·
 '--=[ LEFT - GUARDIAN ENERGY ]=---
-'=====================================---------------------------------··· ·  ·
+'=====================================---------------------------------Â·Â·Â· Â·  Â·
 
 Sub CheckLeftGuardianEnergy()
 
 	AddScore(500)
 
 	Select Case (AngelsInHell)
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 	Case 0: '--=[ NO ANGELS IN HELL YET ]=--
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 
 		PlaySound "fx_hit_demon"
 		
@@ -84976,9 +84995,9 @@ Sub CheckLeftGuardianEnergy()
 
 
 
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 	Case 1: '--=[  01 ANGEL - IN HELL ]=--
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 
 		'PlaySound "fx_hit_bloodyn0"
 		PlaySound "fx_hit_demon"
@@ -85009,9 +85028,9 @@ Sub CheckLeftGuardianEnergy()
 		
 
 
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 	Case 2: '--=[  02 ANGELS - IN HELL ]=--
-	'-------------------------------------------·· ·   ·
+	'-------------------------------------------Â·Â· Â·   Â·
 
 		'PlaySound "fx_hit_bloodyn0"
 		PlaySound "fx_hit_demon"
@@ -85371,9 +85390,9 @@ Sub CheckGuardianEnergyLites() 'This will syncro and turn'em off/on the correct 
 
 
 
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	'-= RIGHT GUARDIAN =-
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	GuardianLightR1.State = 0
 	GuardianLightR2.State = 0
 	GuardianLightR3.State = 0
@@ -85442,9 +85461,9 @@ Sub CheckGuardianEnergyLites() 'This will syncro and turn'em off/on the correct 
 
 
 
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	'-= LEFT GUARDIAN =-
-	'-----------------------------------·· ·   ·
+	'-----------------------------------Â·Â· Â·   Â·
 	GuardianLightL1.State = 0
 	GuardianLightL2.State = 0
 	GuardianLightL3.State = 0
@@ -85543,9 +85562,9 @@ Sub GuardianGateR_Hit
 End Sub
 
 
-'========================================---·· · ·   · 
+'========================================---Â·Â· Â· Â·   Â· 
 '---=[ RIGHT GUARDIAN TRIGGER ]=-------------------------------------------------------------------------------------
-'========================================---·· · ·   ·
+'========================================---Â·Â· Â· Â·   Â·
 
 Sub GuardianTriggerR_Hit
 
@@ -85566,9 +85585,9 @@ Sub GuardianTriggerR_UnHit
 	GateGuardianRHasBeenHit = TRUE
 	GateGuardianRInPosition = FALSE
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitBloodyNew()
@@ -85714,9 +85733,9 @@ End Sub
 
 
 
-'========================================---·· · ·   · 
+'========================================---Â·Â· Â· Â·   Â· 
 '---=[ LEFT GUARDIAN TRIGGER ]=-------------------------------------------------------------------------------------
-'========================================---·· · ·   ·
+'========================================---Â·Â· Â· Â·   Â·
 
 Sub GuardianTriggerL_Hit
 
@@ -85739,9 +85758,9 @@ Sub GuardianTriggerL_UnHit
 
 	'FlashHell()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitBloodyNew()
@@ -85895,9 +85914,9 @@ Sub GuardianKickerL_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		LGuardianCreationTimer.UserValue = 50 'Regular Expulsion
@@ -86007,9 +86026,9 @@ Sub GuardianKickerR_Hit
 	End If
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		RGuardianCreationTimer.UserValue = 50 'Regular Expulsion
@@ -86160,9 +86179,9 @@ End Sub
 
 Sub GuardianKicker1_Hit()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then 'The WizMode has been activated throught the WishMaster. So...		
 
 		GuardianKicker1.DestroyBall
@@ -86262,9 +86281,9 @@ End Sub
 
 Sub GuardianKicker2_Hit()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then 'The WizMode has been activated throught the WishMaster. So...		
 
 		GuardianKicker2.DestroyBall
@@ -86364,9 +86383,9 @@ End Sub
 
 Sub GuardianKicker3_Hit()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then 'The WizMode has been activated throught the WishMaster. So...		
 
 		GuardianKicker3.DestroyBall
@@ -86805,9 +86824,9 @@ Sub RGuardianCreationTimer_Timer()
 
 	Select Case (RGuardianCreationTimer.UserValue)
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ CREATE RIGHT GUARDIAN ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 0
 
 		GuardianDiverterR.rotatetoend 'Open the diverter
@@ -86889,9 +86908,9 @@ Sub RGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ REGULAR KICKER EXPULSION  ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 50
 
 		GuardianDiverterR.rotatetoend 'Open the diverter
@@ -86937,9 +86956,9 @@ Sub RGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ RIGHT GUARDIAN RETURN TO HIS LAIR ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 100
 
 		'FlasherGateR.FlashForms 1000, 1000, 0
@@ -87128,9 +87147,9 @@ Sub RGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ RIGHT GUARDIAN HAS BEEN HIT ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 150
 
 		GuardianDiverterR.rotatetoend 'Open the diverter
@@ -87233,9 +87252,9 @@ Sub RGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ RIGHT GUARDIAN DESTROYED ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 200
 
 		If AngelsInHell = 0 then
@@ -87410,9 +87429,9 @@ Sub LGuardianCreationTimer_Timer()
 
 	Select Case (LGuardianCreationTimer.UserValue)
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ CREATE LEFT GUARDIAN ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 0
 
 		GuardianDiverterL.rotatetoend 'Open the diverter
@@ -87489,9 +87508,9 @@ Sub LGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ REGULAR KICKER EXPULSION  ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 50
 
 		GuardianDiverterL.rotatetoend 'Open the diverter
@@ -87537,9 +87556,9 @@ Sub LGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ LEFT GUARDIAN RETURN TO HIS LAIR ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 100
 
 		'FlasherGateL.FlashForms 1000, 1000, 0
@@ -87722,9 +87741,9 @@ Sub LGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ LEFT GUARDIAN HAS BEEN HIT ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 150
 
 		GuardianDiverterL.rotatetoend 'Open the diverter
@@ -87818,9 +87837,9 @@ Sub LGuardianCreationTimer_Timer()
 
 
 
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ LEFT GUARDIAN DESTROYED ]=-----
-	'------------------------------------------------------------------····· ·· · ·  ·
+	'------------------------------------------------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 200
 
 		If AngelsInHell = 0 then
@@ -88246,9 +88265,9 @@ Sub Seal1_Hit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitSoft()
@@ -88310,9 +88329,9 @@ Sub Seal2_Hit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitSoft()
@@ -88373,9 +88392,9 @@ Sub Seal3_Hit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitSoft()
@@ -88437,9 +88456,9 @@ Sub Seal4_Hit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitSoft()
@@ -88502,9 +88521,9 @@ Sub Seal5_Hit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitSoft()
@@ -88565,9 +88584,9 @@ Sub Seal6_Hit()
 		Exit Sub
 	End If
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		AzarSoundHitSoft()
@@ -88803,9 +88822,9 @@ End Sub
 
 Sub HellDropTarget_hit
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 
 		HellDropTarget.IsDropped = True
@@ -88833,9 +88852,9 @@ End Sub
 
 Sub CheckClock()
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 		Exit Sub 'No help during the mball
 	End If
@@ -88877,9 +88896,9 @@ Sub CheckClock()
 	'-=[ 002 TIMES ]=- (5 + 2*2) =  9 HITS TO ADVANCE CLOCK
 	'-=[ 003 TIMES ]=- (5 + 3*2) = 11 HITS TO ADVANCE CLOCK
 
-	'=========================================================-------------------···· ·  ·
-	' · ··--=[ A D V A N C E  H O U R ]=--·· ·
-	'=========================================================-------------------···· ·  ·
+	'=========================================================-------------------Â·Â·Â·Â· Â·  Â·
+	' Â· Â·Â·--=[ A D V A N C E  H O U R ]=--Â·Â· Â·
+	'=========================================================-------------------Â·Â·Â·Â· Â·  Â·
 	If BumperHits < (5 + (MidnightDarknessTimesCompleted * 2)) then
 
 		AddScore(50)
@@ -88944,9 +88963,9 @@ Sub CheckClock()
 		End If
 
 
-	'=========================================================-------------------···· ·  ·
-	' · ··--=[ A D V A N C E  H O U R ]=--·· ·
-	'=========================================================-------------------···· ·  ·
+	'=========================================================-------------------Â·Â·Â·Â· Â·  Â·
+	' Â· Â·Â·--=[ A D V A N C E  H O U R ]=--Â·Â· Â·
+	'=========================================================-------------------Â·Â·Â·Â· Â·  Â·
 	ElseIf BumperHits => (5 + (MidnightDarknessTimesCompleted * 2)) then
 	
 			AddScore(500)
@@ -89125,19 +89144,19 @@ End Sub
 
 
 
-'====================================---------------------------····· ·· · ·  ·
-'==========================================--------------------·· ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+'==========================================--------------------Â·Â· Â·
 '--=[ CLOCK TIMER ]=-----
-'==========================================--------------------·· ·
-'====================================---------------------------····· ·· · ·  ·
+'==========================================--------------------Â·Â· Â·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub ClockTimer_Timer()
 
 	Select Case (ClockTimer.UserValue)
 
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'  MIDNITE MADNESS READY - 12 BELLS
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 0
 
 		Clock = clock + 1
@@ -89180,9 +89199,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'  MIDNIGHT DARKNESS - PREPARATION
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 30
 
 		'BoomMidnightDarkness()
@@ -89326,9 +89345,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'----------------------------····· · ·
+	'----------------------------Â·Â·Â·Â·Â· Â· Â·
 	Case 50	'--=[ 1st DEMON ]=--
-	'----------------------------····· · ·
+	'----------------------------Â·Â·Â·Â·Â· Â· Â·
 
 			BoomMidnightDarkness()
 		
@@ -89410,9 +89429,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'----------------------------····· · ·
+	'----------------------------Â·Â·Â·Â·Â· Â· Â·
 	Case 52	'--=[ 2nd DEMON ]=--
-	'----------------------------····· · ·
+	'----------------------------Â·Â·Â·Â·Â· Â· Â·
 
 		LightSeqTilt.Play SeqAllON
 		
@@ -89496,9 +89515,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'----------------------------····· · ·
+	'----------------------------Â·Â·Â·Â·Â· Â· Â·
 	Case 54	'--=[ 3rd DEMON ]=--
-	'----------------------------····· · ·
+	'----------------------------Â·Â·Â·Â·Â· Â· Â·
 
 		LightSeqTilt.Play SeqAllON
 		
@@ -89641,9 +89660,9 @@ Sub ClockTimer_Timer()
 
 
 	'-----------------------------------------
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ 1st AND 2nd DARKNESS DEMON DESTROYED ]=-----
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'-----------------------------------------
 	Case 100 'MidnightDarknessDemonDestroyed()
 
@@ -89801,11 +89820,11 @@ Sub ClockTimer_Timer()
 
 
 
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' ---=[ LAST DARKNESS DEMON DESTROYED ]=--- 
 	'       - Featuring: BK2K Animmation -
 	'     Mr. "9Fingers" Ritchie is da Master :)
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 	Case 150 'MidnightDarknessDemonDestroyed()
 
@@ -90153,9 +90172,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ LAST DARKNESS DEMON DESTROYED ]=-----
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 200
 
 			'WE RAISED THE POPS!
@@ -90192,10 +90211,10 @@ Sub ClockTimer_Timer()
 
 
 	'    - MIDNIGHT DARKNESS -
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ COUNTER TO DAYLIGHT ]=-----
 	'--=[ FROM DUSK TILL DAWN ]=-----
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 250
 
 		'Counter could be reset and lites could be on!
@@ -90455,9 +90474,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'--=[ LAST OPPORTUNITY!! - LAST 12 BELLS HURRY UP! ]=-----
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	CAse 270
 
 		HurryUpClock = HurryUpClock + 1
@@ -90520,9 +90539,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'  MIDNITE MADNESS FINISHED - RETURN ANGEL TO PF
-	'====================================---------------------------····· ·· · ·  ·
+	'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 300
 
 			LightSeqTilt.StopPlay
@@ -90643,9 +90662,9 @@ Sub ClockTimer_Timer()
 
 
 
-	'================================------------------------------------····   ·
+	'================================------------------------------------Â·Â·Â·Â·   Â·
 	'-=[ ANGEL IS BEING POSSESED ]=-
-	'================================------------------------------------····   ·
+	'================================------------------------------------Â·Â·Â·Â·   Â·
 	Case 666
 		DMD_DisplayScene "POSSESING  ANGEL","", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		'DMD1.QueueText "POSSESING  ANGEL", seNone
@@ -90678,11 +90697,11 @@ Sub ClockTimer_Timer()
 
 
 
-	'====================---··· ·   ·
-	'========================·· ·===============================------------------------------------
-	'	--=[ WIZARD MODE ]=---    ---=[ C L O C K ]=----·· ·   ·
-	'========================·· ·===============================------------------------------------
-	'====================---··· ·   ·
+	'====================---Â·Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'	--=[ WIZARD MODE ]=---    ---=[ C L O C K ]=----Â·Â· Â·   Â·
+	'========================Â·Â· Â·===============================------------------------------------
+	'====================---Â·Â·Â· Â·   Â·
 	Case 1000 'wizclock
 
 		ClockMSec = ClockMSec - 8
@@ -90723,9 +90742,9 @@ Sub ClockTimer_Timer()
 		End If
 		
 		
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		'--=[ DMD CLOCK ]=---
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		If ClockSec <10 then	
 			DMD_DisplayScene "0"& ClockMin,"="& ClockSec, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None	
 			'DMD2.Text   = "0" & ClockMin & "=" & "0" & ClockSec & "=" & ClockMSec
@@ -90740,9 +90759,9 @@ Sub ClockTimer_Timer()
 		
 		
 		
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		'--=[ TIME IS OVER ]=---
-		'===========================------------·· ·
+		'===========================------------Â·Â· Â·
 		If ClockMin = -1 then 'Time's over!
 		
 			FlashForms ShootAgainLight1, 500,50, 0
@@ -91060,9 +91079,9 @@ Sub BBumper1_Hit
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		Exit Sub 'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -91102,18 +91121,18 @@ Sub BBumper1_Hit
 
 
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ BLOOD EXTRACTOR MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If BloodExtractorMballEnabled = TRUE then
 
 		Exit Sub 'No help during the mball
 	
 	End If
 
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	'--=[ 2A MBALL ]=-----
-	'===========================-----------···  ·  ·
+	'===========================-----------Â·Â·Â·  Â·  Â·
 	If TwoAngelsMballActive = TRUE then
 
 		Exit Sub 'No help during the mball
@@ -91140,9 +91159,9 @@ Sub BBumper1_Hit
 
 
 
-	'---------------------------------··· ·· · ·
+	'---------------------------------Â·Â·Â· Â·Â· Â· Â·
 	' -=[ A LITTLE HELP ]=-
-	'---------------------------------··· ·· · ·
+	'---------------------------------Â·Â·Â· Â·Â· Â· Â·
 	If SoundTimer.Enabled = FALSE then
 
 		If MidnightDarknessActive = TRUE or MidnightDarknessReady = TRUE then
@@ -91217,9 +91236,9 @@ Sub BBumper2_Hit
 	'Bumper2.IsDropped = False
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If LocatingWMBalls > 0 then
 
 		'Wiz Mode has been activated throught the WishMaster. And we are collecting the balls.
@@ -91235,9 +91254,9 @@ Sub BBumper2_Hit
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 	
 		If WizModeOpeningWoundActive = TRUE then
@@ -91849,9 +91868,9 @@ Sub MidnightDarknessTimeIsOver() 'Time is over we need to collect the demons tha
 End Sub
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ DARKNESS DEMON DESTROYED! ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub MidnightDarknessDemonDestroyed()
 
@@ -91876,43 +91895,43 @@ Sub MidnightDarknessDemonDestroyed()
 	DMD_DisplayScene "-- DARK DEMON --","- BACK TO HELL -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-- DARK DEMON --", seNone, 100 : 'DMDA.QueueText "-- DARK DEMON --", seNone, 100
 	'DMD2.QueueText "- BACK TO HELL -", seNone, 100 : 'DMDB.QueueText "- BACK TO HELL -", seNone, 100
-	'DMD1.QueueText "-- DAR· DEMON --", seNone, 95 : 'DMDA.QueueText "-- DAR· DEMON --", seNone, 95
-	'DMD2.QueueText "- BACK TO ·ELL -", seNone, 95 : 'DMDB.QueueText "- BACK TO ·ELL -", seNone, 95
+	'DMD1.QueueText "-- DARÂ· DEMON --", seNone, 95 : 'DMDA.QueueText "-- DARÂ· DEMON --", seNone, 95
+	'DMD2.QueueText "- BACK TO Â·ELL -", seNone, 95 : 'DMDB.QueueText "- BACK TO Â·ELL -", seNone, 95
 	'DMD1.QueueText "-- DAR  DEMON --", seNone, 80 : 'DMDA.QueueText "-- DAR  DEMON --", seNone, 80
-	'DMD2.QueueText "- BACK TO ·ELL -", seNone, 80 : 'DMDB.QueueText "- BACK TO ·ELL -", seNone, 80
+	'DMD2.QueueText "- BACK TO Â·ELL -", seNone, 80 : 'DMDB.QueueText "- BACK TO Â·ELL -", seNone, 80
 	'DMD1.QueueText "-- DAR  DEMON --", seNone, 80 : 'DMDA.QueueText "-- DAR  DEMON --", seNone, 80
-	'DMD2.QueueText "- B·CK TO  ELL -", seNone, 80 : 'DMDB.QueueText "- B·CK TO  ELL -", seNone, 80
-	'DMD1.QueueText "-- DAR  DEM·N --", seNone, 75 : 'DMDA.QueueText "-- DAR  DEM·N --", seNone, 75
+	'DMD2.QueueText "- BÂ·CK TO  ELL -", seNone, 80 : 'DMDB.QueueText "- BÂ·CK TO  ELL -", seNone, 80
+	'DMD1.QueueText "-- DAR  DEMÂ·N --", seNone, 75 : 'DMDA.QueueText "-- DAR  DEMÂ·N --", seNone, 75
 	'DMD2.QueueText "- B CK TO  ELL -", seNone, 75 : 'DMDB.QueueText "- B CK TO  ELL -", seNone, 75
-	'DMD1.QueueText "-- D·R  DEM N --", seNone, 70 : 'DMDA.QueueText "-- D·R  DEM N --", seNone, 70
+	'DMD1.QueueText "-- DÂ·R  DEM N --", seNone, 70 : 'DMDA.QueueText "-- DÂ·R  DEM N --", seNone, 70
 	'DMD2.QueueText "- B CK TO  ELL -", seNone, 70 : 'DMDB.QueueText "- B CK TO  ELL -", seNone, 70
 	'DMD1.QueueText "-- D R  DEM N --", seNone, 70 : 'DMDA.QueueText "-- D R  DEM N --", seNone, 70
-	'DMD2.QueueText "- B C· TO  ELL -", seNone, 70 : 'DMDB.QueueText "- B C· TO  ELL -", seNone, 70
-	'DMD1.QueueText "-- D R  D·M N --", seNone, 65 : 'DMDA.QueueText "-- D R  D·M N --", seNone, 65
+	'DMD2.QueueText "- B CÂ· TO  ELL -", seNone, 70 : 'DMDB.QueueText "- B CÂ· TO  ELL -", seNone, 70
+	'DMD1.QueueText "-- D R  DÂ·M N --", seNone, 65 : 'DMDA.QueueText "-- D R  DÂ·M N --", seNone, 65
 	'DMD2.QueueText "- B C  TO  ELL -", seNone, 65 : 'DMDB.QueueText "- B C  TO  ELL -", seNone, 65
 	'DMD1.QueueText "-- D R  D M N --", seNone, 60 : 'DMDA.QueueText "-- D R  D M N --", seNone, 60
-	'DMD2.QueueText "- · C  TO  ELL -", seNone, 60 : 'DMDB.QueueText "- · C  TO  ELL -", seNone, 60
+	'DMD2.QueueText "- Â· C  TO  ELL -", seNone, 60 : 'DMDB.QueueText "- Â· C  TO  ELL -", seNone, 60
 	'DMD1.QueueText "-- D R  D M N --", seNone, 60 : 'DMDA.QueueText "-- D R  D M N --", seNone, 60
-	'DMD2.QueueText "-   C  TO  E·L -", seNone, 60 : 'DMDB.QueueText "-   C  TO  E·L -", seNone, 60
+	'DMD2.QueueText "-   C  TO  EÂ·L -", seNone, 60 : 'DMDB.QueueText "-   C  TO  EÂ·L -", seNone, 60
 	'DMD1.QueueText "-- D R  D M N --", seNone, 55 : 'DMDA.QueueText "-- D R  D M N --", seNone, 55
-	'DMD2.QueueText "-   C  T·  E L -", seNone, 55 : 'DMDB.QueueText "-   C  T·  E L -", seNone, 55
-	'DMD1.QueueText "-- D R  D · N --", seNone, 55 : 'DMDA.QueueText "-- D R  D · N --", seNone, 55
+	'DMD2.QueueText "-   C  TÂ·  E L -", seNone, 55 : 'DMDB.QueueText "-   C  TÂ·  E L -", seNone, 55
+	'DMD1.QueueText "-- D R  D Â· N --", seNone, 55 : 'DMDA.QueueText "-- D R  D Â· N --", seNone, 55
 	'DMD2.QueueText "-   C  T   E L -", seNone, 55 : 'DMDB.QueueText "-   C  T   E L -", seNone, 55
-	'DMD1.QueueText "-- D ·  D   N --", seNone, 50 : 'DMDA.QueueText "-- D ·  D   N --", seNone, 50
+	'DMD1.QueueText "-- D Â·  D   N --", seNone, 50 : 'DMDA.QueueText "-- D Â·  D   N --", seNone, 50
 	'DMD2.QueueText "-   C  T   E L -", seNone, 50 : 'DMDB.QueueText "-   C  T   E L -", seNone, 50
 	'DMD1.QueueText "-- D    D   N --", seNone, 50 : 'DMDA.QueueText "-- D    D   N --", seNone, 50
-	'DMD2.QueueText "-   C  T   E · -", seNone, 50 : 'DMDB.QueueText "-   C  T   E · -", seNone, 50
-	'DMD1.QueueText "-- ·    D   N --", seNone, 50 : 'DMDA.QueueText "-- ·    D   N --", seNone, 50
+	'DMD2.QueueText "-   C  T   E Â· -", seNone, 50 : 'DMDB.QueueText "-   C  T   E Â· -", seNone, 50
+	'DMD1.QueueText "-- Â·    D   N --", seNone, 50 : 'DMDA.QueueText "-- Â·    D   N --", seNone, 50
 	'DMD2.QueueText "-   C  T   E   -", seNone, 50 : 'DMDB.QueueText "-   C  T   E   -", seNone, 50
 	'DMD1.QueueText "--      D   N --", seNone, 50 : 'DMDA.QueueText "--      D   N --", seNone, 50
-	'DMD2.QueueText "-   C  T   ·   -", seNone, 45 : 'DMDB.QueueText "-   C  T   ·   -", seNone, 45
+	'DMD2.QueueText "-   C  T   Â·   -", seNone, 45 : 'DMDB.QueueText "-   C  T   Â·   -", seNone, 45
 	'DMD1.QueueText "--      D   N --", seNone, 45 : 'DMDA.QueueText "--      D   N --", seNone, 45
-	'DMD2.QueueText "-   ·  T       -", seNone, 45 : 'DMDB.QueueText "-   ·  T       -", seNone, 45
-	'DMD1.QueueText "--      D   · --", seNone, 45 : 'DMDA.QueueText "--      D   · --", seNone, 45
+	'DMD2.QueueText "-   Â·  T       -", seNone, 45 : 'DMDB.QueueText "-   Â·  T       -", seNone, 45
+	'DMD1.QueueText "--      D   Â· --", seNone, 45 : 'DMDA.QueueText "--      D   Â· --", seNone, 45
 	'DMD2.QueueText "-      T       -", seNone, 40 : 'DMDB.QueueText "-      T       -", seNone, 40
 	'DMD1.QueueText "--      D     --", seNone, 40 : 'DMDA.QueueText "--      D     --", seNone, 40
-	'DMD2.QueueText "-      ·       -", seNone, 40 : 'DMDB.QueueText "-      ·       -", seNone, 40
-	'DMD1.QueueText "--      ·     --", seNone, 40 : 'DMDA.QueueText "--      ·     --", seNone, 40
+	'DMD2.QueueText "-      Â·       -", seNone, 40 : 'DMDB.QueueText "-      Â·       -", seNone, 40
+	'DMD1.QueueText "--      Â·     --", seNone, 40 : 'DMDA.QueueText "--      Â·     --", seNone, 40
 	'DMD2.QueueText "-              -", seNone, 40 : 'DMDB.QueueText "-              -", seNone, 40
 	'DMD1.QueueText "--            --", seNone, 40 : 'DMDA.QueueText "--            --", seNone, 40
 	'DMD2.QueueText "-              -", seNone, 40 : 'DMDB.QueueText "-              -", seNone, 40
@@ -91985,9 +92004,9 @@ End Sub
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ MIDNIGHT DARKNESS COMPLETED!! ]=----- 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub MidnightDarknessCompleted() 'The player destroyed all demons before times runned out. So he gets an Xball
 
@@ -92032,9 +92051,9 @@ End Sub
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ MIDNIGHT DARKNESS OVER ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub MidnightDarknessFinishedButNotCompleted() 'Time is over!
 
@@ -92668,58 +92687,58 @@ Sub AngelIsInHellDMDText()
 	'DMD2.QueueText "ANGEL IS IN HELL", seBlinkMask, 1400
 	DMD_DisplayScene "ANGEL IS IN HELL","ANGEL IS IN HELL", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "ANGEL IS IN HELL", seNone, 100
-	'DMD2.QueueText "ANG·L IS IN HELL", seNone, 100
-	'DMD1.QueueText "ANGEL IS ·N HELL", seNone, 100
-	'DMD2.QueueText "ANG·L IS IN HELL", seNone, 100
-	'DMD1.QueueText "ANGEL IS ·N HELL", seNone, 100
-	'DMD2.QueueText "ANG L IS IN HE·L", seNone, 100
-	'DMD1.QueueText "AN·EL#IS  N#HELL", seNone, 100
-	'DMD2.QueueText "ANG L IS IN HE·L", seNone, 100
-	'DMD1.QueueText "AN·EL IS# N HELL", seNone, 100
-	'DMD2.QueueText "ANG L IS I· HE L", seNone, 100
+	'DMD2.QueueText "ANGÂ·L IS IN HELL", seNone, 100
+	'DMD1.QueueText "ANGEL IS Â·N HELL", seNone, 100
+	'DMD2.QueueText "ANGÂ·L IS IN HELL", seNone, 100
+	'DMD1.QueueText "ANGEL IS Â·N HELL", seNone, 100
+	'DMD2.QueueText "ANG L IS IN HEÂ·L", seNone, 100
+	'DMD1.QueueText "ANÂ·EL#IS  N#HELL", seNone, 100
+	'DMD2.QueueText "ANG L IS IN HEÂ·L", seNone, 100
+	'DMD1.QueueText "ANÂ·EL IS# N HELL", seNone, 100
+	'DMD2.QueueText "ANG L IS IÂ· HE L", seNone, 100
 	'DMD1.QueueText "AN EL IS  N HELL", seNone, 100
-	'DMD2.QueueText "·NG#L IS I·#HE L", seNone, 100
+	'DMD2.QueueText "Â·NG#L IS IÂ·#HE L", seNone, 100
 	'DMD1.QueueText "AN EL#IS  N HELL", seNone, 100
-	'DMD2.QueueText "·NG L IS I  HE L", seNone, 100
-	'DMD1.QueueText "AN EL IS  N ·ELL", seNone, 100
+	'DMD2.QueueText "Â·NG L IS I  HE L", seNone, 100
+	'DMD1.QueueText "AN EL IS  N Â·ELL", seNone, 100
 	'DMD2.QueueText " NG L IS#I  HE L", seNone, 100
 	'DMD1.QueueText "AN EL IS  N  ELL", seNone, 100
-	'DMD2.QueueText "#N· L IS I #HE L", seNone, 100
-	'DMD1.QueueText "AN EL#·S  N  ELL", seNone, 100
+	'DMD2.QueueText "#NÂ· L IS I #HE L", seNone, 100
+	'DMD1.QueueText "AN EL#Â·S  N  ELL", seNone, 100
 	'DMD2.QueueText " N  L IS I #HE L", seNone, 100
-	'DMD1.QueueText "AN EL  S# N  EL·", seNone, 100
+	'DMD1.QueueText "AN EL  S# N  ELÂ·", seNone, 100
 	'DMD2.QueueText " N# L IS I  HE L", seNone, 100
 	'DMD1.QueueText "AN EL  S  N  EL#", seNone, 100
-	'DMD2.QueueText " N  L I· I #HE L", seNone, 100
-	'DMD1.QueueText "A· EL# S  N  EL ", seNone, 100
+	'DMD2.QueueText " N  L IÂ· I #HE L", seNone, 100
+	'DMD1.QueueText "AÂ· EL# S  N  EL ", seNone, 100
 	'DMD2.QueueText " N #L I  I  HE L", seNone, 100
-	'DMD1.QueueText "A  E·  S  N #EL ", seNone, 100
+	'DMD1.QueueText "A  EÂ·  S  N #EL ", seNone, 100
 	'DMD2.QueueText " N  L I# I  HE L", seNone, 100
 	'DMD1.QueueText "A  E#  S  N  EL ", seNone, 100
-	'DMD2.QueueText "#N  L ·  I  HE L", seNone, 100
-	'DMD1.QueueText "A  E   S# N  ·L ", seNone, 100
+	'DMD2.QueueText "#N  L Â·  I  HE L", seNone, 100
+	'DMD1.QueueText "A  E   S# N  Â·L ", seNone, 100
 	'DMD2.QueueText " N  L#   I  HE L", seNone, 100
 	'DMD1.QueueText "A# E   S  N   L ", seNone, 100
-	'DMD2.QueueText " N  L    I# ·E L", seNone, 100
-	'DMD1.QueueText "·  E # S  N   L ", seNone, 100
+	'DMD2.QueueText " N  L    I# Â·E L", seNone, 100
+	'DMD1.QueueText "Â·  E # S  N   L ", seNone, 100
 	'DMD2.QueueText " N  L   #I   E L", seNone, 100
 	'DMD1.QueueText "   E   S  N#  L ", seNone, 100
-	'DMD2.QueueText " N #L    I   E ·", seNone, 100
-	'DMD1.QueueText "   ·   S  N   L ", seNone, 100
+	'DMD2.QueueText " N #L    I   E Â·", seNone, 100
+	'DMD1.QueueText "   Â·   S  N   L ", seNone, 100
 	'DMD2.QueueText " N  L#   I # E  ", seNone, 100
 	'DMD1.QueueText "       S# N   L ", seNone, 100
-	'DMD2.QueueText " N# L    ·   E  ", seNone, 100
+	'DMD2.QueueText " N# L    Â·   E  ", seNone, 100
 	'DMD1.QueueText "      #S  N   L ", seNone, 100
-	'DMD2.QueueText " ·  L       #E  ", seNone, 100
-	'DMD1.QueueText "       S  ·   L ", seNone, 100
+	'DMD2.QueueText " Â·  L       #E  ", seNone, 100
+	'DMD1.QueueText "       S  Â·   L ", seNone, 100
 	'DMD2.QueueText "    L #      E  ", seNone, 100
 	'DMD1.QueueText "       S      L ", seNone, 100
-	'DMD2.QueueText "    L    #   ·  ", seNone, 100
-	'DMD1.QueueText "       ·      L ", seNone, 100
+	'DMD2.QueueText "    L    #   Â·  ", seNone, 100
+	'DMD1.QueueText "       Â·      L ", seNone, 100
 	'DMD2.QueueText "    L       #   ", seNone, 100
 	'DMD1.QueueText "              L ", seNone, 100
-	'DMD2.QueueText "    ·           ", seNone, 100
-	'DMD1.QueueText "              · ", seNone, 100
+	'DMD2.QueueText "    Â·           ", seNone, 100
+	'DMD1.QueueText "              Â· ", seNone, 100
 	'DMD2.QueueText "                ", seNone, 100
 	'DMD1.QueueText "                ", seNone, 100
 	'DMD2.QueueText "                ", seNone, 100
@@ -92950,11 +92969,11 @@ End Sub
 
 
 
-'[POSSESED]========================-------·· ·  ·
-'===========================================-----------·  ·
+'[POSSESED]========================-------Â·Â· Â·  Â·
+'===========================================-----------Â·  Â·
 '*     P O S S E S S E D  by EvilForces	 *-------------------------------------------------------------------------------------
-'===========================================-----------·  ·
-'==================================-------·· ·   ·
+'===========================================-----------Â·  Â·
+'==================================-------Â·Â· Â·   Â·
 
 Sub DemonStartToPossesAngels()
 
@@ -93112,17 +93131,17 @@ Sub AzarVoiceFlipperMoving()
 End Sub
 
 
-'==================================================================-------··· ·  ·    ·
+'==================================================================-------Â·Â·Â· Â·  Â·    Â·
 ' P O S S E S I O N  T I M E R 
-'==================================================================-------··· ·  ·    ·
+'==================================================================-------Â·Â·Â· Â·  Â·    Â·
 
 Sub PossesionTimer_Timer()
 
 	Select Case (PossesionTimer.UserValue)
 
-	'-·===============·-------------·· ·  ·
-	Case -100	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	Case -100	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 		'We run out of objects, so we have to "reuse" the other timers.
 		'We use this one for the hell kicker ball queue. 
 		
@@ -93211,11 +93230,11 @@ Sub PossesionTimer_Timer()
 
 
 
-	'========================================--=------····· ·· · ·  ·
-	'==========================================--=------····· ·· · ·  ·
+	'========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'-=[ THE POSSESION SHOW STARTS ]=---
-	'==========================================--=------····· ·· · ·  ·
-	'========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+	'========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 0 '-=[ 00:00 ]=-
 
 			BoomDemonBack2Hell()
@@ -93241,9 +93260,9 @@ Sub PossesionTimer_Timer()
 		PossesionTimer.UserValue = PossesionTimer.UserValue + 1
 	
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 1 '-=[ 02:25 ]=- CHAN!
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			'BoomPossessingScratched()
 			'DMDOverlay.UpdateInterval = 600
@@ -93303,9 +93322,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 3 '-=[ 05:75 ]=- CHAN!
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			'DMDOverlay.UpdateInterval = 200
 			'BoomPossessingClean()
@@ -93353,9 +93372,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 5 '-=[ 09:30 ]=- CRESCENDO until 1800
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			BoomDemonBack2Hell()
 			
@@ -93503,9 +93522,9 @@ Sub PossesionTimer_Timer()
 		PossesionTimer.UserValue = PossesionTimer.UserValue + 1
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 15 '-=[ 19:00 ]=- CHAN
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			'DMDOverlay.UpdateInterval = 200
 			'BoomPossessingClean()
@@ -93591,9 +93610,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 20 '-=[ 24:00 ]=- CRESCENDO!! up to 39
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			'DMDOverlay.UpdateInterval = 300
 			BoomPossessingScratched()
@@ -93874,9 +93893,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 35 '-=[ 38:70 ]=- CHAN
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			BoomPossesed()
 		
@@ -93932,9 +93951,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 37 '--=[ 41:00 ]=- VOICE01
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 		LightSeqTilt.Play SeqAllON
 		
@@ -93965,9 +93984,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 39 '--=[ 42:40 ]=- VOICE02
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 		'LightSeqTilt.StopPlay
 		'LightSeqTilt.Play SeqAllON
@@ -93999,9 +94018,9 @@ Sub PossesionTimer_Timer()
 		PossesionTimer.UserValue = PossesionTimer.UserValue + 1
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 41 '--=[ 44:30 ]=- VOICE03
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 			AzarVoiceCrazyTotal()
 
@@ -94032,9 +94051,9 @@ Sub PossesionTimer_Timer()
 		PossesionTimer.UserValue = PossesionTimer.UserValue + 1
 
 
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 	Case 43 '--=[ 48:50 ]=- VOICE04
-	'----------------------------------------··· ·  ·
+	'----------------------------------------Â·Â·Â· Â·  Â·
 
 		LightSeqTilt.StopPlay
 		LightSeqTilt.Play SeqAllON
@@ -94261,9 +94280,9 @@ Sub PossesionTimer_Timer()
 		PossesionTimer.UserValue = PossesionTimer.UserValue + 1
 
 
-	'---------------------------------------------------··· ·  ·
+	'---------------------------------------------------Â·Â·Â· Â·  Â·
 	Case 60 '--=[ 57:00 ]=- --=[ FLIPPERS CHANGED ]=---------------
-	'---------------------------------------------------··· ·  ·
+	'---------------------------------------------------Â·Â·Â· Â·  Â·
 		
 			y = int(rnd*3)+1
 			
@@ -94366,9 +94385,9 @@ Sub PossesionTimer_Timer()
 		PossesionTimer.Interval = 1700 'was 1.7k
 		PossesionTimer.UserValue = PossesionTimer.UserValue + 1
 
-	'---------------------------------------------------··· ·  ·
-	Case 64 '--=[ ¡¡P o S S 3 s s E D!!! ]=---------------
-	'---------------------------------------------------··· ·  ·
+	'---------------------------------------------------Â·Â·Â· Â·  Â·
+	Case 64 '--=[ Â¡Â¡P o S S 3 s s E D!!! ]=---------------
+	'---------------------------------------------------Â·Â·Â· Â·  Â·
 
 			AngelHasBeenPoseesed = TRUE
 		
@@ -94397,9 +94416,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'---------------------------------------------------··· ·  ·
+	'---------------------------------------------------Â·Â·Â· Â·  Â·
 	' ANGEL POSSESED + BALL DRAINS = DEMON LAUGH
-	'---------------------------------------------------··· ·  ·
+	'---------------------------------------------------Â·Â·Â· Â·  Â·
 	Case 80
 
 		PlaySound "vd_laugh1" '04secs
@@ -94435,9 +94454,9 @@ Sub PossesionTimer_Timer()
 
 
 
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'-=[ OLD!!! POSSESION DEMON IS DESTROYED ]=--- 
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 	Case 150 'OLDPossesingDemonExpelled()
 
@@ -94726,9 +94745,9 @@ Sub PossesionTimer_Timer()
 
 
 	
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' --==[ POSSESIN DEMON HAS BEEN DESTROYED!! ]=--
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 200
 
 		PlaySound "fx_demon_snake1"
@@ -94883,10 +94902,10 @@ Sub PossesionTimer_Timer()
 
 
 
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	'-=[ REVERSE ANIMATION ]=--- 
 	' STARTS DOWN GOES UP!
-	'==========================================--=------····· ·· · ·  ·
+	'==========================================--=------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 250 'PossesingDemonExpelled()
 
 		PlaySound "fx_thunder12"
@@ -95381,9 +95400,9 @@ End Sub
 
 
 
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 '--=[ POSSESING DEMON EXPELLED! ]=-----
-'====================================---------------------------····· ·· · ·  ·
+'====================================---------------------------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub PossesingDemonExpelled()
 
@@ -95447,42 +95466,42 @@ Sub PossesingDemonExpelled()
 DMD_DisplayScene "-- DEMON SENT --","- BACK TO HELL -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "-- DEMON SENT --", seNone, 100 : 'DMDA.QueueText "-- DEMON SENT --", seNone, 100
 	'DMD2.QueueText "- BACK TO HELL -", seNone, 100 : 'DMDB.QueueText "- BACK TO HELL -", seNone, 100
-	'DMD1.QueueText "-- DEM·N SENT --", seNone, 95 : 'DMDA.QueueText "-- DEM·N SENT --", seNone, 95
-	'DMD2.QueueText "- BACK TO ·ELL -", seNone, 95 : 'DMDB.QueueText "- BACK TO ·ELL -", seNone, 95
+	'DMD1.QueueText "-- DEMÂ·N SENT --", seNone, 95 : 'DMDA.QueueText "-- DEMÂ·N SENT --", seNone, 95
+	'DMD2.QueueText "- BACK TO Â·ELL -", seNone, 95 : 'DMDB.QueueText "- BACK TO Â·ELL -", seNone, 95
 	'DMD1.QueueText "-- DEM N SENT --", seNone, 80 : 'DMDA.QueueText "-- DEM N SENT --", seNone, 80
-	'DMD2.QueueText "- BACK TO ·ELL -", seNone, 80 : 'DMDB.QueueText "- BACK TO ·ELL -", seNone, 80
+	'DMD2.QueueText "- BACK TO Â·ELL -", seNone, 80 : 'DMDB.QueueText "- BACK TO Â·ELL -", seNone, 80
 	'DMD1.QueueText "-- DEM N SENT --", seNone, 80 : 'DMDA.QueueText "-- DEM N SENT --", seNone, 80
-	'DMD2.QueueText "- B·CK TO  ELL -", seNone, 80 : 'DMDB.QueueText "- B·CK TO  ELL -", seNone, 80
-	'DMD1.QueueText "-- DEM N SE·T --", seNone, 75 : 'DMDA.QueueText "-- DEM N SE·T --", seNone, 75
+	'DMD2.QueueText "- BÂ·CK TO  ELL -", seNone, 80 : 'DMDB.QueueText "- BÂ·CK TO  ELL -", seNone, 80
+	'DMD1.QueueText "-- DEM N SEÂ·T --", seNone, 75 : 'DMDA.QueueText "-- DEM N SEÂ·T --", seNone, 75
 	'DMD2.QueueText "- B CK TO  ELL -", seNone, 75 : 'DMDB.QueueText "- B CK TO  ELL -", seNone, 75
-	'DMD1.QueueText "-- D·M N SE T --", seNone, 70 : 'DMDA.QueueText "-- D·M N SE T --", seNone, 70
+	'DMD1.QueueText "-- DÂ·M N SE T --", seNone, 70 : 'DMDA.QueueText "-- DÂ·M N SE T --", seNone, 70
 	'DMD2.QueueText "- B CK TO  ELL -", seNone, 70 : 'DMDB.QueueText "- B CK TO  ELL -", seNone, 70
 	'DMD1.QueueText "-- D M N SE T --", seNone, 70 : 'DMDA.QueueText "-- D M N SE T --", seNone, 70
-	'DMD2.QueueText "- B C· TO  ELL -", seNone, 70 : 'DMDB.QueueText "- B C· TO  ELL -", seNone, 70
-	'DMD1.QueueText "-- D M N ·E T --", seNone, 65 : 'DMDA.QueueText "-- D M N ·E T --", seNone, 65
+	'DMD2.QueueText "- B CÂ· TO  ELL -", seNone, 70 : 'DMDB.QueueText "- B CÂ· TO  ELL -", seNone, 70
+	'DMD1.QueueText "-- D M N Â·E T --", seNone, 65 : 'DMDA.QueueText "-- D M N Â·E T --", seNone, 65
 	'DMD2.QueueText "- B C  TO  ELL -", seNone, 65 : 'DMDB.QueueText "- B C  TO  ELL -", seNone, 65
 	'DMD1.QueueText "-- D M N  E T --", seNone, 60 : 'DMDA.QueueText "-- D M N  E T --", seNone, 60
-	'DMD2.QueueText "- · C  TO  ELL -", seNone, 60 : 'DMDB.QueueText "- · C  TO  ELL -", seNone, 60
+	'DMD2.QueueText "- Â· C  TO  ELL -", seNone, 60 : 'DMDB.QueueText "- Â· C  TO  ELL -", seNone, 60
 	'DMD1.QueueText "-- D M N  E T --", seNone, 60 : 'DMDA.QueueText "-- D M N  E T --", seNone, 60
-	'DMD2.QueueText "-   C  TO  E·L -", seNone, 60 : 'DMDB.QueueText "-   C  TO  E·L -", seNone, 60
+	'DMD2.QueueText "-   C  TO  EÂ·L -", seNone, 60 : 'DMDB.QueueText "-   C  TO  EÂ·L -", seNone, 60
 	'DMD1.QueueText "-- D M N  E T --", seNone, 55 : 'DMDA.QueueText "-- D M N  E T --", seNone, 55
-	'DMD2.QueueText "-   C  T·  E L -", seNone, 55 : 'DMDB.QueueText "-   C  T·  E L -", seNone, 55
-	'DMD1.QueueText "-- D M N  · T --", seNone, 55 : 'DMDA.QueueText "-- D M N  · T --", seNone, 55
+	'DMD2.QueueText "-   C  TÂ·  E L -", seNone, 55 : 'DMDB.QueueText "-   C  TÂ·  E L -", seNone, 55
+	'DMD1.QueueText "-- D M N  Â· T --", seNone, 55 : 'DMDA.QueueText "-- D M N  Â· T --", seNone, 55
 	'DMD2.QueueText "-   C  T   E L -", seNone, 55 : 'DMDB.QueueText "-   C  T   E L -", seNone, 55
-	'DMD1.QueueText "-- D · N    T --", seNone, 50 : 'DMDA.QueueText "-- D · N    T --", seNone, 50
+	'DMD1.QueueText "-- D Â· N    T --", seNone, 50 : 'DMDA.QueueText "-- D Â· N    T --", seNone, 50
 	'DMD2.QueueText "-   C  T   E L -", seNone, 50 : 'DMDB.QueueText "-   C  T   E L -", seNone, 50
 	'DMD1.QueueText "-- D   N    T --", seNone, 50 : 'DMDA.QueueText "-- D   N    T --", seNone, 50
-	'DMD2.QueueText "-   C  T   E · -", seNone, 50 : 'DMDB.QueueText "-   C  T   E · -", seNone, 50
-	'DMD1.QueueText "-- ·   N    T --", seNone, 50 : 'DMDA.QueueText "-- ·   N    T --", seNone, 50
+	'DMD2.QueueText "-   C  T   E Â· -", seNone, 50 : 'DMDB.QueueText "-   C  T   E Â· -", seNone, 50
+	'DMD1.QueueText "-- Â·   N    T --", seNone, 50 : 'DMDA.QueueText "-- Â·   N    T --", seNone, 50
 	'DMD2.QueueText "-   C  T   E   -", seNone, 50 : 'DMDB.QueueText "-   C  T   E   -", seNone, 50
-	'DMD1.QueueText "--     ·    T --", seNone, 50 : 'DMDA.QueueText "--     ·    T --", seNone, 50
-	'DMD2.QueueText "-   C  T   ·   -", seNone, 45 : 'DMDB.QueueText "-   C  T   ·   -", seNone, 45
+	'DMD1.QueueText "--     Â·    T --", seNone, 50 : 'DMDA.QueueText "--     Â·    T --", seNone, 50
+	'DMD2.QueueText "-   C  T   Â·   -", seNone, 45 : 'DMDB.QueueText "-   C  T   Â·   -", seNone, 45
 	'DMD1.QueueText "--          T --", seNone, 45 : 'DMDA.QueueText "--          T --", seNone, 45
-	'DMD2.QueueText "-   ·  T       -", seNone, 45 : 'DMDB.QueueText "-   ·  T       -", seNone, 45
-	'DMD1.QueueText "--          · --", seNone, 45 : 'DMDA.QueueText "--          · --", seNone, 45
+	'DMD2.QueueText "-   Â·  T       -", seNone, 45 : 'DMDB.QueueText "-   Â·  T       -", seNone, 45
+	'DMD1.QueueText "--          Â· --", seNone, 45 : 'DMDA.QueueText "--          Â· --", seNone, 45
 	'DMD2.QueueText "-      T       -", seNone, 40 : 'DMDB.QueueText "-      T       -", seNone, 40
 	'DMD1.QueueText "--            --", seNone, 40 : 'DMDA.QueueText "--            --", seNone, 40
-	'DMD2.QueueText "-      ·       -", seNone, 40 : 'DMDB.QueueText "-      ·       -", seNone, 40
+	'DMD2.QueueText "-      Â·       -", seNone, 40 : 'DMDB.QueueText "-      Â·       -", seNone, 40
 	'DMD1.QueueText "--            --", seNone, 40 : 'DMDA.QueueText "--            --", seNone, 40
 	'DMD2.QueueText "-              -", seNone, 40 : 'DMDB.QueueText "-              -", seNone, 40
 	'DMD1.QueueText "--            --", seNone, 40 : 'DMDA.QueueText "--            --", seNone, 40
@@ -96090,43 +96109,43 @@ Sub StartThe2AMball()
 	DMD_DisplayScene "-- TWO ANGELS --","-- MULTI BALL --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD1.QueueText "   TWO ANGELS   ", seBlinkMask, 1300 : 'DMDA.QueueText "   TWO ANGELS   ", seBlinkMask, 1300
 	'DMD2.QueueText "   MULTI BALL   ", seBlinkMask, 1300 : 'DMDB.QueueText "   MULTI BALL   ", seBlinkMask, 1300
-	'DMD1.QueueText "-- T·O ANGELS --", seNone, 75 : 'DMDA.QueueText "-- T·O ANGELS --", seNone, 75
+	'DMD1.QueueText "-- TÂ·O ANGELS --", seNone, 75 : 'DMDA.QueueText "-- TÂ·O ANGELS --", seNone, 75
 	'DMD2.QueueText "-- MULTI BALL --", seNone, 75 : 'DMDB.QueueText "-- MULTI BALL --", seNone, 75
-	'DMD1.QueueText "-- T·O ANGELS --", seNone, 75 : 'DMDA.QueueText "-- T·O ANGELS --", seNone, 75
-	'DMD2.QueueText "-- MULTI B·LL --", seNone, 75 : 'DMDB.QueueText "-- MULTI B·LL --", seNone, 75
+	'DMD1.QueueText "-- TÂ·O ANGELS --", seNone, 75 : 'DMDA.QueueText "-- TÂ·O ANGELS --", seNone, 75
+	'DMD2.QueueText "-- MULTI BÂ·LL --", seNone, 75 : 'DMDB.QueueText "-- MULTI BÂ·LL --", seNone, 75
 	'DMD1.QueueText "-- T O ANGELS --", seNone, 75 : 'DMDA.QueueText "-- T O ANGELS --", seNone, 75
-	'DMD2.QueueText "-- MU·TI B·LL --", seNone, 75 : 'DMDB.QueueText "-- MU·TI B·LL --", seNone, 75
-	'DMD1.QueueText "-- T O ANG·LS --", seNone, 75 : 'DMDA.QueueText "-- T O ANG·LS --", seNone, 75
-	'DMD2.QueueText "-- MU·TI B LL --", seNone, 75 : 'DMDB.QueueText "-- MU·TI B LL --", seNone, 75
-	'DMD1.QueueText "-- T O ANG·LS --", seNone, 75 : 'DMDA.QueueText "-- T O ANG·LS --", seNone, 75
-	'DMD2.QueueText "-- ·U TI B LL --", seNone, 75 : 'DMDB.QueueText "-- ·U TI B LL --", seNone, 75
-	'DMD1.QueueText "-- T O ANG L· --", seNone, 75 : 'DMDA.QueueText "-- T O ANG L· --", seNone, 75
-	'DMD2.QueueText "-- ·U TI B LL --", seNone, 75 : 'DMDB.QueueText "-- ·U TI B LL --", seNone, 75
-	'DMD1.QueueText "-- T O ·NG L· --", seNone, 75 : 'DMDA.QueueText "-- T O ·NG L· --", seNone, 75
+	'DMD2.QueueText "-- MUÂ·TI BÂ·LL --", seNone, 75 : 'DMDB.QueueText "-- MUÂ·TI BÂ·LL --", seNone, 75
+	'DMD1.QueueText "-- T O ANGÂ·LS --", seNone, 75 : 'DMDA.QueueText "-- T O ANGÂ·LS --", seNone, 75
+	'DMD2.QueueText "-- MUÂ·TI B LL --", seNone, 75 : 'DMDB.QueueText "-- MUÂ·TI B LL --", seNone, 75
+	'DMD1.QueueText "-- T O ANGÂ·LS --", seNone, 75 : 'DMDA.QueueText "-- T O ANGÂ·LS --", seNone, 75
+	'DMD2.QueueText "-- Â·U TI B LL --", seNone, 75 : 'DMDB.QueueText "-- Â·U TI B LL --", seNone, 75
+	'DMD1.QueueText "-- T O ANG LÂ· --", seNone, 75 : 'DMDA.QueueText "-- T O ANG LÂ· --", seNone, 75
+	'DMD2.QueueText "-- Â·U TI B LL --", seNone, 75 : 'DMDB.QueueText "-- Â·U TI B LL --", seNone, 75
+	'DMD1.QueueText "-- T O Â·NG LÂ· --", seNone, 75 : 'DMDA.QueueText "-- T O Â·NG LÂ· --", seNone, 75
 	'DMD2.QueueText "--  U TI B LL --", seNone, 75 : 'DMDB.QueueText "--  U TI B LL --", seNone, 75
-	'DMD1.QueueText "-- · O ·NG L  --", seNone, 75 : 'DMDA.QueueText "-- · O ·NG L  --", seNone, 75
+	'DMD1.QueueText "-- Â· O Â·NG L  --", seNone, 75 : 'DMDA.QueueText "-- Â· O Â·NG L  --", seNone, 75
 	'DMD2.QueueText "--  U TI B LL --", seNone, 75 : 'DMDB.QueueText "--  U TI B LL --", seNone, 75
-	'DMD1.QueueText "-- · O  NG L  --", seNone, 75 : 'DMDA.QueueText "-- · O  NG L  --", seNone, 75
-	'DMD2.QueueText "--  U TI B ·L --", seNone, 75 : 'DMDB.QueueText "--  U TI B ·L --", seNone, 75
-	'DMD1.QueueText "--   O  N· L  --", seNone, 75 : 'DMDA.QueueText "--   O  N· L  --", seNone, 75
-	'DMD2.QueueText "--  U TI B ·L --", seNone, 75 : 'DMDB.QueueText "--  U TI B ·L --", seNone, 75
-	'DMD1.QueueText "--   O  N· L  --", seNone, 75 : 'DMDA.QueueText "--   O  N· L  --", seNone, 75
-	'DMD2.QueueText "--  U ·I B  L --", seNone, 75 : 'DMDB.QueueText "--  U ·I B  L --", seNone, 75
+	'DMD1.QueueText "-- Â· O  NG L  --", seNone, 75 : 'DMDA.QueueText "-- Â· O  NG L  --", seNone, 75
+	'DMD2.QueueText "--  U TI B Â·L --", seNone, 75 : 'DMDB.QueueText "--  U TI B Â·L --", seNone, 75
+	'DMD1.QueueText "--   O  NÂ· L  --", seNone, 75 : 'DMDA.QueueText "--   O  NÂ· L  --", seNone, 75
+	'DMD2.QueueText "--  U TI B Â·L --", seNone, 75 : 'DMDB.QueueText "--  U TI B Â·L --", seNone, 75
+	'DMD1.QueueText "--   O  NÂ· L  --", seNone, 75 : 'DMDA.QueueText "--   O  NÂ· L  --", seNone, 75
+	'DMD2.QueueText "--  U Â·I B  L --", seNone, 75 : 'DMDB.QueueText "--  U Â·I B  L --", seNone, 75
 	'DMD1.QueueText "--   O  N  L  --", seNone, 75 : 'DMDA.QueueText "--   O  N  L  --", seNone, 75
-	'DMD2.QueueText "--  U ·I B  · --", seNone, 75 : 'DMDB.QueueText "--  U ·I B  · --", seNone, 75
-	'DMD1.QueueText "--   ·  N  L  --", seNone, 75 : 'DMDA.QueueText "--   ·  N  L  --", seNone, 75
-	'DMD2.QueueText "--  U  I B  · --", seNone, 75 : 'DMDB.QueueText "--  U  I B  · --", seNone, 75
-	'DMD1.QueueText "--   ·  N  L  --", seNone, 75 : 'DMDA.QueueText "--   ·  N  L  --", seNone, 75
-	'DMD2.QueueText "--  U  I ·    --", seNone, 75 : 'DMDB.QueueText "--  U  I ·    --", seNone, 75
+	'DMD2.QueueText "--  U Â·I B  Â· --", seNone, 75 : 'DMDB.QueueText "--  U Â·I B  Â· --", seNone, 75
+	'DMD1.QueueText "--   Â·  N  L  --", seNone, 75 : 'DMDA.QueueText "--   Â·  N  L  --", seNone, 75
+	'DMD2.QueueText "--  U  I B  Â· --", seNone, 75 : 'DMDB.QueueText "--  U  I B  Â· --", seNone, 75
+	'DMD1.QueueText "--   Â·  N  L  --", seNone, 75 : 'DMDA.QueueText "--   Â·  N  L  --", seNone, 75
+	'DMD2.QueueText "--  U  I Â·    --", seNone, 75 : 'DMDB.QueueText "--  U  I Â·    --", seNone, 75
 	'DMD1.QueueText "--      N  L  --", seNone, 75 : 'DMDA.QueueText "--      N  L  --", seNone, 75
-	'DMD2.QueueText "--  ·  I ·    --", seNone, 75 : 'DMDB.QueueText "--  ·  I ·    --", seNone, 75
-	'DMD1.QueueText "--      N  ·  --", seNone, 75 : 'DMDA.QueueText "--      N  ·  --", seNone, 75
-	'DMD2.QueueText "--  ·  I      --", seNone, 75 : 'DMDB.QueueText "--  ·  I      --", seNone, 75
-	'DMD1.QueueText "--      N  ·  --", seNone, 75 : 'DMDA.QueueText "--      N  ·  --", seNone, 75
-	'DMD2.QueueText "--     ·      --", seNone, 75 : 'DMDB.QueueText "--     ·      --", seNone, 75
+	'DMD2.QueueText "--  Â·  I Â·    --", seNone, 75 : 'DMDB.QueueText "--  Â·  I Â·    --", seNone, 75
+	'DMD1.QueueText "--      N  Â·  --", seNone, 75 : 'DMDA.QueueText "--      N  Â·  --", seNone, 75
+	'DMD2.QueueText "--  Â·  I      --", seNone, 75 : 'DMDB.QueueText "--  Â·  I      --", seNone, 75
+	'DMD1.QueueText "--      N  Â·  --", seNone, 75 : 'DMDA.QueueText "--      N  Â·  --", seNone, 75
+	'DMD2.QueueText "--     Â·      --", seNone, 75 : 'DMDB.QueueText "--     Â·      --", seNone, 75
 	'DMD1.QueueText "--      N     --", seNone, 75 : 'DMDA.QueueText "--      N     --", seNone, 75
-	'DMD2.QueueText "--     ·      --", seNone, 75 : 'DMDB.QueueText "--     ·      --", seNone, 75
-	'DMD1.QueueText "--      ·     --", seNone, 75 : 'DMDA.QueueText "--      ·     --", seNone, 75
+	'DMD2.QueueText "--     Â·      --", seNone, 75 : 'DMDB.QueueText "--     Â·      --", seNone, 75
+	'DMD1.QueueText "--      Â·     --", seNone, 75 : 'DMDA.QueueText "--      Â·     --", seNone, 75
 	'DMD2.QueueText "--            --", seNone, 75 : 'DMDB.QueueText "--            --", seNone, 75
 	'DMD1.QueueText "--            --", seNone, 75 : 'DMDA.QueueText "--            --", seNone, 75
 	'DMD2.QueueText "--            --", seNone, 75 : 'DMDB.QueueText "--            --", seNone, 75
@@ -96216,9 +96235,9 @@ End Sub
 
 
 
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 '--=[ 2A MBALL - JACKPOT ]=-----
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 
 Sub CheckFor2AngelsJackpot()
 
@@ -96237,10 +96256,10 @@ End Sub
 
 
 
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 '--=[ TWO ANGELS MULTIBALL ]=-----
 '--=[    J A C K P O T     ]=-----
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 Sub Single2AngelsJackpot()
 
 	NumberOf2AngelsJackpots = NumberOf2AngelsJackpots + 1
@@ -96357,43 +96376,43 @@ Sub Single2AngelsJackpot()
 		'DMD2.QueueText "   " & Text & "  0 0 0   ", seBlinkMask, 1500 : 'DMDB.QueueText "   " & Text & "  0 0 0   ", seBlinkMask, 1500
 		DMD_DisplayScene " ANGEL  JACKPOT "," ANGEL  JACKPOT "& Text, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		'DMD1.QueueText "-ANGEL  JACKPOT-", seNone, 200 : 'DMDA.QueueText "-ANGEL  JACKPOT-", seNone, 200
-		'DMD2.QueueText "-- · ·  0 0 0 --", seNone, 200 : 'DMDB.QueueText "-- · ·  0 0 0 --", seNone, 200
+		'DMD2.QueueText "-- Â· Â·  0 0 0 --", seNone, 200 : 'DMDB.QueueText "-- Â· Â·  0 0 0 --", seNone, 200
 		'DMD1.QueueText "-ANGEL  JACKPOT-", seNone, 200 : 'DMDA.QueueText "-ANGEL  JACKPOT-", seNone, 200
-		'DMD2.QueueText "-- · ·  · 0 0 --", seNone, 200 : 'DMDB.QueueText "-- · ·  · 0 0 --", seNone, 200
+		'DMD2.QueueText "-- Â· Â·  Â· 0 0 --", seNone, 200 : 'DMDB.QueueText "-- Â· Â·  Â· 0 0 --", seNone, 200
 		'DMD1.QueueText "-ANGEL  JACKPOT-", seNone, 75 : 'DMDA.QueueText "-ANGEL  JACKPOT-", seNone, 75
-		'DMD2.QueueText "-- ·    · 0 0 --", seNone, 75 : 'DMDB.QueueText "-- ·    · 0 0 --", seNone, 75
+		'DMD2.QueueText "-- Â·    Â· 0 0 --", seNone, 75 : 'DMDB.QueueText "-- Â·    Â· 0 0 --", seNone, 75
 		'DMD1.QueueText "-ANGEL  JACKPOT-", seNone, 75 : 'DMDA.QueueText "-ANGEL  JACKPOT-", seNone, 75
-		'DMD2.QueueText "--·  ·    0 0 --", seNone, 75 : 'DMDB.QueueText "--·  ·    0 0 --", seNone, 75
-		'DMD1.QueueText "-AN EL  JACK·OT-", seNone, 75 : 'DMDA.QueueText "-AN EL  JACK·OT-", seNone, 75
-		'DMD2.QueueText "-- · ··   0 0 --", seNone, 75 : 'DMDB.QueueText "-- · ··   0 0 --", seNone, 75
-		'DMD1.QueueText "-AN E·  JACK OT-", seNone, 75 : 'DMDA.QueueText "-AN E·  JACK OT-", seNone, 75
-		'DMD2.QueueText "--       ·0 0 --", seNone, 75 : 'DMDB.QueueText "--       ·0 0 --", seNone, 75
-		'DMD1.QueueText "-·N E   JACK OT-", seNone, 75 : 'DMDA.QueueText "-·N E   JACK OT-", seNone, 75
-		'DMD2.QueueText "--   ·    0 0·--", seNone, 75 : 'DMDB.QueueText "--   ·    0 0·--", seNone, 75
-		'DMD1.QueueText "--N E   JA·K OT-", seNone, 75 : 'DMDA.QueueText "--N E   JA·K OT-", seNone, 75
-		'DMD2.QueueText "--    ·   0 0 --", seNone, 75 : 'DMDB.QueueText "--    ·   0 0 --", seNone, 75
-		'DMD1.QueueText "--N E   ·A K OT-", seNone, 75 : 'DMDA.QueueText "--N E   ·A K OT-", seNone, 75
-		'DMD2.QueueText "-- ·      0 0 --", seNone, 75 : 'DMDB.QueueText "-- ·      0 0 --", seNone, 75
-		'DMD1.QueueText "--N E ·  A K OT-", seNone, 75 : 'DMDA.QueueText "--N E ·  A K OT-", seNone, 75
-		'DMD2.QueueText "--        · 0 --", seNone, 75 : 'DMDB.QueueText "--        · 0 --", seNone, 75
-		'DMD1.QueueText "--N E    A K ·T-", seNone, 75 : 'DMDA.QueueText "--N E    A K ·T-", seNone, 75
-		'DMD2.QueueText "--  ·       0 --", seNone, 75 : 'DMDB.QueueText "--  ·       0 --", seNone, 75
+		'DMD2.QueueText "--Â·  Â·    0 0 --", seNone, 75 : 'DMDB.QueueText "--Â·  Â·    0 0 --", seNone, 75
+		'DMD1.QueueText "-AN EL  JACKÂ·OT-", seNone, 75 : 'DMDA.QueueText "-AN EL  JACKÂ·OT-", seNone, 75
+		'DMD2.QueueText "-- Â· Â·Â·   0 0 --", seNone, 75 : 'DMDB.QueueText "-- Â· Â·Â·   0 0 --", seNone, 75
+		'DMD1.QueueText "-AN EÂ·  JACK OT-", seNone, 75 : 'DMDA.QueueText "-AN EÂ·  JACK OT-", seNone, 75
+		'DMD2.QueueText "--       Â·0 0 --", seNone, 75 : 'DMDB.QueueText "--       Â·0 0 --", seNone, 75
+		'DMD1.QueueText "-Â·N E   JACK OT-", seNone, 75 : 'DMDA.QueueText "-Â·N E   JACK OT-", seNone, 75
+		'DMD2.QueueText "--   Â·    0 0Â·--", seNone, 75 : 'DMDB.QueueText "--   Â·    0 0Â·--", seNone, 75
+		'DMD1.QueueText "--N E   JAÂ·K OT-", seNone, 75 : 'DMDA.QueueText "--N E   JAÂ·K OT-", seNone, 75
+		'DMD2.QueueText "--    Â·   0 0 --", seNone, 75 : 'DMDB.QueueText "--    Â·   0 0 --", seNone, 75
+		'DMD1.QueueText "--N E   Â·A K OT-", seNone, 75 : 'DMDA.QueueText "--N E   Â·A K OT-", seNone, 75
+		'DMD2.QueueText "-- Â·      0 0 --", seNone, 75 : 'DMDB.QueueText "-- Â·      0 0 --", seNone, 75
+		'DMD1.QueueText "--N E Â·  A K OT-", seNone, 75 : 'DMDA.QueueText "--N E Â·  A K OT-", seNone, 75
+		'DMD2.QueueText "--        Â· 0 --", seNone, 75 : 'DMDB.QueueText "--        Â· 0 --", seNone, 75
+		'DMD1.QueueText "--N E    A K Â·T-", seNone, 75 : 'DMDA.QueueText "--N E    A K Â·T-", seNone, 75
+		'DMD2.QueueText "--  Â·       0 --", seNone, 75 : 'DMDB.QueueText "--  Â·       0 --", seNone, 75
 		'DMD1.QueueText "--N E    A K  T-", seNone, 75 : 'DMDA.QueueText "--N E    A K  T-", seNone, 75
-		'DMD2.QueueText "-- ·     ·  0 --", seNone, 75 : 'DMDB.QueueText "-- ·     ·  0 --", seNone, 75
-		'DMD1.QueueText "--N ·    A K  T-", seNone, 75 : 'DMDA.QueueText "--N ·    A K  T-", seNone, 75
-		'DMD2.QueueText "--     ·    0 --", seNone, 75 : 'DMDB.QueueText "--     ·    0 --", seNone, 75
-		'DMD1.QueueText "--N      A ·  T-", seNone, 75 : 'DMDA.QueueText "--N      A ·  T-", seNone, 75
-		'DMD2.QueueText "-- ·        0 --", seNone, 75 : 'DMDB.QueueText "-- ·        0 --", seNone, 75
-		'DMD1.QueueText "--·      A    T-", seNone, 75 : 'DMDA.QueueText "--·      A    T-", seNone, 75
-		'DMD2.QueueText "--        · 0 --", seNone, 75 : 'DMDB.QueueText "--        · 0 --", seNone, 75
-		'DMD1.QueueText "--       A    ·-", seNone, 75 : 'DMDA.QueueText "--       A    ·-", seNone, 75
+		'DMD2.QueueText "-- Â·     Â·  0 --", seNone, 75 : 'DMDB.QueueText "-- Â·     Â·  0 --", seNone, 75
+		'DMD1.QueueText "--N Â·    A K  T-", seNone, 75 : 'DMDA.QueueText "--N Â·    A K  T-", seNone, 75
+		'DMD2.QueueText "--     Â·    0 --", seNone, 75 : 'DMDB.QueueText "--     Â·    0 --", seNone, 75
+		'DMD1.QueueText "--N      A Â·  T-", seNone, 75 : 'DMDA.QueueText "--N      A Â·  T-", seNone, 75
+		'DMD2.QueueText "-- Â·        0 --", seNone, 75 : 'DMDB.QueueText "-- Â·        0 --", seNone, 75
+		'DMD1.QueueText "--Â·      A    T-", seNone, 75 : 'DMDA.QueueText "--Â·      A    T-", seNone, 75
+		'DMD2.QueueText "--        Â· 0 --", seNone, 75 : 'DMDB.QueueText "--        Â· 0 --", seNone, 75
+		'DMD1.QueueText "--       A    Â·-", seNone, 75 : 'DMDA.QueueText "--       A    Â·-", seNone, 75
 		'DMD2.QueueText "--          0 --", seNone, 75 : 'DMDB.QueueText "--          0 --", seNone, 75
 		'DMD1.QueueText "--       A    --", seNone, 75 : 'DMDA.QueueText "--       A    --", seNone, 75
 		'DMD2.QueueText "--          0 --", seNone, 75 : 'DMDB.QueueText "--          0 --", seNone, 75
-		'DMD1.QueueText "--       ·    --", seNone, 75 : 'DMDA.QueueText "--       ·    --", seNone, 75
+		'DMD1.QueueText "--       Â·    --", seNone, 75 : 'DMDA.QueueText "--       Â·    --", seNone, 75
 		'DMD2.QueueText "--          0 --", seNone, 75 : 'DMDB.QueueText "--          0 --", seNone, 75
 		'DMD1.QueueText "--            --", seNone, 75 : 'DMDA.QueueText "--            --", seNone, 75
-		'DMD2.QueueText "--          · --", seNone, 75 : 'DMDB.QueueText "--          · --", seNone, 75
+		'DMD2.QueueText "--          Â· --", seNone, 75 : 'DMDB.QueueText "--          Â· --", seNone, 75
 		'DMD1.QueueText "--            --", seNone, 75 : 'DMDA.QueueText "--            --", seNone, 75
 		'DMD2.QueueText "--            --", seNone, 75 : 'DMDB.QueueText "--            --", seNone, 75
 		DMD_DisplayScene " ANGEL  JACKPOT "," ANGEL  JACKPOT "& Text, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -96472,10 +96491,10 @@ End Sub
 
 
 
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 '--=[  TWO ANGELS MULTIBALL  ]=-----
 '--=[  2 X   J A C K P O T   ]=-----
-'==============================================--------------------··· ·   ·
+'==============================================--------------------Â·Â·Â· Â·   Â·
 
 Sub Double2AngelsJackpot()
 
@@ -96583,19 +96602,19 @@ End Sub
 
 
 
-'===========================================================--------····· ·· · ·  ·
-' ---------------------------··· ·
+'===========================================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+' ---------------------------Â·Â·Â· Â·
 ' --=[ 2ANGELS TIMER ]=---
-' ---------------------------··· ·'
-'===========================================================--------····· ·· · ·  ·
+' ---------------------------Â·Â·Â· Â·'
+'===========================================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 
 Sub TwoAngelsMballTimer_Timer()
 
 	Select Case (TwoAngelsMballTimer.UserValue)
 
-	'===================================--------····· ·· · ·  ·
+	'===================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' -=[ 2A MBALL - SINGLE JACKPOT ]=-
-	'===================================--------····· ·· · ·  ·
+	'===================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case  80 '-=[ 00:01 ]=--
 
 		LightSeqTilt.StopPlay
@@ -97048,56 +97067,56 @@ Sub TwoAngelsMballTimer_Timer()
 
 
 
-	'===================================--------····· ·· · ·  ·
-	'===================================--------····· ·· · ·  ·
+	'===================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+	'===================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' -=[ 2A MBALL - DOUBLE JACKPOT ]=-
-	'===================================--------····· ·· · ·  ·
-	'===================================--------····· ·· · ·  ·
+	'===================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
+	'===================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 200
-		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  · 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  Â· 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		'DMD1.QueueText "-DOUBLE JACKPOT-", seNone, 200 : 'DMDA.QueueText "-DOUBLE JACKPOT-", seNone, 200
 		'DMD2.QueueText "-- 5 0  0 0 0 --", seNone, 200 : 'DMDB.QueueText "-- 5 0  0 0 0 --", seNone, 200
-		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  · 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  Â· 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		'DMD1.QueueText "-DOUBLE JACKPOT-", seNone, 200 : 'DMDA.QueueText "-DOUBLE JACKPOT-", seNone, 200
-		'DMD2.QueueText "-- 5 0  · 0 0 --", seNone, 200 : 'DMDB.QueueText "-- 5 0  · 0 0 --", seNone, 200
-		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  · 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+		'DMD2.QueueText "-- 5 0  Â· 0 0 --", seNone, 200 : 'DMDB.QueueText "-- 5 0  Â· 0 0 --", seNone, 200
+		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  Â· 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		'DMD1.QueueText "-DOUBLE JACKPOT-", seNone, 75 : 'DMDA.QueueText "-DOUBLE JACKPOT-", seNone, 75
-		'DMD2.QueueText "-- 5 0  · 0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0  · 0 0 --", seNone, 75
+		'DMD2.QueueText "-- 5 0  Â· 0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0  Â· 0 0 --", seNone, 75
 		'DMD1.QueueText "-DOUBLE JACKPOT-", seNone, 75 : 'DMDA.QueueText "-DOUBLE JACKPOT-", seNone, 75
-		'DMD2.QueueText "--·5 0    0 0 --", seNone, 75 : 'DMDB.QueueText "--·5 0    0 0 --", seNone, 75
-		'DMD1.QueueText "-DO·BLE JACK·OT-", seNone, 75 : 'DMDA.QueueText "-DO·BLE JACK·OT-", seNone, 75
-		'DMD2.QueueText "-- 5 0·   0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0·   0 0 --", seNone, 75
-		'DMD1.QueueText "-DO·B·E JACK OT-", seNone, 75 : 'DMDA.QueueText "-DO·B·E JACK OT-", seNone, 75
-		'DMD2.QueueText "-- 5 0   ·0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0   ·0 0 --", seNone, 75
-		'DMD1.QueueText "-·O B E JACK OT-", seNone, 75 : 'DMDA.QueueText "-·O B E JACK OT-", seNone, 75
-		'DMD2.QueueText "-- 5 0    0 0·--", seNone, 75 : 'DMDB.QueueText "-- 5 0    0 0·--", seNone, 75
-		'DMD1.QueueText "--O B E JA·K OT-", seNone, 75 : 'DMDA.QueueText "--O B E JA·K OT-", seNone, 75
-		'DMD2.QueueText "-- 5 0·   0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0·   0 0 --", seNone, 75
-		'DMD1.QueueText "--O B E ·A K OT-", seNone, 75 : 'DMDA.QueueText "--O B E ·A K OT-", seNone, 75
+		'DMD2.QueueText "--Â·5 0    0 0 --", seNone, 75 : 'DMDB.QueueText "--Â·5 0    0 0 --", seNone, 75
+		'DMD1.QueueText "-DOÂ·BLE JACKÂ·OT-", seNone, 75 : 'DMDA.QueueText "-DOÂ·BLE JACKÂ·OT-", seNone, 75
+		'DMD2.QueueText "-- 5 0Â·   0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0Â·   0 0 --", seNone, 75
+		'DMD1.QueueText "-DOÂ·BÂ·E JACK OT-", seNone, 75 : 'DMDA.QueueText "-DOÂ·BÂ·E JACK OT-", seNone, 75
+		'DMD2.QueueText "-- 5 0   Â·0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0   Â·0 0 --", seNone, 75
+		'DMD1.QueueText "-Â·O B E JACK OT-", seNone, 75 : 'DMDA.QueueText "-Â·O B E JACK OT-", seNone, 75
+		'DMD2.QueueText "-- 5 0    0 0Â·--", seNone, 75 : 'DMDB.QueueText "-- 5 0    0 0Â·--", seNone, 75
+		'DMD1.QueueText "--O B E JAÂ·K OT-", seNone, 75 : 'DMDA.QueueText "--O B E JAÂ·K OT-", seNone, 75
+		'DMD2.QueueText "-- 5 0Â·   0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0Â·   0 0 --", seNone, 75
+		'DMD1.QueueText "--O B E Â·A K OT-", seNone, 75 : 'DMDA.QueueText "--O B E Â·A K OT-", seNone, 75
 		'DMD2.QueueText "-- 5 0    0 0 --", seNone, 75 : 'DMDB.QueueText "-- 5 0    0 0 --", seNone, 75
-		'DMD1.QueueText "--O B ·  A K OT-", seNone, 75 : 'DMDA.QueueText "--O B ·  A K OT-", seNone, 75
-		'DMD2.QueueText "-- · 0    · 0 --", seNone, 75 : 'DMDB.QueueText "-- · 0    · 0 --", seNone, 75
-		'DMD1.QueueText "--O B ·  A K ·T-", seNone, 75 : 'DMDA.QueueText "--O B ·  A K ·T-", seNone, 75
-		'DMD2.QueueText "--  ·0      0 --", seNone, 75 : 'DMDB.QueueText "--  ·0      0 --", seNone, 75
+		'DMD1.QueueText "--O B Â·  A K OT-", seNone, 75 : 'DMDA.QueueText "--O B Â·  A K OT-", seNone, 75
+		'DMD2.QueueText "-- Â· 0    Â· 0 --", seNone, 75 : 'DMDB.QueueText "-- Â· 0    Â· 0 --", seNone, 75
+		'DMD1.QueueText "--O B Â·  A K Â·T-", seNone, 75 : 'DMDA.QueueText "--O B Â·  A K Â·T-", seNone, 75
+		'DMD2.QueueText "--  Â·0      0 --", seNone, 75 : 'DMDB.QueueText "--  Â·0      0 --", seNone, 75
 		'DMD1.QueueText "--O B    A K  T-", seNone, 75 : 'DMDA.QueueText "--O B    A K  T-", seNone, 75
-		'DMD2.QueueText "-- · 0   ·  0 --", seNone, 75 : 'DMDB.QueueText "-- · 0   ·  0 --", seNone, 75
-		'DMD1.QueueText "--O ·    A K  T-", seNone, 75 : 'DMDA.QueueText "--O ·    A K  T-", seNone, 75
-		'DMD2.QueueText "--   0 ·    0 --", seNone, 75 : 'DMDB.QueueText "--   0 ·    0 --", seNone, 75
-		'DMD1.QueueText "--O      A ·  T-", seNone, 75 : 'DMDA.QueueText "--O      A ·  T-", seNone, 75
-		'DMD2.QueueText "-- · 0      0 --", seNone, 75 : 'DMDB.QueueText "-- · 0      0 --", seNone, 75
-		'DMD1.QueueText "--·      A    T-", seNone, 75 : 'DMDA.QueueText "--·      A    T-", seNone, 75
-		'DMD2.QueueText "--   0    · 0 --", seNone, 75 : 'DMDB.QueueText "--   0    · 0 --", seNone, 75
-		'DMD1.QueueText "--       A    ·-", seNone, 75 : 'DMDA.QueueText "--       A    ·-", seNone, 75
-		'DMD2.QueueText "--   ·      0 --", seNone, 75 : 'DMDB.QueueText "--   ·      0 --", seNone, 75
+		'DMD2.QueueText "-- Â· 0   Â·  0 --", seNone, 75 : 'DMDB.QueueText "-- Â· 0   Â·  0 --", seNone, 75
+		'DMD1.QueueText "--O Â·    A K  T-", seNone, 75 : 'DMDA.QueueText "--O Â·    A K  T-", seNone, 75
+		'DMD2.QueueText "--   0 Â·    0 --", seNone, 75 : 'DMDB.QueueText "--   0 Â·    0 --", seNone, 75
+		'DMD1.QueueText "--O      A Â·  T-", seNone, 75 : 'DMDA.QueueText "--O      A Â·  T-", seNone, 75
+		'DMD2.QueueText "-- Â· 0      0 --", seNone, 75 : 'DMDB.QueueText "-- Â· 0      0 --", seNone, 75
+		'DMD1.QueueText "--Â·      A    T-", seNone, 75 : 'DMDA.QueueText "--Â·      A    T-", seNone, 75
+		'DMD2.QueueText "--   0    Â· 0 --", seNone, 75 : 'DMDB.QueueText "--   0    Â· 0 --", seNone, 75
+		'DMD1.QueueText "--       A    Â·-", seNone, 75 : 'DMDA.QueueText "--       A    Â·-", seNone, 75
+		'DMD2.QueueText "--   Â·      0 --", seNone, 75 : 'DMDB.QueueText "--   Â·      0 --", seNone, 75
 		'DMD1.QueueText "--       A    --", seNone, 75 : 'DMDA.QueueText "--       A    --", seNone, 75
-		'DMD2.QueueText "--   ·      0 --", seNone, 75 : 'DMDB.QueueText "--   ·      0 --", seNone, 75
-		'DMD1.QueueText "--       ·    --", seNone, 75 : 'DMDA.QueueText "--       ·    --", seNone, 75
+		'DMD2.QueueText "--   Â·      0 --", seNone, 75 : 'DMDB.QueueText "--   Â·      0 --", seNone, 75
+		'DMD1.QueueText "--       Â·    --", seNone, 75 : 'DMDA.QueueText "--       Â·    --", seNone, 75
 		'DMD2.QueueText "--          0 --", seNone, 75 : 'DMDB.QueueText "--          0 --", seNone, 75
 		'DMD1.QueueText "--            --", seNone, 75 : 'DMDA.QueueText "--            --", seNone, 75
-		'DMD2.QueueText "--          · --", seNone, 75 : 'DMDB.QueueText "--          · --", seNone, 75
+		'DMD2.QueueText "--          Â· --", seNone, 75 : 'DMDB.QueueText "--          Â· --", seNone, 75
 		'DMD1.QueueText "--            --", seNone, 75 : 'DMDA.QueueText "--            --", seNone, 75
 		'DMD2.QueueText "--            --", seNone, 75 : 'DMDB.QueueText "--            --", seNone, 75
-		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  · 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+		DMD_DisplayScene "-DOUBLE JACKPOT-","-- 5 0  Â· 0 0 --", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 		
 		LightSeqTilt.StopPlay
 		LightSeqDW.StopPlay 'The LitSequencers could be working
@@ -97226,9 +97245,9 @@ Sub TwoAngelsMballTimer_Timer()
 
 
 
-	'===============================================--------····· ·· · ·  ·
+	'===============================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	' -=[ 2A MBALL IS OVER, RETURN BALL LOCKED TO PF ]=-
-	'===============================================--------····· ·· · ·  ·
+	'===============================================--------Â·Â·Â·Â·Â· Â·Â· Â· Â·  Â·
 	Case 500
 	
 		PlaySound "fx_knife2"
@@ -97285,9 +97304,9 @@ Sub TwoAngelsMballTimer_Timer()
 		
 		
 		
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 		' ACTIVATE RAMP QUICKSHOT TO --=[ TRAP KICKER ]=-		'
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 		If RampDiverter2theRight = TRUE then 
 		
 			RampDiverter2theRight = FALSE
@@ -97309,9 +97328,9 @@ Sub TwoAngelsMballTimer_Timer()
 		
 		
 		Else
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 		' ACTIVATE RAMP QUICKSHOT TO --=[ MYSTERY KICKER ]=-		'
-		'---------------------------------------------···· · ·   ·
+		'---------------------------------------------Â·Â·Â·Â· Â· Â·   Â·
 			RampDiverter2theRight = TRUE
 			RampDiverter.rotatetoend 'Balls to the RIGHT
 			'RampDiverter.isdropped = false
@@ -97819,9 +97838,9 @@ Sub BallSearchTimer_Timer()
 
 
 
-	'-·===============·-------------·· ·  ·
-	'--=[ WIZ MODE ]=----·-·---·---------------------------------------
-	'-·===============·-------------·· ·  ·
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
+	'--=[ WIZ MODE ]=----Â·-Â·---Â·---------------------------------------
+	'-Â·===============Â·-------------Â·Â· Â·  Â·
 	If WizModeActive = TRUE then
 		BallSearchTimer.Enabled = FALSE
 		Exit Sub
@@ -98593,9 +98612,9 @@ Sub BallSearchTimer_Timer()
 
 
 
-	'========================================================----------···  ·
+	'========================================================----------Â·Â·Â·  Â·
 	'----=[ CHECKING BALL STUCKED IN TRAP ]=--
-	'========================================================----------···  ·
+	'========================================================----------Â·Â·Â·  Â·
 	Case 490
 	
 		'PlaySound "fx_motor_lift"
@@ -99128,9 +99147,9 @@ End Sub
 
 Sub StopBallSearchTimer()
 
-	'================================----·· ·  ·
+	'================================----Â·Â· Â·  Â·
 	' --=[ SEARCHING PROCESS ON ]=--
-	'================================----·· ·  ·
+	'================================----Â·Â· Â·  Â·
 	If BallSearchTimer.Enabled = TRUE and BallSearchTimer.UserValue >= 100 then
 
 			'DMD1.FlushQueue : 'DMD2.FlushQueue 
@@ -99179,9 +99198,9 @@ Sub StopBallSearchTimer()
 
 	Else
 
-	'================================----·· ·  ·
+	'================================----Â·Â· Â·  Â·
 	' --=[ RESET THE SEARCH TIMER ]=--
-	'================================----·· ·  ·
+	'================================----Â·Â· Â·  Â·
 		BallSearchTimer.UserValue = 50
 		BallSearchTimer.Interval = 15000
 		BallSearchTimer.Enabled = TRUE
@@ -99418,32 +99437,32 @@ Sub DemonSummonedDMDText()
 
 	'Not used
 
-	'DMD1.QueueText "-··············-", seNone, 300 : 
-	'DMD2.QueueText "-··············-", seNone, 300 : 
-	'DMD1.QueueText "-#············#-", seNone, 300 : 
-	'DMD2.QueueText "-#············#-", seNone, 300 : 
-	'DMD1.QueueText "-D#·····#·····D-", seNone, 300 : 
-	'DMD2.QueueText "-D#·····#·····D-", seNone, 300 : 
-	'DMD1.QueueText "-DE·····U·····D-", seNone, 300 : 
-	'DMD2.QueueText "-DE·····U·····D-", seNone, 300 : 
-	'DMD1.QueueText "-DE··#··U····#D-", seNone, 300 : 
-	'DMD2.QueueText "-DE··#··U····#D-", seNone, 300 : 
-	'DMD1.QueueText "-DE··N··U····ED-", seNone, 300 : 
-	'DMD2.QueueText "-DE··N··U····ED-", seNone, 300 : 
-	'DMD1.QueueText "-DE#·N··U#···ED-", seNone, 300 : 
-	'DMD2.QueueText "-DE#·N··U#···ED-", seNone, 300 : 
-	'DMD1.QueueText "-DEM·N··UM···ED-", seNone, 300 : 
-	'DMD2.QueueText "-DEM·N··UM···ED-", seNone, 300 : 
-	'DMD1.QueueText "-DEM#N··UM·#·ED-", seNone, 300 : 
-	'DMD2.QueueText "-DEM#N··UM·#·ED-", seNone, 300 : 
-	'DMD1.QueueText "-DEMON··UM·O·ED-", seNone, 300 : 
-	'DMD2.QueueText "-DEMON··UM·O·ED-", seNone, 300 : 
-	'DMD1.QueueText "-DEMON·#UM·O#ED-", seNone, 300 : 
-	'DMD2.QueueText "-DEMON·#UM·O#ED-", seNone, 300 : 
-	'DMD1.QueueText "-DEMON·SUM·ONED-", seNone, 300 : 
-	'DMD2.QueueText "-DEMON·SUM·ONED-", seNone, 300 : 
-	'DMD1.QueueText "-DEMON·SUM#ONED-", seNone, 300 : 
-	'DMD2.QueueText "-DEMON·SUM#ONED-", seNone, 300 : 
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 300 : 
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 300 : 
+	'DMD1.QueueText "-#Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·#-", seNone, 300 : 
+	'DMD2.QueueText "-#Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·#-", seNone, 300 : 
+	'DMD1.QueueText "-D#Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â·D-", seNone, 300 : 
+	'DMD2.QueueText "-D#Â·Â·Â·Â·Â·#Â·Â·Â·Â·Â·D-", seNone, 300 : 
+	'DMD1.QueueText "-DEÂ·Â·Â·Â·Â·UÂ·Â·Â·Â·Â·D-", seNone, 300 : 
+	'DMD2.QueueText "-DEÂ·Â·Â·Â·Â·UÂ·Â·Â·Â·Â·D-", seNone, 300 : 
+	'DMD1.QueueText "-DEÂ·Â·#Â·Â·UÂ·Â·Â·Â·#D-", seNone, 300 : 
+	'DMD2.QueueText "-DEÂ·Â·#Â·Â·UÂ·Â·Â·Â·#D-", seNone, 300 : 
+	'DMD1.QueueText "-DEÂ·Â·NÂ·Â·UÂ·Â·Â·Â·ED-", seNone, 300 : 
+	'DMD2.QueueText "-DEÂ·Â·NÂ·Â·UÂ·Â·Â·Â·ED-", seNone, 300 : 
+	'DMD1.QueueText "-DE#Â·NÂ·Â·U#Â·Â·Â·ED-", seNone, 300 : 
+	'DMD2.QueueText "-DE#Â·NÂ·Â·U#Â·Â·Â·ED-", seNone, 300 : 
+	'DMD1.QueueText "-DEMÂ·NÂ·Â·UMÂ·Â·Â·ED-", seNone, 300 : 
+	'DMD2.QueueText "-DEMÂ·NÂ·Â·UMÂ·Â·Â·ED-", seNone, 300 : 
+	'DMD1.QueueText "-DEM#NÂ·Â·UMÂ·#Â·ED-", seNone, 300 : 
+	'DMD2.QueueText "-DEM#NÂ·Â·UMÂ·#Â·ED-", seNone, 300 : 
+	'DMD1.QueueText "-DEMONÂ·Â·UMÂ·OÂ·ED-", seNone, 300 : 
+	'DMD2.QueueText "-DEMONÂ·Â·UMÂ·OÂ·ED-", seNone, 300 : 
+	'DMD1.QueueText "-DEMONÂ·#UMÂ·O#ED-", seNone, 300 : 
+	'DMD2.QueueText "-DEMONÂ·#UMÂ·O#ED-", seNone, 300 : 
+	'DMD1.QueueText "-DEMONÂ·SUMÂ·ONED-", seNone, 300 : 
+	'DMD2.QueueText "-DEMONÂ·SUMÂ·ONED-", seNone, 300 : 
+	'DMD1.QueueText "-DEMONÂ·SUM#ONED-", seNone, 300 : 
+	'DMD2.QueueText "-DEMONÂ·SUM#ONED-", seNone, 300 : 
 	'DMD1.QueueText "-DEMON SUMMONED-", seNone, 300 : 
 	'DMD2.QueueText "-DEMON SUMMONED-", seNone, 300 : 
 	'DMD1.QueueText " DEMON SUMMONED ", seBlinkMask, 1400 : 
@@ -99462,36 +99481,36 @@ Sub DemonEscapedDMDText()
 	'DMD1.QueueText " DEMON  ESCAPED ", seBlinkMask, 1000 : 'DMDA.QueueText " DEMON  ESCAPED ", seBlinkMask, 1000
 	'DMD2.QueueText " DEMON  ESCAPED ", seBlinkMask, 1000 : 'DMDB.QueueText " DEMON  ESCAPED ", seBlinkMask, 1000
 	DMD_DisplayScene "-DEMON  ESCAPED-","-DEMON  ESCAPED-", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "-DE·ON  ESCAPED-", seNone, 100 : 'DMDA.QueueText "-DE·ON  ESCAPED-", seNone, 100
-	'DMD2.QueueText "-DEMON  ES·APED-", seNone, 100 : 'DMDB.QueueText "-DEMON  ES·APED-", seNone, 100
-	'DMD1.QueueText "-DE ON  ESCA·ED-", seNone, 100 : 'DMDA.QueueText "-DE ON  ESCA·ED-", seNone, 100
-	'DMD2.QueueText "-·EMON  ES APED-", seNone, 100 : 'DMDB.QueueText "-·EMON  ES APED-", seNone, 100
-	'DMD1.QueueText "-DE ON  ·SCA ED-", seNone, 100 : 'DMDA.QueueText "-DE ON  ·SCA ED-", seNone, 100
-	'DMD2.QueueText "- E·ON  ES APE -", seNone, 100 : 'DMDB.QueueText "- E·ON  ES APE -", seNone, 100
-	'DMD1.QueueText "-DE ON   SCA E·-", seNone, 100 : 'DMDA.QueueText "-DE ON   SCA E·-", seNone, 100
-	'DMD2.QueueText "- · ON  ES APE -", seNone, 100 : 'DMDB.QueueText "- · ON  ES APE -", seNone, 100
-	'DMD1.QueueText "-DE O·   SCA E -", seNone, 100 : 'DMDA.QueueText "-DE O·   SCA E -", seNone, 100
-	'DMD2.QueueText "-   ON  ES AP· -", seNone, 100 : 'DMDB.QueueText "-   ON  ES AP· -", seNone, 100
-	'DMD1.QueueText "-·E O    S·A E -", seNone, 100 : 'DMDA.QueueText "-·E O    S·A E -", seNone, 100
+	'DMD1.QueueText "-DEÂ·ON  ESCAPED-", seNone, 100 : 'DMDA.QueueText "-DEÂ·ON  ESCAPED-", seNone, 100
+	'DMD2.QueueText "-DEMON  ESÂ·APED-", seNone, 100 : 'DMDB.QueueText "-DEMON  ESÂ·APED-", seNone, 100
+	'DMD1.QueueText "-DE ON  ESCAÂ·ED-", seNone, 100 : 'DMDA.QueueText "-DE ON  ESCAÂ·ED-", seNone, 100
+	'DMD2.QueueText "-Â·EMON  ES APED-", seNone, 100 : 'DMDB.QueueText "-Â·EMON  ES APED-", seNone, 100
+	'DMD1.QueueText "-DE ON  Â·SCA ED-", seNone, 100 : 'DMDA.QueueText "-DE ON  Â·SCA ED-", seNone, 100
+	'DMD2.QueueText "- EÂ·ON  ES APE -", seNone, 100 : 'DMDB.QueueText "- EÂ·ON  ES APE -", seNone, 100
+	'DMD1.QueueText "-DE ON   SCA EÂ·-", seNone, 100 : 'DMDA.QueueText "-DE ON   SCA EÂ·-", seNone, 100
+	'DMD2.QueueText "- Â· ON  ES APE -", seNone, 100 : 'DMDB.QueueText "- Â· ON  ES APE -", seNone, 100
+	'DMD1.QueueText "-DE OÂ·   SCA E -", seNone, 100 : 'DMDA.QueueText "-DE OÂ·   SCA E -", seNone, 100
+	'DMD2.QueueText "-   ON  ES APÂ· -", seNone, 100 : 'DMDB.QueueText "-   ON  ES APÂ· -", seNone, 100
+	'DMD1.QueueText "-Â·E O    SÂ·A E -", seNone, 100 : 'DMDA.QueueText "-Â·E O    SÂ·A E -", seNone, 100
 	'DMD2.QueueText "-   ON  ES AP  -", seNone, 100 : 'DMDB.QueueText "-   ON  ES AP  -", seNone, 100
-	'DMD1.QueueText "- E ·    S A E -", seNone, 100 : 'DMDA.QueueText "- E ·    S A E -", seNone, 100
-	'DMD2.QueueText "-   ON  E· AP  -", seNone, 100 : 'DMDB.QueueText "-   ON  E· AP  -", seNone, 100
-	'DMD1.QueueText "- E      S A · -", seNone, 100 : 'DMDA.QueueText "- E      S A · -", seNone, 100
-	'DMD2.QueueText "-   O·  E  AP  -", seNone, 100 : 'DMDB.QueueText "-   O·  E  AP  -", seNone, 100
-	'DMD1.QueueText "- E      · A   -", seNone, 100 : 'DMDA.QueueText "- E      · A   -", seNone, 100
-	'DMD2.QueueText "-   O   E  A·  -", seNone, 100 : 'DMDB.QueueText "-   O   E  A·  -", seNone, 100
-	'DMD1.QueueText "- ·        A   -", seNone, 100 : 'DMDA.QueueText "- ·        A   -", seNone, 100
-	'DMD2.QueueText "-   O   E  ·   -", seNone, 100 : 'DMDB.QueueText "-   O   E  ·   -", seNone, 100
+	'DMD1.QueueText "- E Â·    S A E -", seNone, 100 : 'DMDA.QueueText "- E Â·    S A E -", seNone, 100
+	'DMD2.QueueText "-   ON  EÂ· AP  -", seNone, 100 : 'DMDB.QueueText "-   ON  EÂ· AP  -", seNone, 100
+	'DMD1.QueueText "- E      S A Â· -", seNone, 100 : 'DMDA.QueueText "- E      S A Â· -", seNone, 100
+	'DMD2.QueueText "-   OÂ·  E  AP  -", seNone, 100 : 'DMDB.QueueText "-   OÂ·  E  AP  -", seNone, 100
+	'DMD1.QueueText "- E      Â· A   -", seNone, 100 : 'DMDA.QueueText "- E      Â· A   -", seNone, 100
+	'DMD2.QueueText "-   O   E  AÂ·  -", seNone, 100 : 'DMDB.QueueText "-   O   E  AÂ·  -", seNone, 100
+	'DMD1.QueueText "- Â·        A   -", seNone, 100 : 'DMDA.QueueText "- Â·        A   -", seNone, 100
+	'DMD2.QueueText "-   O   E  Â·   -", seNone, 100 : 'DMDB.QueueText "-   O   E  Â·   -", seNone, 100
 	'DMD1.QueueText "-          A   -", seNone, 100 : 'DMDA.QueueText "-          A   -", seNone, 100
-	'DMD2.QueueText "-   O   ·      -", seNone, 100 : 'DMDB.QueueText "-   O   ·      -", seNone, 100
-	'DMD1.QueueText "-          ·   -", seNone, 100 : 'DMDA.QueueText "-          ·   -", seNone, 100
+	'DMD2.QueueText "-   O   Â·      -", seNone, 100 : 'DMDB.QueueText "-   O   Â·      -", seNone, 100
+	'DMD1.QueueText "-          Â·   -", seNone, 100 : 'DMDA.QueueText "-          Â·   -", seNone, 100
 	'DMD2.QueueText "-   O          -", seNone, 100 : 'DMDB.QueueText "-   O          -", seNone, 100
 	'DMD1.QueueText "-              -", seNone, 100 : 'DMDA.QueueText "-              -", seNone, 100
-	'DMD2.QueueText "-   ·          -", seNone, 100 : 'DMDB.QueueText "-   ·          -", seNone, 100
+	'DMD2.QueueText "-   Â·          -", seNone, 100 : 'DMDB.QueueText "-   Â·          -", seNone, 100
 	'DMD1.QueueText "-              -", seNone, 100 : 'DMDA.QueueText "-              -", seNone, 100
 	'DMD2.QueueText "-              -", seNone, 100 : 'DMDB.QueueText "-              -", seNone, 100
-	'DMD1.QueueText "·              ·", seNone, 100 : 'DMDA.QueueText "·              ·", seNone, 100
-	'DMD2.QueueText "·              ·", seNone, 100 : 'DMDB.QueueText "·              ·", seNone, 100
+	'DMD1.QueueText "Â·              Â·", seNone, 100 : 'DMDA.QueueText "Â·              Â·", seNone, 100
+	'DMD2.QueueText "Â·              Â·", seNone, 100 : 'DMDB.QueueText "Â·              Â·", seNone, 100
 	'DMD1.QueueText "                ", seNone, 100 : 'DMDA.QueueText "                ", seNone, 100
 	'DMD2.QueueText "                ", seNone, 100 : 'DMDB.QueueText "                ", seNone, 100
 		DMD_DisplayScene "-DEMON  ESCAPED-","-DEMON  ESCAPED-", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
@@ -99693,62 +99712,62 @@ Sub ShowXBallDMDText()
 
 	''DMD1.FlushQueue : 'DMD2.FlushQueue : 'DMDA.FlushQueue : 'DMDB.FlushQueue
 	DMD_DisplayScene "- EXTRA  ANGEL -","- EXTRA  ANGEL -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "················", seNone, 100 : 'DMDA.QueueText "················", seNone, 100
+	'DMD1.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100 : 'DMDA.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100
 	DMD_DisplayScene "- EXTRA  ANGEL -","- EXTRA  ANGEL -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD2.QueueText "················", seNone, 100 : 'DMDB.QueueText "················", seNone, 100
+	'DMD2.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100 : 'DMDB.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100
 	DMD_DisplayScene "- EXTRA  ANGEL -","- EXTRA  ANGEL -", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " ···············", seNone, 100 : 'DMDA.QueueText " ···············", seNone, 100
-	'DMD2.QueueText "··············· ", seNone, 100 : 'DMDB.QueueText "··············· ", seNone, 100
-	'DMD1.QueueText "-·············· ", seNone, 100 : 'DMDA.QueueText "-·············· ", seNone, 100
-	'DMD2.QueueText "···············-", seNone, 100 : 'DMDB.QueueText "···············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "-··············-", seNone, 100
-	'DMD2.QueueText " ··············-", seNone, 100 : 'DMDB.QueueText " ··············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "-··············-", seNone, 100
-	'DMD2.QueueText "-··············-", seNone, 100 : 'DMDB.QueueText " ··············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "- ·············-", seNone, 100
-	'DMD2.QueueText "-··············-", seNone, 100 : 'DMDB.QueueText "-··············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "-··············-", seNone, 100
-	'DMD2.QueueText "-············· -", seNone, 100 : 'DMDB.QueueText "-············· -", seNone, 100
-	'DMD1.QueueText "-············· -", seNone, 100 : 'DMDA.QueueText "-············· -", seNone, 100
-	'DMD2.QueueText "-··············-", seNone, 100 : 'DMDB.QueueText "- ·············-", seNone, 100
-	'DMD1.QueueText "- ·············-", seNone, 100 : 'DMDA.QueueText "-· ············-", seNone, 100
-	'DMD2.QueueText "-··············-", seNone, 100 : 'DMDB.QueueText "-··············-", seNone, 100
-	'DMD1.QueueText "- ····· ······ -", seNone, 150 : 'DMDA.QueueText "-· ··········· -", seNone, 150
-	'DMD2.QueueText "- ······ ······-", seNone, 150 : 'DMDB.QueueText "-· ····· ······-", seNone, 150
-	'DMD1.QueueText "- ····· ······ -", seNone, 150 : 'DMDA.QueueText "-· ··········· -", seNone, 150
-	'DMD2.QueueText "- ······ ····· -", seNone, 150 : 'DMDB.QueueText "-· ····  ····· -", seNone, 150
-	'DMD1.QueueText "- ····· ···· · -", seNone, 150 : 'DMDA.QueueText "-· ········· · -", seNone, 150
-	'DMD2.QueueText "- ·· ··· ····· -", seNone, 150 : 'DMDB.QueueText "-· ·· ·· ····· -", seNone, 150
-	'DMD1.QueueText "- ····· ····E· -", seNone, 150 : 'DMDA.QueueText "- ····· ····E· -", seNone, 150
-	'DMD2.QueueText "- ··T··· ····· -", seNone, 150 : 'DMDB.QueueText "- ··T··· ····· -", seNone, 150
-	'DMD1.QueueText "- ····· ····E· -", seNone, 150 : 'DMDA.QueueText "- ····· ····E· -", seNone, 150
-	'DMD2.QueueText "- ··T··· · ··· -", seNone, 150 : 'DMDB.QueueText "- ··T··· · ··· -", seNone, 150
-	'DMD1.QueueText "-  ···· ····E· -", seNone, 150 : 'DMDA.QueueText "-  ····  ···E· -", seNone, 150
-	'DMD2.QueueText "- ··T··  ·N··· -", seNone, 150 : 'DMDB.QueueText "- ··T··  ·N··· -", seNone, 150
-	'DMD1.QueueText "- E····  A··E· -", seNone, 150 : 'DMDA.QueueText "- E····  A··E· -", seNone, 150
-	'DMD2.QueueText "- ··T··  ·N··  -", seNone, 150 : 'DMDB.QueueText "- ··T··  ·N··  -", seNone, 150
-	'DMD1.QueueText "- E···   ···E· -", seNone, 150 : 'DMDA.QueueText "- E···   ···E· -", seNone, 150
-	'DMD2.QueueText "- ··T··  ·N··L -", seNone, 150 : 'DMDB.QueueText "- ··T··  ·N··L -", seNone, 150
-	'DMD1.QueueText "- E···A  A··E· -", seNone, 150 : 'DMDA.QueueText "- E···A  A··E· -", seNone, 150
-	'DMD2.QueueText "- · T··  ·N··L -", seNone, 150 : 'DMDB.QueueText "- · T··  ·N··L -", seNone, 150
-	'DMD1.QueueText "- E···A  ·· E· -", seNone, 150 : 'DMDA.QueueText "- E···A  ·· E· -", seNone, 150
-	'DMD2.QueueText "- ·XT··  ·N··L -", seNone, 150 : 'DMDB.QueueText "- ·XT··  ·N··L -", seNone, 150
-	'DMD1.QueueText "- E·· A  A·GE· -", seNone, 150 : 'DMDA.QueueText "- E·· A  A·GE· -", seNone, 150
-	'DMD2.QueueText "- ·XT··  ·N··L -", seNone, 150 : 'DMDB.QueueText "- ·XT··  ·N··L -", seNone, 150
-	'DMD1.QueueText "- E··RA  A·GE· -", seNone, 150 : 'DMDA.QueueText "- E··RA  A·GE· -", seNone, 150
-	'DMD2.QueueText "- ·XT··  ·N ·L -", seNone, 150 : 'DMDB.QueueText "- ·XT··  ·N ·L -", seNone, 150
-	'DMD1.QueueText "- E··RA  A·GE· -", seNone, 150 : 'DMDA.QueueText "- E··RA  A·GE· -", seNone, 150
-	'DMD2.QueueText "- ·XT·   ·NG·L -", seNone, 150 : 'DMDB.QueueText "- ·XT·   ·NG·L -", seNone, 150
-	'DMD1.QueueText "- E··RA  A·GE  -", seNone, 150 : 'DMDA.QueueText "- E··RA  A·GE  -", seNone, 150
-	'DMD2.QueueText "- ·XT·A  ·NG·L -", seNone, 150 : 'DMDB.QueueText "- ·XT·A  ·NG·L -", seNone, 150
-	'DMD1.QueueText "- E··RA  A·GEL -", seNone, 150 : 'DMDA.QueueText "- E··RA  A·GEL -", seNone, 150
-	'DMD2.QueueText "-  XT·A  ·NG·L -", seNone, 150 : 'DMDB.QueueText "-  XT·A  ·NG·L -", seNone, 150
-	'DMD1.QueueText "- E· RA  A·GEL -", seNone, 150 : 'DMDA.QueueText "- E· RA  A·GEL -", seNone, 150
-	'DMD2.QueueText "- EXT·A  ·NG·L -", seNone, 150 : 'DMDB.QueueText "- EXT·A  ·NG·L -", seNone, 150
-	'DMD1.QueueText "- E TRA  A·GEL -", seNone, 150 : 'DMDA.QueueText "- E TRA  A·GEL -", seNone, 150
-	'DMD2.QueueText "- EXT·A  ANG L -", seNone, 150 : 'DMDB.QueueText "- EXT·A  ANG L -", seNone, 150
+	'DMD1.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100 : 'DMDA.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100
+	'DMD2.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100 : 'DMDB.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100
+	'DMD2.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100 : 'DMDB.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "-Â· Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·Â· -", seNone, 150 : 'DMDA.QueueText "-Â· Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·Â·-", seNone, 150 : 'DMDB.QueueText "-Â· Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·Â·-", seNone, 150
+	'DMD1.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·Â· -", seNone, 150 : 'DMDA.QueueText "-Â· Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·Â·Â·Â·Â· Â·Â·Â·Â·Â· -", seNone, 150 : 'DMDB.QueueText "-Â· Â·Â·Â·Â·  Â·Â·Â·Â·Â· -", seNone, 150
+	'DMD1.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â· Â· -", seNone, 150 : 'DMDA.QueueText "-Â· Â·Â·Â·Â·Â·Â·Â·Â·Â· Â· -", seNone, 150
+	'DMD2.QueueText "- Â·Â· Â·Â·Â· Â·Â·Â·Â·Â· -", seNone, 150 : 'DMDB.QueueText "-Â· Â·Â· Â·Â· Â·Â·Â·Â·Â· -", seNone, 150
+	'DMD1.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â·EÂ· -", seNone, 150 : 'DMDA.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â·EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·TÂ·Â·Â· Â·Â·Â·Â·Â· -", seNone, 150 : 'DMDB.QueueText "- Â·Â·TÂ·Â·Â· Â·Â·Â·Â·Â· -", seNone, 150
+	'DMD1.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â·EÂ· -", seNone, 150 : 'DMDA.QueueText "- Â·Â·Â·Â·Â· Â·Â·Â·Â·EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·TÂ·Â·Â· Â· Â·Â·Â· -", seNone, 150 : 'DMDB.QueueText "- Â·Â·TÂ·Â·Â· Â· Â·Â·Â· -", seNone, 150
+	'DMD1.QueueText "-  Â·Â·Â·Â· Â·Â·Â·Â·EÂ· -", seNone, 150 : 'DMDA.QueueText "-  Â·Â·Â·Â·  Â·Â·Â·EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·TÂ·Â·  Â·NÂ·Â·Â· -", seNone, 150 : 'DMDB.QueueText "- Â·Â·TÂ·Â·  Â·NÂ·Â·Â· -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·Â·Â·  AÂ·Â·EÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·Â·Â·  AÂ·Â·EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·TÂ·Â·  Â·NÂ·Â·  -", seNone, 150 : 'DMDB.QueueText "- Â·Â·TÂ·Â·  Â·NÂ·Â·  -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·Â·   Â·Â·Â·EÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·Â·   Â·Â·Â·EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·Â·TÂ·Â·  Â·NÂ·Â·L -", seNone, 150 : 'DMDB.QueueText "- Â·Â·TÂ·Â·  Â·NÂ·Â·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·Â·A  AÂ·Â·EÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·Â·A  AÂ·Â·EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â· TÂ·Â·  Â·NÂ·Â·L -", seNone, 150 : 'DMDB.QueueText "- Â· TÂ·Â·  Â·NÂ·Â·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·Â·A  Â·Â· EÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·Â·A  Â·Â· EÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·XTÂ·Â·  Â·NÂ·Â·L -", seNone, 150 : 'DMDB.QueueText "- Â·XTÂ·Â·  Â·NÂ·Â·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â· A  AÂ·GEÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â· A  AÂ·GEÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·XTÂ·Â·  Â·NÂ·Â·L -", seNone, 150 : 'DMDB.QueueText "- Â·XTÂ·Â·  Â·NÂ·Â·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·RA  AÂ·GEÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·RA  AÂ·GEÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·XTÂ·Â·  Â·N Â·L -", seNone, 150 : 'DMDB.QueueText "- Â·XTÂ·Â·  Â·N Â·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·RA  AÂ·GEÂ· -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·RA  AÂ·GEÂ· -", seNone, 150
+	'DMD2.QueueText "- Â·XTÂ·   Â·NGÂ·L -", seNone, 150 : 'DMDB.QueueText "- Â·XTÂ·   Â·NGÂ·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·RA  AÂ·GE  -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·RA  AÂ·GE  -", seNone, 150
+	'DMD2.QueueText "- Â·XTÂ·A  Â·NGÂ·L -", seNone, 150 : 'DMDB.QueueText "- Â·XTÂ·A  Â·NGÂ·L -", seNone, 150
+	'DMD1.QueueText "- EÂ·Â·RA  AÂ·GEL -", seNone, 150 : 'DMDA.QueueText "- EÂ·Â·RA  AÂ·GEL -", seNone, 150
+	'DMD2.QueueText "-  XTÂ·A  Â·NGÂ·L -", seNone, 150 : 'DMDB.QueueText "-  XTÂ·A  Â·NGÂ·L -", seNone, 150
+	'DMD1.QueueText "- EÂ· RA  AÂ·GEL -", seNone, 150 : 'DMDA.QueueText "- EÂ· RA  AÂ·GEL -", seNone, 150
+	'DMD2.QueueText "- EXTÂ·A  Â·NGÂ·L -", seNone, 150 : 'DMDB.QueueText "- EXTÂ·A  Â·NGÂ·L -", seNone, 150
+	'DMD1.QueueText "- E TRA  AÂ·GEL -", seNone, 150 : 'DMDA.QueueText "- E TRA  AÂ·GEL -", seNone, 150
+	'DMD2.QueueText "- EXTÂ·A  ANG L -", seNone, 150 : 'DMDB.QueueText "- EXTÂ·A  ANG L -", seNone, 150
 	'DMD1.QueueText "- EXTRA  A GEL -", seNone, 150 : 'DMDA.QueueText "- EXTRA  A GEL -", seNone, 150
-	'DMD2.QueueText "- EXT·A  ANGEL -", seNone, 150 : 'DMDB.QueueText "- EXT·A  ANGEL -", seNone, 150
+	'DMD2.QueueText "- EXTÂ·A  ANGEL -", seNone, 150 : 'DMDB.QueueText "- EXTÂ·A  ANGEL -", seNone, 150
 	'DMD1.QueueText "- EXTRA  ANGEL -", seNone, 150 : 'DMDA.QueueText "- EXTRA  ANGEL -", seNone, 150
 	'DMD2.QueueText "- EXT A  ANGEL -", seNone, 150 : 'DMDB.QueueText "- EXT A  ANGEL -", seNone, 150
 	'DMD1.QueueText "- EXTRA  ANGEL -", seNone, 150 : 'DMDA.QueueText "- EXTRA  ANGEL -", seNone, 150
@@ -99765,54 +99784,54 @@ Sub Show99SoulsDMDText()
 
 	''DMD1.FlushQueue : 'DMD2.FlushQueue : 'DMDA.FlushQueue : 'DMDB.FlushQueue
 	DMD_DisplayScene "   100  SOULS   ","    CAPTURED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText "················", seNone, 100 : 'DMDA.QueueText "················", seNone, 100
+	'DMD1.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100 : 'DMDA.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100
 	DMD_DisplayScene "   100  SOULS   ","    CAPTURED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD2.QueueText "················", seNone, 100 : 'DMDB.QueueText "················", seNone, 100
+	'DMD2.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100 : 'DMDB.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100
 	DMD_DisplayScene "   100  SOULS   ","    CAPTURED    ", UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
-	'DMD1.QueueText " ···············", seNone, 100 : 'DMDA.QueueText " ···············", seNone, 100
-	'DMD2.QueueText "··············· ", seNone, 100 : 'DMDB.QueueText "··············· ", seNone, 100
-	'DMD1.QueueText "-·············· ", seNone, 100 : 'DMDA.QueueText "-·············· ", seNone, 100
-	'DMD2.QueueText "···············-", seNone, 100 : 'DMDB.QueueText "···············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "-··············-", seNone, 100
-	'DMD2.QueueText " ··············-", seNone, 100 : 'DMDB.QueueText " ··············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "-··············-", seNone, 100
-	'DMD2.QueueText "-··············-", seNone, 100 : 'DMDB.QueueText " ··············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "- ·············-", seNone, 100
-	'DMD2.QueueText "-··············-", seNone, 100 : 'DMDB.QueueText "-··············-", seNone, 100
-	'DMD1.QueueText "-··············-", seNone, 100 : 'DMDA.QueueText "--·············-", seNone, 100
-	'DMD2.QueueText "-············· -", seNone, 100 : 'DMDB.QueueText "-············· -", seNone, 100
-	'DMD1.QueueText "-······ ······ -", seNone, 100 : 'DMDA.QueueText "--············ -", seNone, 100
-	'DMD2.QueueText "--············--", seNone, 100 : 'DMDB.QueueText "- ············--", seNone, 100
-	'DMD1.QueueText "--············--", seNone, 100 : 'DMDA.QueueText "-- ···········--", seNone, 100
-	'DMD2.QueueText "--············--", seNone, 100 : 'DMDB.QueueText "--······ ·····--", seNone, 100
-	'DMD1.QueueText "--····· ····· --", seNone, 175 : 'DMDA.QueueText "-- ·········· --", seNone, 175
-	'DMD2.QueueText "--············--", seNone, 175 : 'DMDB.QueueText "-- ····· ·····--", seNone, 175
-	'DMD1.QueueText "--····· ····· --", seNone, 175 : 'DMDA.QueueText "-- ····· ···· --", seNone, 175
-	'DMD2.QueueText "--··········· --", seNone, 175 : 'DMDB.QueueText "-- ····· ···· --", seNone, 175
-	'DMD1.QueueText "--····· ····· --", seNone, 175 : 'DMDA.QueueText "-- ····· ·· · --", seNone, 175
-	'DMD2.QueueText "--·· ········ --", seNone, 175 : 'DMDB.QueueText "-- ·· ·· ···· --", seNone, 175
-	'DMD1.QueueText "--····  ····S --", seNone, 175 : 'DMDA.QueueText "--····  ····S --", seNone, 175
-	'DMD2.QueueText "--··C·· ····· --", seNone, 175 : 'DMDB.QueueText "--··C·· ····· --", seNone, 175
-	'DMD1.QueueText "--····  S···S --", seNone, 175 : 'DMDA.QueueText "--····  S···S --", seNone, 175
-	'DMD2.QueueText "--··C··T····· --", seNone, 175 : 'DMDB.QueueText "--··C··T····· --", seNone, 175
-	'DMD1.QueueText "-- ··0  S···S --", seNone, 175 : 'DMDA.QueueText "-- ··0  S···S --", seNone, 175
-	'DMD2.QueueText "--··C··T··· · --", seNone, 175 : 'DMDB.QueueText "--··C··T··· · --", seNone, 175
-	'DMD1.QueueText "-- ··0  S···S --", seNone, 175 : 'DMDA.QueueText "-- ··0  S···S --", seNone, 175
-	'DMD2.QueueText "--··C··T· ·D· --", seNone, 175 : 'DMDB.QueueText "--··C··T· ·D· --", seNone, 175
-	'DMD1.QueueText "--  ·0  S···S --", seNone, 175 : 'DMDA.QueueText "--  ·0  S···S --", seNone, 175
-	'DMD2.QueueText "--··C··T·R·D· --", seNone, 175 : 'DMDB.QueueText "--··C··T·R·D· --", seNone, 175
-	'DMD1.QueueText "-- 1·0  S· ·S --", seNone, 175 : 'DMDA.QueueText "-- 1·0  S· ·S --", seNone, 175
-	'DMD2.QueueText "-- ·C··T·R·D· --", seNone, 175 : 'DMDB.QueueText "-- ·C··T·R·D· --", seNone, 175
-	'DMD1.QueueText "-- 1·0  S·U·S --", seNone, 175 : 'DMDA.QueueText "-- 1·0  S·U·S --", seNone, 175
-	'DMD2.QueueText "-- ·C· T·R·D· --", seNone, 175 : 'DMDB.QueueText "-- ·C· T·R·D· --", seNone, 175
-	'DMD1.QueueText "-- 1 0  S·U·S --", seNone, 175 : 'DMDA.QueueText "-- 1 0  S·U·S --", seNone, 175
-	'DMD2.QueueText "-- ·C·PT·R·D  --", seNone, 175 : 'DMDB.QueueText "-- ·C·PT·R·D  --", seNone, 175
-	'DMD1.QueueText "-- 100  S U·S --", seNone, 175 : 'DMDA.QueueText "-- 100  S U·S --", seNone, 175
-	'DMD2.QueueText "--  C·PT·R·D  --", seNone, 175 : 'DMDB.QueueText "--  C·PT·R·D  --", seNone, 175
+	'DMD1.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100 : 'DMDA.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·", seNone, 100
+	'DMD2.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100 : 'DMDB.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· ", seNone, 100
+	'DMD2.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText "Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText " Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDB.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100 : 'DMDA.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·-", seNone, 100
+	'DMD2.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100 : 'DMDB.QueueText "-Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100
+	'DMD1.QueueText "-Â·Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·Â· -", seNone, 100 : 'DMDA.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· -", seNone, 100
+	'DMD2.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·--", seNone, 100 : 'DMDB.QueueText "- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·--", seNone, 100
+	'DMD1.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·--", seNone, 100 : 'DMDA.QueueText "-- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·--", seNone, 100
+	'DMD2.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·--", seNone, 100 : 'DMDB.QueueText "--Â·Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·--", seNone, 100
+	'DMD1.QueueText "--Â·Â·Â·Â·Â· Â·Â·Â·Â·Â· --", seNone, 175 : 'DMDA.QueueText "-- Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· --", seNone, 175
+	'DMD2.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·--", seNone, 175 : 'DMDB.QueueText "-- Â·Â·Â·Â·Â· Â·Â·Â·Â·Â·--", seNone, 175
+	'DMD1.QueueText "--Â·Â·Â·Â·Â· Â·Â·Â·Â·Â· --", seNone, 175 : 'DMDA.QueueText "-- Â·Â·Â·Â·Â· Â·Â·Â·Â· --", seNone, 175
+	'DMD2.QueueText "--Â·Â·Â·Â·Â·Â·Â·Â·Â·Â·Â· --", seNone, 175 : 'DMDB.QueueText "-- Â·Â·Â·Â·Â· Â·Â·Â·Â· --", seNone, 175
+	'DMD1.QueueText "--Â·Â·Â·Â·Â· Â·Â·Â·Â·Â· --", seNone, 175 : 'DMDA.QueueText "-- Â·Â·Â·Â·Â· Â·Â· Â· --", seNone, 175
+	'DMD2.QueueText "--Â·Â· Â·Â·Â·Â·Â·Â·Â·Â· --", seNone, 175 : 'DMDB.QueueText "-- Â·Â· Â·Â· Â·Â·Â·Â· --", seNone, 175
+	'DMD1.QueueText "--Â·Â·Â·Â·  Â·Â·Â·Â·S --", seNone, 175 : 'DMDA.QueueText "--Â·Â·Â·Â·  Â·Â·Â·Â·S --", seNone, 175
+	'DMD2.QueueText "--Â·Â·CÂ·Â· Â·Â·Â·Â·Â· --", seNone, 175 : 'DMDB.QueueText "--Â·Â·CÂ·Â· Â·Â·Â·Â·Â· --", seNone, 175
+	'DMD1.QueueText "--Â·Â·Â·Â·  SÂ·Â·Â·S --", seNone, 175 : 'DMDA.QueueText "--Â·Â·Â·Â·  SÂ·Â·Â·S --", seNone, 175
+	'DMD2.QueueText "--Â·Â·CÂ·Â·TÂ·Â·Â·Â·Â· --", seNone, 175 : 'DMDB.QueueText "--Â·Â·CÂ·Â·TÂ·Â·Â·Â·Â· --", seNone, 175
+	'DMD1.QueueText "-- Â·Â·0  SÂ·Â·Â·S --", seNone, 175 : 'DMDA.QueueText "-- Â·Â·0  SÂ·Â·Â·S --", seNone, 175
+	'DMD2.QueueText "--Â·Â·CÂ·Â·TÂ·Â·Â· Â· --", seNone, 175 : 'DMDB.QueueText "--Â·Â·CÂ·Â·TÂ·Â·Â· Â· --", seNone, 175
+	'DMD1.QueueText "-- Â·Â·0  SÂ·Â·Â·S --", seNone, 175 : 'DMDA.QueueText "-- Â·Â·0  SÂ·Â·Â·S --", seNone, 175
+	'DMD2.QueueText "--Â·Â·CÂ·Â·TÂ· Â·DÂ· --", seNone, 175 : 'DMDB.QueueText "--Â·Â·CÂ·Â·TÂ· Â·DÂ· --", seNone, 175
+	'DMD1.QueueText "--  Â·0  SÂ·Â·Â·S --", seNone, 175 : 'DMDA.QueueText "--  Â·0  SÂ·Â·Â·S --", seNone, 175
+	'DMD2.QueueText "--Â·Â·CÂ·Â·TÂ·RÂ·DÂ· --", seNone, 175 : 'DMDB.QueueText "--Â·Â·CÂ·Â·TÂ·RÂ·DÂ· --", seNone, 175
+	'DMD1.QueueText "-- 1Â·0  SÂ· Â·S --", seNone, 175 : 'DMDA.QueueText "-- 1Â·0  SÂ· Â·S --", seNone, 175
+	'DMD2.QueueText "-- Â·CÂ·Â·TÂ·RÂ·DÂ· --", seNone, 175 : 'DMDB.QueueText "-- Â·CÂ·Â·TÂ·RÂ·DÂ· --", seNone, 175
+	'DMD1.QueueText "-- 1Â·0  SÂ·UÂ·S --", seNone, 175 : 'DMDA.QueueText "-- 1Â·0  SÂ·UÂ·S --", seNone, 175
+	'DMD2.QueueText "-- Â·CÂ· TÂ·RÂ·DÂ· --", seNone, 175 : 'DMDB.QueueText "-- Â·CÂ· TÂ·RÂ·DÂ· --", seNone, 175
+	'DMD1.QueueText "-- 1 0  SÂ·UÂ·S --", seNone, 175 : 'DMDA.QueueText "-- 1 0  SÂ·UÂ·S --", seNone, 175
+	'DMD2.QueueText "-- Â·CÂ·PTÂ·RÂ·D  --", seNone, 175 : 'DMDB.QueueText "-- Â·CÂ·PTÂ·RÂ·D  --", seNone, 175
+	'DMD1.QueueText "-- 100  S UÂ·S --", seNone, 175 : 'DMDA.QueueText "-- 100  S UÂ·S --", seNone, 175
+	'DMD2.QueueText "--  CÂ·PTÂ·RÂ·D  --", seNone, 175 : 'DMDB.QueueText "--  CÂ·PTÂ·RÂ·D  --", seNone, 175
 	'DMD1.QueueText "-- 100  SOU S --", seNone, 175 : 'DMDA.QueueText "-- 100  SOU S --", seNone, 175
-	'DMD2.QueueText "--  C PT·R·D  --", seNone, 175 : 'DMDB.QueueText "--  C PT·R·D  --", seNone, 175
+	'DMD2.QueueText "--  C PTÂ·RÂ·D  --", seNone, 175 : 'DMDB.QueueText "--  C PTÂ·RÂ·D  --", seNone, 175
 	'DMD1.QueueText "-- 100  SOULS --", seNone, 175 : 'DMDA.QueueText "-- 100  SOULS --", seNone, 175
-	'DMD2.QueueText "--  CAPT·R D  --", seNone, 175 : 'DMDB.QueueText "--  CAPT·R D  --", seNone, 175
+	'DMD2.QueueText "--  CAPTÂ·R D  --", seNone, 175 : 'DMDB.QueueText "--  CAPTÂ·R D  --", seNone, 175
 	'DMD1.QueueText "-- 100  SOULS --", seNone, 175 : 'DMDA.QueueText "-- 100  SOULS --", seNone, 175
 	'DMD2.QueueText "--  CAPTUR D  --", seNone, 175 : 'DMDB.QueueText "--  CAPTUR D  --", seNone, 175
 	'DMD1.QueueText "-- 100  SOULS --", seNone, 175 : 'DMDA.QueueText "-- 100  SOULS --", seNone, 175
