@@ -1,5 +1,5 @@
---- Vortex (Taito do Brasil - 1981) v4.vbs.original	2023-07-27 15:15:29
-+++ Vortex (Taito do Brasil - 1981) v4.vbs	2023-07-27 15:14:43
+--- Vortex (Taito do Brasil - 1981) v4.vbs.original	2023-07-27 15:26:53
++++ Vortex (Taito do Brasil - 1981) v4.vbs	2023-07-27 15:26:18
 @@ -46,7 +46,7 @@
  '************
  
@@ -10,17 +10,20 @@
      With Controller
          .GameName = cGameName
 \ No newline at end of file
-@@ -117,7 +117,7 @@
+@@ -117,7 +117,10 @@
  
  Sub table1_Paused:Controller.Pause = 1:End Sub
  Sub table1_unPaused:Controller.Pause = 0:End Sub
 -Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
-+'Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
++Sub table1_exit
++    'NVramPatchExit
++    Controller.stop
++End Sub
  
  '******************
  ' Realtime Updates
 \ No newline at end of file
-@@ -475,7 +475,7 @@
+@@ -475,7 +478,7 @@
      End If
      UpdateLeds
      UpdateLamps
@@ -30,7 +33,7 @@
  
  Sub UpdateLamps()
 \ No newline at end of file
-@@ -925,91 +925,91 @@
+@@ -925,91 +928,91 @@
      PlaySound("fx_collide"), 0, Csng(velocity) ^2 / 2000, Pan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
  End Sub
  
@@ -41,6 +44,10 @@
 -' NVramPatchLoad	' Must be placed before the VPinMAME controller initialization
 -' NVramPatchKeyCheck' Must be placed in the lamptimer timer
 -' =============================================================================================================
+-
+-Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
+-
+-Dim NVramPatchCoinCnt
 +' ' =============================================================================================================
 +' '                 NVram patch for Taito do Brasil tables by Pmax65
 +' '
@@ -49,22 +56,12 @@
 +' ' NVramPatchKeyCheck' Must be placed in the lamptimer timer
 +' ' =============================================================================================================
  
--Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
-+' Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
- 
--Dim NVramPatchCoinCnt
-+' Dim NVramPatchCoinCnt
- 
 -Function GetNVramPath()
 -    Dim WshShell
 -    Set WshShell = CreateObject("WScript.Shell")
 -    GetNVramPath = WshShell.RegRead("HKCU\Software\Freeware\Visual PinMame\globals\nvram_directory")
 -End function
-+' Function GetNVramPath()
-+'     Dim WshShell
-+'     Set WshShell = CreateObject("WScript.Shell")
-+'     GetNVramPath = WshShell.RegRead("HKCU\Software\Freeware\Visual PinMame\globals\nvram_directory")
-+' End function
++' Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
  
 -Function FileExists(FileName)
 -    DIM FSO
@@ -73,6 +70,23 @@
 -    FileExists = FSO.FileExists(FileName)
 -    Set FSO = Nothing
 -End Function
++' Dim NVramPatchCoinCnt
++
++' Function GetNVramPath()
++'     Dim WshShell
++'     Set WshShell = CreateObject("WScript.Shell")
++'     GetNVramPath = WshShell.RegRead("HKCU\Software\Freeware\Visual PinMame\globals\nvram_directory")
++' End function
+ 
+-Sub Kill(FileName)
+-    Dim ObjFile, FSO
+-    On Error Resume Next
+-    Set FSO = CreateObject("Scripting.FileSystemObject")
+-    Set ObjFile = FSO.GetFile(FileName)
+-    ObjFile.Delete
+-    On Error Goto 0
+-    Set FSO = Nothing
+-End Sub
 +' Function FileExists(FileName)
 +'     DIM FSO
 +'     FileExists = False
@@ -81,12 +95,11 @@
 +'     Set FSO = Nothing
 +' End Function
  
--Sub Kill(FileName)
--    Dim ObjFile, FSO
+-Sub Copy(SourceFileName, DestFileName)
+-    Dim FSO
 -    On Error Resume Next
 -    Set FSO = CreateObject("Scripting.FileSystemObject")
--    Set ObjFile = FSO.GetFile(FileName)
--    ObjFile.Delete
+-    FSO.CopyFile SourceFileName, DestFileName, True
 -    On Error Goto 0
 -    Set FSO = Nothing
 -End Sub
@@ -100,15 +113,6 @@
 +'     Set FSO = Nothing
 +' End Sub
  
--Sub Copy(SourceFileName, DestFileName)
--    Dim FSO
--    On Error Resume Next
--    Set FSO = CreateObject("Scripting.FileSystemObject")
--    FSO.CopyFile SourceFileName, DestFileName, True
--    On Error Goto 0
--    Set FSO = Nothing
--End Sub
--
 -Sub NVramPatchLoad
 -    NVramPatchCoinCnt = 0
 -    If FileExists(GetNVramPath + "\" + cGameName + ".nvb")Then
