@@ -1,0 +1,199 @@
+--- ABBAv2.0.vbs.original	2023-07-27 15:22:33
++++ ABBAv2.0.vbs	2023-07-27 15:21:09
+@@ -47,7 +47,7 @@
+ 
+ Sub table1_Init
+ 	'Set Controller = CreateObject("B2S.Server")
+-	NVramPatchLoad
++	'NVramPatchLoad
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -113,7 +113,7 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
+-Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
++'Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
+ 
+ '******************
+ ' Realtime Updates
+@@ -467,7 +467,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
+-    NVramPatchKeyCheck
++    'NVramPatchKeyCheck
+ End Sub
+ 
+ Sub UpdateLamps()
+@@ -904,91 +904,91 @@
+     PlaySound("fx_collide"), 0, Csng(velocity) ^2 / 2000, Pan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
+ End Sub
+ 
+-' =============================================================================================================
+-'                 NVram patch for Taito do Brasil tables by Pmax65
+-'
+-' NVramPatchExit	' Must be placed before the Controler.Stop statement into the Table1_Exit Sub
+-' NVramPatchLoad	' Must be placed before the VPinMAME controller initialization
+-' NVramPatchKeyCheck' Must be placed in the lamptimer timer
+-' =============================================================================================================
++' ' =============================================================================================================
++' '                 NVram patch for Taito do Brasil tables by Pmax65
++' '
++' ' NVramPatchExit	' Must be placed before the Controler.Stop statement into the Table1_Exit Sub
++' ' NVramPatchLoad	' Must be placed before the VPinMAME controller initialization
++' ' NVramPatchKeyCheck' Must be placed in the lamptimer timer
++' ' =============================================================================================================
+  
+-Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
+-Dim NVramPatchCoinCnt
++' Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
++' Dim NVramPatchCoinCnt
+ 
+-Function GetNVramPath()
+-    Dim WshShell
+-    Set WshShell = CreateObject("WScript.Shell")
+-    GetNVramPath = WshShell.RegRead("HKEY_CURRENT_USER\Software\Freeware\Visual PinMame\globals\nvram_directory")
+-End function
++' Function GetNVramPath()
++'     Dim WshShell
++'     Set WshShell = CreateObject("WScript.Shell")
++'     GetNVramPath = WshShell.RegRead("HKEY_CURRENT_USER\Software\Freeware\Visual PinMame\globals\nvram_directory")
++' End function
+ 
+-Function FileExists(FileName)
+-    DIM FSO
+-    FileExists = False
+-    Set FSO = CreateObject("Scripting.FileSystemObject")
+-    FileExists = FSO.FileExists(FileName)
+-    Set FSO = Nothing
+-End Function
++' Function FileExists(FileName)
++'     DIM FSO
++'     FileExists = False
++'     Set FSO = CreateObject("Scripting.FileSystemObject")
++'     FileExists = FSO.FileExists(FileName)
++'     Set FSO = Nothing
++' End Function
+ 
+-Sub Kill(FileName)
+-    Dim ObjFile, FSO
+-    On Error Resume Next
+-    Set FSO = CreateObject("Scripting.FileSystemObject")
+-    Set ObjFile = FSO.GetFile(FileName)
+-    ObjFile.Delete
+-    On Error Goto 0
+-    Set FSO = Nothing
+-End Sub
++' Sub Kill(FileName)
++'     Dim ObjFile, FSO
++'     On Error Resume Next
++'     Set FSO = CreateObject("Scripting.FileSystemObject")
++'     Set ObjFile = FSO.GetFile(FileName)
++'     ObjFile.Delete
++'     On Error Goto 0
++'     Set FSO = Nothing
++' End Sub
+ 
+-Sub Copy(SourceFileName, DestFileName)
+-    Dim FSO
+-    On Error Resume Next
+-    Set FSO = CreateObject("Scripting.FileSystemObject")
+-    FSO.CopyFile SourceFileName, DestFileName, True
+-    On Error Goto 0
+-    Set FSO = Nothing
+-End Sub
+-
+-Sub NVramPatchLoad
+-    NVramPatchCoinCnt = 0
+-    If FileExists(GetNVramPath + "\" + cGameName + ".nvb")Then
+-        Copy GetNVramPath + "\" + cGameName + ".nvb", GetNVramPath + "\" + cGameName + ".nv"
+-    Else
+-        Copy GetNVramPath + "\" + cGameName + ".nv", GetNVramPath + "\" + cGameName + ".nvb"
+-    End If
+-End Sub
+-
+-Sub NVramPatchExit
++' Sub Copy(SourceFileName, DestFileName)
++'     Dim FSO
++'     On Error Resume Next
++'     Set FSO = CreateObject("Scripting.FileSystemObject")
++'     FSO.CopyFile SourceFileName, DestFileName, True
++'     On Error Goto 0
++'     Set FSO = Nothing
++' End Sub
+      
+-        Kill GetNVramPath + "\" + cGameName + ".nvb"
+-        Do
++' Sub NVramPatchLoad
++'     NVramPatchCoinCnt = 0
++'     If FileExists(GetNVramPath + "\" + cGameName + ".nvb")Then
++'         Copy GetNVramPath + "\" + cGameName + ".nvb", GetNVramPath + "\" + cGameName + ".nv"
++'     Else
++'         Copy GetNVramPath + "\" + cGameName + ".nv", GetNVramPath + "\" + cGameName + ".nvb"
++'     End If
++' End Sub
+     
+-		LampTimer_Timer          ' This loop is needed to avoid the NVram reset (losing the hi-score and credits)
+-        Loop Until LampState(20) = 1 ' when the game is over but the match procedure isn't still ended
++' Sub NVramPatchExit
+ 
+-End Sub
+-' =============================================================================================================
+-' To completely erase the NVram file keep the Start Game button pushed while inserting
+-' two coins into the first coin slit (this resets the high scores too)
+-' =============================================================================================================
++'         Kill GetNVramPath + "\" + cGameName + ".nvb"
++'         Do
+ 
+-Sub NVramPatchKeyCheck
+-    If Controller.Switch(swStartButton)then
+-        If Controller.Switch(swCoin1)then
+-            If NVramPatchCoinCnt = 2 Then
+-                Controller.Stop
+-                Kill GetNVramPath + "\" + cGameName + ".nv"
+-                Kill GetNVramPath + "\" + cGameName + ".nvb"
+-                QuitPlayer 2
+-            Else
+-                NVramPatchCoinCnt = 1
+-            End If
+-        Else
+-            If NVramPatchCoinCnt = 1 Then
+-                NVramPatchCoinCnt = 2
+-            End If
+-        End If
+-    Else
+-        NVramPatchCoinCnt = 0
++' 		LampTimer_Timer          ' This loop is needed to avoid the NVram reset (losing the hi-score and credits)
++'         Loop Until LampState(20) = 1 ' when the game is over but the match procedure isn't still ended
+     
+-	End If
+-End Sub
++' End Sub
++' ' =============================================================================================================
++' ' To completely erase the NVram file keep the Start Game button pushed while inserting
++' ' two coins into the first coin slit (this resets the high scores too)
++' ' =============================================================================================================
++
++' Sub NVramPatchKeyCheck
++'     If Controller.Switch(swStartButton)then
++'         If Controller.Switch(swCoin1)then
++'             If NVramPatchCoinCnt = 2 Then
++'                 Controller.Stop
++'                 Kill GetNVramPath + "\" + cGameName + ".nv"
++'                 Kill GetNVramPath + "\" + cGameName + ".nvb"
++'                 QuitPlayer 2
++'             Else
++'                 NVramPatchCoinCnt = 1
++'             End If
++'         Else
++'             If NVramPatchCoinCnt = 1 Then
++'                 NVramPatchCoinCnt = 2
++'             End If
++'         End If
++'     Else
++'         NVramPatchCoinCnt = 0
++    
++' 	End If
++' End Sub
