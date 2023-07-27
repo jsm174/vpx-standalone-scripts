@@ -113,7 +113,10 @@ End Sub
 
 Sub table1_Paused:Controller.Pause = 1:End Sub
 Sub table1_unPaused:Controller.Pause = 0:End Sub
-'Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
+Sub table1_exit
+    'NVramPatchExit
+    Controller.stop
+End Sub
 
 '******************
 ' Realtime Updates
