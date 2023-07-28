@@ -1,5 +1,5 @@
---- Bart VS the Space Mutants 1.1.vbs.original	2023-07-28 14:28:32
-+++ Bart VS the Space Mutants 1.1.vbs	2023-07-28 14:27:44
+--- Bart VS the Space Mutants 1.1.vbs.original	2023-07-28 14:33:23
++++ Bart VS the Space Mutants 1.1.vbs	2023-07-28 14:33:06
 @@ -33,7 +33,7 @@
  Option Explicit
  Randomize
@@ -44,7 +44,7 @@
  ' Setup the lightning according to the nightday slider
  If table1.nightday < 50 Then
 -for each ii in aGiLights: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
-+    for each ii in GI: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next    
++    for each ii in GI: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
  'bumper1light.opacity=bumper1light.opacity + (100 - table1.nightday)^2
  'bumper2light.opacity=bumper2light.opacity + (100 - table1.nightday)^2
  End If

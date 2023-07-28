@@ -85,7 +85,7 @@ Dim ii
     GameTimer.Enabled = 1
     ' reset VP objects
 ' Setup the lightning according to the nightday slider
-If table1.nightday > 50 Then
+If table1.nightday < 50 Then
     for each ii in GI: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
     'bumper1light.opacity=bumper1light.opacity + (100 - table1.nightday)^2
     'bumper2light.opacity=bumper2light.opacity + (100 - table1.nightday)^2
