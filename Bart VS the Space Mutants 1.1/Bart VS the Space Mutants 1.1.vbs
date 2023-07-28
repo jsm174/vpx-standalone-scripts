@@ -86,9 +86,9 @@ Dim ii
     ' reset VP objects
 ' Setup the lightning according to the nightday slider
 If table1.nightday < 50 Then
-for each ii in aGiLights: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
-'bumper1light.opacity=bumper1light.opacity + (100 - table1.nightday)^2
-'bumper2light.opacity=bumper2light.opacity + (100 - table1.nightday)^2
+    for each ii in GI: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
+    'bumper1light.opacity=bumper1light.opacity + (100 - table1.nightday)^2
+    'bumper2light.opacity=bumper2light.opacity + (100 - table1.nightday)^2
 End If
 End Sub
 
