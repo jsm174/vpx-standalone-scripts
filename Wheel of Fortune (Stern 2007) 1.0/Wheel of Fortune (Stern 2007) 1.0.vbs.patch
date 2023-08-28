@@ -1,0 +1,29 @@
+--- Wheel of Fortune (Stern 2007) 1.0.vbs.original	2023-08-28 08:59:36
++++ Wheel of Fortune (Stern 2007) 1.0.vbs	2023-08-28 08:51:58
+@@ -10,6 +10,8 @@
+ If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+ On Error Goto 0
+ 
++Const cGameName = "wof_500"
++
+ Const Ballsize = 52
+ Const BallMass = 1.5
+ 
+@@ -42,8 +44,6 @@
+ '************************************************************************
+ '						 INIT TABLE
+ '************************************************************************
+-
+-Const cGameName = "wof_500"
+ 
+ Dim bsTrough, PlungerIM, DTBank
+ 
+@@ -913,7 +913,7 @@
+ 
+ Function Vol(ball) ' Calculates the Volume of the sound based on the ball speed
+     Vol = Csng(BallVel(ball) ^2 / 5000)
+-	Debug.Print Vol
++	'Debug.Print Vol
+ End Function
+ 
+ Function Pan(ball) ' Calculates the pan for a ball based on the X position on the table. "table1" is the name of the table
