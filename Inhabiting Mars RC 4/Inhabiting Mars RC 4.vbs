@@ -122,6 +122,28 @@ dim mbDOF
 
 ' core.vbs variables
 
+Sub ImplicitDMD_Init
+   Me.x = 30
+   Me.y = 30
+   Me.fontColor = RGB(255, 255, 255)
+   ME.intensityScale = 3
+   Me.width = 128 * 2
+   Me.height = 32 * 2
+   Me.visible = true
+   Me.timerenabled = true
+End Sub
+
+Sub ImplicitDMD_Timer
+   If Not FlexDMD Is Nothing Then
+      Dim DMDp: DMDp = FlexDMD.DmdColoredPixels
+      If Not IsEmpty(DMDp) Then
+         DMDWidth = FlexDMD.Width
+         DMDHeight = FlexDMD.Height
+         DMDColoredPixels = DMDp
+      End If
+   End If
+End Sub
+
 
 
 

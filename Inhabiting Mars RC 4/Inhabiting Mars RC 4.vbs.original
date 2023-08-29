@@ -1641,7 +1641,7 @@ PlaySound "BL ("& RndNbr(12) & ")" ,1,VoiceVolume '12 sounds, 0 silent
 
 		' add a bit of a delay to allow for the bonus points to be shown & added up
 		vpmtimer.addtimer 3200, "EndOfBall2 '"
-    Else 'Si hay falta simplemente espera un momento y va directo a la segunta parte después de perder la bola
+    Else 'Si hay falta simplemente espera un momento y va directo a la segunta parte despuÃ©s de perder la bola
 		BonusDelayTime = 100
 		EndOfBall2
     End If
