@@ -1,20 +1,5 @@
---- SpaceRamp (SuperEd) v3.03b.vbs.original	2023-08-31 10:22:47
-+++ SpaceRamp (SuperEd) v3.03b.vbs	2023-08-31 10:22:43
-@@ -219,11 +219,11 @@
- 'Const turnonultradmd = false
- 'Const JPsDMD = True ' Use JP's flasher DMD. Usefull for FSS without UltraDMD or FlexDMD
- 
--Const turnonultradmd = true ' Turn On/Off UltraDMD/FlexDMD
-+Const turnonultradmd = false ' Turn On/Off UltraDMD/FlexDMD
- Const DmdMode = 1 ' 0 = UltraDMD , 1 = FlexDMD
- Const ShowVpxDMD = true ' Show the DMD in VPX (FlexDMD Only)
- Const ShowCabinetDMD = true ' SHow the DMD as floating window (Cabinet, FlexDMD only)
--Const JPsDMD = false ' Use JP's flasher DMD. Usefull for FSS without UltraDMD or FlexDMD
-+Const JPsDMD = true ' Use JP's flasher DMD. Usefull for FSS without UltraDMD or FlexDMD
- 
- '*********************************************************************
- '                 TABLE GAME SETTINGS
-\ No newline at end of file
+--- SpaceRamp (SuperEd) v3.03b.vbs.original	2023-08-31 16:37:58
++++ SpaceRamp (SuperEd) v3.03b.vbs	2023-08-31 16:36:45
 @@ -612,7 +612,7 @@
  	vpmtimer.addtimer 4000 , "DMD2 """",""Bonus Multiplier"",cstr(nBonusMultiplier(nCurrentPlayer))+"" X"", 2000, UltraDMD_eScrollLeft, """" '"
  	vpmtimer.addtimer 6000 , "DMD2 """",""Bonus Score"",cstr( ((nCombos(nCurrentPlayer)*cScoreCombo) + (nPlanets(nCurrentPlayer)*cScorePlanet)) * nBonusMultiplier(nCurrentPlayer) ), 2000, UltraDMD_eZoom, """" '"
@@ -25,21 +10,13 @@
  	if bblackholemode = true Then
  		dim b
 \ No newline at end of file
-@@ -3681,14 +3681,14 @@
+@@ -3681,7 +3681,7 @@
  Sub AttractMode(aState)
  	If aState = true Then
  		bPlayerHasStartedGame = false
 -		GIOverhead.state = off
-+		'GIOverhead.state = off
++		GIOverhead.state = 0
  		nAttractSteps=0:nAttractSteps2=0:nAttractSteps3=0:nAttractSteps4=0:nAttractSteps5=0:nAttractDMD=0
  		DMDFlush
  		TimerDMDAttract.enabled = True
- 		TimerAttract.enabled = True
- 		TimerAttractSteps.enabled = True
- 	Else
--		GIOverhead.state = 1
-+		'GIOverhead.state = 1
- 		TimerAttract.enabled = false
- 		TimerAttractSteps.enabled = false	
- 		TimerDMDAttract.enabled = False
 \ No newline at end of file

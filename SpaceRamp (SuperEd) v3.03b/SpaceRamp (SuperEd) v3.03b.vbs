@@ -219,11 +219,11 @@ Randomize
 'Const turnonultradmd = false
 'Const JPsDMD = True ' Use JP's flasher DMD. Usefull for FSS without UltraDMD or FlexDMD
 
-Const turnonultradmd = false ' Turn On/Off UltraDMD/FlexDMD
+Const turnonultradmd = true ' Turn On/Off UltraDMD/FlexDMD
 Const DmdMode = 1 ' 0 = UltraDMD , 1 = FlexDMD
 Const ShowVpxDMD = true ' Show the DMD in VPX (FlexDMD Only)
 Const ShowCabinetDMD = true ' SHow the DMD as floating window (Cabinet, FlexDMD only)
-Const JPsDMD = true ' Use JP's flasher DMD. Usefull for FSS without UltraDMD or FlexDMD
+Const JPsDMD = false ' Use JP's flasher DMD. Usefull for FSS without UltraDMD or FlexDMD
 
 '*********************************************************************
 '                 TABLE GAME SETTINGS
@@ -3681,14 +3681,14 @@ end sub
 Sub AttractMode(aState)
 	If aState = true Then
 		bPlayerHasStartedGame = false
-		'GIOverhead.state = off
+		GIOverhead.state = 0
 		nAttractSteps=0:nAttractSteps2=0:nAttractSteps3=0:nAttractSteps4=0:nAttractSteps5=0:nAttractDMD=0
 		DMDFlush
 		TimerDMDAttract.enabled = True
 		TimerAttract.enabled = True
 		TimerAttractSteps.enabled = True
 	Else
-		'GIOverhead.state = 1
+		GIOverhead.state = 1
 		TimerAttract.enabled = false
 		TimerAttractSteps.enabled = false	
 		TimerDMDAttract.enabled = False
