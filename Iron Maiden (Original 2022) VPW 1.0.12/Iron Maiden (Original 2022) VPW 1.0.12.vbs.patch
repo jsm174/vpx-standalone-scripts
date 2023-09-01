@@ -1,5 +1,5 @@
---- Iron Maiden (Original 2022) VPW 1.0.12.vbs.original	2023-09-01 12:56:42
-+++ Iron Maiden (Original 2022) VPW 1.0.12.vbs	2023-09-01 12:55:05
+--- Iron Maiden (Original 2022) VPW 1.0.12.vbs.original	2023-09-01 13:00:46
++++ Iron Maiden (Original 2022) VPW 1.0.12.vbs	2023-09-01 12:59:54
 @@ -82,7 +82,7 @@
  
  '*************************** PuP Settings for this table ********************************
@@ -39,11 +39,10 @@
  	pClearEverything2
  	SceneClearLabels
  	DOF 178, DOFpulse 'Drain Effect
-@@ -7956,7 +7956,40 @@
- '******************************************************
+@@ -7957,6 +7957,39 @@
  '  DROP TARGETS INITIALIZATION
  '******************************************************
-+
+ 
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -58,7 +57,7 @@
 +  
 +	Public Property Get Sw(): Sw = m_sw: End Property
 +	Public Property Let Sw(input): m_sw = input: End Property
- 
++  
 +	Public Property Get Animate(): Animate = m_animate: End Property
 +	Public Property Let Animate(input): m_animate = input: End Property
 +  
@@ -234,12 +233,3 @@
  		WriteToLog "     ", "play clear'd " & chan
  		bMediaSet(chan) = False
  		bMediaPaused(chan) = False
-@@ -22754,7 +22789,7 @@
- 		PuPlayer.playlistplayex channel,playlist,name,audiolevel,priority
- 		if channel = pBackglass then PuPlayer.SetBackGround channel, 1
- '		if channel = pAudio then PuPlayer.SetLoop channel, 1
--		if channel = pMusic and length=-1 then PuPlayer.SetLoop channel, 1
-+		'if channel = pMusic and length=-1 then PuPlayer.SetLoop channel, 1
- '		if channel = pBonusScreen then PuPlayer.SetLoop channel, 1
- 
- '		If channel = pCallouts and length <> -1 Then

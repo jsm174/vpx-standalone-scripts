@@ -22789,7 +22789,7 @@ WriteToLog "     ", "PlayMedia " & channel & " Dir:" & playlist & " File:" & nam
 		PuPlayer.playlistplayex channel,playlist,name,audiolevel,priority
 		if channel = pBackglass then PuPlayer.SetBackGround channel, 1
 '		if channel = pAudio then PuPlayer.SetLoop channel, 1
-		'if channel = pMusic and length=-1 then PuPlayer.SetLoop channel, 1
+		if channel = pMusic and length=-1 then PuPlayer.SetLoop channel, 1
 '		if channel = pBonusScreen then PuPlayer.SetLoop channel, 1
 
 '		If channel = pCallouts and length <> -1 Then
