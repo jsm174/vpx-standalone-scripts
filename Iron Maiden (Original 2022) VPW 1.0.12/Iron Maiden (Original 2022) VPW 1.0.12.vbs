@@ -263,7 +263,7 @@ Sub StartServiceMenu(keycode)
 		PuPlayer.playlistplayex pOverVid,"PupOverlays","clear1.png", 1, 1
 		PuPlayer.PlayStop pOverVid
 		PuPlayer.playlistplayex pOverVid,"Callouts","blank.mp4", 1, 1
-		'PuPlayer.SetLoop pOverVid, 1
+		PuPlayer.SetLoop pOverVid, 1
 
 		PuPlayer.LabelSet pOverVid,"ServiceL1","IRON MAIDEN" 												,1,"{'mt':2,'ypos':25,'size':5}"
 		PuPlayer.LabelSet pOverVid,"ServiceL2","V" & myVersion & "    SYS. 2.35.0    OS. 2.00.16" 		,1,"{'mt':2,'ypos':35,'size':5}"
@@ -287,7 +287,7 @@ Sub StartServiceMenu(keycode)
 					End if 
 					PuPlayer.LabelShowPage pOverVid, 1,0,""
 					PuPlayer.PlayStop pOverVid
-					'PuPlayer.SetLoop pOverVid, 0
+					PuPlayer.SetLoop pOverVid, 0
 
 				case kMenuAdj:
 					serviceLevel=kMenuNone
@@ -557,7 +557,7 @@ Sub StartServiceMenu(keycode)
 			PuPlayer.playlistplayex pOverVid,"PupOverlays","clear1.png", 1, 1
 			PuPlayer.PlayStop pOverVid
 			PuPlayer.playlistplayex pOverVid,"Callouts","blank.mp4", 1, 1
-			'PuPlayer.SetLoop pOverVid, 1
+			PuPlayer.SetLoop pOverVid, 1
 		End if 
 
 		PuPlayer.LabelSet pOverVid,"ServiceL1",""						 									,1,"{'mt':2,'ypos':65,'size':5}"
@@ -592,7 +592,7 @@ Sub tmrService_Timer()
 	PuPlayer.LabelShowPage pDMDFull, 2, 0,""		' Show Blank Page so it doesnt overlap (We shouldnt need this but labels are popping over)
 	PuPlayer.LabelShowPage pOverVid, 1,0,""
 	PuPlayer.PlayStop pOverVid
-	'PuPlayer.SetLoop pOverVid, 0
+	PuPlayer.SetLoop pOverVid, 0
 
 End Sub 
 
@@ -4388,7 +4388,7 @@ End Sub
 ' The Player has lost his ball (there are no more balls on the playfield).
 ' Handle any bonus points awarded
 Sub EndOfBall()
-WriteToLog "     ", "EndOfBall:" & Now
+' WriteToLog "     ", "EndOfBall:" & Now
 	pClearEverything2
 	SceneClearLabels
 	DOF 178, DOFpulse 'Drain Effect
@@ -8393,7 +8393,7 @@ Sub SetFlash(MyLamp, nr, TotalPeriod, BlinkPeriod) 'similar to FlashForms, works
     MyLamp.TimerEnabled = 0
     MyLamp.TimerEnabled = 1
 'WriteToLog "     ", "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
-    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue))*100, " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
+	ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp ((" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue))*100), " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
 End Sub
 
 Sub SetLamp(nr, value) ' 0 is off, 1 is on
@@ -8634,37 +8634,8 @@ Sub SetLightColorTimed(n, col, stat, msec) ' n = light, col = color, ' States: 0
 	if TypeName(n)="LightDummy" then exit sub 	' Fake Light, cant set the color 
 WriteToLog "     ", "SetLightColorTimed:" & n.name & " " & col
 	dim vL, pL
-	' TODO these two don't work
-	Execute ("set vL=v" & n.name)
-	Execute ("set pL=p" & n.name)
-
-	'i = LampNameToIdx(n.name)
-	Select Case n.name
-		Case "lCaptiveBall" vL = vlCaptiveBall: pL = plCaptiveBall
-		Case "lLoopRight" vL = vlLoopRight: pL = plLoopRight
-		Case "lLoopLeft" vL = vlLoopLeft: pL = plLoopLeft		
-		Case "lRampCenter" vL = vlRampCenter: pL = plRampCenter		
-		Case "lRampLeft" vL = vlRampLeft: pL = plRampLeft	
-		Case "lRampRight" vL = vlRampRight: pL = plRampRight	
-		Case "lOrbitLeft" vL = vlOrbitLeft: pL = plOrbitLeft		
-		Case "lOrbitRight" vL = vlOrbitRight: pL = plOrbitRight	
-		Case "lSpinnerLeft" vL = vlSpinnerLeft: pL = plSpinnerLeft
-		Case "lSpinnerRight" vL = vlSpinnerRight: pL = plSpinnerRight
-		Case "lLightLock" vL = vlLightLock: pL = plLightLock
-		Case "lLightOrb" vL = vlLightOrb: pL = plLightOrb
-		Case "lBonusX" vL = vlBonusX: pL = plBonusX
-		Case "lTargetX1" vL = vlTargetX1: pL = plTargetX1
-		Case "lTargetX2" vL = vlTargetX2: pL = plTargetX2
-		Case "lTargetX3" vL = vlTargetX3: pL = plTargetX3
-		Case "lTargetX4" vL = vlTargetX4: pL = plTargetX4
-		Case "lJackpot" vL = vlJackpot: pL = plJackpot
-		Case "lPowerSpinner" vL = vlPowerSpinner: pL = plPowerSpinner
-		Case "lPowerPops" vL = vlPowerPops: pL = plPowerPops
-		Case "lPowerRamps" vL = vlPowerRamps: pL = plPowerRamps
-		Case "lPowerTargets" vL = vlPowerTargets: pL = plPowerTargets
-		Case "lPowerOrbits" vL = vlPowerOrbits: pL = plPowerOrbits																		
-		Case Else debug.Print "SetLightColorTimed: unknown light " & n.name
-	End Select	
+	set vL = eval("v" & n.name)
+	set pL = eval("p" & n.name)
 
 	'UpdateMaterial(string, float wrapLighting, float roughness, float glossyImageLerp, float thickness, float edge, float edgeAlpha, float opacity, OLE_COLOR base, OLE_COLOR glossy, OLE_COLOR clearcoat, VARIANT_BOOL isMetal, VARIANT_BOOL opacityActive, float elasticity, float elasticityFalloff, float friction, float scatterAngle)
 
@@ -17486,7 +17457,7 @@ PriorityReset=4000
 			case 3:
 				PuPlayer.playlistplayex pDMDFull,"FlightOfIcarus","Flight BG Loop.mp4", cVolBGVideo*0, 1
 		End Select 
-		'PuPlayer.SetLoop pDMDFull, 1
+		PuPlayer.SetLoop pDMDFull, 1
 
 		PuPlayer.LabelSet pDMDFull, "SplashImg", "PupOverlays\\clear.png", 1, ""
 		PuPlayer.LabelSet pDMDFull, "Splash1", "", 1, ""
@@ -17603,7 +17574,7 @@ PriorityReset=4000
 		playclear pDMDFull
 		pAttractReset=-1:PriorityReset=574720
 		PuPlayer.playlistplayex pDMDFull,"Backglass","Tour.mp4", cVolBGVideo*100, 1
-		'PuPlayer.SetLoop pDMDFull, 1
+		PuPlayer.SetLoop pDMDFull, 1
 		PuPlayer.LabelSet pDMDFull, "SplashImg", "PupOverlays\\clear.png", 1, ""
 		PuPlayer.LabelSet pDMDFull, "Splash1", "",			      1, "{'mt':2, 'size':9, 'ypos':78, 'color':" & pupColorGrey & "}"
 		PuPlayer.LabelSet pDMDFull, "Splash2", "", 1, "{'mt':2, 'size':9, 'ypos':90, 'color':" & RGB(132,89,39) & "}"
@@ -17622,7 +17593,7 @@ PriorityReset=4000
 			case 3:
 				PuPlayer.playlistplayex pDMDFull,"FlightOfIcarus","Flight BG Loop.mp4", cVolBGVideo*0, 1
 		End Select 
-		'PuPlayer.SetLoop pDMDFull, 1
+		PuPlayer.SetLoop pDMDFull, 1
 		PuPlayer.LabelSet pDMDFull, "SplashImg", "PupOverlays\\Songs.png", 1, "{'mt':2,'width':100,'height':100, 'xalign':0, 'yalign':0}"
 		PuPlayer.LabelSet pDMDFull, "Splash1", "",			      1, "{'mt':2, 'size':9, 'ypos':78, 'color':" & pupColorGrey & "}"
 		PuPlayer.LabelSet pDMDFull, "Splash2", "", 1, "{'mt':2, 'size':9, 'ypos':90, 'color':" & RGB(132,89,39) & "}"
@@ -17633,7 +17604,7 @@ PriorityReset=4000
 		playclear pDMDFull
 		pAttractReset=-1:PriorityReset=2000
 		PuPlayer.playlistplayex pDMDFull,"Eddie","Eddie.mp4", cVolBGVideo*100, 1
-		'PuPlayer.SetLoop pDMDFull, 1		
+		PuPlayer.SetLoop pDMDFull, 1		
 
 		ClearAttract
 
@@ -17705,7 +17676,7 @@ Sub TimerStats(bEnable)	' Scrolling Stats Screen
 	TimerStats_Enabled=bEnable
 	If bEnable Then
 		PuPlayer.playlistplayex pDMDFull,"Backglass","Cloud.mp4", cVolBGVideo*100, 1
-		'PuPlayer.SetLoop pDMDFull, 1
+		PuPlayer.SetLoop pDMDFull, 1
 		PuPlayer.LabelSet pDMDFull, "SplashImg1", "Backglass\\Stone1.png", 1, "{'mt':2,'width':100,'height':100, 'xalign':0, 'yalign':2, 'ypos':100, 'zback':1}"
 		PuPlayer.LabelSet pDMDFull, "SplashImg2", "Backglass\\Stone2.png", 1, "{'mt':2,'width':100,'height':100, 'xalign':0, 'yalign':0, 'ypos':100, 'zback':1}"
 		PuPlayer.LabelSet pDMDFull, "Splash1", HighScoreName(0),	      1, "{'mt':2, 'size':9, 'ypos':78, 'color':" & pupColorBrown & "}"
@@ -20781,7 +20752,7 @@ WriteToLog "     ", "SceneGeneralStart: VideoPath:" & VideoPath & " MSG:" & Mess
 		playmedia VideoName, VideoPath, Screen, "", -1, "", vol, 1
 		if bLoop then 
 			'PuPlayer.SetBackGround screen, 1
-			'PuPlayer.SetLoop Screen, 1
+			PuPlayer.SetLoop Screen, 1
 		End If 
 	End if 
 
@@ -20913,7 +20884,7 @@ End Sub
 Function getQueueTime(queueIdx)		' Returns how much time left on queue
 	Dim time,i 
 	time = 0
-WriteToLog "     ", "GetQueueTime: (" & queueIdx &") " & now 
+' WriteToLog "     ", "GetQueueTime: (" & queueIdx &") " & now 
 WriteToLog "     ", "GetQueueTime:" & QueueCurrentTime(queueIdx) & " " & QueueActive(queueIdx)
 	if QueueActive(queueIdx) and QueueCurrentTime(queueIdx) <> 0 then time = (DateDiff("s", now, QueueCurrentTime(queueIdx)) * 1000)
 WriteToLog "     ", "GetQueueTime Active:" & time
@@ -21005,6 +20976,7 @@ Sub QueueSkipNoDef(queueIdx)						' Shortcycle the timer and move on but dont st
 End Sub
 
 Sub RunQueue(queueIdx, bNewItem)
+	exit Sub
 	dim qCmd, qTime
 WriteToLog "     ", "Run Queue " &  queueIdx & " " & QueueActive(queueIdx) & " " & bNewItem & " " & Now
 	if QueueActive(queueIdx) = False or bNewItem=False then 	' Nothing is running Or we just finished running something 
@@ -22708,8 +22680,8 @@ End Sub
 '		End If
 
 		if chan = pDMDFull Then
-			'PuPlayer.SetLoop chan, 0
-			'PuPlayer.playstop chan
+			PuPlayer.SetLoop chan, 0
+			PuPlayer.playstop chan
 		End If
 
 '		if chan = pBonusScreen then 
@@ -22719,7 +22691,7 @@ End Sub
 '		End If 
 
 		if chan = pMusic Then
-			'PuPlayer.SetLoop pMusic, 0
+			PuPlayer.SetLoop pMusic, 0
 			PuPlayer.playstop pMusic
 			curSong=""
 '			'PuPlayer.SendMSG "{ ""mt"":301, ""SN"": " & pMusic &", ""FN"":11, ""VL"":0 }"
@@ -22731,7 +22703,7 @@ End Sub
 'WriteToLog "     ", "Clear is cancelling " & currentqueue
 			End If 
 			PuPlayer.SetBackGround pBackglass, 0
-			'PuPlayer.SetLoop pBackglass, 0
+			PuPlayer.SetLoop pBackglass, 0
 			PuPlayer.playstop pBackglass
 		end if 
 	end Sub
