@@ -1,4 +1,4 @@
---- Iron Maiden (Original 2022) VPW 1.0.12.vbs.original	2023-09-01 13:00:46
+--- Iron Maiden (Original 2022) VPW 1.0.12.vbs.original	2023-09-04 18:35:06
 +++ Iron Maiden (Original 2022) VPW 1.0.12.vbs	2023-09-01 12:59:54
 @@ -82,7 +82,7 @@
  
@@ -9,27 +9,6 @@
  cPuPPack = "pup-pack_name"    ' name of the PuP-Pack / PuPVideos folder for this table
  
  '**************************
-@@ -757,9 +757,9 @@
- 
- 
- 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
--' XÂ  X  X  XÂ  X  X  X  XÂ  X  X  X  X  XÂ  X  X  X  X  X  XÂ  X  X  X  X  
-+' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
- '/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
--'Â  SCORBIT Interface
-+'  SCORBIT Interface
- ' To Use:
- ' 1) Define a timer tmrScorbit
- ' 2) Call DoInit at the end of PupInit or in Table Init if you are nto using pup with the appropriate parameters
-@@ -1480,7 +1480,7 @@
- 	End Function
- 
- End Class 
--'Â  END SCORBIT 
-+'  END SCORBIT 
- 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
- 
- 
 @@ -4388,7 +4388,7 @@
  ' The Player has lost his ball (there are no more balls on the playfield).
  ' Handle any bonus points awarded
@@ -39,10 +18,11 @@
  	pClearEverything2
  	SceneClearLabels
  	DOF 178, DOFpulse 'Drain Effect
-@@ -7957,6 +7957,39 @@
+@@ -7956,7 +7956,40 @@
+ '******************************************************
  '  DROP TARGETS INITIALIZATION
  '******************************************************
- 
++
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -57,7 +37,7 @@
 +  
 +	Public Property Get Sw(): Sw = m_sw: End Property
 +	Public Property Let Sw(input): m_sw = input: End Property
-+  
+ 
 +	Public Property Get Animate(): Animate = m_animate: End Property
 +	Public Property Let Animate(input): m_animate = input: End Property
 +  
@@ -169,45 +149,6 @@
  		else 
  			vpmtimer.addtimer 1000, "ResetDrop '"
  		End if 
-@@ -14567,7 +14600,7 @@
- ' shoot POPS, SPINNERS, RAMPS, TARGETS and ORBITS to power-up the Pyramid.
- ' remaining hits will be displayed in the grey power features display
- ' Once a Power Feature is complete it will change to a colour, the Power Jackpot is available to cash in at the Orb spot target 
--' and that Featureâs yellow triangle insert begins pulsing, once cashed in it goes grey again with checkmark
-+' and that Feature’s yellow triangle insert begins pulsing, once cashed in it goes grey again with checkmark
- 
- Sub UpdatePowerFeature
- 	Dim PFComplete:PFComplete=0
-@@ -16745,9 +16778,9 @@
- '<rotation>, degrees in tenths   (900=90 degrees)
- '<xAlign>, 0= horizontal left align, 1 = center horizontal, 2= right horizontal
- '<yAlign>, 0 = top, 1 = center, 2=bottom vertical alignment
--'<xpos>, this should be 0, but if you want to âforceâ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
-+'<xpos>, this should be 0, but if you want to ‘force’ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
- '<ypos> same as xpos.
--'<PageNum> IMPORTANT this will assign this label to this âpageâ or group.
-+'<PageNum> IMPORTANT this will assign this label to this ‘page’ or group.
- '<visible> initial state of label. visible=1 show, 0 = off.
- 
- 
-@@ -16865,7 +16898,7 @@
- 
- '<xAlign>, 0= horizontal left align, 1 = center horizontal, 2= right horizontal
- '<yAlign>, 0 = top, 1 = center, 2=bottom vertical alignment
--'<xpos>, this should be 0, but if you want to âforceâ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
-+'<xpos>, this should be 0, but if you want to ‘force’ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
- '<ypos> same as xpos.
- 'labelNew <screen#>, <"Labelname">, <fontName>,<size%>,<colour>,<rotation>,<xalign>,<yalign>,<xpos>,<ypos>,<PageNum>,<visible>
- 
-@@ -19438,7 +19471,7 @@
- ' Shoot the left spinner to spell REVIVE. 
- ' Spelling REVIVE lights outlanes for a REVIVE outlane ball-save.
- ' The REVIVE icon in bottom-left corner of the screen shows your progress and letters/spins needed to enable REVIVE
--' When you spell REVIVE, both outlanes will light for Revive. However, each outlaneâs Revive is used individually.
-+' When you spell REVIVE, both outlanes will light for Revive. However, each outlane’s Revive is used individually.
- ' You cannot stack Revives. New REVIVE Letters cannot be spotted while both outlane Revives are lit, but the letters can be spotted if only one outlane is lit. 
- ' Lit Revives carry over between balls. If both Revives are lit, the spinner scoring is boosted.
- ' https://youtu.be/p2_jS8GyLSM?list=PLjDd1PAVOmdBhW113WXCHKfb-TqbOvCb5&t=721
 @@ -20851,7 +20884,7 @@
  Function getQueueTime(queueIdx)		' Returns how much time left on queue
  	Dim time,i 

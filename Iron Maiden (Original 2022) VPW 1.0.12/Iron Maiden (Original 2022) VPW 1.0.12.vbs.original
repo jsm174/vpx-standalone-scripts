@@ -757,9 +757,9 @@ End Sub
 
 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-' XÂ  X  X  XÂ  X  X  X  XÂ  X  X  X  X  XÂ  X  X  X  X  X  XÂ  X  X  X  X  
+' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
 '/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
-'Â  SCORBIT Interface
+'  SCORBIT Interface
 ' To Use:
 ' 1) Define a timer tmrScorbit
 ' 2) Call DoInit at the end of PupInit or in Table Init if you are nto using pup with the appropriate parameters
@@ -1480,7 +1480,7 @@ WriteToLog "Scorbit", "Upload Response: " & Response
 	End Function
 
 End Class 
-'Â  END SCORBIT 
+'  END SCORBIT 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
@@ -14567,7 +14567,7 @@ End Function
 ' shoot POPS, SPINNERS, RAMPS, TARGETS and ORBITS to power-up the Pyramid.
 ' remaining hits will be displayed in the grey power features display
 ' Once a Power Feature is complete it will change to a colour, the Power Jackpot is available to cash in at the Orb spot target 
-' and that Featureâs yellow triangle insert begins pulsing, once cashed in it goes grey again with checkmark
+' and that Feature’s yellow triangle insert begins pulsing, once cashed in it goes grey again with checkmark
 
 Sub UpdatePowerFeature
 	Dim PFComplete:PFComplete=0
@@ -16745,9 +16745,9 @@ Dim glyphsFont
 '<rotation>, degrees in tenths   (900=90 degrees)
 '<xAlign>, 0= horizontal left align, 1 = center horizontal, 2= right horizontal
 '<yAlign>, 0 = top, 1 = center, 2=bottom vertical alignment
-'<xpos>, this should be 0, but if you want to âforceâ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
+'<xpos>, this should be 0, but if you want to ‘force’ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
 '<ypos> same as xpos.
-'<PageNum> IMPORTANT this will assign this label to this âpageâ or group.
+'<PageNum> IMPORTANT this will assign this label to this ‘page’ or group.
 '<visible> initial state of label. visible=1 show, 0 = off.
 
 
@@ -16865,7 +16865,7 @@ if PuPDMDDriverType=pDMDTypeFULL THEN  'Using FULL BIG LCD PuPDMD  ************ 
 
 '<xAlign>, 0= horizontal left align, 1 = center horizontal, 2= right horizontal
 '<yAlign>, 0 = top, 1 = center, 2=bottom vertical alignment
-'<xpos>, this should be 0, but if you want to âforceâ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
+'<xpos>, this should be 0, but if you want to ‘force’ a position you can set this. it is a % of horizontal width. 20=20% of screen width.
 '<ypos> same as xpos.
 'labelNew <screen#>, <"Labelname">, <fontName>,<size%>,<colour>,<rotation>,<xalign>,<yalign>,<xpos>,<ypos>,<PageNum>,<visible>
 
@@ -19438,7 +19438,7 @@ End Sub
 ' Shoot the left spinner to spell REVIVE. 
 ' Spelling REVIVE lights outlanes for a REVIVE outlane ball-save.
 ' The REVIVE icon in bottom-left corner of the screen shows your progress and letters/spins needed to enable REVIVE
-' When you spell REVIVE, both outlanes will light for Revive. However, each outlaneâs Revive is used individually.
+' When you spell REVIVE, both outlanes will light for Revive. However, each outlane’s Revive is used individually.
 ' You cannot stack Revives. New REVIVE Letters cannot be spotted while both outlane Revives are lit, but the letters can be spotted if only one outlane is lit. 
 ' Lit Revives carry over between balls. If both Revives are lit, the spinner scoring is boosted.
 ' https://youtu.be/p2_jS8GyLSM?list=PLjDd1PAVOmdBhW113WXCHKfb-TqbOvCb5&t=721
