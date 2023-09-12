@@ -1,0 +1,43 @@
+--- Surf'n Safari v1.3.4.vbs.original	2023-09-12 21:52:06
++++ Surf'n Safari v1.3.4.vbs	2023-09-12 21:51:50
+@@ -117,15 +117,15 @@
+ 	Ombra009.IntensityScale = 0.95
+ 	Ombra010.IntensityScale = 0.95
+ 
++'************************ DT VpinMame or LedDMD visible: 0 VpinMame visible , 1 LedDMD visible
++
++Const LedDMDDt = 1
++
+ '************************************************* DMD *************************************************
+ 
+ Dim DmdHidden, ModePlay
+ ModePlay = Table1.ShowDT + Table1.ShowFSS - BackG
+  If ModePlay = -1 or ModePlay = 0 Then DMDHidden = LedDMDDt
+-
+-'************************ DT VpinMame or LedDMD visible: 0 VpinMame visible , 1 LedDMD visible
+-
+-Const LedDMDDt = 1
+ 
+ '************************ DT LedDMD Digits Off: 0 invisible , 1 visible
+ 
+\ No newline at end of file
+@@ -273,7 +273,7 @@
+  If ModePlay = -1 Then
+ 	RailSx.visible=1
+ 	RailDx.visible=1
+-	Trim.visible=1
++	'Trim.visible=1
+ 	TrimS1.visible=1
+ 	TrimS2.visible=1
+ 	TrimS3.visible=1
+\ No newline at end of file
+@@ -306,7 +306,7 @@
+  If ModePlay = 0 Then
+ 	RailSx.visible=RailsLights
+ 	RailDx.visible=RailsLights
+-	Trim.visible=RailsLights
++	'Trim.visible=RailsLights
+ 	TrimS1.visible=RailsLights
+ 	TrimS2.visible=RailsLights
+ 	TrimS3.visible=RailsLights
+\ No newline at end of file
