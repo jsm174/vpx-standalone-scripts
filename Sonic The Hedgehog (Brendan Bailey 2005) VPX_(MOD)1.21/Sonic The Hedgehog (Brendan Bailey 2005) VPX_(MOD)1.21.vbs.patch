@@ -1,0 +1,21 @@
+--- Sonic The Hedgehog (Brendan Bailey 2005) VPX_(MOD)1.21.vbs.original	2023-09-16 22:21:57
++++ Sonic The Hedgehog (Brendan Bailey 2005) VPX_(MOD)1.21.vbs	2023-09-16 22:18:28
+@@ -949,15 +949,15 @@
+ 		'player3reel.text = ""
+ 		if ballsremaining(currentplayer) = 3 then
+ 			D2.text = "ball 1" 
+-			DisplayB2SText (score(currentplayer)) &" " & "              BALL 1 "
++			DisplayB2SText ((score(currentplayer)) &" " & "              BALL 1 ")
+ 		end if
+ 		if ballsremaining(currentplayer) = 2 then
+ 			D2.text = "ball 2" 
+-			DisplayB2SText (score(currentplayer)) &" " & "              BALL 2 "
++			DisplayB2SText ((score(currentplayer)) &" " & "              BALL 2 ")
+ 		end if
+ 		if ballsremaining(currentplayer) = 1 then
+ 			D2.text = "ball 3"
+-			DisplayB2SText (score(currentplayer)) &" " & "              BALL 3 "
++			DisplayB2SText ((score(currentplayer)) &" " & "              BALL 3 ")
+ 		end if
+       end if
+ 	  ' update the score displays
