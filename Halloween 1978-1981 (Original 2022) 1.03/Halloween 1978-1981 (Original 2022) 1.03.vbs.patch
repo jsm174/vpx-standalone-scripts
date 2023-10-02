@@ -1,98 +1,5 @@
---- "Halloween 1978-1981 (Original 2022) 1.03.vbs.original"	2023-10-01 12:38:12.233860429 -0600
-+++ "Halloween 1978-1981 (Original 2022) 1.03.vbs"	2023-10-01 12:57:15.649850138 -0600
-@@ -307,7 +307,7 @@
- 		.Random 1.5
- 		.InitExitSnd SoundFX("Saucer_Kick", DOFContactors), SoundFX("Relay_On", DOFContactors)
- 		.CreateEvents "plungerIM"
--	End With
-+	End With
- 
-     ' Main Timer init
-     PinMAMETimer.Interval = PinMAMEInterval
-@@ -444,28 +444,28 @@
-      StopSound"HTA 7"
-      StopSound"HTA 8"
-      StopSound"HTA 9"
--     StopSound"HTA 10"
--     StopSound"HTA 11"
--     StopSound"HTA 12"
--     StopSound"HTA 13"
-+     StopSound"HTA 10"
-+     StopSound"HTA 11"
-+     StopSound"HTA 12"
-+     StopSound"HTA 13"
-      StopSound"HTA 14"
-      StopSound"HTA 15"
-      StopSound"HTA 16"
-      StopSound"HTA 17"
--     StopSound"HTA 18"
-+     StopSound"HTA 18"
-      StopSound"HTA 19"
-      StopSound"HTA 20"
--     StopSound"HTA 21"
--     StopSound"HTA 22"
-+     StopSound"HTA 21"
-+     StopSound"HTA 22"
-      StopSound"HTA 23"
-      StopSound"HTA 24"
--     StopSound"HTA 25"
-+     StopSound"HTA 25"
-      StopSound"HTA 26"
--     StopSound"HTA 27"
--     StopSound"HTA 28"
--     StopSound"HTA 29"
--     StopSound"HTA 30"
--     StopSound"HTA 31"
-+     StopSound"HTA 27"
-+     StopSound"HTA 28"
-+     StopSound"HTA 29"
-+     StopSound"HTA 30"
-+     StopSound"HTA 31"
-      StopSound"HTA 32"
-      StopSound"HTA 33"
-      StopSound"HTA 34"
-@@ -480,29 +480,29 @@
-      StopSound"HTLK 8"
-      StopSound"HTLK 9"
-      StopSound"HTLK 10"
--     StopSound"HTLK 11"
--     StopSound"HTLK 12"
--     StopSound"HTLK 13"
--     StopSound"HTLK 14"
-+     StopSound"HTLK 11"
-+     StopSound"HTLK 12"
-+     StopSound"HTLK 13"
-+     StopSound"HTLK 14"
-      StopSound"HTLK 15"
-      StopSound"HTLK 16"
-      StopSound"HTLK 17"
-      StopSound"HTLK 18"
-      StopSound"HTLK 19"
--     StopSound"HTLK 20"
--     StopSound"HTLK 21"
-+     StopSound"HTLK 20"
-+     StopSound"HTLK 21"
-      StopSound"HTLK 22"
-      StopSound"HTLK 23"
-      StopSound"HTRK 1"
-      StopSound"HTRK 2"
--     StopSound"HTRK 3"
-+     StopSound"HTRK 3"
-      StopSound"HTRK 4"
--     StopSound"HTRK 5"
-+     StopSound"HTRK 5"
-      StopSound"HTRK 6"
--     StopSound"HTRK 7"
--     StopSound"HTRK 8"
--     StopSound"HTRK 9"
--     StopSound"HTRK 10"
-+     StopSound"HTRK 7"
-+     StopSound"HTRK 8"
-+     StopSound"HTRK 9"
-+     StopSound"HTRK 10"
-      StopSound"HTRK 11"
-      StopSound"HTRK 12"
-      StopSound"HTRK 13"
+--- ./Halloween 1978-1981 (Original 2022) 1.03/Halloween 1978-1981 (Original 2022) 1.03.vbs.original	2023-10-01 23:11:56
++++ ./Halloween 1978-1981 (Original 2022) 1.03/Halloween 1978-1981 (Original 2022) 1.03.vbs	2023-10-01 23:11:56
 @@ -3670,6 +3670,39 @@
  '  DROP TARGETS INITIALIZATION
  '******************************************************
@@ -219,15 +126,6 @@
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
  	Next
  End Sub
- 
-@@ -3833,7 +3865,7 @@
- 		primary.uservalue = 0
- 		DTAnimate = 0
- 		Exit Function
--	Elseif primary.uservalue = 0 then 
-+	Elseif primary.uservalue = 0 then
- 		primary.uservalue = gametime
- 	end if
  
 @@ -3942,12 +3974,12 @@
  Sub DTAction(switchid)
