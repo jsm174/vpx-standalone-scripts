@@ -949,15 +949,15 @@ Sub AddScore(points)
 		'player3reel.text = ""
 		if ballsremaining(currentplayer) = 3 then
 			D2.text = "ball 1" 
-			DisplayB2SText ((score(currentplayer)) &" " & "              BALL 1 ")
+			DisplayB2SText score(currentplayer) &" " & "              BALL 1 "
 		end if
 		if ballsremaining(currentplayer) = 2 then
 			D2.text = "ball 2" 
-			DisplayB2SText ((score(currentplayer)) &" " & "              BALL 2 ")
+			DisplayB2SText score(currentplayer) &" " & "              BALL 2 "
 		end if
 		if ballsremaining(currentplayer) = 1 then
 			D2.text = "ball 3"
-			DisplayB2SText ((score(currentplayer)) &" " & "              BALL 3 ")
+			DisplayB2SText score(currentplayer) &" " & "              BALL 3 "
 		end if
       end if
 	  ' update the score displays
