@@ -56,13 +56,6 @@
 'Changed cabinet POV with 1:1 one from Hauntfreaks.
 'Fixed DMD surround in VR.
 
-'v1.11
-'Fixed the collidable corners of laneguides
-'Some insert adjustements
-
-'v1.12
-'Inserts have normal maps enabled only in VRroom mode by default
-
 Option Explicit
 Randomize
 
@@ -81,7 +74,7 @@ Const VRRoom = 0 					'0 - VR Room Off, 1 - Minimal Room, 2 - 360 Room, 3 - Ultr
 
 '/////////////////////---- Cabinet Mode ----/////////////////////
 
-Const CabinetMode = 1 				'0 - Rails, 1 - Hidden Rails
+Const CabinetMode = 0 				'0 - Rails, 1 - Hidden Rails
 
 '///////////////////////---- Crane Mod ----//////////////////////
 
@@ -98,10 +91,6 @@ Const TargetBouncerFactor = 1.0		'Level of bounces. 0.2 - 1.5 are probably usabl
 
 Const DynamicBallShadowsOn = 1		'0 = no dynamic ball shadow, 1 = enable dynamic ball shadow
 Const AmbientShadowOn = 1			'0 = ambient ball shadow, 1 = enable ambient shadow
-
-'///////////////////////-----3D Insert NormalMaps---------////////////////////
-Dim NormalsForInserts : NormalsForInserts = 0	'May look odd with certain POV's in cabinetmode. Enabling for VRroom by default
-if VRRoom <> 0 then NormalsForInserts = 1
 
 '//////////////---- LUT (Colour Look Up Table) ----//////////////
 '0 = Fleep Natural Dark 1
@@ -126,14 +115,7 @@ LutToggleSound = True
 LoadLUT
 'LUTset = 11			' Override saved LUT for debug
 SetLUT
-DisableLUTSelector = 1  ' Disables the ability to change LUT option with magna saves in game when set to 1
-
-dim insrt
-
-If NormalsForInserts = 0 Then
-	for each insrt in OffInserts:insrt.NormalMap = "":Next
-end if
-
+DisableLUTSelector = 0  ' Disables the ability to change LUT option with magna saves in game when set to 1
 
 '****************************************************************
 '	END OF TABLE OPTIONS
@@ -1718,106 +1700,106 @@ Sub InitLampsNF()
 	Lampz.MassAssign(11)=L11g
 	Lampz.MassAssign(11)=L11f
 	Lampz.Callback(11) = "DisableLightingColor p11, 60, 1,"
-	Lampz.Callback(11) = "DisableLighting p11bulb, 40,"
+	Lampz.Callback(11) = "DisableLighting p11bulb, 340,"
 	Lampz.MassAssign(12)=L12
 	Lampz.MassAssign(12)=L12g
 	Lampz.MassAssign(12)=L12f
 	Lampz.Callback(12) = "DisableLightingColor p12, 60, 2,"
-	Lampz.Callback(12) = "DisableLighting p12bulb, 240,"
+	Lampz.Callback(12) = "DisableLighting p12bulb, 340,"
 	Lampz.MassAssign(13)=L13
 	Lampz.MassAssign(13)=L13g
 	Lampz.MassAssign(13)=L13f
 	Lampz.Callback(13) = "DisableLightingColor p13, 60, 3,"
-	Lampz.Callback(13) = "DisableLighting p13bulb, 240,"
+	Lampz.Callback(13) = "DisableLighting p13bulb, 340,"
 	Lampz.MassAssign(14)=L14
 	Lampz.MassAssign(14)=l14g
 	Lampz.MassAssign(14)=l14f
 	Lampz.Callback(14) = "DisableLightingColor p14, 60, 4,"
-	Lampz.Callback(14) = "DisableLighting p14bulb, 440,"
+	Lampz.Callback(14) = "DisableLighting p14bulb, 340,"
 
 	Lampz.MassAssign(15)=L15
 	Lampz.MassAssign(15)=l15g
 	Lampz.MassAssign(15)=l15f
 	Lampz.Callback(15) = "DisableLightingColor p15, 60, 1,"
-	Lampz.Callback(15) = "DisableLighting p15bulb, 40,"
+	Lampz.Callback(15) = "DisableLighting p15bulb, 340,"
 	Lampz.MassAssign(16)=L16
 	Lampz.MassAssign(16)=l16g
 	Lampz.MassAssign(16)=l16f
 	Lampz.Callback(16) = "DisableLightingColor p16, 60, 2,"
-	Lampz.Callback(16) = "DisableLighting p16bulb, 240,"
+	Lampz.Callback(16) = "DisableLighting p16bulb, 340,"
 	Lampz.MassAssign(17)=L17
 	Lampz.MassAssign(17)=l17g
 	Lampz.MassAssign(17)=l17ff
 	Lampz.Callback(17) = "DisableLightingColor p17, 60, 3,"
-	Lampz.Callback(17) = "DisableLighting p17bulb, 240,"
+	Lampz.Callback(17) = "DisableLighting p17bulb, 340,"
 	Lampz.MassAssign(18)=L18
 	Lampz.MassAssign(18)=l18g
 	Lampz.MassAssign(18)=l18ff
 	Lampz.Callback(18) = "DisableLightingColor p18, 60, 4,"
-	Lampz.Callback(18) = "DisableLighting p18bulb, 440,"
+	Lampz.Callback(18) = "DisableLighting p18bulb, 340,"
 
 	Lampz.MassAssign(21)=L21
 	Lampz.MassAssign(21)=L21g
 	Lampz.MassAssign(21)=L21f
 	Lampz.Callback(21) = "DisableLightingColor p21, 60, 1,"
-	Lampz.Callback(21) = "DisableLighting p21bulb, 40,"
+	Lampz.Callback(21) = "DisableLighting p21bulb, 340,"
 	Lampz.MassAssign(22)=L22
 	Lampz.MassAssign(22)=L22g
 	Lampz.MassAssign(22)=L22f
 	Lampz.Callback(22) = "DisableLightingColor p22, 60, 2,"
-	Lampz.Callback(22) = "DisableLighting p22bulb, 240,"
+	Lampz.Callback(22) = "DisableLighting p22bulb, 340,"
 	Lampz.MassAssign(23)=L23
 	Lampz.MassAssign(23)=L23g
 	Lampz.MassAssign(23)=L23f
 	Lampz.Callback(23) = "DisableLightingColor p23, 60, 3,"
-	Lampz.Callback(23) = "DisableLighting p23bulb, 240,"
+	Lampz.Callback(23) = "DisableLighting p23bulb, 340,"
 	Lampz.MassAssign(24)=L24
 	Lampz.MassAssign(24)=l24g
 	Lampz.MassAssign(24)=l24f
 	Lampz.Callback(24) = "DisableLightingColor p24, 60, 4,"
-	Lampz.Callback(24) = "DisableLighting p24bulb, 440,"
+	Lampz.Callback(24) = "DisableLighting p24bulb, 340,"
 
 	Lampz.MassAssign(25)=L25
 	Lampz.MassAssign(25)=l25g
 	Lampz.MassAssign(25)=l25f
 	Lampz.Callback(25) = "DisableLightingColor p25, 60, 1,"
-	Lampz.Callback(25) = "DisableLighting p25bulb, 40,"
+	Lampz.Callback(25) = "DisableLighting p25bulb, 340,"
 	Lampz.MassAssign(26)=L26
 	Lampz.MassAssign(26)=l26g
 	Lampz.MassAssign(26)=l26f
 	Lampz.Callback(26) = "DisableLightingColor p26, 60, 2,"
-	Lampz.Callback(26) = "DisableLighting p26bulb, 240,"
+	Lampz.Callback(26) = "DisableLighting p26bulb, 340,"
 	Lampz.MassAssign(27)=L27
 	Lampz.MassAssign(27)=l27g
 	Lampz.MassAssign(27)=l27f
 	Lampz.Callback(27) = "DisableLightingColor p27, 60, 3,"
-	Lampz.Callback(27) = "DisableLighting p27bulb, 240,"
+	Lampz.Callback(27) = "DisableLighting p27bulb, 340,"
 	Lampz.MassAssign(28)=L28
 	Lampz.MassAssign(28)=l28g
 	Lampz.MassAssign(28)=l28f
 	Lampz.Callback(28) = "DisableLightingColor p28, 60, 4,"
-	Lampz.Callback(28) = "DisableLighting p28bulb, 440,"
+	Lampz.Callback(28) = "DisableLighting p28bulb, 340,"
 
 	Lampz.MassAssign(31)=L31
 	Lampz.MassAssign(31)=l31g
 	Lampz.MassAssign(31)=l31f
 	Lampz.Callback(31) = "DisableLightingColor p31, 60, 1,"
-	Lampz.Callback(31) = "DisableLighting p31bulb, 40,"
+	Lampz.Callback(31) = "DisableLighting p31bulb, 340,"
 	Lampz.MassAssign(32)=L32
 	Lampz.MassAssign(32)=l32g
 	Lampz.MassAssign(32)=l32f
 	Lampz.Callback(32) = "DisableLightingColor p32, 60, 2,"
-	Lampz.Callback(32) = "DisableLighting p32bulb, 240,"
+	Lampz.Callback(32) = "DisableLighting p32bulb, 340,"
 	Lampz.MassAssign(33)=L33
 	Lampz.MassAssign(33)=l33g
 	Lampz.MassAssign(33)=l33f
 	Lampz.Callback(33) = "DisableLightingColor p33, 60, 3,"
-	Lampz.Callback(33) = "DisableLighting p33bulb, 240,"
+	Lampz.Callback(33) = "DisableLighting p33bulb, 340,"
 	Lampz.MassAssign(34)=L34
 	Lampz.MassAssign(34)=l34g
 	Lampz.MassAssign(34)=l34f
 	Lampz.Callback(34) = "DisableLightingColor p34, 60, 4,"
-	Lampz.Callback(34) = "DisableLighting p34bulb, 440,"
+	Lampz.Callback(34) = "DisableLighting p34bulb, 340,"
 
 'Lock Lights - Cooling Towers can be hooked up to them.
 	Lampz.MassAssign(35)=L35

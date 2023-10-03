@@ -1,6 +1,6 @@
---- ./Judge Dredd (Bally 1993) VPW v1.12/Judge Dredd (Bally 1993) VPW v1.12.vbs.original	2023-06-02 07:07:27
-+++ ./Judge Dredd (Bally 1993) VPW v1.12/Judge Dredd (Bally 1993) VPW v1.12.vbs	2023-06-01 09:41:12
-@@ -3062,7 +3062,40 @@
+--- ./Judge Dredd (Bally 1993) VPW v1.1/Judge Dredd (Bally 1993) VPW v1.1.vbs.original	2023-10-03 07:02:11
++++ ./Judge Dredd (Bally 1993) VPW v1.1/Judge Dredd (Bally 1993) VPW v1.1.vbs	2023-10-03 07:21:22
+@@ -3044,7 +3044,40 @@
  '****************************************************************
  '		DROP TARGETS INITIALIZATION
  '****************************************************************
@@ -19,7 +19,7 @@
 +
 +  Public Property Get Sw(): Sw = m_sw: End Property
 +  Public Property Let Sw(input): m_sw = input: End Property
- 
++
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
 +
@@ -33,7 +33,7 @@
 +    m_sw = sw
 +    m_animate = animate
 +    m_isDropped = isDropped
-+
+ 
 +    Set Init = Me
 +  End Function
 +End Class
@@ -41,7 +41,7 @@
  'Define a variable for each drop target
  Dim DT54, DT55, DT56, DT57, DT58
  
-@@ -3081,13 +3114,15 @@
+@@ -3063,12 +3096,13 @@
  '	animate:			Arrary slot for handling the animation instrucitons, set to 0
  '
  '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
@@ -52,17 +52,15 @@
 -DT56 = Array(sw56, sw56off, sw56prim, 56, 0)
 -DT57 = Array(sw57, sw57off, sw57prim, 57, 0)
 -DT58 = Array(sw58, sw58off, sw58prim, 58, 0)
- 
 +Set DT54 = (new DropTarget)(sw54, sw54off, sw54prim, 54, 0, false)
 +Set DT55 = (new DropTarget)(sw55, sw55off, sw55prim, 55, 0, false)
 +Set DT56 = (new DropTarget)(sw56, sw56off, sw56prim, 56, 0, false)
 +Set DT57 = (new DropTarget)(sw57, sw57off, sw57prim, 57, 0, false)
 +Set DT58 = (new DropTarget)(sw58, sw58off, sw58prim, 58, 0, false)
-+
+ 
  Dim DTArray
  DTArray = Array(DT54, DT55, DT56, DT57, DT58)
- 
-@@ -3116,9 +3151,9 @@
+@@ -3098,9 +3132,9 @@
  	Dim i
  	i = DTArrayID(switch)
  	PlaySoundAtVol  DTHitSound, Activeball, Vol(Activeball)*22.5
@@ -75,7 +73,7 @@
  	End If
  	DoDTAnim
  End Sub
-@@ -3127,7 +3162,7 @@
+@@ -3109,7 +3143,7 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -84,7 +82,7 @@
  	DoDTAnim
  End Sub
  
-@@ -3135,14 +3170,14 @@
+@@ -3117,14 +3151,14 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -101,7 +99,7 @@
  	Next
  End Function
  
-@@ -3200,7 +3235,7 @@
+@@ -3182,7 +3216,7 @@
  Sub DoDTAnim()
  	Dim i
  	For i=0 to Ubound(DTArray)
@@ -110,10 +108,11 @@
  	Next
  End Sub
  
-@@ -3323,6 +3358,35 @@
+@@ -3304,6 +3338,35 @@
+ '****************************************************************
  '		STAND-UP TARGET INITIALIZATION
  '****************************************************************
- 
++
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate, m_target
 +
@@ -142,11 +141,10 @@
 +    Set Init = Me
 +  End Function
 +End Class
-+
+ 
  'Define a variable for each stand-up target
  Dim ST18, ST18a, ST18b, ST25, ST27, ST36, ST68
- 
-@@ -3337,13 +3401,13 @@
+@@ -3319,13 +3382,13 @@
  '	animate:			Arrary slot for handling the animation instructions, set to 0
  '	target identifier:	The target
  
@@ -167,7 +165,7 @@
  
  'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
  ' STAnimationArray = Array(ST1, ST2, ....)
-@@ -3365,10 +3429,10 @@
+@@ -3347,10 +3410,10 @@
  	i = STArrayID(switch)
  
  '	PlayTargetSound		'Replaced with Fleep Code
@@ -181,7 +179,7 @@
  	End If
  	DoSTAnim
  End Sub
-@@ -3376,7 +3440,7 @@
+@@ -3358,7 +3421,7 @@
  Function STArrayID(switch)
  	Dim i
  	For i = 0 to uBound(STArray) 
@@ -190,7 +188,7 @@
  	Next
  End Function
  
-@@ -3400,7 +3464,7 @@
+@@ -3382,7 +3445,7 @@
  Sub DoSTAnim()
  	Dim i
  	For i=0 to Ubound(STArray)
