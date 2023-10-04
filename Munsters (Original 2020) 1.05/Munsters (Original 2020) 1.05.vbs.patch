@@ -1,0 +1,11 @@
+--- "Munsters (Original 2020) 1.05.vbs.original"	2023-10-04 10:14:35.644061289 +0200
++++ "Munsters (Original 2020) 1.05.vbs"	2023-10-04 10:10:51.339075770 +0200
+@@ -6014,7 +6014,7 @@
+ 				PuPlayer.playstop pAudio
+ 				PuPlayer.playlistplayex pAudio,"audionoise","Sound-0x018A.mp3",90,90
+ 				MovieText CenterText(24,"TOTAL BONUS"), CenterText(26,FormatNumber( (50000+(10000*AreasComplete))*BonusMultiplier(CurrentPlayer),0))
+-				AddScore (50000+(10000*AreasComplete))*BonusMultiplier(CurrentPlayer)
++				AddScore ((50000+(10000*AreasComplete))*BonusMultiplier(CurrentPlayer))
+ 			Case 26
+ 				ClearPage3Timer.interval = 10
+ 				ClearPage3Timer.Enabled = True
