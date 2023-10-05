@@ -1,0 +1,194 @@
+--- ./The Goonies Never Say Die Pinball (VPW 2021)v1.3/The Goonies Never Say Die Pinball (VPW 2021)v1.3.vbs.original	2023-10-05 16:23:52
++++ ./The Goonies Never Say Die Pinball (VPW 2021)v1.3/The Goonies Never Say Die Pinball (VPW 2021)v1.3.vbs	2023-10-05 16:30:47
+@@ -2199,20 +2199,20 @@
+ 	'		if SLS(29,1)=1 then AlphaState=AlphaState&"1" else AlphaState=AlphaState&"0"
+ 	'		if SLS(30,1)=1 then AlphaState=AlphaState&"1" else AlphaState=AlphaState&"0"
+ 	'	Dim scene6 : Set scene5 = FlexDMD.NewGroup("AnimData")
+-	'	scene6.AddActor FlexDMD.NewImage("data0",FlexPath &  "gooniesBG4.png") : scene6.GetImage("Data0").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("data1",FlexPath &  "databg0.png") : scene6.GetImage("Data1").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("data2",FlexPath &  "databg1.png") : scene6.GetImage("Data2").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("data3",FlexPath &  "databg2.png") : scene6.GetImage("Data3").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("data4",FlexPath &  "databg3.png") : scene6.GetImage("Data4").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("data5",FlexPath &  "databg4.png") : scene6.GetImage("Data5").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataD0",FlexPath &  "dataD0.png") : scene6.GetImage("dataD0").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataD1",FlexPath &  "dataD1.png") : scene6.GetImage("dataD1").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataA10",FlexPath &  "dataA10.png") : scene6.GetImage("dataA10").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataA11",FlexPath &  "dataA11.png") : scene6.GetImage("dataA11").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataT0",FlexPath &  "dataT0.png") : scene6.GetImage("dataT0").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataT1",FlexPath &  "dataT1.png") : scene6.GetImage("dataT1").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataA20",FlexPath &  "dataA20.png") : scene6.GetImage("dataA20").Visible=False
+-	'	scene6.AddActor FlexDMD.NewImage("dataA21",FlexPath &  "dataA21.png") : scene6.GetImage("dataA21").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("data0","gooniesBG4.png") : scene6.GetImage("Data0").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("data1","databg0.png") : scene6.GetImage("Data1").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("data2","databg1.png") : scene6.GetImage("Data2").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("data3","databg2.png") : scene6.GetImage("Data3").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("data4","databg3.png") : scene6.GetImage("Data4").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("data5","databg4.png") : scene6.GetImage("Data5").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataD0","dataD0.png") : scene6.GetImage("dataD0").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataD1","dataD1.png") : scene6.GetImage("dataD1").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataA10","dataA10.png") : scene6.GetImage("dataA10").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataA11","dataA11.png") : scene6.GetImage("dataA11").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataT0","dataT0.png") : scene6.GetImage("dataT0").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataT1","dataT1.png") : scene6.GetImage("dataT1").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataA20","dataA20.png") : scene6.GetImage("dataA20").Visible=False
++	'	scene6.AddActor FlexDMD.NewImage("dataA21","dataA21.png") : scene6.GetImage("dataA21").Visible=False
+ End Sub
+ 
+ 
+@@ -9150,7 +9150,7 @@
+ Dim fPriorityReset:fPriorityReset=-1
+ DIM fAttractReset:fAttractReset=-1
+ DIM fAttractBetween: fAttractBetween=2000 '1 second between calls to next attract page
+-Dim FlexPath
++'Dim FlexPath
+ 
+ Sub FlexDMDInit()
+ 	Dim fso,curdir
+@@ -9177,9 +9177,9 @@
+ 		.Run = True
+ 	End With
+ 
+-	Set fso = CreateObject("Scripting.FileSystemObject")
+-	curDir = fso.GetAbsolutePathName(".")
+-	FlexPath = curDir & "\TheGooniesDMD\"	
++	'Set fso = CreateObject("Scripting.FileSystemObject")
++	'curDir = fso.GetAbsolutePathName(".")
++	'FlexPath = curDir & "\TheGooniesDMD\"	
+ 
+ 	'CreateScoreSceneWilliamsStyle()
+ 
+@@ -9198,12 +9198,12 @@
+ 
+ 	Set scene = FlexDMD.NewGroup("Score")
+ 	dim vidvid
+-	Set vidvid=FlexDMD.Newvideo ("test",FlexPath & "goonieintro.gif")
++	Set vidvid=FlexDMD.Newvideo ("test","goonieintro.gif")
+ 	scene.AddActor vidvid
+ 	scene.Getvideo("test").SetBounds 0, 0, 128, 32
+ 	scene.Getvideo("test").visible = True
+ 	
+-	scene.AddActor FlexDMD.NewImage("logo",FlexPath &  "VPWLogo32.png") : scene.GetImage("logo").Visible=False
++	scene.AddActor FlexDMD.NewImage("logo","VPWLogo32.png") : scene.GetImage("logo").Visible=False
+ 
+ 	FlexDMD.LockRenderThread
+ 	FlexDMD.RenderMode = FlexDMD_RenderMode_DMD_RGB
+@@ -9275,43 +9275,43 @@
+ 
+ 
+ 	' to flash BG
+-	scene.AddActor FlexDMD.NewImage("logo0",FlexPath &  "gooniesBG4.png")
++	scene.AddActor FlexDMD.NewImage("logo0","gooniesBG4.png")
+ 	scene.GetImage("logo0").Visible=True
+-	scene.AddActor FlexDMD.NewImage("logo1",FlexPath &  "gooniesBG3.png")
++	scene.AddActor FlexDMD.NewImage("logo1","gooniesBG3.png")
+ 	scene.GetImage("logo1").Visible=False
+-	scene.AddActor FlexDMD.NewImage("logo2",FlexPath &  "gooniesBG2.png")
++	scene.AddActor FlexDMD.NewImage("logo2","gooniesBG2.png")
+ 	scene.GetImage("logo2").Visible=False
+-	scene.AddActor FlexDMD.NewImage("logo3",FlexPath &  "gooniesBG1.png")
++	scene.AddActor FlexDMD.NewImage("logo3","gooniesBG1.png")
+ 	scene.GetImage("logo3").Visible=False
+-	scene.AddActor FlexDMD.NewImage("logo4",FlexPath &  "gooniesBG0.png")
++	scene.AddActor FlexDMD.NewImage("logo4","gooniesBG0.png")
+ 	scene.GetImage("logo4").Visible=False
+ 
+ 	' Skull pop
+-	scene.AddActor FlexDMD.NewImage("skull0",FlexPath &  "slothBG0.png")
++	scene.AddActor FlexDMD.NewImage("skull0","slothBG0.png")
+ 	scene.GetImage("skull0").Visible=False
+-	scene.AddActor FlexDMD.NewImage("skull1",FlexPath &  "slothBG1.png")
++	scene.AddActor FlexDMD.NewImage("skull1","slothBG1.png")
+ 	scene.GetImage("skull1").Visible=False
+-	scene.AddActor FlexDMD.NewImage("skull2",FlexPath &  "slothBG2.png")
++	scene.AddActor FlexDMD.NewImage("skull2","slothBG2.png")
+ 	scene.GetImage("skull2").Visible=False
+-	scene.AddActor FlexDMD.NewImage("skull3",FlexPath &  "slothBG3.png")
++	scene.AddActor FlexDMD.NewImage("skull3","slothBG3.png")
+ 	scene.GetImage("skull3").Visible=False
+-	scene.AddActor FlexDMD.NewImage("skull4",FlexPath &  "slothBG4.png")
++	scene.AddActor FlexDMD.NewImage("skull4","slothBG4.png")
+ 	scene.GetImage("skull4").Visible=False
+ 
+ 	' Fog
+-	scene.AddActor FlexDMD.NewImage("fog0",FlexPath &  "gooniesBGfog0.png")
++	scene.AddActor FlexDMD.NewImage("fog0","gooniesBGfog0.png")
+ 	scene.GetImage("fog0").Visible=False
+-	scene.AddActor FlexDMD.NewImage("fog1",FlexPath &  "gooniesBGfog1.png")
++	scene.AddActor FlexDMD.NewImage("fog1","gooniesBGfog1.png")
+ 	scene.GetImage("fog1").Visible=False
+-	scene.AddActor FlexDMD.NewImage("fog2",FlexPath &  "gooniesBGfog1.png")
++	scene.AddActor FlexDMD.NewImage("fog2","gooniesBGfog1.png")
+ 	scene.GetImage("fog2").Visible=False
+-	scene.AddActor FlexDMD.NewImage("fog3",FlexPath &  "gooniesBGfog2.png")
++	scene.AddActor FlexDMD.NewImage("fog3","gooniesBGfog2.png")
+ 	scene.GetImage("fog3").Visible=False
+-	scene.AddActor FlexDMD.NewImage("fog4",FlexPath &  "gooniesBGfog3.png")
++	scene.AddActor FlexDMD.NewImage("fog4","gooniesBGfog3.png")
+ 	scene.GetImage("fog4").Visible=False
+ 
+ 	'ship
+-	Set title = FlexDMD.NewImage("ship",FlexPath &  "gooniesBGShip.png")
++	Set title = FlexDMD.NewImage("ship","gooniesBGShip.png")
+ 	title.visible=false
+ 	Set af = title.ActionFactory
+ 	Set list = af.Sequence()
+@@ -9319,7 +9319,7 @@
+ 	title.AddAction af.Repeat(list, 1)
+ 	scene.AddActor title
+ 
+-	Set title = FlexDMD.NewImage("ship2",FlexPath &  "gooniesBGShipL.png")
++	Set title = FlexDMD.NewImage("ship2","gooniesBGShipL.png")
+ 	title.visible=false
+ 	Set af = title.ActionFactory
+ 	Set list = af.Sequence()
+@@ -9328,7 +9328,7 @@
+ 	scene.AddActor title
+ 
+ 	'cannonball
+-	Set title = FlexDMD.NewImage("ball",FlexPath &  "gooniesBGball.png")
++	Set title = FlexDMD.NewImage("ball","gooniesBGball.png")
+ 	title.visible=false
+ 	Set af = title.ActionFactory
+ 	Set list = af.Sequence()
+@@ -9373,26 +9373,26 @@
+ 	scene.GetLabel("Splash3c").Visible=False
+ '	scene.GetGroup("Splash3").Visible = False
+ 
+-	scene.AddActor FlexDMD.NewImage("data0",FlexPath &  "gooniesBG5.png") : scene.GetImage("data0").Visible=False
+-	scene.AddActor FlexDMD.NewImage("data1",FlexPath &  "databg0.png") : scene.GetImage("data1").Visible=False
+-	scene.AddActor FlexDMD.NewImage("data2",FlexPath &  "databg1.png") : scene.GetImage("data2").Visible=False
+-	scene.AddActor FlexDMD.NewImage("data3",FlexPath &  "databg2.png") : scene.GetImage("data3").Visible=False
+-	scene.AddActor FlexDMD.NewImage("data4",FlexPath &  "databg3.png") : scene.GetImage("data4").Visible=False
+-	scene.AddActor FlexDMD.NewImage("data5",FlexPath &  "databg4.png") : scene.GetImage("data5").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataD0",FlexPath &  "dataD0.png") : scene.GetImage("dataD0").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataD1",FlexPath &  "dataD1.png") : scene.GetImage("dataD1").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataA10",FlexPath &  "dataA10.png") : scene.GetImage("dataA10").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataA11",FlexPath &  "dataA11.png") : scene.GetImage("dataA11").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataT0",FlexPath &  "dataT0.png") : scene.GetImage("dataT0").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataT1",FlexPath &  "dataT1.png") : scene.GetImage("dataT1").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataA20",FlexPath &  "dataA20.png") : scene.GetImage("dataA20").Visible=False
+-	scene.AddActor FlexDMD.NewImage("dataA21",FlexPath &  "dataA21.png") : scene.GetImage("dataA21").Visible=False
++	scene.AddActor FlexDMD.NewImage("data0","gooniesBG5.png") : scene.GetImage("data0").Visible=False
++	scene.AddActor FlexDMD.NewImage("data1","databg0.png") : scene.GetImage("data1").Visible=False
++	scene.AddActor FlexDMD.NewImage("data2","databg1.png") : scene.GetImage("data2").Visible=False
++	scene.AddActor FlexDMD.NewImage("data3","databg2.png") : scene.GetImage("data3").Visible=False
++	scene.AddActor FlexDMD.NewImage("data4","databg3.png") : scene.GetImage("data4").Visible=False
++	scene.AddActor FlexDMD.NewImage("data5","databg4.png") : scene.GetImage("data5").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataD0","dataD0.png") : scene.GetImage("dataD0").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataD1","dataD1.png") : scene.GetImage("dataD1").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataA10","dataA10.png") : scene.GetImage("dataA10").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataA11","dataA11.png") : scene.GetImage("dataA11").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataT0","dataT0.png") : scene.GetImage("dataT0").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataT1","dataT1.png") : scene.GetImage("dataT1").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataA20","dataA20.png") : scene.GetImage("dataA20").Visible=False
++	scene.AddActor FlexDMD.NewImage("dataA21","dataA21.png") : scene.GetImage("dataA21").Visible=False
+ 
+ 
+ 	scene.AddActor FlexDMD.NewLabel("playerup2", FontSplashMedium2, " ") : scene.GetLabel("playerup2").Visible=False
+ 	scene.AddActor FlexDMD.NewLabel("playerup", FontScoreActive, " ") : scene.GetLabel("playerup").Visible=False
+ 
+-	scene.AddActor FlexDMD.NewImage("logo",FlexPath & "VPWLogo32.png")
++	scene.AddActor FlexDMD.NewImage("logo","VPWLogo32.png")
+ 	scene.GetImage("logo").Visible=False
+ 
+ 
