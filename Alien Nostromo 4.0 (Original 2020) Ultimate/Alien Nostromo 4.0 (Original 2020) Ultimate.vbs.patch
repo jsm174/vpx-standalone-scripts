@@ -1,0 +1,145 @@
+--- Alien Nostromo 4.0 (Original 2020) Ultimate.vbs.original	2023-10-09 12:02:49
++++ Alien Nostromo 4.0 (Original 2020) Ultimate.vbs	2023-10-09 12:00:57
+@@ -206,7 +206,7 @@
+ '**************************************
+ Dim SFX6counter
+ 
+-Sub SFX4_hit() PlaySound "Door" End Sub
++Sub SFX4_hit() :PlaySound "Door" End Sub
+ 
+ Dim FX5Count
+ Sub SFX5_hit()
+\ No newline at end of file
+@@ -239,7 +239,7 @@
+ End Sub 
+ 
+ Dim FX7Count
+-Sub SFX7_Hit() StopSound "Swoosh 1": FX7Count=Int(rnd*15)
++Sub SFX7_Hit() :StopSound "Swoosh 1": FX7Count=Int(rnd*15)
+ 	If FX7Count = 0 then PlaySound "Bulk door":End If
+ 	If FX7Count = 1 then PlaySound "Ripley 24":End If
+ 	If FX7Count = 2 then PlaySound "Bulk door":End If		
+\ No newline at end of file
+@@ -274,7 +274,7 @@
+ End Sub
+ 
+ Dim FX10Count, FX10Countb
+-Sub SFX10_hit() FX10Countb=Int(rnd*33)
++Sub SFX10_hit() :FX10Countb=Int(rnd*33)
+ 	If FX10Count = 0 then 
+ 		If FX10Countb = 0 then PlaySound "Comms 10":End If
+ 		If FX10Countb = 1 then PlaySound "Alien moving 4",1,1,Left:End If
+\ No newline at end of file
+@@ -315,7 +315,7 @@
+ End Sub
+ 
+ Dim FX11Count, FX11Countb
+-Sub SFX11_hit() FX11Countb=Int(rnd*18)
++Sub SFX11_hit(): FX11Countb=Int(rnd*18)
+ 	Divider.RotateToStart
+ 	If FX11Count = 0 then
+ 		If FX11Countb = 0 then PlaySound "Sgt Apone 15":End If
+\ No newline at end of file
+@@ -387,14 +387,14 @@
+ End Sub
+ 
+ Dim FX18Count
+-Sub SFX18_Hit() FX18Count=Int(rnd*3)
++Sub SFX18_Hit(): FX18Count=Int(rnd*3)
+ 	If FX18Count = 0 then PlaySound "Swoosh 14",1,1,Left:End If
+ 	If FX18Count = 1 then PlaySound "Swoosh 16",1,1,Left:End If
+ 	If FX18Count = 2 then PlaySound "Swoosh 12",1,1,Left:End If
+ End Sub
+ 
+ Dim FX19Count
+-Sub SFX19_Hit() FX19Count=Int(rnd*3)
++Sub SFX19_Hit(): FX19Count=Int(rnd*3)
+ 	If FX19Count = 0 then PlaySound "Swoosh 16",1,1,Right:End If
+ 	If FX19Count = 1 then PlaySound "Swoosh 14",1,1,Right:End If
+ 	If FX19Count = 2 then PlaySound "Swoosh 12",1,1,Right:End If
+\ No newline at end of file
+@@ -421,7 +421,7 @@
+ 
+ Dim Kicker2Count
+ 
+-Sub Kicker2_hit() Kicker2Count=Int(rnd*18):PlaySound "fx_kicker_enter":PlaySound "Interference 3":GiOff:RedGiOFF:RedPfOFF:GreenGiON:GreenPfON
++Sub Kicker2_hit(): Kicker2Count=Int(rnd*18):PlaySound "fx_kicker_enter":PlaySound "Interference 3":GiOff:RedGiOFF:RedPfOFF:GreenGiON:GreenPfON
+ 	Kicker2.TimerInterval = 6000
+ 	Kicker2.TimerEnabled =1
+ 	If liLockb.state=1 then PlaySound "No Sound" End If
+\ No newline at end of file
+@@ -525,7 +525,7 @@
+ 
+ Dim Kicker5Count
+ 
+-Sub Kicker5_Hit() PlaySound "fx_kicker_enter": 'Kicker5Count=Int(rnd*8)
++Sub Kicker5_Hit(): PlaySound "fx_kicker_enter": 'Kicker5Count=Int(rnd*8)
+ 	Kicker5.TimerInterval = 5000
+ 	Kicker5.TimerEnabled = 1
+ 	PlaySound "Elevator"
+\ No newline at end of file
+@@ -541,7 +541,7 @@
+ End Sub
+ 
+ Dim Kicker6Count
+-Sub Kicker6_Hit() PlaySound "fx_kicker_enter"
++Sub Kicker6_Hit(): PlaySound "fx_kicker_enter"
+ 	Kicker6.TimerInterval = 2500
+ 	Kicker6.TimerEnabled = 1
+ 	If Kicker6Count = 0 then PlaySound "Hicks 9":End If
+\ No newline at end of file
+@@ -604,38 +604,38 @@
+ End Sub
+ 
+ Dim AlienHit
+-Sub Wall100_hit() AlienHit=Int(rnd*2)+1
++Sub Wall100_hit(): AlienHit=Int(rnd*2)+1
+ 	If AlienHit=1 Then PlaySound "Alien 3":End If
+ 	If AlienHit=2 Then PlaySound "Alien 6":End If
+ 	If AlienHit=3 Then PlaySound "Alien 9":End If
+ End Sub
+ 
+ 
+-Sub Gate1_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
++Sub Gate1_Hit(): PlaySound "fx_gate",1,FXVolume,Right:End Sub
+ 
+-Sub Gate2_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
++Sub Gate2_Hit(): PlaySound "fx_gate",1,FXVolume,Right:End Sub
+ 
+-Sub Gate3_Hit() PlaySound "Swoosh 12",1,FXVolume,0:End Sub
++Sub Gate3_Hit(): PlaySound "Swoosh 12",1,FXVolume,0:End Sub
+ 
+-Sub Gate4_Hit() PlaySound "Wind Howling":End Sub
++Sub Gate4_Hit(): PlaySound "Wind Howling":End Sub
+ 
+-Sub swGate5_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
++Sub swGate5_Hit(): PlaySound "fx_gate",1,FXVolume,Right:End Sub
++
++Sub Gate6_Hit(): PlaySound "Sentry gun activated",1,FXVolume,0:GiOff:litargets.state=1:litargets2.state=0:End Sub
+ 
+-Sub Gate6_Hit() PlaySound "Sentry gun activated",1,FXVolume,0:GiOff:litargets.state=1:litargets2.state=0:End Sub
++Sub Gate7_Hit(): PlaySound "": End Sub
+ 
+-Sub Gate7_Hit() PlaySound "": End Sub
++Sub Gate8_Hit(): PlaySound "fx_gate",1,FXVolume,Left:End Sub
+ 
+-Sub Gate8_Hit() PlaySound "fx_gate",1,FXVolume,Left:End Sub
++Sub Gate9_Hit(): PlaySound "Pneumatic",1,FXVolume,Right:End Sub
+ 
+-Sub Gate9_Hit() PlaySound "Pneumatic",1,FXVolume,Right:End Sub
++Sub Gate10_Hit(): PlaySound "": End Sub
+ 
+-Sub Gate10_Hit() PlaySound "": End Sub
++Sub Gate11_Hit(): PlaySound "pressure_door_bonk_loud",1,FXVolume,Right: End Sub
+ 
+-Sub Gate11_Hit() PlaySound "pressure_door_bonk_loud",1,FXVolume,Right: End Sub
+-
+-Sub Gate13_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
++Sub Gate13_Hit(): PlaySound "fx_gate",1,FXVolume,Right:End Sub
+ 
+-Sub Gate17_Hit() PlaySound "pressure_door_bonk_loud",1,FXVolume,Left: End Sub
++Sub Gate17_Hit(): PlaySound "pressure_door_bonk_loud",1,FXVolume,Left: End Sub
+ 
+ 
+ Dim Gate14Count
+\ No newline at end of file

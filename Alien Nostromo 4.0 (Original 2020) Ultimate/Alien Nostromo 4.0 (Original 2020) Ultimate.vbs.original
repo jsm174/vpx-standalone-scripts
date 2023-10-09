@@ -1,0 +1,1985 @@
+'***************************************************
+' Credits:
+' Aliens 2.0 by Delta23 (MOD of JP's Sorcerer)
+' VPX Sorcerer 1.0 by JPSalas (JP)
+' Ultimate Edition 4.0 by Gh0stbust3r (GB)
+'***************************************************
+
+Option Explicit
+Randomize
+
+Dim MusicVolume
+Dim FXVolume
+Dim SoundEffect
+Dim SoundOfBall
+Dim StartedGame
+Dim FlipperFX
+Dim FlipperUP
+Dim FlipperDOWN
+Dim nbr
+
+' SETTINGS
+'**********************************************************************
+Const BallSize = 50
+Const BallMass = 1.6	'Max 1.7 before physics change, 1.6 for this table
+Const RipleyON = 1	
+
+MusicVolume=1		'0= off 0.5=volume 50% (Music Only)
+SoundEffect=2		'1=stereo (GB) 2=surround (JP)
+					'most important fx effects > flips / slings / gates
+					'and alien movements
+					'for surround check JP latest routines
+FlipperFX=1			'0=default (JP) 1=SoundFX (GB)
+FXVolume = 200		'3 modes: 0 default,+ 100(%) or + 200(%)
+					'fx > ballrolling, flippers etc
+					'Experimental (louder flip and ball Sound)
+'**********************************************************************
+
+
+On Error Resume Next
+ExecuteGlobal GetTextFile("controller.vbs")
+If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+On Error Goto 0
+
+LoadVPM "01550000", "S11.VBS", 3.26
+
+Dim bsTrough, bsSaucer, dtBank, x, a, liarray
+
+Const cGameName = "sorcr_l2"
+
+Const UseSolenoids = 1
+Const UseLamps = 0
+Const UseGI = 0
+Const UseSync = 0 'set it to 1 if the table runs too fast
+Const HandleMech = 0
+
+Dim broken
+Dim musicNum
+Dim exitsnd
+Dim GameOverTrack
+Dim ThemeTrack
+Dim InGameTrack
+Dim Left
+Dim Right
+
+Dim AlienBrokeGlass
+
+Dim VarHidden
+If Table1.ShowDT = true then
+    VarHidden = 1
+    For each x in aReels
+        x.Visible = 1
+    Next
+else
+    VarHidden = 0
+    For each x in aReels
+        x.Visible = 0
+    Next
+    lrail.Visible = 0
+    rrail.Visible = 0
+end if
+
+if B2SOn = true then VarHidden = 1
+
+' Standard Sounds
+Const SSolenoidOn = "fx_Solenoid"
+Const SSolenoidOff = ""
+Const SCoin = "fx_Coin"
+
+'FX SoundEffects
+If SoundEffect=1 Then 
+	Left=-1
+	Right=1
+End If
+
+If SoundEffect=0 Then 
+	Left=0
+	Right=0
+End If
+
+If FlipperFX=0 Then FlipperUP="fx_flipperup_": FlipperDOWN="fx_flipperdown_": End if
+If FlipperFX=1 Then FlipperUP="SFX_FlipperUP_": FlipperDOWN="SFX_FlipperDOWN_": End if
+
+'********
+' MUSIC 
+'********
+
+'3 themes 2 InGame musictracks 3 endings (not random!)
+
+Sub ThemesPlayer									'Play intro
+	GiOff
+	StopAllSounds
+	If ThemeTrack=0 Then PlaySound "Alien Trilogy Theme",1,MusicVolume: ThemeTrack=1: Exit Sub: End If
+	If ThemeTrack=1 Then PlaySound "Alien Trilogy Theme 2",1,MusicVolume: ThemeTrack=2: Exit Sub: End If
+	If ThemeTrack=2 Then PlaySound "Alien Trilogy Theme 3",1,MusicVolume: ThemeTrack=0: Exit Sub: End If
+End Sub
+
+Sub MusicPlayer										'Play game music
+	liLockb.state=0
+	StopAllSounds
+	RandomSoundTimer.enabled=1
+	If InGameTrack=0 Then PlaySound "Aliens InGame",-1,MusicVolume:InGameTrack=1:Exit Sub:End if		
+	If InGameTrack=1 Then PlaySound "Aliens InGame 2",-1,MusicVolume:InGameTrack=0:Exit Sub:End if
+End Sub
+
+Sub GameOverTimer_Timer()
+	If Controller.Lamp(2)<>0 Then 
+		GiOff
+		GameOver
+	End if
+End sub
+
+Sub GameOver										'Play outro
+	StopAllSounds
+	GameOverTimer.enabled=0
+	RandomSoundTimer.enabled=0
+	GiOff
+	Glass.image=""
+	Glass.visible=1
+	StartedGame=0				'To turn of the lights
+	
+	If GameOverTrack=0 Then PlaySound "outro_ripley_signing_off",1,MusicVolume: GameOverTrack=1: OutroEnd: GiOff: Exit Sub: End if
+	If GameOverTrack=1 Then PlaySound "outro_ripley_nostromo_report_all_dead",1,MusicVolume: GameOverTrack=2: OutroEnd: GiOff: Exit Sub: End if
+	If GameOverTrack=2 Then PlaySound "outro_samuels_death",1,MusicVolume: GameOverTrack=0:OutroEnd: GiOff: Exit Sub: End if
+End Sub
+
+Sub OutroEnd
+		'If Startkey is pressed StopVPXTimer otherwise play Theme after Outro
+		AddVPXTimer 30000, "ThemesPlayer"
+		AddVPXTimer 30000, "ResetFlips"
+End Sub
+
+Sub StopAllSounds					'The effective routine method like 'RandomSound' not fully intergrated
+	StopSound "Alien Trilogy Theme"
+	StopSound "Alien Trilogy Theme 2"
+	StopSound "Alien Trilogy Theme 3"
+	StopSound "Aliens InGame"
+	StopSound "Aliens InGame 2"
+	StopSound "outro_ripley_signing_off"
+	StopSound "outro_ripley_nostromo_report_all_dead"
+	StopSound "outro_samuels_death"
+	StopSound "Aliens LockedScene 1"
+	StopSound "Aliens LockedScene 2"
+	StopSound "Nostromo Sound 1"
+	StopSound "Nostromo Sound 2"
+	StopSound "Nostromo Sound 3"
+End Sub
+
+'****************************
+' RANDOM QUOTES
+' Note: 
+' Best way of music handling
+' but not changed all script 
+' to this method because
+' to much work
+' :-)
+'****************************
+Dim SoundTitle
+Dim SoundTrack
+
+SoundTitle = ""
+
+Sub RandomSound(name)	
+	If SoundTitle <> name Then			
+			StopSound SoundTitle
+			SoundTitle = name
+			PlaySound SoundTitle,1,MusicVolume
+	End if
+End Sub
+
+Sub SoundPlayer
+	If SoundTrack = 0 Then RandomSound "Nostromo Sound 1": SoundTrack=1: Exit Sub: End If
+	If SoundTrack = 1 Then RandomSound "Ripley - destroy to wipe them out": SoundTrack=2: Exit Sub: End if
+	If SoundTrack = 2 Then RandomSound "Nostromo Sound 2": SoundTrack=3: Exit Sub: End If
+	If SoundTrack = 3 Then RandomSound "Nostromo Sound 3": SoundTrack=0: Exit Sub: End If
+End Sub
+
+Sub RandomSoundTimer_Timer() 			'sound each x minutes
+	RandomSoundTimer.enabled=0			'Reset Timer
+	SoundPlayer
+	RandomSoundTimer.enabled=1
+End Sub
+
+
+'**************************************
+' SFX
+'**************************************
+Dim SFX6counter
+
+Sub SFX4_hit() PlaySound "Door" End Sub
+
+Dim FX5Count
+Sub SFX5_hit()
+	If FX5Count = 0 then PlaySound "Random 24":End If
+	If FX5Count = 1 then PlaySound "Random 22":End If
+	If FX5Count = 2 then PlaySound "Random 25":End If
+	If FX5Count = 3 then PlaySound "Random 26":End If
+	If FX5Count = 4 then PlaySound "Random 30":End If
+	FX5Count=(FX5Count+1) mod 5
+End Sub
+
+Sub SFX6_Hit()
+		PlaySound "Gorman 1"
+		Divider.RotateToStart
+		if SFX6counter=0 Then 
+			AddVPXTimer 250, "LetHaveEm'"	
+		End if
+End Sub
+
+Sub LetHaveEm
+	PlaySound "Sgt Apone 29"
+	SFX6counter=1
+	AddVPXTimer 4000, "SFX6counter=0'" 		'Avoid quote sound multiple times (4sec timeout)
+End Sub
+
+Sub SFX6b_Hit() 
+	PlaySound "Comms 2"
+	StopSound "Motion Tracker"
+	If liLock.state = 1 then PfON: AddVPXTimer 500, "PfOFF '":End If
+End Sub 
+
+Dim FX7Count
+Sub SFX7_Hit() StopSound "Swoosh 1": FX7Count=Int(rnd*15)
+	If FX7Count = 0 then PlaySound "Bulk door":End If
+	If FX7Count = 1 then PlaySound "Ripley 24":End If
+	If FX7Count = 2 then PlaySound "Bulk door":End If		
+	If FX7Count = 3 then PlaySound "Sgt Apone 29":End If	
+	If FX7Count = 4 then PlaySound "Sgt Apone 13":End If
+	If FX7Count = 5 then PlaySound "Ripley 24":End If
+	If FX7Count = 6 then PlaySound "Bulk door":End If
+	If FX7Count = 7 then PlaySound "Sgt Apone 14":End If
+	If FX7Count = 8 then PlaySound "Bulk door":End If
+	If FX7Count = 9 then PlaySound "Sgt Apone 25":End If
+	If FX7Count = 10 then PlaySound "Bulk door":End If
+	If FX7Count = 11 then PlaySound "Ripley 14":End If
+	If FX7Count = 12 then PlaySound "Sgt Apone 29":End If
+	If FX7Count = 13 then PlaySound "Sgt Apone 13":End If
+	If FX7Count = 14 then PlaySound "Bulk door":End If
+End Sub
+
+Dim FX8Count
+
+Sub SFX8_Hit()
+	If FX8Count = 0 then PlaySound "Comms 12":End If
+	If FX8Count = 1 then PlaySound "Alien 7",1,1,Right:End If
+	If FX8Count = 2 then PlaySound "Alien moving 4",1,1,Right:End If
+	FX8Count=(FX8Count+1) mod 3
+End Sub
+
+Dim FX9Count
+Sub SFX9_hit()
+	Divider.RotateToStart
+	If liLock.state = 1 then PfON: AddVPXTimer 500, "PfOFF '":End If
+	PlaySound "Bulk door",1,MusicVolume
+End Sub
+
+Dim FX10Count, FX10Countb
+Sub SFX10_hit() FX10Countb=Int(rnd*33)
+	If FX10Count = 0 then 
+		If FX10Countb = 0 then PlaySound "Comms 10":End If
+		If FX10Countb = 1 then PlaySound "Alien moving 4",1,1,Left:End If
+		If FX10Countb = 2 then PlaySound "Alien 6",1,1,Left:End If
+		If FX10Countb = 3 then Playsound "Alien moving 3",1,1,Left:End If
+		If FX10Countb = 4 then PlaySound "Alien moving 2",1,1,Left:End If
+		If FX10Countb = 5 then PlaySound "Comms 3":End If
+		If FX10Countb = 6 then Playsound "Alien 2",1,1,Left:End If
+		If FX10Countb = 7 then PlaySound "Sgt Apone 25":End If
+		If FX10Countb = 8 then PlaySound "Comms 6":End If
+		If FX10Countb = 9 then PlaySound "Comms 24":End If
+		If FX10Countb = 10 then PlaySound "Alien 4",1,1,Left:End If
+		If FX10Countb = 11 then PlaySound "Alien 7",1,1,Left:End If
+		If FX10Countb = 12 then PlaySound "Alien 6",1,1,Left:End If
+		If FX10Countb = 13 then PlaySound "Sgt Apone 5":End If
+		If FX10Countb = 14 then PlaySound "Comms 29":End If
+		If FX10Countb = 15 then PlaySound "Gorman 2":End If
+		If FX10Countb = 16 then PlaySound "Gorman 1":End If	
+		If FX10Countb = 17 then PlaySound "Alien moving 2",1,1,Left:End If
+		If FX10Countb = 18 then PlaySound "Sgt Apone 26":End If
+		If FX10Countb = 19 then PlaySound "Hudson 31":End If
+		If FX10Countb = 20 then PlaySound "Hudson 32":End If
+		If FX10Countb = 21 then PlaySound "Sgt Apone 7":End If
+		If FX10Countb = 22 then PlaySound "Comms 30":End If
+		If FX10Countb = 23 then PlaySound "Hudson 14":End If
+		If FX10Countb = 24 then PlaySound "Hudson 14":End If
+		If FX10Countb = 25 then PlaySound "Hicks 2":End If
+		If FX10Countb = 26 then PlaySound "Comms 27":End If
+		If FX10Countb = 27 then PlaySound "Comms 28":End If
+		If FX10Countb = 28 then PlaySound "Alien 3",1,1,Left:End If
+		If FX10Countb = 29 then PlaySound "Alien 6",1,1,Left:End If
+		If FX10Countb = 30 then PlaySound "Vasquez 4":End If
+		If FX10Countb = 31 then PlaySound "Alien moving 4",1,1,Left:End If
+		If FX10Countb = 32 then PlaySound "Sgt Apone 11":End If
+	End If
+	If FX10Count = 1 then PlaySound "No Sound" End If
+	FX10Count=(FX10Count+1) mod 2
+End Sub
+
+Dim FX11Count, FX11Countb
+Sub SFX11_hit() FX11Countb=Int(rnd*18)
+	Divider.RotateToStart
+	If FX11Count = 0 then
+		If FX11Countb = 0 then PlaySound "Sgt Apone 15":End If
+		If FX11Countb = 1 then PlaySound "Random 18":End If
+		If FX11Countb = 2 then PlaySound "Comms 34":End If
+		If FX11Countb = 3 then PlaySound "Hudson 33":End If
+		If FX11Countb = 4 then PlaySound "Comms 35":End If
+		If FX11Countb = 5 then PlaySound "Comms 4":End If
+		If FX11Countb = 6 then PlaySound "Sgt Apone 9":End If
+		If FX11Countb = 7 then PlaySound "Random 5":End If
+		If FX11Countb = 8 then PlaySound "Hudson 5":End If
+		If FX11Countb = 9 then PlaySound "Comms 21":End If
+		If FX11Countb = 10 then PlaySound "Comms 36":End If
+		If FX11Countb = 11 then PlaySound "Random 16":End If
+		If FX11Countb = 12 then PlaySound "Alien moving 4",1,1,Right:End If
+		If FX11Countb = 13 then PlaySound "Alien moving 3",1,1,Right:End If
+		If FX11Countb = 14 then PlaySound "Alien moving 2",1,1,Right:End If
+		If FX11Countb = 15 then PlaySound "Alien 6",1,1,Right:End If
+		If FX11Countb = 16 then PlaySound "Alien 5",1,1,Right:End If
+		If FX11Countb = 17 then PlaySound "Alien 4",1,1,Right:End If
+	End If
+	If FX11Count = 1 then PlaySound "No Sound" End If
+	FX11Count=(FX11Count+1) mod 2
+End Sub
+
+Sub SFX12_hit() 
+	PlaySound "Bulk door"					' was PlaySound "Hit 13"							
+End Sub
+
+Dim FX13Count
+Sub SFX13_hit()
+	If FX13Count = 0 then PlaySound "Swoosh 14",1,1,Left:End If
+	If FX13Count = 1 then PlaySound "Swoosh 16",1,1,Left:End If
+	FX13Count=(FX13Count+1) mod 2
+End Sub
+
+Dim FX14Count
+Sub SFX14_hit()
+	StopSound "Motion Tracker"
+	PlaySound "Random 15":AddVPXTimer 1000, "OnOurWay"
+End Sub
+
+Sub OnOurWay
+	PlaySound "Random 16"
+End Sub
+
+Dim FX15Count
+Sub SFX15_hit()
+	If FX15Count = 0 then Divider_right.RotateToStart: PlaySound "Random 13",1,1,Right:FX15Count=1:Exit Sub: End If
+	If FX15Count = 1 then Divider_right.RotateToEnd: PlaySound "Random 14",1,1,Right:FX15Count=2:Exit Sub: End If
+	If FX15Count = 2 then Divider_right.RotateToStart: PlaySound "Random 15",1,1,Right:FX15Count=3:Exit Sub: End If
+	If FX15Count = 3 then Divider_right.RotateToEnd: PlaySound "Random 16",1,1,Right:FX15Count=0:Exit Sub: End If
+End Sub
+
+Dim FX16Count
+Sub SFX16_Hit()
+	If FX16Count = 0 then PlaySound "Alien moving 3",1,1,Left:End If
+	If FX16Count = 1 then PlaySound "Alien 7",1,1,Left:End If
+	If FX16Count = 2 then PlaySound "Alien moving 4",1,1,Left:End If
+	FX16Count=(FX16Count+1) mod 3
+End Sub
+
+Dim FX17Count
+Sub SFX17_Hit()
+	If FX17Count = 0 then PlaySound "Alien moving 2",1,1,Right:End If
+	If FX17Count = 1 then PlaySound "Alien 8",1,1,Right:End If
+	If FX17Count = 2 then PlaySound "Alien moving 4",1,1,Right:End If
+	FX17Count=(FX17Count+1) mod 3
+End Sub
+
+Dim FX18Count
+Sub SFX18_Hit() FX18Count=Int(rnd*3)
+	If FX18Count = 0 then PlaySound "Swoosh 14",1,1,Left:End If
+	If FX18Count = 1 then PlaySound "Swoosh 16",1,1,Left:End If
+	If FX18Count = 2 then PlaySound "Swoosh 12",1,1,Left:End If
+End Sub
+
+Dim FX19Count
+Sub SFX19_Hit() FX19Count=Int(rnd*3)
+	If FX19Count = 0 then PlaySound "Swoosh 16",1,1,Right:End If
+	If FX19Count = 1 then PlaySound "Swoosh 14",1,1,Right:End If
+	If FX19Count = 2 then PlaySound "Swoosh 12",1,1,Right:End If
+End Sub
+
+'Second ball locked?!
+Dim FX20Count
+
+Sub SFX20_Hit() 
+	If liLock.state=1 then				'light kicker sw37 (liLock) is set AND SFX20 is hit (2 ball)
+		Divider.enabled=0
+		liLock.state=0
+		If FX20Count = 0 then GiOff:RedFlashersON: Playsound "Emergency alert",1,1,0:AddVPXTimer 1500, "SceneSound":RedGiON:  AddVPXTimer 2000, "RedPfON '":  AddVPXTimer 2500, "GiOn '": End If
+		If FX20Count = 1 then GiOff:FlashersON: PlaySound "Emergency alert",1,1,0:AddVPXTimer 1500, "SceneSound":GreenGiON:AddVPXTimer 2000, "GreenPfON '":AddVPXTimer 2500, "GiOn '": End If	
+		If FX20Count = 2 then GiOff:BlueFlashersON: Playsound "Emergency alert",1,1,0:AddVPXTimer 1500, "SceneSound":BlueGiON: AddVPXTimer 2000, "BluePfON '": AddVPXTimer 2500, "GiOn '": End If
+	End If
+End Sub
+
+Sub SceneSound
+	If FX20Count = 0 Then PlaySound "Aliens LockedScene 2",-1,MusicVolume: FX20Count = 1: Exit Sub
+	If FX20Count = 1 Then PlaySound "Aliens LockedScene 1",-1,MusicVolume: FX20Count = 2: Exit Sub
+	If FX20Count = 2 Then PlaySound "Aliens LockedScene 2",-1,MusicVolume: FX20Count = 0: Exit Sub
+End Sub
+
+Dim Kicker2Count
+
+Sub Kicker2_hit() Kicker2Count=Int(rnd*18):PlaySound "fx_kicker_enter":PlaySound "Interference 3":GiOff:RedGiOFF:RedPfOFF:GreenGiON:GreenPfON
+	Kicker2.TimerInterval = 6000
+	Kicker2.TimerEnabled =1
+	If liLockb.state=1 then PlaySound "No Sound" End If
+	If liLockb.state=0 then
+		If Kicker2Count = 0 then PlaySound "Ripley 10",1,1,0:End If
+		If Kicker2Count = 1 then PlaySound "Burke 1",1,1,0:End If
+		If Kicker2Count = 2 then PlaySound "Hicks 4",1,1,0:End If
+		If Kicker2Count = 3 then PlaySound "Hudson 35",1,1,0:End If
+		If Kicker2Count = 4 then PlaySound "Ripley 19",1,1,0:End If
+		If Kicker2Count = 5 then PlaySound "Random 4",1,1,0:End If
+		If Kicker2Count = 6 then PlaySound "Hudson 1",1,1,0:End If
+		If Kicker2Count = 7 then PlaySound "Hudson 26",1,1,0:End If
+		If Kicker2Count = 8 then PlaySound "Ripley 15",1,1,0:End If
+		If Kicker2Count = 9 then PlaySound "Hudson 3",1,1,0:End If
+		If Kicker2Count = 10 then PlaySound "Hudson 27",1,1,0:End If
+		If Kicker2Count = 11 then PlaySound "Bishop 2",1,1,0:End If
+		If Kicker2Count = 12 then PlaySound "Hudson 28",1,1,0:End If
+		If Kicker2Count = 13 then PlaySound "Ripley 22",1,1,0:End If
+		If Kicker2Count = 14 then PlaySound "Ripley 11",1,1,0:End If
+		If Kicker2Count = 15 then PlaySound "Vasquez 3",1,1,0:End If
+		If Kicker2Count = 16 then PlaySound "Random 1",1,1,0:End If
+		If Kicker2Count = 17 then PlaySound "Ripley 18",1,1,0:End If
+	End If
+End Sub
+	
+Sub Kicker2_Timer
+	Kicker2.Kick 130,10:FlashersON:PlaySound"fx_kicker":PlaySound"theyre_at_pressure_door_final":AddVPXTimer 1000, "GiOn '":GreenGiOFF:GreenPfOFF
+	Kicker2.TimerEnabled = 0
+End Sub
+
+Sub Kicker3_Hit()
+	If broken=0 Then
+		PlaySound "Glass breaks": Glass.image="Broken glass": litargets2.state=1: AddVPXTimer 1000,"ShockSound": AddVPXTimer 1000,"SceneON": AddVPXTimer 3000,"Kicker3.Kick 260,3": Exit Sub				'AddVPXTimer 1000, "ShockSound'": AddVPXTimer 2000, "SceneON'": AddVPXTimer 5000, "Kicker3.Kick 260,3'": Exit sub
+	End if
+	If broken>0 Then
+		AddVPXTimer 1000, "SceneON'": PlaySound "Aliens Queen Mother":AddVPXTimer 1500, "Kicker3.Kick 260,3'":Exit sub
+	End If
+End Sub
+
+Sub ShockSound
+	PlaySound "Random 32 what the hell"
+End Sub
+
+Sub SceneON
+	If broken=0 Then 
+		Alien3D.visible=1
+		litargets2.state=0
+		PlaySound "Aliens Queen Mother"
+		AddVPXTimer 5000, "AlienQueenOFF'"
+		broken=1
+		Exit Sub
+	End if
+	If broken=1 Then
+		if RipleyON=1 Then AddVPXTimer 2500, "RipleyLoaderON'": End if
+		if RipleyON=0 Then AddVPXTimer 2500, "RipleyTalks'": End if
+	broken=broken+1
+	End if
+End Sub
+
+Sub AlienQueenOFF
+	Alien3D.visible=0
+End Sub
+
+Sub RipleyLoaderON
+	'Show Ripley on Loader
+	AddVPXTimer 100, "RipleyLoaderSound'"
+	RipleyLoader.visible=1
+	AddVPXTimer 2000, "RipleyTalks'"
+	AddVPXTimer 6000, "RipleyLoaderOFF'"
+	litargets2.state=0
+End Sub
+
+Sub RipleyTalks
+	PlaySound "Ripley - Lets talk about killing it!"
+End Sub
+
+Sub RipleyLoaderSound
+	PlaySound "Loader steps mini"
+End Sub
+
+Sub RipleyLoaderOFF
+	RipleyLoader.visible=0
+End Sub
+
+Dim Kicker4Count
+
+Sub Kicker4_Hit() 
+	litargets.state=0
+	litargets2.state=1
+	Divider.RotateToStart
+	GiOn
+	AddVPXTimer 2500, "Kicker4.Kick 200,18"
+	if exitsnd=0 Then Playsound "Random 6": exitsnd=1: Exit Sub: End if		'Were Man? I don't see shit
+	if exitsnd=1 Then Playsound "Hicks 5": exitsnd=2: Exit Sub: End if			'Eat this	
+	if exitsnd=2 Then Playsound "Hudson 38": exitsnd=3: Exit Sub: End if		'Shooting gallery
+	if exitsnd=3 Then Playsound "Hudson 30": exitsnd=4: Exit Sub: End if		'They are around us
+	if exitsnd=4 Then Playsound "Hudson 14":exitsnd=5: Exit Sub: End if		'Something moving
+	if exitsnd=5 Then Playsound "Gorman 1":exitsnd=6: Exit Sub: End if			'Cant see anything	
+	if exitsnd=6 Then Playsound "Emergency alert":exitsnd=0: Exit Sub: End if	'Alert to evacuate
+End Sub
+
+Dim Kicker5Count
+
+Sub Kicker5_Hit() PlaySound "fx_kicker_enter": 'Kicker5Count=Int(rnd*8)
+	Kicker5.TimerInterval = 5000
+	Kicker5.TimerEnabled = 1
+	PlaySound "Elevator"
+End Sub
+
+Sub Kicker5_Timer
+	Kicker5.Kick 0,50,1:PlaySound "Pneumatic":AddVPXTimer 1500,"Wind'": YellowFlashersON
+	Kicker5.TimerEnabled = 0
+End Sub
+
+Sub Wind
+	PlaySound "Wind Howling",-1,1
+End Sub
+
+Dim Kicker6Count
+Sub Kicker6_Hit() PlaySound "fx_kicker_enter"
+	Kicker6.TimerInterval = 2500
+	Kicker6.TimerEnabled = 1
+	If Kicker6Count = 0 then PlaySound "Hicks 9":End If
+	If Kicker6Count = 1 then PlaySound "Comms 9":End If
+	If Kicker6Count = 2 then PlaySound "Sgt Apone 10":End If
+	If Kicker6Count = 3 then PlaySound "Hudson 22":End If
+	If Kicker6Count = 4 then PlaySound "Sgt Apone 13":End If
+	If Kicker6Count = 5 then PlaySound "Comms 12":End If
+	If Kicker6Count = 6 then PlaySound "Hudson 9":End If
+	If Kicker6Count = 7 then PlaySound "Sgt Apone 8":End If
+	If Kicker6Count = 8 then PlaySound "Comms 13":End If
+	Kicker6Count=Int(rnd*9)
+End Sub
+
+Sub Kicker6_Timer
+	Kicker6.Kick 250,10:PlaySound "fx_kicker"
+	Kicker6.TimerEnabled = 0
+End Sub
+
+Dim Kicker7Count
+Sub Kicker7_Hit
+	Controller.Switch(26) = 1					' Add score points 
+	AddVPXTimer 3000, "Controller.Switch(26)=0"	' Switch reset
+	If liLock.state = 1 then 
+		PfON
+		AddVPXTimer 500, "PfOFF '"
+	End If
+	If Kicker7Count=0 Then 
+		AddVPXTimer 1, "BonkSound"
+		AddVPXTimer 500, "BonkSound"
+		AddVPXTimer 1000, "Ripley12"			'Pull team Out!
+		AddVPXTimer 2000, "Kicker7.Kick 270,20"
+		Kicker7Count=1
+		Exit Sub
+	End if
+	If Kicker7Count=1 Then 
+		PlaySound "Bulk door"
+		AddVPXTimer 1000, "sgtApone"					'Throw them Out!
+		AddVPXTimer 2500, "Kicker7.Kick 20,10"
+		Kicker7Count=2
+		Exit Sub
+	End if
+	If Kicker7Count=2 Then 
+		PlaySound "Bulk door"
+		AddVPXTimer 1500, "Kicker7.Kick 20,10"
+		Exit Sub
+	End if
+End Sub
+
+Sub BonkSound
+	PlaySound "pressure_door_bonk_loud"
+End Sub
+
+Sub Ripley12
+	PlaySound "Ripley 12"
+End Sub
+
+Sub sgtApone
+	PlaySound "Sgt Apone 29"
+End Sub
+
+Dim AlienHit
+Sub Wall100_hit() AlienHit=Int(rnd*2)+1
+	If AlienHit=1 Then PlaySound "Alien 3":End If
+	If AlienHit=2 Then PlaySound "Alien 6":End If
+	If AlienHit=3 Then PlaySound "Alien 9":End If
+End Sub
+
+
+Sub Gate1_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
+
+Sub Gate2_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
+
+Sub Gate3_Hit() PlaySound "Swoosh 12",1,FXVolume,0:End Sub
+
+Sub Gate4_Hit() PlaySound "Wind Howling":End Sub
+
+Sub swGate5_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
+
+Sub Gate6_Hit() PlaySound "Sentry gun activated",1,FXVolume,0:GiOff:litargets.state=1:litargets2.state=0:End Sub
+
+Sub Gate7_Hit() PlaySound "": End Sub
+
+Sub Gate8_Hit() PlaySound "fx_gate",1,FXVolume,Left:End Sub
+
+Sub Gate9_Hit() PlaySound "Pneumatic",1,FXVolume,Right:End Sub
+
+Sub Gate10_Hit() PlaySound "": End Sub
+
+Sub Gate11_Hit() PlaySound "pressure_door_bonk_loud",1,FXVolume,Right: End Sub
+
+Sub Gate13_Hit() PlaySound "fx_gate",1,FXVolume,Right:End Sub
+
+Sub Gate17_Hit() PlaySound "pressure_door_bonk_loud",1,FXVolume,Left: End Sub
+
+
+Dim Gate14Count
+Sub Gate14_Hit()
+	Divider.RotateToStart
+	If Gate14Count = 0 then PlaySound "Random 16":End If
+	If Gate14Count = 1 then PlaySound "Emergency alert":End If
+	If Gate14Count = 2 then PlaySound "Random 16":End If
+	If Gate14Count = 3 then PlaySound "Emergency alert":End If
+	If Gate14Count = 4 then PlaySound "Emergency alert":GiOFF:AddVPXTimer 17000, "GiOn '":RedGiON:AddVPXTimer 16000, "RedGiOFF '":RedPfOn:AddVPXTimer 16000, "RedPfOFF '":End If
+	Gate14Count=(Gate14Count+1) mod 5
+End Sub
+
+
+'************
+' Table init.
+'************
+
+Dim LockedBalls
+
+Sub table1_Init
+    vpmInit me
+    With Controller
+        .GameName = cGameName
+        If Err Then MsgBox "Can't start Game" & cGameName & vbNewLine & Err.Description:Exit Sub
+        .SplashInfoLine = "ALIENS 2.0 - Original 2021" & vbNewLine & "VPX table by Delta23"
+        .HandleKeyboard = 0
+        .ShowTitle = 0
+        .ShowDMDOnly = 1
+        .ShowFrame = 0
+        .HandleMechanics = 0
+        .Hidden = 1 'VarHidden
+        .Games(cGameName).Settings.Value("rol") = 0 '1= rotated display, 0= normal
+		.Games(cGameName).Settings.Value("sound") = 0
+        '.SetDisplayPosition 0,0, GetPlayerHWnd 'restore dmd window position
+        On Error Resume Next
+        Controller.SolMask(0) = 0
+        AddVPXTimer 2000, "Controller.SolMask(0)=&Hffffffff'" 'ignore all solenoids - then add the Timer to renable all the solenoids after 2 seconds
+        Controller.Run GetPlayerHWnd
+        On Error Goto 0
+    End With
+
+    ' Nudging
+    vpmNudge.TiltSwitch = 1
+    vpmNudge.Sensitivity = 3
+    'vpmNudge.TiltObj = Array(Bumper1, Bumper2, Bumper3, LeftSlingshot, RightSlingshot)
+
+    ' Trough
+	Set bsTrough = New cvpmBallStack
+    With bsTrough
+		.Initsw 28, 30, 29, 0, 0, 0, 0, 0
+		.InitKick BallRelease, 90, 4
+        .InitExitSnd SoundFX("fx_ballrel", DOFContactors), SoundFX("fx_Solenoid", DOFContactors)
+        .Balls = 2
+	End With
+
+    ' Saucers
+    Set bsSaucer = New cvpmBallStack
+    With bsSaucer
+        .InitSaucer sw37, 37, 180, 12
+        .InitExitSnd SoundFX("fx_kicker", DOFContactors), SoundFX("fx_Solenoid", DOFContactors)
+        .KickZ = 1
+        .KickForceVar = 2
+		 LockedBalls=2
+    End With
+
+    ' Drop targets
+    Set dtBank = New cvpmDropTarget
+    With dtBank
+        .InitDrop Array(sw34, sw35, sw36), Array(34, 35, 36)
+        .initsnd SoundFX("", DOFDropTargets), SoundFX("fx_resetdrop", DOFContactors)
+        .CreateEvents "dtBank"
+    End With
+
+	'Glass (also done with startkey/plungerkey)
+	broken=0
+			
+	' Main Timer init
+    PinMAMETimer.Interval = PinMAMEInterval
+	PinMAMETimer.Enabled = 1
+
+	SolidLightsOFF
+	StartedGame=0
+
+	' Turn off Gi
+    GiOff
+	
+	'Play Theme music
+	ThemesPlayer
+
+End Sub
+
+Sub table1_Paused:Controller.Pause = 1:End Sub
+Sub table1_unPaused:Controller.Pause = 0:End Sub
+Sub table1_exit:Controller.stop:End Sub
+
+Dim FlipsReset
+
+Sub ResetFlips
+	PortFlipL.RotateToStart: PlaySound ("fx_flipperup_" & FXVolume), 0, 1, Left
+	PortFlipR.RotateToStart: PlaySound ("fx_flipperup_" & FXVolume), 0, 1, Right
+	FlipsReset=1
+End Sub
+
+'**********
+' Keys
+'**********
+Pin.IsDropped = 1
+Dim PortFlipStatus
+Dim PinStatus
+Dim GameStarted
+
+Sub table1_KeyDown(ByVal Keycode)
+
+	if keycode = 18 Then sw9_Spin:sw16_Spin'FX20Count = 1: sw37_Hit:SFX20_Hit: end If
+	if keycode = 33 Then sw10_Hit:sw14_Hit:sw15_Hit
+	if keycode = 30 Then sw9_Spin:sw16_Spin:sw44_Hit:sw45_Hit:sw10_Hit:sw11_Hit:sw12_Hit:sw13_Hit:sw14_Hit:sw15_Hit	'li49.State=1:li50.State=1:li51.State=1:li52.State=1:end if
+	 
+	'Reset flips and solid lights when pressing start
+	If keycode = StartGameKey Then 
+		PlaySound SoundFX("fx_sensor",DOFContactors)
+		GiON
+		SolidLightsOFF
+		StopAllSounds
+				
+		If FlipsReset=0 Then 
+			ResetFlips
+			AddVPXTimer 5000, "FlipsReset=0"
+		End if
+	
+		ResetNostromo
+
+		'Reset Glass
+		Glass.visible=1
+		Glass.image=""
+		broken=0
+
+		StopVPXTimer
+		StopAllSounds
+
+		MusicPlayer
+
+		'Reset Lock mode
+		FX20Count=0
+
+		StartedGame=1
+
+	End if
+
+	'Changed the Nudge (was 5 now 0.2)
+    If keycode = LeftTiltKey Then Nudge 90, 0.2:PlaySound "fx_nudge", 0, 1, Left, 0.25 	'PlaySound SoundFX("fx_nudge", 0), 0, 1, -0.1, 0.25
+    If keycode = RightTiltKey Then Nudge 270, 0.2:PlaySound "fx_nudge", 0, 1,Right, 0.25	'PlaySound SoundFX("fx_nudge", 0), 0, 1, 0.1, 0.25
+    If keycode = LeftTiltKey AND RightTiltKey Then Nudge 0, 0.2:PlaySound "fx_nudge", 0, 1, 0, 0.25	'PlaySound SoundFX("fx_nudge", 0), 0, 1, 0, 0.25
+    If keycode = PlungerKey Then PlaySound ("fx_plunger_" & FXVolume), 0, 1, Right:Plunger.Pullback
+    If vpmKeyDown(keycode)Then Exit Sub
+    If keycode = RightFlipperKey Then Controller.Switch(44) = 1
+End Sub
+
+Dim DPosition
+
+Sub table1_KeyUp(ByVal Keycode)
+	If vpmKeyUp(keycode)Then Exit Sub
+	
+	If keycode = RightFlipperKey Then Controller.Switch(44) = 0
+    If keycode = PlungerKey Then 
+		
+		Divider.enabled=1
+
+		PlaySound ("fx_plunger_empty_" & FXVolume), 0, 1, Right
+		Plunger.Fire
+
+		'Enable OutLane Flips with plunger fire (no extra Keys)
+		PortFlipL.RotateToEnd: PlaySound ("fx_flipperdown_" & FXVolume), 0, 1, Left		'PlaySound SoundFX("fx_sensor",DOFContactors)
+		PortFlipR.RotateToEnd: PlaySound ("fx_flipperdown_" & FXVolume), 0, 1, Right
+		
+		'Set Divider
+		'Dposition=0
+		'Dposition=Int(rnd*2)
+		If Dposition=0 Then Divider.EndAngle=185: Divider.RotateToEnd:Dposition=1: Exit Sub: End if
+		If Dposition=1 Then Divider.EndAngle=145: Divider.RotateToEnd:Dposition=2: Exit Sub: End if
+		If Dposition=2 Then Divider.EndAngle=230: Divider.RotateToEnd:Dposition=0: Exit Sub: End if
+	End if
+		
+	'Switch OutLane Flips with Left Magna key
+	'If KeyCode = LeftMagnaSave AND PortFlipStatus=0 Then PortFlipL.RotateToEnd: PortFlipR.RotateToEnd: PlaySound SoundFX("fx_sensor",DOFContactors)
+	'If KeyCode = LeftMagnaSave AND PortFlipStatus=1 Then PortFlipL.RotateToStart: PortFlipR.RotateToStart: PlaySound SoundFX("fx_sensor",DOFContactors)
+End Sub
+
+'*********
+' Switches
+'*********
+
+' Slings
+Dim LStep, RStep, LeftCount, RightCount
+
+Sub LeftSlingShot_Slingshot
+	If liLockb.state = 1 then PfON: AddVPXTimer 500, "PfOFF '":End If
+	LeftCount = Int (rnd*4)
+    If LeftCount = 0 then PlaySound "Pulse Rifle 1", 0, 1, Left:PlaySound "fx_slingshot", 0, 1, Left: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, -0.05, 0.05:End If
+	If LeftCount = 1 then PlaySound "Pulse Rifle 3", 0, 1, Left:PlaySound "fx_slingshot", 0, 1, Left: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, -0.05, 0.05:End If
+	If LeftCount = 2 then PlaySound "Pulse Rifle 5", 0, 1, Left:PlaySound "fx_slingshot", 0, 1, Left: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, -0.05, 0.05:End If
+	If LeftCount = 3 then PlaySound "Pulse Rifle 7", 0, 1, Left:PlaySound "fx_slingshot", 0, 1, Left: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, -0.05, 0.05:End If
+    LeftSling4.Visible = 1
+    Lemk.RotX = 26
+    LStep = 0
+    vpmTimer.PulseSw 32
+    LeftSlingShot.TimerEnabled = 1
+End Sub
+
+Sub LeftSlingShot_Timer
+    Select Case LStep
+        Case 1:LeftSling4.Visible = 0:LeftSLing3.Visible = 1:Lemk.RotX = 14
+        Case 2:LeftSLing3.Visible = 0:LeftSLing2.Visible = 1:Lemk.RotX = 2
+        Case 3:LeftSLing2.Visible = 0:Lemk.RotX = -20:LeftSlingShot.TimerEnabled = 0
+    End Select
+    LStep = LStep + 1
+End Sub
+
+Sub RightSlingShot_Slingshot
+	If liLockb.state = 1 then PfON: AddVPXTimer 500, "PfOFF '":End If
+	RightCount = Int (rnd*4)
+    If RightCount = 0 then PlaySound "Pulse Rifle 2", 0, 1, Right:PlaySound "fx_slingshot", 0, 1, Right: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, 0.05, 0.05:End If
+	If RightCount = 1 then PlaySound "Pulse Rifle 4", 0, 1, Right:PlaySound "fx_slingshot", 0, 1, Right: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, 0.05, 0.05:End If
+	If RightCount = 2 then PlaySound "Pulse Rifle 6", 0, 1, Right:PlaySound "fx_slingshot", 0, 1, Right: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, 0.05, 0.05:End If
+	If RightCount = 3 then PlaySound "Pulse Rifle 8", 0, 1, Right:PlaySound "fx_slingshot", 0, 1, Right: End If		'PlaySound SoundFX("fx_slingshot", DOFContactors), 0, 1, 0.05, 0.05:End If
+    RightSling4.Visible = 1
+    Remk.RotX = 26
+    RStep = 0
+    vpmTimer.PulseSw 33
+    RightSlingShot.TimerEnabled = 1
+End Sub
+
+Sub RightSlingShot_Timer
+    Select Case RStep
+        Case 1:RightSLing4.Visible = 0:RightSLing3.Visible = 1:Remk.RotX = 14
+        Case 2:RightSLing3.Visible = 0:RightSLing2.Visible = 1:Remk.RotX = 2
+        Case 3:RightSLing2.Visible = 0:Remk.RotX = -20:RightSlingShot.TimerEnabled = 0
+    End Select
+    RStep = RStep + 1
+End Sub
+
+' Rubbers, sound is done in the collection
+
+Sub sw39_Hit:vpmTimer.PulseSw 39:End Sub
+Sub sw40_Hit:vpmTimer.PulseSw 40:End Sub
+Sub sw42_Hit:vpmTimer.PulseSw 42:End Sub
+Sub sw43_Hit:vpmTimer.PulseSw 43:End Sub
+
+' Bumpers
+Sub Bumper1_Hit:vpmTimer.PulseSw 21:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:End Sub
+'Sub Bumper2_Hit:vpmTimer.PulseSw 23:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.025:End Sub
+Sub Bumper3_Hit:vpmTimer.PulseSw 22:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:End Sub
+'Sub MiniBumper1_Hit:vpmTimer.PulseSw 21:PlaySound "Sentry gun 1",1,0.5:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:End Sub
+Sub MiniBumper2_Hit:vpmTimer.PulseSw 21:PlaySound "Sentry gun 1",1,0.5:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:End Sub
+Sub MiniBumper3_Hit:vpmTimer.PulseSw 22:PlaySound "Sentry gun 1",1,0.5:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:End Sub
+Sub MiniBumper4_Hit:vpmTimer.PulseSw 22:PlaySound "Sentry gun 1",1,0.5:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:End Sub
+
+Sub MiniBumperKick_Hit():vpmTimer.PulseSw 23:PlaySound "Explosion":PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:FlashersON:End Sub  	'Canged PlaySound "Hit 2" 
+
+Sub MiniBumperKick2_Hit:vpmTimer.PulseSw 23:PlaySound "Explosion",0,0.75,Right:PlaySound SoundFX("fx_bumper", DOFContactors), 0, 1, -0.05:FlashersON:End Sub		'Changed PlaySound "Pneumatic"
+
+' Drain & Saucers
+
+Sub Drain_Hit
+		
+	RedGiOFF
+	RedPfOFF
+	BlueGiOFF
+	BluePfOFF
+	GreenPfOFF
+	GreenGiOFF 
+	DrainLight.color=RGB (0,128,198)
+	DrainLight.colorfull=RGB (0,128,198)
+	SolidLightsOFF
+	StopAllSounds
+	PlaySound "DrainSound 1" 
+
+	'Reset Lights	
+	ResetNostromo
+	'Close Aliens Nest entrance
+	Kicker7Count=0		
+
+	'Divider enabled again
+	Divider.enabled=1
+
+	MovieON
+	MusicPlayer	
+	
+	bsTrough.AddBall Me
+	GameOverTimer.enabled=1
+End Sub
+
+'Locked Balls switch
+Sub sw37_Hit: PlaySound "Hydraulic Door": StopSound "Wind Howling": liLock.state=1: liLockb.state=1: PlaySound "fx_kicker_enter", 0, 1, 0.05: bsSaucer.AddBall 0: End Sub
+
+' Rollovers
+Sub sw38_Hit:Controller.Switch(38) = 1:PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw38_UnHit:Controller.Switch(38) = 0:End Sub
+
+Sub sw31_Hit:Controller.Switch(31) = 1:PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw31_UnHit:Controller.Switch(31) = 0:End Sub
+
+Sub sw24_Hit:Controller.Switch(24) = 1:PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw24_UnHit:Controller.Switch(24) = 0:End Sub
+
+Sub sw25_Hit:Controller.Switch(25) = 1:PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw25_UnHit:Controller.Switch(25) = 0:End Sub
+
+Sub sw26_Hit:Controller.Switch(26) = 1:PlaySound "HUD Interface 2":PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw26_UnHit:Controller.Switch(26) = 0:End Sub
+
+Sub sw27_Hit:Controller.Switch(27) = 1:PlaySound "HUD Interface 2":PlaySound "fx_sensor", 0, 1, pan(ActiveBall): End Sub
+Sub sw27_UnHit:Controller.Switch(27) = 0:End Sub
+
+Sub sw17_Hit:Controller.Switch(17) = 1:PlaySound "Hit 11":PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw17_UnHit:Controller.Switch(17) = 0:End Sub
+
+Sub sw18_Hit:Controller.Switch(18) = 1:PlaySound "Hit 11":PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw18_UnHit:Controller.Switch(18) = 0:End Sub
+
+Sub sw19_Hit:Controller.Switch(19) = 1:PlaySound "Hit 11":PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw19_UnHit:Controller.Switch(19) = 0:End Sub
+
+Sub sw20_Hit:Controller.Switch(20) = 1:PlaySound "Hit 11":PlaySound "fx_sensor", 0, 1, pan(ActiveBall):End Sub
+Sub sw20_UnHit:Controller.Switch(20) = 0:End Sub
+
+' 3 Droptargets Alien (sound only)
+'Sub aDroptargets_Hit(idx):PlaySound "Alien 3":PlaySound SoundFX("fx_droptarget", DOFDropTargets), 0, 1, pan(ActiveBall):End Sub
+Sub sw34_Hit: PlaySound "Alien 3": PlaySound "fx_droptarget", 0, 1: End Sub		'PlaySound SoundFX("fx_droptarget", DOFDropTargets), 0, 1, pan(ActiveBall):End Sub
+Sub sw35_Hit: PlaySound "Alien 4": PlaySound "fx_droptarget", 0, 1: End Sub		'PlaySound SoundFX("fx_droptarget", DOFDropTargets), 0, 1, pan(ActiveBall):End Sub
+Sub sw36_Hit: PlaySound "Alien 10":PlaySound "fx_droptarget", 0, 1: End Sub		'PlaySound SoundFX("fx_droptarget", DOFDropTargets), 0, 1, pan(ActiveBall):End Sub
+
+'Left & Right upperlanes
+Sub sw46_UnHit: StopSound "Wind Howling": End Sub
+Sub sw47_UnHit: StopSound "Wind Howling": End Sub
+
+' Spinners
+Sub sw9_Spin: vpmTimer.PulseSw 9:  PlaySound ("fx_spinner_" & FXVolume), 0, 1, Left: End Sub
+Sub sw16_Spin:vpmTimer.PulseSw 16: PlaySound ("fx_spinner_" & FXVolume), 0, 1, Right: End Sub
+
+'Targets
+Sub sw10_Hit:vpmTimer.PulseSw 10:sw10.image="target-blue-broken": Nostromo10: End Sub 		'PlaySound SoundFX("fx_target", DOFDropTargets), 0, 1, pan(ActiveBall)
+Sub sw11_Hit:vpmTimer.PulseSw 11:sw11.image="target-blue-broken": Nostromo11: End Sub		'PlaySound SoundFX("fx_target", DOFDropTargets), 0, 1, pan(ActiveBall)
+Sub sw12_Hit:vpmTimer.PulseSw 12:sw12.image="target-blue-broken": Nostromo12: End Sub		'PlaySound SoundFX("fx_target", DOFDropTargets), 0, 1, pan(ActiveBall)
+Sub sw13_Hit:vpmTimer.PulseSw 13:sw13.image="target-blue-broken": Nostromo13: End Sub		'PlaySound SoundFX("fx_target", DOFDropTargets), 0, 1, pan(ActiveBall)
+Sub sw14_Hit:vpmTimer.PulseSw 14:sw14.image="target-blue-broken": Nostromo14: End Sub		'PlaySound SoundFX("fx_target", DOFDropTargets), 0, 1, pan(ActiveBall)
+Sub sw15_Hit:vpmTimer.PulseSw 15:sw15.image="target-blue-broken": Nostromo15: End Sub		'PlaySound SoundFX("fx_target", DOFDropTargets), 0, 1, pan(ActiveBall)
+
+
+'****************
+' SOLID Lights
+'****************
+
+'Add SoundEffect to NOSTROMO Lights
+Sub sw44_Hit
+	Nostromo9
+End Sub
+
+Sub sw45_Hit
+	Nostromo16
+End Sub
+
+Sub Nostromo9
+	If li60.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li60.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo10
+	If li61.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li61.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+	If li61.State=1 Then
+		PlaySound "Hit 12",0,0.75
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo11
+	If li62.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li62.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+	If li62.State=1 Then
+		PlaySound "Hit 12",0,0.75
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo12
+	If li63.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li63.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+	If li63.State=1 Then
+		PlaySound "Hit 12",0,0.75
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo13
+	If li64.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li64.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+	If li64.State=1 Then
+		PlaySound "Hit 12",0,0.75
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo14
+	If li65.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li65.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+	If li65.State=1 Then
+		PlaySound "Hit 12",0,0.75
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo15
+	If li66.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li66.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+	If li66.State=1 Then
+		PlaySound "Hit 12",0,0.75
+		Exit Sub
+	End if
+End Sub
+
+Sub Nostromo16
+	If li67.State=0 Then 
+		PlaySound "Loader steps Mini",0,1
+		li67.State=1
+		CheckNostromo
+		Exit Sub
+	End if
+End Sub
+
+Sub CheckNostromo
+	If li60.State=1 AND li61.State=1 AND li62.State=1 AND li63.State=1 AND li64.State=1 AND li65.State=1 AND li66.State=1 AND li67.State=1 Then 
+		PlaySound "nostromo_completed_100"
+		AddVPXTimer 1000, "ResetNostromo"
+	End If
+End Sub
+
+Sub ResetNostromo
+	li60.State=0: li61.State=0: li62.State=0: li63.State=0: li64.State=0: li65.State=0: li66.State=0: li67.State=0
+	sw10.image="target-blue": sw11.image="target-blue": sw12.image="target-blue": sw13.image="target-blue": sw14.image="target-blue": sw15.image="target-blue"
+End Sub
+
+
+
+
+'*********
+'Solenoids
+'*********
+
+Sub flArray()
+	liArray = Array(F5,F5a,F6,F6a,F7,F7a)
+	For a = 0 to 5
+	liArray(a).State=0
+	Next
+End Sub
+
+
+SolCallback(1) = "bsTrough.SolIn"   ' Outhole
+SolCallback(2) = "bsTrough.SolOut"  ' Ball Release
+SolCallback(3) = "bsSaucer.SolOut"  ' Multi-Ball Eject
+SolCallback(4) = "dtBank.SolDropUp" ' Three Bank Reset
+SolCallback(5) = "SetLamp 105,"     ' Demon Backdrop Flasher
+SolCallback(6) = "SetLamp 106," 	' Drop Target Flasher
+SolCallback(7) = "SetLamp 107,"     ' Center Target Bank Flashers
+SolCallback(8) = "SetLamp 108,"     ' Back Panel Eye Flashers
+SolCallback(11) = "SolGi"           ' General Illumination
+'SolCallback(14)     = ""
+SolCallback(15) = "vpmSolSound""SFX_GameAward""," ' Bell > Game Award
+'SolCallback(16)
+'SolCallback(17)     = ""  ' Left Sling
+'SolCallback(18)     = "" ' Right Sling
+'SolCallback(19)	  = ""  				    ' Left Jet Bumper
+'SolCallback(20)	  = ""    				' Bottom Jet Bumper
+'SolCallback(21)	  = ""    				' Right Jet Bumper
+SolCallback(23) = "vpmNudge.SolGameOn"
+
+'**************
+' Flipper Subs
+'**************
+
+SolCallback(sLRFlipper) = "SolRFlipper"
+SolCallback(sLLFlipper) = "SolLFlipper"
+
+Sub SolLFlipper(Enabled)
+	If Enabled Then
+        'PlaySound SoundFX("fx_flipperup", DOFFlippers), 0, 1, -0.1, 0.05
+		If SoundEffect=1 then PlaySound (FlipperUP & FXVolume), 0, 1, Left, 0.05: End if
+		If SoundEffect=2 then PlaySoundAt SoundFXDOF((FlipperUP & FXVolume), 101, DOFOn, DOFFlippers), LeftFlipper: End if
+		LeftFlipper.RotateToEnd
+		LeftFlipper1.RotateToEnd
+		'nbr=nbr+1
+		'If nbr=6 Then nbr=0: End if
+	Else
+        'PlaySound SoundFX("fx_flipperdown", DOFFlippers), 0, 1, -0.1, 0.05
+		If SoundEffect=1 then PlaySound (FlipperDOWN & FXVolume), 0, 1, Left, 0.05: End if
+		If SoundEffect=2 then PlaySoundAt SoundFXDOF((FlipperDOWN & FXVolume), 101, DOFOff, DOFFlippers), LeftFlipper: End if
+		LeftFlipper.RotateToStart
+		LeftFlipper1.RotateToStart
+	End If
+End Sub
+
+Sub SolRFlipper(Enabled)
+    If Enabled Then
+        'PlaySound SoundFX("fx_flipperup", DOFFlippers), 0, 1, 0.1, 0.05
+		If SoundEffect=1 then PlaySound (FlipperUP & FXVolume), 0, 1, Right, 0.05: End if
+		If SoundEffect=2 then PlaySoundAt SoundFXDOF((FlipperUP & FXVolume), 102, DOFOn, DOFFlippers), RightFlipper: End if
+		RightFlipper.RotateToEnd
+		RightFlipper1.RotateToEnd
+		'nbr=nbr+1
+		'If nbr=6 Then nbr=0: End if
+	Else
+        'PlaySound SoundFX("fx_flipperdown", DOFFlippers), 0, 1, 0.1, 0.05
+		If SoundEffect=1 then PlaySound (FlipperDOWN & FXVolume), 0, 1, Right, 0.05: End if
+		If SoundEffect=2 then PlaySoundAt SoundFXDOF((FlipperDOWN & FXVolume), 102, DOFOff, DOFFlippers), RightFlipper: End if
+		RightFlipper.RotateToStart
+		RightFlipper1.RotateToStart
+	End If
+End Sub
+
+Sub LeftFlipper_Collide(parm)
+    If SoundEffect=1 then PlaySound "fx_rubber_flipper", 0, parm / 10, Right, 0.25: end If
+	If SoundEffect=2 then PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall):End If
+End Sub
+
+Sub RightFlipper_Collide(parm)
+    If SoundEffect=1 then PlaySound "fx_rubber_flipper", 0, parm / 10, Right, 0.25: End if
+	If SoundEffect=2 then PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall): End If
+End Sub
+
+Sub LeftFlipper1_Collide(parm)
+    If SoundEffect=1 then PlaySound "fx_rubber_flipper", 0, parm / 10, Left, 0.25: End if
+	If SoundEffect=2 then PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall): End if
+End Sub
+
+Sub RightFlipper1_Collide(parm)
+    If SoundEffect=1 then PlaySound "fx_rubber_flipper", 0, parm / 10, Left, 0.25: End if
+	If SoundEffect=2 then PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall): End if
+End Sub
+
+'*****************
+'   Gi Effects
+'*****************
+
+Sub SolGi(enabled)
+   If Enabled Then
+		PlaySound "fx_SolenoidOn", 0, 1
+        GiOff
+	Else
+		PlaySound "fx_SolenoidOff", 0, 1
+        GiOn
+	End If
+End Sub
+
+Sub GiON
+    For each x in aGiLights
+        x.State = 1
+    Next
+End Sub
+
+Sub GiOff
+    For each x in aGiLights
+        x.State = 0
+    Next
+End Sub
+
+Sub PfON
+	For each x in aPFlights
+		x.State = 2
+	Next
+End Sub
+
+Sub PfOFF
+	For each x in aPFlights
+		x.State = 0
+	Next
+End Sub
+
+'GI
+
+Sub RedGiON
+	For each x in aRedlights
+		x.State = 2
+		x.color= RGB(170,0,0)
+		x.colorfull= RGB(170,0,0)
+	Next
+End Sub
+
+Sub GreenGiON
+	For each x in aGreenlights
+		x.state = 2
+	Next
+End Sub
+
+Sub BlueGiON
+	For each x in aBluelights
+		'x.Duration 0,10000,1
+		x.State = 2
+		x.color= RGB(0,100,200)
+		x.colorfull= RGB(0,0,255)
+	Next
+End Sub
+
+Sub RedGiOFF
+	For each x in aRedlights
+		x.State = 0
+	Next
+End Sub
+
+Sub GreenGiOFF
+	For each x in aGreenlights
+		x.State = 0
+	Next
+End Sub
+
+Sub BlueGiOFF
+	For each x in aBluelights
+		x.State = 0
+	Next
+End Sub
+
+'PF
+
+Sub RedPfON
+	For each x in aPFlightsRed
+		x.State = 2
+		x.color= RGB(170,0,0)
+		x.colorfull= RGB(170,0,0)
+	Next
+End Sub
+
+Sub RedPfOFF
+	For each x in aPFlightsRed
+		x.State = 0
+	Next
+End Sub
+
+Sub GreenPfON
+	For each x in aPFlightsGreen
+		x.State = 2
+	Next
+End Sub
+
+Sub GreenPfOFF
+	For each x in aPFlightsGreen
+		x.State = 0
+	Next
+End Sub
+
+Sub BluePfON
+	For each x in aPFlightsBlue
+		x.State = 2
+		x.color= RGB(0,100,200)
+		x.colorfull= RGB(0,0,255)
+	Next
+End Sub
+
+Sub BluePfOFF
+	For each x in aPFlightsBlue
+		x.State = 0
+	Next
+End Sub
+
+'FLASHERS
+
+Sub RedFlashersON
+	For each x in aFlashers
+		x.duration 1, 150, 0
+		x.color= RGB(170,0,0)
+		x.colorfull= RGB(170,0,0)
+	Next
+End Sub
+
+Sub BlueFlashersON
+	For each x in aFlashers
+		x.duration 1, 150, 0
+		x.color= RGB(80,165,255)
+		x.colorfull= RGB(0,0,255)
+	Next
+End Sub
+
+Sub FlashersON			'GreenFlashers=default
+	For each x in aFlashers
+		x.duration 1, 150, 0
+		x. color= RGB (128,200,128)
+		x.colorfull= RGB(0,200,0)
+	Next
+End Sub
+
+Sub YellowFlashersON
+	For each x in aFlashers
+		x.duration 1, 150, 0
+		x.color = RGB(255,255,128)
+		x.colorfull= RGB(255,255,0)
+	Next
+End Sub
+
+Sub FlashersOFF
+	For each x in aFlashers
+		x.State = 0
+		x.colorfull= RGB(0,255,0)
+	Next
+End Sub
+
+'SOLID LIGHTS
+
+Sub SolidLightsON
+	For each x in SolidLights
+		x.State = 1
+	Next
+End Sub
+
+Sub SolidLightsOFF
+	For each x in SolidLights
+		x.State = 0
+	Next
+End Sub
+
+'***************************************************
+'       JP's VP10 Fading Lamps & Flashers
+'       Based on PD's Fading Light System
+' SetLamp 0 is Off
+' SetLamp 1 is On
+' fading for non opacity objects is 4 steps
+'***************************************************
+
+Dim LampState(200), FadingLevel(200)
+Dim FlashSpeedUp(200), FlashSpeedDown(200), FlashMin(200), FlashMax(200), FlashLevel(200), FlashRepeat(200)
+
+InitLamps()             ' turn off the lights and flashers and reset them to the default parameters (end of Game)
+LampTimer.Interval = 40  ' lamp fading speed
+LampTimer.Enabled = 1
+
+' Lamp & Flasher Timers
+Sub LampTimer_Timer()
+    Dim chgLamp, num, chg, ii
+    chgLamp = Controller.ChangedLamps
+    If StartedGame=1 AND Not IsEmpty(chgLamp)Then
+        For ii = 0 To UBound(chgLamp)
+            LampState(chgLamp(ii, 0)) = chgLamp(ii, 1)       'keep the real state in an array
+            FadingLevel(chgLamp(ii, 0)) = chgLamp(ii, 1) +4 '+ 4 actual fading step
+		Next
+    End If
+	
+	If VarHidden Then
+        UpdateLeds
+    End If
+    UpdateLamps
+    RollingUpdate
+End Sub
+
+Sub UpdateLamps()
+	
+	'backdrop lights
+    NFadeT 1, li1, "GameOver"
+    NFadeT 2, li2, "Match"
+    NFadeT 3, li3, "TILT"
+    NFadeTm 4, li4, "HighScore"
+    NFadeT 4, li4a, "To Date"
+    NFadeT 5, li5, "Shoot Again"
+    NFadeT 6, li6, "Ball in Play"
+
+    ' playfield lights
+    NFadeL 6, li6
+    NFadeL 7, li7
+	'Special
+    NFadeL 8, li8
+    
+	'NOSTROMO -> Lights changed to solid (placed these outside table to not disturb rom rules)
+	NFadeL 9, li9	
+    NFadeL 10, li10	
+    NFadeL 11, li11
+    NFadeL 12, li12
+    NFadeL 13, li13
+    NFadeL 14, li14
+    NFadeL 15, li15
+    NFadeL 16, li16
+	
+	'RollOvers
+    NFadeL 17, li17
+    NFadeL 18, li18
+    NFadeL 19, li19
+    NFadeL 20, li20
+	
+	'Extra Ball
+    NFadeL 21, li21
+	'Bonus Hold
+    NFadeL 22, li22
+		
+    NFadeL 23, li23
+    NFadeL 24, li24
+    NFadeL 25, li25
+	NFadeL 26, li26
+    NFadeL 27, li27
+	NFadeL 28, li28
+    NFadeL 29, li29
+    NFadeL 30, li30
+    NFadeL 31, li31
+	NFadeL 32, li32
+	NFadeL 33, li33
+    NFadeL 34, li34
+    NFadeL 35, li35
+    NFadeL 36, li36
+    NFadeL 37, li37
+    NFadeL 38, li38
+    NFadeL 39, li39
+    NFadeL 40, li40
+    NFadeL 41, li41
+    NFadeL 42, li42
+    NFadeL 43, li43
+    NFadeL 44, li44
+    NFadeL 45, li45
+    NFadeL 46, li46
+    NFadeL 47, li47
+    NFadeL 48, li48
+    NFadeL 49, li49
+    NFadeL 50, li50
+    NFadeL 51, li51
+    NFadeL 52, li52
+
+	'3 bank targets (placed outside)
+    NFadeL 53, li53
+    NFadeL 54, li54
+    NFadeL 55, li55
+	
+    'flashers
+    NFadeL 105, F5a
+	NFadeL 105, F5
+    NFadeL 106, F6a
+    NFadeL 106, F6
+    NFadeL 107, F7a
+    NFadeL 107, F7
+    'Flashm 108, F8a
+    Flash 108, F8b
+
+	'Added some extra arrow lightning
+	li31b.State=LampState(31)
+	li32b.State=LampState(32)
+
+End Sub
+
+' div lamp subs
+
+Sub InitLamps()
+    Dim x
+    For x = 0 to 200
+        LampState(x) = 0        ' current light state, independent of the fading level. 0 is off and 1 is on
+        FadingLevel(x) = 4      ' used to track the fading state
+        FlashSpeedUp(x) = 0.5   ' faster speed when turning on the flasher
+        FlashSpeedDown(x) = 0.25 ' slower speed when turning off the flasher
+        FlashMax(x) = 1         ' the maximum value when on, usually 1
+        FlashMin(x) = 0         ' the minimum value when off, usually 0
+        FlashLevel(x) = 0       ' the intensity of the flashers, usually from 0 to 1
+        FlashRepeat(x) = 20     ' how many times the flash repeats
+	Next
+End Sub
+
+Sub AllLampsOff 	
+    Dim x
+    For x = 0 to 200
+        SetLamp x, 0
+    Next
+	li26.State=0
+	li27.State=0
+End Sub
+
+Sub SetLamp(nr, value)
+    If value <> LampState(nr)Then
+        LampState(nr) = abs(value)
+        FadingLevel(nr) = abs(value) + 4
+    End If
+End Sub
+
+' Lights: used for VP10 standard lights, the fading is handled by VP itself
+
+Sub NFadeL(nr, object)
+    Select Case FadingLevel(nr)
+        Case 4:object.state = 0:FadingLevel(nr) = 0
+        Case 5:object.state = 1:FadingLevel(nr) = 1
+    End Select
+End Sub
+
+Sub NFadeLm(nr, object) ' used for multiple lights
+    Select Case FadingLevel(nr)
+        Case 4:object.state = 0
+        Case 5:object.state = 1
+    End Select
+End Sub
+
+'Lights, Ramps & Primitives used as 4 step fading lights
+'a,b,c,d are the images used from on to off
+
+Sub FadeObj(nr, object, a, b, c, d)
+    Select Case FadingLevel(nr)
+        Case 4:object.image = b:FadingLevel(nr) = 6                   'fading to off...
+        Case 5:object.image = a:FadingLevel(nr) = 1                   'ON
+        Case 6, 7, 8:FadingLevel(nr) = FadingLevel(nr) + 1            'wait
+        Case 9:object.image = c:FadingLevel(nr) = FadingLevel(nr) + 1 'fading...
+        Case 10, 11, 12:FadingLevel(nr) = FadingLevel(nr) + 1         'wait
+        Case 13:object.image = d:FadingLevel(nr) = 0                  'Off
+    End Select
+End Sub
+
+Sub FadeObjm(nr, object, a, b, c, d)
+    Select Case FadingLevel(nr)
+        Case 4:object.image = b
+        Case 5:object.image = a
+        Case 9:object.image = c
+        Case 13:object.image = d
+    End Select
+End Sub
+
+Sub NFadeObj(nr, object, a, b)
+    Select Case FadingLevel(nr)
+        Case 4:object.image = b:FadingLevel(nr) = 0 'off
+        Case 5:object.image = a:FadingLevel(nr) = 1 'on
+    End Select
+End Sub
+
+Sub NFadeObjm(nr, object, a, b)
+    Select Case FadingLevel(nr)
+        Case 4:object.image = b
+        Case 5:object.image = a
+    End Select
+End Sub
+
+' Flasher objects
+
+Sub Flash(nr, object)
+    Select Case FadingLevel(nr)
+        Case 4 'off
+            FlashLevel(nr) = FlashLevel(nr)- FlashSpeedDown(nr)
+            If FlashLevel(nr) <FlashMin(nr)Then
+                FlashLevel(nr) = FlashMin(nr)
+                FadingLevel(nr) = 0 'completely off
+            End if
+            Object.IntensityScale = FlashLevel(nr)
+        Case 5 ' on
+            FlashLevel(nr) = FlashLevel(nr) + FlashSpeedUp(nr)
+            If FlashLevel(nr)> FlashMax(nr)Then
+                FlashLevel(nr) = FlashMax(nr)
+                FadingLevel(nr) = 1 'completely on
+            End if
+            Object.IntensityScale = FlashLevel(nr)
+    End Select
+End Sub
+
+Sub Flashm(nr, object) 'multiple flashers, it doesn't change anything, it just follows the main flasher
+    Select Case FadingLevel(nr)
+        Case 4, 5
+            Object.IntensityScale = FlashLevel(nr)
+    End Select
+End Sub
+
+Sub FlashBlink(nr, object)
+    Select Case FadingLevel(nr)
+        Case 4 'off
+            FlashLevel(nr) = FlashLevel(nr)- FlashSpeedDown(nr)
+            If FlashLevel(nr) <FlashMin(nr)Then
+                FlashLevel(nr) = FlashMin(nr)
+                FadingLevel(nr) = 0 'completely off
+            End if
+            Object.IntensityScale = FlashLevel(nr)
+            If FadingLevel(nr) = 0 AND FlashRepeat(nr)Then 'repeat the flash
+                FlashRepeat(nr) = FlashRepeat(nr)-1
+                If FlashRepeat(nr)Then FadingLevel(nr) = 5
+            End If
+        Case 5 ' on
+            FlashLevel(nr) = FlashLevel(nr) + FlashSpeedUp(nr)
+            If FlashLevel(nr)> FlashMax(nr)Then
+                FlashLevel(nr) = FlashMax(nr)
+                FadingLevel(nr) = 1 'completely on
+            End if
+            Object.IntensityScale = FlashLevel(nr)
+            If FadingLevel(nr) = 1 AND FlashRepeat(nr)Then FadingLevel(nr) = 4
+    End Select
+End Sub
+
+' Desktop Objects: Reels & texts (you may also use lights on the desktop)
+
+' Reels
+
+Sub FadeR(nr, object)
+    Select Case FadingLevel(nr)
+        Case 4:object.SetValue 1:FadingLevel(nr) = 6                   'fading to off...
+        Case 5:object.SetValue 0:FadingLevel(nr) = 1                   'ON
+        Case 6, 7, 8:FadingLevel(nr) = FadingLevel(nr) + 1             'wait
+        Case 9:object.SetValue 2:FadingLevel(nr) = FadingLevel(nr) + 1 'fading...
+        Case 10, 11, 12:FadingLevel(nr) = FadingLevel(nr) + 1          'wait
+        Case 13:object.SetValue 3:FadingLevel(nr) = 0                  'Off
+    End Select
+End Sub
+
+Sub FadeRm(nr, object)
+    Select Case FadingLevel(nr)
+        Case 4:object.SetValue 1
+        Case 5:object.SetValue 0
+        Case 9:object.SetValue 2
+        Case 3:object.SetValue 3
+    End Select
+End Sub
+
+'Texts
+
+Sub NFadeT(nr, object, message)
+    Select Case FadingLevel(nr)
+        Case 4:object.Text = "":FadingLevel(nr) = 0
+        Case 5:object.Text = message:FadingLevel(nr) = 1
+    End Select
+End Sub
+
+Sub NFadeTm(nr, object, message)
+    Select Case FadingLevel(nr)
+        Case 4:object.Text = ""
+        Case 5:object.Text = message
+    End Select
+End Sub
+
+'************************************
+'          LEDs Display
+'     Based on Scapino's LEDs
+'************************************
+
+Dim Digits(32)
+Dim Patterns(11)
+Dim Patterns2(11)
+
+Patterns(0) = 0     'empty
+Patterns(1) = 63    '0
+Patterns(2) = 6     '1
+Patterns(3) = 91    '2
+Patterns(4) = 79    '3
+Patterns(5) = 102   '4
+Patterns(6) = 109   '5
+Patterns(7) = 125   '6
+Patterns(8) = 7     '7
+Patterns(9) = 127   '8
+Patterns(10) = 111  '9
+
+Patterns2(0) = 128  'empty
+Patterns2(1) = 191  '0
+Patterns2(2) = 134  '1
+Patterns2(3) = 219  '2
+Patterns2(4) = 207  '3
+Patterns2(5) = 230  '4
+Patterns2(6) = 237  '5
+Patterns2(7) = 253  '6
+Patterns2(8) = 135  '7
+Patterns2(9) = 255  '8
+Patterns2(10) = 239 '9
+
+'Assign 6-digit output to reels
+Set Digits(0) = a0
+Set Digits(1) = a1
+Set Digits(2) = a2
+Set Digits(3) = a3
+Set Digits(4) = a4
+Set Digits(5) = a5
+Set Digits(6) = a6
+
+Set Digits(7) = b0
+Set Digits(8) = b1
+Set Digits(9) = b2
+Set Digits(10) = b3
+Set Digits(11) = b4
+Set Digits(12) = b5
+Set Digits(13) = b6
+
+Set Digits(14) = c0
+Set Digits(15) = c1
+Set Digits(16) = c2
+Set Digits(17) = c3
+Set Digits(18) = c4
+Set Digits(19) = c5
+Set Digits(20) = c6
+
+Set Digits(21) = d0
+Set Digits(22) = d1
+Set Digits(23) = d2
+Set Digits(24) = d3
+Set Digits(25) = d4
+Set Digits(26) = d5
+Set Digits(27) = d6
+
+Set Digits(28) = e0
+Set Digits(29) = e1
+Set Digits(30) = e2
+Set Digits(31) = e3
+
+Sub UpdateLeds
+    On Error Resume Next
+    Dim ChgLED, ii, jj, chg, stat
+    ChgLED = Controller.ChangedLEDs(&HFF, &HFFFF)
+    If Not IsEmpty(ChgLED)Then
+        For ii = 0 To UBound(ChgLED)
+            chg = chgLED(ii, 1):stat = chgLED(ii, 2)
+            For jj = 0 to 10
+                If stat = Patterns(jj)OR stat = Patterns2(jj)then Digits(chgLED(ii, 0)).SetValue jj
+            Next
+        Next
+    End IF
+End Sub
+
+'************************************
+' Diverse Collection Hit Sounds v3.0
+'************************************
+
+Sub aMetals_Hit(idx):PlaySoundAtBall "fx_MetalHit2":End Sub
+Sub aRubber_Bands_Hit(idx):PlaySoundAtBall "fx_rubber_band":End Sub
+Sub aRubber_Posts_Hit(idx):PlaySoundAtBall "fx_rubber_post":End Sub
+Sub aRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
+Sub aPlastics_Hit(idx):PlaySoundAtBall "fx_plastichit":End Sub
+Sub aWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
+
+' *********************************************************************
+'                      Supporting Ball & Sound Functions
+' *********************************************************************
+Dim TableWidth, TableHeight
+
+TableWidth = Table1.width
+TableHeight = Table1.height
+
+Function Vol(ball) ' Calculates the Volume of the sound based on the ball speed
+   Vol = Csng(BallVel(ball) ^2 / 2000)
+End Function
+
+Function Pan(ball) ' Calculates the pan for a ball based on the X position on the table. "table1" is the name of the table
+    Dim tmp
+	tmp = ball.x * 2 / table1.width-1
+	If tmp> 0 Then
+		Pan = Csng(tmp ^10)
+	Else
+		Pan = Csng(-((- tmp) ^10))
+	End If
+End Function
+
+Function Pitch(ball) ' Calculates the pitch of the sound based on the ball speed
+    Pitch = BallVel(ball) * 20
+End Function
+
+Function BallVel(ball) 'Calculates the ball speed
+    BallVel = INT(SQR((ball.VelX ^2) + (ball.VelY ^2)))
+End Function
+
+Function AudioFade(ball) 'only on VPX 10.4 and newer
+    Dim tmp
+    tmp = ball.y * 2 / Table1.height-1
+    If tmp> 0 Then
+        AudioFade = Csng(tmp ^10)
+    Else
+        AudioFade = Csng(-((- tmp) ^10))
+    End If
+End Function
+
+Sub PlaySoundAt(soundname, tableobj) 'play sound at X and Y position of an object, mostly bumpers, flippers and other fast objects
+    PlaySound soundname, 0, 1, Pan(tableobj), 0.1, 0, 0, 0, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtBall(soundname) ' play a sound at the ball position, like rubbers, targets, metals, plastics
+    PlaySound soundname, 0, Vol(ActiveBall), pan(ActiveBall), 0.4, 0, 0, 0, AudioFade(ActiveBall)
+End Sub
+
+'*****************************************
+'      JP's VP10 Rolling Sounds
+'*****************************************
+
+Const tnob = 20 ' total number of balls
+Const lob = 0   'number of locked balls
+Const maxvel = 40 'max ball velocity
+ReDim rolling(tnob)
+InitRolling
+
+Sub InitRolling
+    Dim i
+    For i = 0 to tnob
+        rolling(i) = False
+    Next
+End Sub
+
+Sub RollingUpdate()
+    Dim BOT, b, ballpitch, ballvol, speedfactorx, speedfactory
+    BOT = GetBalls
+
+    ' stop the sound of deleted balls and hide the shadow
+    For b = UBound(BOT) + 1 to tnob
+        rolling(b) = False
+        StopSound("fx_ballrolling" & b & "_" & FXVolume)
+		'aBallShadow(b).Y = 3000
+    Next
+
+    ' exit the sub if no balls on the table
+    If UBound(BOT) = lob - 1 Then Exit Sub 'there no extra balls on this table
+
+    ' play the rolling sound for each ball
+    For b = lob to UBound(BOT)
+		aBallShadow(b).X = BOT(b).X
+        aBallShadow(b).Y = BOT(b).Y
+        aBallShadow(b).Height = BOT(b).Z -24
+
+        If BallVel(BOT(b)) > 1 Then
+            If BOT(b).z < 30 Then
+                ballpitch = Pitch(BOT(b))
+                ballvol = Vol(BOT(b))
+            Else
+                ballpitch = Pitch(BOT(b)) + 15000 'increase the pitch on a ramp
+                ballvol = Vol(BOT(b)) * 10
+            End If
+            rolling(b) = True
+            If SoundEffect=1 then PlaySound("fx_ballrolling" & b & "_" & FXVolume), -1, Vol(BOT(b)), Pan(BOT(b)), 0, ballpitch, 1, 0: end If
+			If SoundEffect=2 then PlaySound("fx_ballrolling" & b & "_" & FXVolume), -1, ballvol, Pan(BOT(b)), 0, ballpitch, 1, 0, AudioFade(BOT(b)): end if
+        Else
+            If rolling(b) = True Then
+                StopSound("fx_ballrolling" & b & "_" & FXVolume)
+                rolling(b) = False
+            End If
+        End If
+			If BOT(b).VelZ < -1 and BOT(b).z < 55 and BOT(b).z > 27 Then 'height adjust for ball drop sounds
+			If SoundEffect=1 then PlaySound ("fx_balldrop_" & FXVolume), 0, ABS(BOT(b).velz)/17, Pan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, 0 : end If
+			If SoundEffect=2 then PlaySound ("fx_balldrop_" & FXVolume), 0, ABS(BOT(b).velz) / 17, Pan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, AudioFade(BOT(b)): end if
+		End If
+
+		' jps ball speed control
+        If BOT(b).VelX AND BOT(b).VelY <> 0 Then
+            speedfactorx = ABS(maxvel / BOT(b).VelX)
+            speedfactory = ABS(maxvel / BOT(b).VelY)
+            If speedfactorx < 1 Then
+                BOT(b).VelX = BOT(b).VelX * speedfactorx
+                BOT(b).VelY = BOT(b).VelY * speedfactorx
+            End If
+            If speedfactory < 1 Then
+                BOT(b).VelX = BOT(b).VelX * speedfactory
+                BOT(b).VelY = BOT(b).VelY * speedfactory
+            End If
+        End If
+
+    Next
+End Sub
+
+'**********************
+' Ball Collision Sound
+'**********************
+
+Sub OnBallBallCollision(ball1, ball2, velocity)
+    PlaySound "fx_collide", 0, Csng(velocity) ^2 / 2000, Pan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
+End Sub
+
+
+'**********************
+'MOVIE CLIP VIDEO
+'**********************
+dim VideoIndex: VideoIndex=1		'StartFrame = 1
+dim PosInc: PosInc=1				'Position of Frames = 1
+dim VideoLoop
+
+Sub MovieON
+	VideoLoop = 1
+	MovieClip.visible=1				'Activate the Video window
+	PosInc = 1						'Picture Increase by 1 frame at a time
+	MovieClipPlay	
+End Sub
+
+Sub MovieClipPlay	
+	VideoIndex=VideoIndex+PosInc											
+	If VideoIndex<1 then VideoIndex=1:PosInc=1								
+	If VideoIndex>26 then VideoIndex=1:PosInc=-1: VideoLoop=Videoloop+1: PlaySound "HUD Interface 4"
+	MovieClip.image = VideoIndex	
+	If VideoLoop < 3 Then	
+		AddVPXTimer 5, "MovieClipPlay"								
+	End if
+End Sub
+
+'******************************************************
+' ADDTIMER replacement VPXTimer (by Nailbuster)
+' Usage: Same as AddTimer
+' Example: AddVPXTimer 4000,"executable"
+' VPXTimerCommand remembers up to 10 executables given
+'******************************************************
+ 
+Dim VPXTimerPreset(9) 
+Dim VPXTimerCommand(9)           
+Dim VPXTimerNumber
+
+for VPXTimerNumber=0 to 9
+    VPXTimerPreset(VPXTimerNumber)=0
+    VPXTimerCommand(VPXTimerNumber)=""
+next
+
+DIM VPXTimerClock
+VPXTimerClock=VPXTimer.interval
+
+Sub VPXTimer_Timer()
+  for VPXTimerNumber=0 to 9
+       if VPXTimerPreset(VPXTimerNumber)>0 Then	
+          VPXTimerPreset(VPXTimerNumber)=VPXTimerPreset(VPXTimerNumber)-VPXTimerClock 
+      	  if VPXTimerPreset(VPXTimerNumber)<=0 Then
+			VPXTimerPreset(VPXTimerNumber)=0
+			execute(VPXTimerCommand(VPXTimerNumber))
+		  end if 	
+       End if
+  next
+End Sub
+
+Sub AddVPXTimer(ClockTime,Executable)
+	VPXTimer.enabled=1
+for VPXTimerNumber=0 to 9  
+  if VPXTimerPreset(VPXTimerNumber)=0 Then
+    	VPXTimerPreset(VPXTimerNumber)=ClockTime
+    	VPXTimerCommand(VPXTimerNumber)=Executable
+		Exit Sub
+  End If 
+next
+end Sub
+
+Sub StopVPXTimer
+	VPXTimer.enabled=0
+for VPXTimerNumber=0 to 9  
+      	VPXTimerCommand(VPXTimerNumber)=""
+		Exit Sub
+next
+end Sub 
