@@ -206,7 +206,7 @@ End Sub
 '**************************************
 Dim SFX6counter
 
-Sub SFX4_hit() :PlaySound "Door" End Sub
+Sub SFX4_hit(): PlaySound "Door" End Sub
 
 Dim FX5Count
 Sub SFX5_hit()
