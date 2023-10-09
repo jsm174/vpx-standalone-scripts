@@ -239,7 +239,7 @@ Sub SFX6b_Hit()
 End Sub 
 
 Dim FX7Count
-Sub SFX7_Hit() :StopSound "Swoosh 1": FX7Count=Int(rnd*15)
+Sub SFX7_Hit(): StopSound "Swoosh 1": FX7Count=Int(rnd*15)
 	If FX7Count = 0 then PlaySound "Bulk door":End If
 	If FX7Count = 1 then PlaySound "Ripley 24":End If
 	If FX7Count = 2 then PlaySound "Bulk door":End If		
@@ -274,7 +274,7 @@ Sub SFX9_hit()
 End Sub
 
 Dim FX10Count, FX10Countb
-Sub SFX10_hit() :FX10Countb=Int(rnd*33)
+Sub SFX10_hit(): FX10Countb=Int(rnd*33)
 	If FX10Count = 0 then 
 		If FX10Countb = 0 then PlaySound "Comms 10":End If
 		If FX10Countb = 1 then PlaySound "Alien moving 4",1,1,Left:End If
