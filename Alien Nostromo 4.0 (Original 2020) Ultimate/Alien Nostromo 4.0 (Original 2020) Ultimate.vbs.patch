@@ -1,11 +1,11 @@
---- Alien Nostromo 4.0 (Original 2020) Ultimate.vbs.original	2023-10-09 14:08:49
-+++ Alien Nostromo 4.0 (Original 2020) Ultimate.vbs	2023-10-09 14:08:28
+--- Alien Nostromo 4.0 (Original 2020) Ultimate.vbs.original	2023-10-09 14:10:43
++++ Alien Nostromo 4.0 (Original 2020) Ultimate.vbs	2023-10-09 14:09:57
 @@ -206,7 +206,7 @@
  '**************************************
  Dim SFX6counter
  
 -Sub SFX4_hit() PlaySound "Door" End Sub
-+Sub SFX4_hit() :PlaySound "Door" End Sub
++Sub SFX4_hit(): PlaySound "Door" End Sub
  
  Dim FX5Count
  Sub SFX5_hit()
