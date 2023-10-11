@@ -1,5 +1,26 @@
---- "Atlantis (Bally 1989) w VR Room v2.0.vbs.original"	2023-10-11 09:59:37.223594588 +0200
-+++ "Atlantis (Bally 1989) w VR Room v2.0.vbs"	2023-10-11 09:56:06.706298235 +0200
+--- "Atlantis (Bally 1989) w VR Room v2.0.vbs.original"	2023-10-11 10:38:34.392262176 +0200
++++ "Atlantis (Bally 1989) w VR Room v2.0.vbs"	2023-10-11 10:37:32.026211801 +0200
+@@ -3029,9 +3029,9 @@
+ 	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+ 
+ 	Public Sub Update()	'tracks in-ball-velocity
+-		dim str, b, highestID
++		dim str, b, AllBalls, highestID : allBalls = getballs
+ 
+-		for each b in gBOT
++		for each b in allBalls
+ 			if b.id >= HighestID then highestID = b.id
+ 		Next
+ 
+@@ -3039,7 +3039,7 @@
+ 		if uBound(ballvelx) < highestID then redim ballvelx(highestID)	'set bounds
+ 		if uBound(ballvely) < highestID then redim ballvely(highestID)	'set bounds
+ 
+-		for each b in gBOT
++		for each b in allBalls
+ 			ballvel(b.id) = BallSpeed(b)
+ 			ballvelx(b.id) = b.velx
+ 			ballvely(b.id) = b.vely
 @@ -3355,6 +3355,40 @@
  '  DROP TARGETS INITIALIZATION
  '******************************************************
