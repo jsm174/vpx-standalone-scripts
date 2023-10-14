@@ -1,0 +1,25 @@
+--- ./KISS (Stern 2015)_Bigus(MOD)1.1/KISS (Stern 2015)_Bigus(MOD)1.1.vbs.original	2023-10-12 14:39:23
++++ ./KISS (Stern 2015)_Bigus(MOD)1.1/KISS (Stern 2015)_Bigus(MOD)1.1.vbs	2023-10-12 14:40:31
+@@ -3642,14 +3642,14 @@
+ Dim DMDPosition, DMDPosX, DMDPosY
+ 
+ Sub GetDMDColor
+-    Dim WshShell,filecheck,directory
+-    Set WshShell = CreateObject("WScript.Shell")
+-    If DMDPosition then
+-        WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
+-        WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
+-    End if
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
++    'Dim WshShell,filecheck,directory
++    'Set WshShell = CreateObject("WScript.Shell")
++    'If DMDPosition then
++    '    WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
++    '    WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
++    'End if
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
+ End Sub
+ '---------------------------------------------------
+ '---------------------------------------------------
