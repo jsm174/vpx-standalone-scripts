@@ -2,4 +2,4 @@
 *.vbs		text eol=crlf
 *.vbs.original  text eol=crlf
 # do not touch patch files
-*.patch         -text
+*.patch         !eol
