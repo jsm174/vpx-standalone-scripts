@@ -276,14 +276,13 @@ Sub FrameTimer_Timer()
 	UpdateBallBrightness
 	LampTimer
 
-	If VR_Room = 1 Then
+	If VR_Room = 1 OR (VR_Room = 0 AND cab_mode = 1) Then
 		DisplayTimer
 	End If
 
 	If VR_Room = 0 AND cab_mode = 0 Then
 		DisplayTimerDT
 	End If
-
 End Sub
 
 
