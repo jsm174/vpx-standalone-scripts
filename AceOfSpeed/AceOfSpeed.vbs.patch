@@ -1,5 +1,14 @@
---- /Users/francisdb/vpinball/tables/AceOfSpeed.vbs.original	2023-06-18 23:21:09
-+++ /Users/francisdb/vpinball/tables/AceOfSpeed.vbs	2023-06-18 23:17:48
+--- AceOfSpeed.vbs.original	2023-10-17 09:19:32.432438059 +0200
++++ AceOfSpeed.vbs	2023-10-14 17:41:25.135317360 +0200
+@@ -245,7 +245,7 @@
+ 	r61.Visible = DesktopMode
+ 	r62.Visible = DesktopMode
+ 	r63.Visible = DesktopMode
+-	DisplayTimer.Enabled = DesktopMode
++	DisplayTimer.Enabled = true
+ 
+ 	' maybe start the timer for the mouse hole multiball modes
+ 	MouseHoleProcessTimer_Timer
 @@ -1860,7 +1860,7 @@
  Dim GIStep : GIStep = 0
  Sub SolGI(IsOff)
