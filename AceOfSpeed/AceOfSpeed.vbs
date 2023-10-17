@@ -245,7 +245,7 @@ Sub InitTable()
 	r61.Visible = DesktopMode
 	r62.Visible = DesktopMode
 	r63.Visible = DesktopMode
-	DisplayTimer.Enabled = DesktopMode
+	DisplayTimer.Enabled = true
 
 	' maybe start the timer for the mouse hole multiball modes
 	MouseHoleProcessTimer_Timer
