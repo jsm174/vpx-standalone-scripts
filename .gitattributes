@@ -1,5 +1,8 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
 *               text=auto
+
 *.vbs		text eol=crlf
 *.vbs.original  text eol=crlf
-# do not touch patch files
-*.patch         !eol
+
+# do not touch patch files as they are mixed LF/CRLF
+*.patch         -text
