@@ -1,0 +1,11 @@
+--- DS.vbs.original	2023-10-26 16:18:27.829312677 +0200
++++ DS.vbs	2023-10-26 16:15:37.521099388 +0200
+@@ -1724,7 +1724,7 @@
+                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, 3 + 16 + 2, 8, 8
+             Next
+             For i = 20 to 35 ' Bottom
+-                DMDScene.GetImage("Dig" & i).SetBounds (i - 20) * 8, 3, 8, 16
++                DMDScene.GetImage("Dig" & i).SetBounds 8 * (i - 20), 3, 8, 16
+             Next
+             FlexDMD.LockRenderThread
+             FlexDMD.Stage.AddActor DMDScene
