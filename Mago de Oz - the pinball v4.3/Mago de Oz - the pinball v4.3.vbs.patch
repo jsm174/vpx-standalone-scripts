@@ -1,0 +1,11 @@
+--- "Mago de Oz - the pinball v4.3.vbs.original"	2023-11-06 19:00:08.115712574 +0100
++++ "Mago de Oz - the pinball v4.3.vbs"	2023-11-06 18:57:41.203955065 +0100
+@@ -2557,7 +2557,7 @@
+     MyLamp.TimerInterval = BlinkPeriod
+     MyLamp.TimerEnabled = 0
+     MyLamp.TimerEnabled = 1
+-    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
++    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp 100*(me.UserValue - INT(me.UserValue)), me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
+ End Sub
+ 
+ ' standard VPX objects
