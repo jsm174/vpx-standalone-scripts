@@ -1374,15 +1374,18 @@ End Sub
 '************************************************************************
 
 Dim dbpos
+' Keeps track of the bridge position.
+Dim drawBridgeIsClosed
+drawBridgeIsClosed = True
 
 Sub SolDrawBridge(enabled)
-	If Enabled AND Controller.GetMech(0)/16 <= 15 then 
+	If Enabled AND drawBridgeIsClosed Then
 		dbpos = 1
 		dbridge.enabled = 1
 		PlaySound SoundFX("Bridge_Move", DOFGear), -1, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
 		DOF 104, DOFOn
 	end If
-	If Enabled AND Controller.GetMech(0)/16 > 15 then 
+	If Enabled AND NOT drawBridgeIsClosed Then
 		dbpos = 2
 		dbridge.enabled = 1
 		PlaySound SoundFX("Bridge_Move", DOFGear), -1, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
@@ -1408,6 +1411,7 @@ Sub dbridge_timer()
 				BW1.isdropped = 0
 				BW2.isdropped = 0
 				Me.Enabled = 0
+				drawBridgeIsClosed = False
 				StopSound "Bridge_Move"
 				PlaySound SoundFX("Bridge_Stop", 0),0, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
 			End If
@@ -1428,6 +1432,7 @@ Sub dbridge_timer()
 				BW1.isdropped = 1
 				BW2.isdropped = 1
 				Me.Enabled = 0
+				drawBridgeIsClosed = True
 				StopSound "Bridge_Move"
 				PlaySound SoundFX("Bridge_Stop", 0),0, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
 			End If

@@ -1,6 +1,43 @@
---- ./1455577933_MedievalMadness_Upgrade(Real_Final)/1455577933_MedievalMadness_Upgrade(Real_Final).vbs.original	2023-06-02 19:04:52
-+++ ./1455577933_MedievalMadness_Upgrade(Real_Final)/1455577933_MedievalMadness_Upgrade(Real_Final).vbs	2023-06-02 19:05:24
-@@ -2185,7 +2185,11 @@
+--- 1455577933_MedievalMadness_Upgrade(Real_Final).vbs.original	2023-11-14 17:19:00.168315814 +0100
++++ 1455577933_MedievalMadness_Upgrade(Real_Final).vbs	2023-11-14 17:35:27.152309880 +0100
+@@ -1374,15 +1374,18 @@
+ '************************************************************************
+ 
+ Dim dbpos
++' Keeps track of the bridge position.
++Dim drawBridgeIsClosed
++drawBridgeIsClosed = True
+ 
+ Sub SolDrawBridge(enabled)
+-	If Enabled AND Controller.GetMech(0)/16 <= 15 then 
++	If Enabled AND drawBridgeIsClosed Then
+ 		dbpos = 1
+ 		dbridge.enabled = 1
+ 		PlaySound SoundFX("Bridge_Move", DOFGear), -1, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
+ 		DOF 104, DOFOn
+ 	end If
+-	If Enabled AND Controller.GetMech(0)/16 > 15 then 
++	If Enabled AND NOT drawBridgeIsClosed Then
+ 		dbpos = 2
+ 		dbridge.enabled = 1
+ 		PlaySound SoundFX("Bridge_Move", DOFGear), -1, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
+@@ -1408,6 +1411,7 @@
+ 				BW1.isdropped = 0
+ 				BW2.isdropped = 0
+ 				Me.Enabled = 0
++				drawBridgeIsClosed = False
+ 				StopSound "Bridge_Move"
+ 				PlaySound SoundFX("Bridge_Stop", 0),0, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
+ 			End If
+@@ -1428,6 +1432,7 @@
+ 				BW1.isdropped = 1
+ 				BW2.isdropped = 1
+ 				Me.Enabled = 0
++				drawBridgeIsClosed = True
+ 				StopSound "Bridge_Move"
+ 				PlaySound SoundFX("Bridge_Stop", 0),0, 0.1, AudioPan(braket) , 0, 0, 1, AudioPan(braket)
+ 			End If
+@@ -2185,7 +2190,11 @@
  Sub InitLamps
  On Error Resume Next
  Dim i
@@ -13,4 +50,3 @@
  Lights(14)=Array(L14,L14a)
  Lights(64)=Array(L64,L64a)
  Lights(78)=Array(L78,L78a)
-\ No newline at end of file
