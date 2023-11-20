@@ -25,7 +25,8 @@
 ' v0.2.4.6 - fluffhead - adding wireramp_drop sounds
 ' v0.2.4.7 - UnclePaulie - cut holes in the playfield for rollover triggers, slings, targets 
 ' v0.2.4.8 - Moved VR Plunger code into the UpdateMechs to eliminate two timers, eliminated BIPL and used switch instead, eliminate VPMDMD in cab mode, changed rollover switches to pulseswitch (except sw33 and sw34).
-' v2.0.1   - Added blend disable lighting to golf balls when backglass flashes, added VPMInit me, fixed roulette randomness, adjusted for nudge exploit 
+' v2.0.1   - Added blend disable lighting to golf balls when backglass flashes, added VPMInit me, fixed roulette randomness
+' v2.0.2   - Additional nudge exploit adjustments, dynamic ball shadow typo fix
 
 Option Explicit
 Randomize
@@ -36,8 +37,7 @@ Randomize
 
 '----- Desktop, VR, or Full Cabinet Options -----
 
-const VR_Room = 0 					' 0 is desktop or cab mode, 1 is Tee'd Off VR Room, 2 is Minimal with Wall and Clock Options
-const cab_mode = 0 					' 1 for cabinet mode to turn off VR Cabinet side rails, backbox, and lockbar 
+const VR_Room = 1 					' 1 is Tee'd Off VR Room, 2 is Minimal with Wall and Clock Options
 const DMDColor = 1					' DMD color for VR and FSS: 1 for default color, 0 for green
 
 ' *** If using VR Room = 1:
@@ -80,9 +80,24 @@ BallSize = 50
 BallMass = 1
 
 Dim DesktopMode: DesktopMode = Table1.ShowDT
+Dim cab_mode
+
+Dim ShowVR
+If RenderingMode = 2 Then 
+	ShowVR = 1 
+	cab_mode = 0
+Else
+	ShowVR = 0 
+	if DesktopMode Then 
+		cab_mode = 0
+	else
+		cab_mode = 1
+	end if
+End If
+
 Dim UseVPMDMD:If cab_mode <> 1 Then UseVPMDMD = True Else UseVPMDMD = False
 
-If DesktopMode and VR_Room = 0 and Table1.ShowFSS = 0 Then Scoretext.visible = 1 else Scoretext.visible=0
+If DesktopMode and ShowVR = 0 and Table1.ShowFSS = 0 Then Scoretext.visible = 1 else Scoretext.visible=0
 If DMDColor = 1 Then DMD.Color = RGB(255,139,23)
 
 ' using table width and height in script slows down the performance
@@ -1503,18 +1518,18 @@ Sub InitLampsNF()
 	Lampz.MassAssign(93)= l93c
 
 	'* Tee Box - Golf Balls
-	Lampz.MassAssign(100)= l100
-	Lampz.MassAssign(101)= l101
-	Lampz.MassAssign(102)= l102
-	Lampz.MassAssign(103)= l103
-	Lampz.MassAssign(104)= l104
-	Lampz.Callback(100) = "DisableLighting2 GolfBall1, 0.25, .10," 
-	Lampz.Callback(101) = "DisableLighting2 GolfBall2, 0.25, .10,"
-	Lampz.Callback(102) = "DisableLighting2 GolfBall3, 0.25, .10,"
-	Lampz.Callback(103) = "DisableLighting2 GolfBall4, 0.25, .10,"
-	Lampz.Callback(104) = "DisableLighting2 GolfBall5, 0.25, .10,"
+	'Lampz.MassAssign(100)= l100
+	'Lampz.MassAssign(101)= l101
+	'Lampz.MassAssign(102)= l102
+	'Lampz.MassAssign(103)= l103
+	'Lampz.MassAssign(104)= l104
+	Lampz.Callback(100) = "DisableLighting2 GolfBall1, 0.45, .10," 
+	Lampz.Callback(101) = "DisableLighting2 GolfBall2, 0.45, .10,"
+	Lampz.Callback(102) = "DisableLighting2 GolfBall3, 0.45, .10,"
+	Lampz.Callback(103) = "DisableLighting2 GolfBall4, 0.45, .10,"
+	Lampz.Callback(104) = "DisableLighting2 GolfBall5, 0.45, .10,"
 
-	If VR_Room = 1 Then
+	If ShowVR = 1 and VR_Room = 1 Then
 		Lampz.Callback(100) = "DisableLighting VR_GolfBall1, 0.5," 
 		Lampz.Callback(101) = "DisableLighting VR_GolfBall2, 0.5,"
 		Lampz.Callback(102) = "DisableLighting VR_GolfBall3, 0.5,"
@@ -1878,7 +1893,7 @@ Sub SolBG20(Enabled)
 	If enabled then
 		VR_s20.visible = true
 		VR_s20.blenddisablelighting = 3
-		If VR_Room = 1 and VR_Lightning20.timerenabled=false Then 
+		If ShowVR = 1 and VR_Room = 1 and VR_Lightning20.timerenabled=false Then 
 			VR_Lightning20.visible = 1
 			VR_Lightning20.timerenabled = true
             LightningOn ' For VR Lightning Effect Sub at bottom of script
@@ -1893,7 +1908,7 @@ Sub SolBG20(Enabled)
 		End If
 	Else	
 		VR_s20.visible = False
-		If VR_Room = 1 Then VR_Lightning20.visible = 0 : LightningOff ' LightningOff For VR Lightning Effect Sub at bottom of script
+		If ShowVR = 1 and VR_Room = 1 Then VR_Lightning20.visible = 0 : LightningOff ' LightningOff For VR Lightning Effect Sub at bottom of script
 	End If
 	Sound_Flash_Relay enabled, Relay_Backglass_Left
 End Sub
@@ -1902,7 +1917,7 @@ Sub SolBG21(Enabled)
 	If enabled then
 		VR_s21.visible = true
 		VR_s21.blenddisablelighting = 3
-		If VR_Room = 1 and VR_Lightning21.timerenabled=false Then 
+		If ShowVR = 1 and VR_Room = 1 and VR_Lightning21.timerenabled=false Then 
 			VR_Lightning21.visible = 1
 			VR_Lightning21.timerenabled = true
 			LightningOn ' For VR Lightning Effect Sub at bottom of script
@@ -1916,7 +1931,7 @@ Sub SolBG21(Enabled)
 		End If
 	Else	
 		VR_s21.visible = False
-		If VR_Room = 1 Then VR_Lightning21.visible = 0 : LightningOff ' LightningOff For VR Lightning Effect Sub at bottom of script
+		If ShowVR = 1 and VR_Room = 1 Then VR_Lightning21.visible = 0 : LightningOff ' LightningOff For VR Lightning Effect Sub at bottom of script
 	End If
 	Sound_Flash_Relay enabled, Relay_Backglass_Center
 End Sub
@@ -1925,7 +1940,7 @@ Sub SolBG22(Enabled)
 	If enabled then
 		VR_s22.visible = true
 		VR_s22.blenddisablelighting = 3
-		If VR_Room = 1 and VR_Lightning22.timerenabled=false Then
+		If ShowVR = 1 and VR_Room = 1 and VR_Lightning22.timerenabled=false Then
 			VR_Lightning22.visible = 1
 			VR_Lightning22.timerenabled = true
 			LightningOn ' For VR Lightning Effect Sub at bottom of script
@@ -1939,7 +1954,7 @@ Sub SolBG22(Enabled)
 		End If		
 	Else	
 		VR_s22.visible = False
-		If VR_Room = 1 Then VR_Lightning22.visible = 0:  LightningOff ' LightningOff For VR Lightning Effect Sub at bottom of script
+		If ShowVR = 1 and VR_Room = 1 Then VR_Lightning22.visible = 0:  LightningOff ' LightningOff For VR Lightning Effect Sub at bottom of script
 	End If
 	Sound_Flash_Relay enabled, Relay_Backglass_Right
 End Sub
@@ -2296,7 +2311,7 @@ Sub GameTimer_Timer()
 	DoSTAnim
 	Cor.Update
 
-	If VR_Room = 1 Then
+	If ShowVR = 1 and VR_Room = 1 Then
 		VR_Clouds.ObjRotZ=VR_Clouds.ObjRotZ+0.01
 		VR_Clouds2.ObjRotZ=VR_Clouds2.ObjRotZ-0.01
 	End If
@@ -2648,19 +2663,19 @@ End Sub
 
 Dim VRThings, vrx, VRLShadows(30), VRLBDL(60), VRLSCount, VRLBDLCount
 
-if VR_Room = 0 and cab_mode = 0 Then
+if ShowVR = 0 and cab_mode = 0 Then
 	for each VRThings in VRMinimal:VRThings.visible = 0:Next
 	for each VRThings in VRCabinet:VRThings.visible = 1:Next
 	for each VRThings in VRClock:VRThings.visible = 0:Next
 	for each VRThings in DTRails:VRThings.visible = 0:Next
 	for each VRThings in VRGolf:VRThings.visible = 0:Next
-Elseif VR_Room = 0 and cab_mode = 1 Then
+Elseif ShowVR = 0 and cab_mode = 1 Then
 	for each VRThings in VRMinimal:VRThings.visible = 0:Next
 	for each VRThings in VRCabinet:VRThings.visible = 0:Next
 	for each VRThings in VRClock:VRThings.visible = 0:Next
 	for each VRThings in DTRails:VRThings.visible = 0:Next
 	for each VRThings in VRGolf:VRThings.visible = 0:Next
-Elseif VR_Room = 1 Then
+Elseif ShowVR = 1 and VR_Room = 1 Then
 	for each VRThings in VRMinimal:VRThings.visible = 0:Next
 	for each VRThings in VRCabinet:VRThings.visible = 1:Next
 	for each VRThings in VRClock:VRThings.visible = 0:Next
@@ -3081,6 +3096,27 @@ Sub FlipperNudge(Flipper1, Endangle1, EOSNudge1, Flipper2, EndAngle2)
 				EOSNudge1 = 0
 		end if
 	End If
+End Sub
+
+Dim FCCDamping: FCCDamping = 0.4
+
+Sub FlipperCradleCollision(ball1, ball2, velocity)
+	if velocity < 0.7 then exit sub		'filter out gentle collisions
+    Dim DoDamping, coef
+    DoDamping = false
+    'Check left flipper
+    If LeftFlipper.currentangle = LFEndAngle Then
+		If FlipperTrigger(ball1.x, ball1.y, LeftFlipper) OR FlipperTrigger(ball2.x, ball2.y, LeftFlipper) Then DoDamping = true
+    End If
+    'Check right flipper
+    If RightFlipper.currentangle = RFEndAngle Then
+		If FlipperTrigger(ball1.x, ball1.y, RightFlipper) OR FlipperTrigger(ball2.x, ball2.y, RightFlipper) Then DoDamping = true
+    End If
+    If DoDamping Then
+		coef = FCCDamping
+        ball1.velx = ball1.velx * coef: ball1.vely = ball1.vely * coef: ball1.velz = ball1.velz * coef
+        ball2.velx = ball2.velx * coef: ball2.vely = ball2.vely * coef: ball2.velz = ball2.velz * coef
+    End If
 End Sub
 
 '*****************
@@ -4141,6 +4177,9 @@ End Sub
 
 '/////////////////////////////  BALL COLLISION SOUND  ////////////////////////////
 Sub OnBallBallCollision(ball1, ball2, velocity)
+
+	FlipperCradleCollision ball1, ball2, velocity
+
 	Dim snd
 	If velocity > 2 then
 		Select Case Int(Rnd*7)+1
@@ -4656,7 +4695,7 @@ End Sub
 dim preloadCounter
 sub preloader_timer
 	preloadCounter = preloadCounter + 1
-	If VR_Room = 1 Then
+	If ShowVR = 1 and VR_Room = 1 Then
 
 		if preloadCounter = 1 then
 			VR_Lightning20.visible = 1
