@@ -1,0 +1,11 @@
+--- "Super Star (Williams 1972) v4.3.vbs.original"	2023-11-23 09:40:41.469543918 +0100
++++ "Super Star (Williams 1972) v4.3.vbs"	2023-11-23 09:39:33.671566350 +0100
+@@ -1080,7 +1080,7 @@
+ End Sub
+ 
+ Sub Display_Match()
+-    MatchReel.SetValue(Match \ 10) + 1
++    MatchReel.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100
