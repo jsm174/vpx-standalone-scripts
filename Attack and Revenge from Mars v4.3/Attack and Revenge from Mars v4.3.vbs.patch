@@ -1,0 +1,11 @@
+--- "Attack and Revenge from Mars v4.3.vbs.original"	2023-11-23 22:09:53.309081599 +0100
++++ "Attack and Revenge from Mars v4.3.vbs"	2023-11-23 22:06:33.359728758 +0100
+@@ -76,7 +76,7 @@
+     vpmInit Me
+     With Controller
+         .GameName = cGameName
+-		NVOffset (3)
++		'NVOffset (3)
+         If Err Then MsgBox "Can't start Game " & cGameName & vbNewLine & Err.Description:Exit Sub
+         .SplashInfoLine = "Attack & Revenge from Mars" & vbNewLine & "VPX table by JPSalas v4.3.0"
+         .Games(cGameName).Settings.Value("rol") = 0
