@@ -82,7 +82,7 @@ Dim usePUP: Dim cPuPPack: Dim PuPlayer: Dim PUPStatus: PUPStatus=false ' Dont ed
 
 '*************************** PuP Settings for this table ********************************
 
-usePUP   = false               ' enable Pinup Player functions for this table
+usePUP   = true               ' enable Pinup Player functions for this table
 cPuPPack = "pup-pack_name"    ' name of the PuP-Pack / PuPVideos folder for this table
 
 '**************************
@@ -4388,7 +4388,7 @@ End Sub
 ' The Player has lost his ball (there are no more balls on the playfield).
 ' Handle any bonus points awarded
 Sub EndOfBall()
-' WriteToLog "     ", "EndOfBall:" & Now
+WriteToLog "     ", "EndOfBall:" & Now
 	pClearEverything2
 	SceneClearLabels
 	DOF 178, DOFpulse 'Drain Effect
@@ -7958,37 +7958,37 @@ End Function
 '******************************************************
 
 Class DropTarget
-	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
-  
-	Public Property Get Primary(): Set Primary = m_primary: End Property
-	Public Property Let Primary(input): Set m_primary = input: End Property
-  
-	Public Property Get Secondary(): Set Secondary = m_secondary: End Property
-	Public Property Let Secondary(input): Set m_secondary = input: End Property
-  
-	Public Property Get Prim(): Set Prim = m_prim: End Property
-	Public Property Let Prim(input): Set m_prim = input: End Property
-  
-	Public Property Get Sw(): Sw = m_sw: End Property
-	Public Property Let Sw(input): m_sw = input: End Property
-  
-	Public Property Get Animate(): Animate = m_animate: End Property
-	Public Property Let Animate(input): m_animate = input: End Property
-  
-	Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
-	Public Property Let IsDropped(input): m_isDropped = input: End Property
-  
-	Public default Function init(primary, secondary, prim, sw, animate, isDropped)
-	  Set m_primary = primary
-	  Set m_secondary = secondary
-	  Set m_prim = prim
-	  m_sw = sw
-	  m_animate = animate
-	  m_isDropped = isDropped
-  
-	  Set Init = Me
-	End Function
-  End Class
+  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
+
+  Public Property Get Primary(): Set Primary = m_primary: End Property
+  Public Property Let Primary(input): Set m_primary = input: End Property
+
+  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
+  Public Property Let Secondary(input): Set m_secondary = input: End Property
+
+  Public Property Get Prim(): Set Prim = m_prim: End Property
+  Public Property Let Prim(input): Set m_prim = input: End Property
+
+  Public Property Get Sw(): Sw = m_sw: End Property
+  Public Property Let Sw(input): m_sw = input: End Property
+
+  Public Property Get Animate(): Animate = m_animate: End Property
+  Public Property Let Animate(input): m_animate = input: End Property
+
+  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
+  Public Property Let IsDropped(input): m_isDropped = input: End Property
+
+  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
+    Set m_primary = primary
+    Set m_secondary = secondary
+    Set m_prim = prim
+    m_sw = sw
+    m_animate = animate
+    m_isDropped = isDropped
+
+    Set Init = Me
+  End Function
+End Class
 
 'Define a variable for each drop target
 Dim DT1, DT2, DT3
@@ -8008,6 +8008,7 @@ Dim DT1, DT2, DT3
 '	animate:			Arrary slot for handling the animation instrucitons, set to 0
 '
 '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
 
 Set DT1 = (new DropTarget)(Target004, Target004a, Target004p, 1, 0, false)
 Set DT2 = (new DropTarget)(Target005, Target005a, Target005p, 2, 0, false)
@@ -8045,8 +8046,8 @@ Function DTIsDropped(Switch)
 	Dim i
 	i = DTArrayID(switch)
 	DTIsDropped = DTArray_IsDropped(i)
-'WriteToLog "     ", "DTArray(i)(2).transz:" & DTArray(i)(2).transz & " " & DTArray(i)(4)
-'	if DTArray(i)(2).transz = -DTDropUnits or DTArray(i)(4)>=1 then 	
+'WriteToLog "     ", "DTArray(i).prim.transz:" & DTArray(i).prim.transz & " " & DTArray(i).animate
+'	if DTArray(i).prim.transz = -DTDropUnits or DTArray(i).animate>=1 then 	
 '		DTIsDropped=True
 '	else 
 '		DTIsDropped=False 
@@ -8064,7 +8065,7 @@ Sub DTHit(switch)
 	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
 	End If
-'WriteToLog "     ", "DTHit:(" & i & ") " & DTArray(i)(4)
+'WriteToLog "     ", "DTHit:(" & i & ") " & DTArray(i).animate
 	DoDTAnim
 End Sub
 
@@ -8150,7 +8151,7 @@ End Function
 Sub DoDTAnim()
 	Dim i
 	For i=0 to Ubound(DTArray)
-		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary 	,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
 	Next
 End Sub
 
@@ -8393,7 +8394,8 @@ Sub SetFlash(MyLamp, nr, TotalPeriod, BlinkPeriod) 'similar to FlashForms, works
     MyLamp.TimerEnabled = 0
     MyLamp.TimerEnabled = 1
 'WriteToLog "     ", "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
-	ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp ((" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue))*100), " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
+
+    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp 100*(" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue)), " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
 End Sub
 
 Sub SetLamp(nr, value) ' 0 is off, 1 is on
@@ -8634,8 +8636,8 @@ Sub SetLightColorTimed(n, col, stat, msec) ' n = light, col = color, ' States: 0
 	if TypeName(n)="LightDummy" then exit sub 	' Fake Light, cant set the color 
 WriteToLog "     ", "SetLightColorTimed:" & n.name & " " & col
 	dim vL, pL
-	set vL = eval("v" & n.name)
-	set pL = eval("p" & n.name)
+	Set vL = eval("v" & n.name)
+	Set pL = eval("p" & n.name)
 
 	'UpdateMaterial(string, float wrapLighting, float roughness, float glossyImageLerp, float thickness, float edge, float edgeAlpha, float opacity, OLE_COLOR base, OLE_COLOR glossy, OLE_COLOR clearcoat, VARIANT_BOOL isMetal, VARIANT_BOOL opacityActive, float elasticity, float elasticityFalloff, float friction, float scatterAngle)
 
@@ -20847,7 +20849,7 @@ Sub QueueFlushForce(queueIdx, bForce)
 	dim xx
 	dim nextFree
 WriteToLog "     ", "QueueFlush: " & queueIdx & " " & bForce
-	
+
 	nextFree=-1
 	for xx = 0 to PupQueueEndPos(queueIdx)
 		if PupQueue(queueIdx, xx, 3)=True then		' MustRun=True,  keep it 
@@ -20884,7 +20886,7 @@ End Sub
 Function getQueueTime(queueIdx)		' Returns how much time left on queue
 	Dim time,i 
 	time = 0
-' WriteToLog "     ", "GetQueueTime: (" & queueIdx &") " & now 
+WriteToLog "     ", "GetQueueTime: (" & queueIdx &") " & now 
 WriteToLog "     ", "GetQueueTime:" & QueueCurrentTime(queueIdx) & " " & QueueActive(queueIdx)
 	if QueueActive(queueIdx) and QueueCurrentTime(queueIdx) <> 0 then time = (DateDiff("s", now, QueueCurrentTime(queueIdx)) * 1000)
 WriteToLog "     ", "GetQueueTime Active:" & time
@@ -20976,7 +20978,6 @@ Sub QueueSkipNoDef(queueIdx)						' Shortcycle the timer and move on but dont st
 End Sub
 
 Sub RunQueue(queueIdx, bNewItem)
-	exit Sub
 	dim qCmd, qTime
 WriteToLog "     ", "Run Queue " &  queueIdx & " " & QueueActive(queueIdx) & " " & bNewItem & " " & Now
 	if QueueActive(queueIdx) = False or bNewItem=False then 	' Nothing is running Or we just finished running something 
@@ -22664,7 +22665,6 @@ End Sub
 	End Sub
 			
 	sub playclear(chan)
-		if usePUP = False then Exit Sub 
 		WriteToLog "     ", "play clear'd " & chan
 		bMediaSet(chan) = False
 		bMediaPaused(chan) = False
