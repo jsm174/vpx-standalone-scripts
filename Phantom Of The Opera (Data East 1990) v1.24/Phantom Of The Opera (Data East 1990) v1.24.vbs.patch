@@ -1,0 +1,17 @@
+--- "Phantom Of The Opera (Data East 1990) v1.24.vbs.original"	2023-11-23 09:15:33.590413907 +0100
++++ "Phantom Of The Opera (Data East 1990) v1.24.vbs"	2023-11-23 09:12:21.517449309 +0100
+@@ -316,10 +316,10 @@
+ 		If Err Then MsgBox "Can't start Game" & cGameName & vbNewLine & Err.Description : Exit Sub
+ 		.SplashInfoLine = "Phantom of the Opera"
+ 		.HandleMechanics=0
+-		'.Games(cGameName).Settings.Value("sound") = 1 	' Uncomment for Standalone compatability - comment out matching statements
+-		'.Games(cGameName).Settings.Value("rol") = 0	' Uncomment for Standalone compatability - comment out matching statements
+-		.Settings.value("sound") = 1  '- Test table sounds...  disables ROM sounds
+-        .Settings.Value("rol") = 0
++		.Games(cGameName).Settings.Value("sound") = 1 	' Uncomment for Standalone compatability - comment out matching statements
++		.Games(cGameName).Settings.Value("rol") = 0	' Uncomment for Standalone compatability - comment out matching statements
++		'.Settings.value("sound") = 1  '- Test table sounds...  disables ROM sounds
++        '.Settings.Value("rol") = 0
+ 		.HandleKeyboard=0
+ 		.ShowDMDOnly=1
+ 		.ShowFrame=0
