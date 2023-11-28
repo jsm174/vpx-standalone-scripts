@@ -1,0 +1,12 @@
+--- "./Centaur (Bally 1981).vbs"	2023-11-28 14:00:35.000000000 +0100
++++ "./Centaur (Bally 1981).vbs.dmd"	2023-11-28 12:37:40.233760251 +0100
+@@ -6,7 +6,8 @@
+ ' Changed UseSolenoids=1 to 2
+ ' Thalamus 2018-09-01 : Improved directional sounds
+ 
+-Const VROn = True		'Enables VR backglass scoring and disables desktop scoring
++'Const VROn = True		'Enables VR backglass scoring and disables desktop scoring
++Const VROn = False		'Enables VR backglass scoring and disables desktop scoring
+ 
+ '///////////////////////-----General Sound Options-----///////////////////////
+ '//  VolumeDial:
