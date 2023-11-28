@@ -1,0 +1,27 @@
+--- "./Goin' Nuts (Gottlieb 1983).vbs"	2023-11-28 23:27:59.327681404 +0100
++++ "./Goin' Nuts (Gottlieb 1983).vbs.dmd"	2023-11-28 23:29:12.060866788 +0100
+@@ -29,8 +29,6 @@
+ Const cGameName="goinnuts",UseSolenoids=2,UseLamps=1,UseGI=0,SSolenoidOn="SolOn",SSolenoidOff="SolOff",SFlipperOn="FlipperUp",SFlipperOff="FlipperDown"
+ Const SCoin="coin3",cCredits=""
+ 
+-LoadVPM "01120100","sys80.vbs",3.02
+-
+ Dim DesktopMode: DesktopMode = Table1.ShowDT
+ 
+ Dim hiddenvalue
+@@ -71,6 +69,15 @@
+ 	SaveValue "Nuts", "V1.0.0", 1
+ End If
+ 
++Sub ImplicitDMD_Init
++   Me.x = 30
++   Me.y = 30
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++End Sub  
++
++LoadVPM "01120100","sys80.vbs",3.02  
+ 
+ 
+ ' using table width and height in script slows down the performance
