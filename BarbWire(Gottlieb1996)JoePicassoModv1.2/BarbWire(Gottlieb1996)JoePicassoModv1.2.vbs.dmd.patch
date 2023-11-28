@@ -1,0 +1,52 @@
+--- ./BarbWire(Gottlieb1996)JoePicassoModv1.2/BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs	2023-11-28 07:36:21
++++ ./BarbWire(Gottlieb1996)JoePicassoModv1.2/BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs.dmd	2023-11-28 07:36:21
+@@ -1,6 +1,7 @@
+ 
+ Option Explicit
+ 
++
+ '*****************************************************************************************************
+ ' CREDITS
+ ' Art for playfeild and plastics all created by Joe Picasso
+@@ -39,13 +40,11 @@
+ ' Thalamus 2019 March
+ ' Made ready for improved directional sounds, but, there is very few samples in the table.
+ 
+-
+-
+ '********************
+ ' Options
+ '********************
+ 
+-Const Mute_Sound_For_PuPPack = 1 ' 1=mute sound when using the PuPPack, 0=Normal Rom Sounds
++Const Mute_Sound_For_PuPPack = 0 ' 1=mute sound when using the PuPPack, 0=Normal Rom Sounds
+ 
+ '----- General Sound Options -----
+ Const VolumeDial = 0.8			'Overall Mechanical sound effect volume. Recommended values should be no greater than 1.
+@@ -76,6 +75,18 @@
+ Dim tablewidth: tablewidth = Table1.width
+ Dim tableheight: tableheight = Table1.height
+ Dim BIPL : BIPL = False				'Ball in plunger lane
++
++Sub ImplicitDMD_Init
++   Me.x = 15
++   Me.y = 0
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++End Sub
++
++Dim DesktopMode:DesktopMode = Table1.ShowDT
++Dim UseVPMDMD
++UseVPMDMD = DesktopMode
+ 
+ LoadVPM "01120100","gts3.vbs",3.10
+ 
+@@ -263,6 +274,7 @@
+ 		.ShowTitle=0
+ 		.ShowDMDOnly=1
+ 		.HandleMechanics=0
++		.Hidden = 0
+ 		.ShowFrame=0
+ 		.Games(cGameName).Settings.Value("rol") = 0
+ 		if Mute_Sound_For_PuPPack = 1 then .Games(cGameName).Settings.Value("sound") = 0

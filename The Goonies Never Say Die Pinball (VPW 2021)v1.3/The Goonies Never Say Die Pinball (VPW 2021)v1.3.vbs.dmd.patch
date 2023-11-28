@@ -1,0 +1,36 @@
+--- ./The Goonies Never Say Die Pinball (VPW 2021)v1.3/The Goonies Never Say Die Pinball (VPW 2021)v1.3.vbs	2023-11-28 07:36:21
++++ ./The Goonies Never Say Die Pinball (VPW 2021)v1.3/The Goonies Never Say Die Pinball (VPW 2021)v1.3.vbs.dmd	2023-11-28 07:36:21
+@@ -90,7 +90,33 @@
+ 
+ '1.2.1 - Wylte	- Shadow update, rolling sounds broken out (sub call added to rdampen timer), narnia check added to ballrolling, diverter timer saved from shadows
+ '1.2.2 - fluffhead35 - updated physics and ballroll sounds and wireramp sounds and logic.  Added GIOn Sound. Added apophis slingshot corrections.
++
++
++'///////////////////////-----Hack to display FlexDMD on Vpx-standalone-----///////////////////////
++Sub ImplicitDMD_Init
++   Me.x = 30
++   Me.y = 30
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.fontColor = RGB(255, 255, 255)
++   Me.visible = true
++   Me.intensityScale = 1.5
++   Me.timerenabled = true
++End Sub
++
++Sub ImplicitDMD_Timer
++   Dim DMDp: DMDp = FlexDMD.DMDColoredPixels
++   If Not IsEmpty(DMDp) Then
++      DMDWidth = FlexDMD.Width
++      DMDHeight = FlexDMD.Height
++      DMDColoredPixels = DMDp
++   End If
++End Sub
++'///////////////////////-----End of Hack to display FlexDMD on Vpx-standalone-----///////////////////////
+ 
++
++
++
+ Const BallSize = 50
+ Const BallMass = 1
+ 
