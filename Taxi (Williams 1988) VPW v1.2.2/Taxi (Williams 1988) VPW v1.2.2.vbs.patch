@@ -1,6 +1,6 @@
---- ./Taxi (Williams 1988) VPW v1.2.5/Taxi (Williams 1988) VPW v1.2.5.vbs.original	2023-11-29 07:19:41
-+++ ./Taxi (Williams 1988) VPW v1.2.5/Taxi (Williams 1988) VPW v1.2.5.vbs	2023-11-29 07:19:41
-@@ -1466,14 +1466,14 @@
+--- ./Taxi (Williams 1988) VPW v1.2.2/Taxi (Williams 1988) VPW v1.2.2.vbs.original	2023-11-29 07:19:41
++++ ./Taxi (Williams 1988) VPW v1.2.2/Taxi (Williams 1988) VPW v1.2.2.vbs	2023-11-29 07:19:41
+@@ -1435,14 +1435,15 @@
  '--------------------------------------
  
  Dim DigitsDT(39)
@@ -20,10 +20,11 @@
 +DigitsDT(DigitsOffset+4)=Array(LED31,LED32,LED33,LED34,LED35,LED36,LED37)'ok
 +DigitsDT(DigitsOffset+5)=Array(LED38,LED39,LED40,LED41,LED42,LED43,LED44)'ok
 +DigitsDT(DigitsOffset+6)=Array(LED45,LED46,LED47,LED48,LED49,LED50,LED51)'ok
++
  
  Dim Digits(39)
  Digits(0)=Array(ax00, ax05, ax0c, ax0d, ax08, ax01, ax06, ax0f, ax02, ax03, ax04, ax07, ax0b, ax0a, ax09, ax0e)
-@@ -1535,7 +1535,7 @@
+@@ -1504,7 +1505,7 @@
                    Next
  				end If
  				if DesktopMode = True and VRRoom < 1 Then
