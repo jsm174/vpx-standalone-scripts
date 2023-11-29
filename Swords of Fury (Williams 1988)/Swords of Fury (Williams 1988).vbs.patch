@@ -1,5 +1,5 @@
---- Swords of Fury (Williams 1988).vbs.original	2023-11-24 11:26:09
-+++ Swords of Fury (Williams 1988).vbs	2023-11-24 11:19:32
+--- ./Swords of Fury (Williams 1988)/Swords of Fury (Williams 1988).vbs.original	2023-11-29 07:19:41
++++ ./Swords of Fury (Williams 1988)/Swords of Fury (Williams 1988).vbs	2023-11-29 07:19:41
 @@ -609,7 +609,40 @@
  '******************************************************
  '                DROP TARGETS INITIALIZATION
