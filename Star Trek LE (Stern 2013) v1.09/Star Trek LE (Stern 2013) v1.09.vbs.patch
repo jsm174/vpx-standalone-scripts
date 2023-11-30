@@ -1,0 +1,72 @@
+--- "Star Trek LE (Stern 2013) v1.09.vbs.original"	2023-11-30 16:10:08.679935855 +0100
++++ "Star Trek LE (Stern 2013) v1.09.vbs"	2023-11-30 16:09:01.697993987 +0100
+@@ -3562,10 +3562,21 @@
+ 
+ 'Left Flipper ====================================
+ 
++' TypeName fails on Nothing
++' https://bugs.winehq.org/show_bug.cgi?id=55969
++' so we specifically return "Nothing" for Nothing
++Function FixedTypeName(obj)
++	If obj Is Nothing Then
++		FixedTypeName = "Nothing"
++	Else
++		FixedTypeName = TypeName(obj)
++	End If
++End Function
++
+ Sub TriggerLF_Hit()	'add a ball to the stack
+ '	tb.text = activeball.mass
+ 	dim x : for x = 0 to 9
+-		if Typename(Lballstack(x, 0)) = "Nothing" then 
++		if FixedTypeName(Lballstack(x, 0)) = "Nothing" then 
+ 			Set Lballstack(x, 0) = activeball
+ 			Lballstack(x, 1) = activeball.id
+ 			exit For
+@@ -3594,7 +3605,7 @@
+ 	TriggerLF.TimerEnabled = 1
+ 	LFon = True
+ 	dim x : for x = 0 to 9 'Count X positions of balls in array
+-		if TypeName(Lballstack(x, 0)) = "IBall" then
++		if FixedTypeName(Lballstack(x, 0)) = "IBall" then
+ 			Lballstack(x, 2) = Lballstack(x, 0).X
+ 			Lballstack(x, 3) = Lballstack(x, 0).Y
+ 			Lballstack(x, 4) = Lballstack(x, 0).VelX
+@@ -3614,7 +3625,7 @@
+ 
+ Sub TriggerRF_Hit()	'add a ball to the stack
+ 	dim x : for x = 0 to 9
+-		if Typename(Rballstack(x, 0)) = "Nothing" then 
++		if FixedTypeName(Rballstack(x, 0)) = "Nothing" then 
+ 			Set Rballstack(x, 0) = activeball
+ 			Rballstack(x, 1) = activeball.id
+ 			exit For
+@@ -3642,8 +3653,8 @@
+ Sub tbBS_Timer()	'debug textbox
+ '	on error resume next
+ 	dim y(9), x : for x = 0 to 9
+-		y(x) = Typename(Rballstack(x, 0))
+-		if TypeName(Rballstack(x, 0)) = "IBall" then y(x) = y(x) & " " & Rballstack(x, 0).ID
++		y(x) = FixedTypeName(Rballstack(x, 0))
++		if FixedTypeName(Rballstack(x, 0)) = "IBall" then y(x) = y(x) & " " & Rballstack(x, 0).ID
+ 		y(x) = y(x) & " " & Rballstack(x, 2)
+ 	Next
+ 	me.text = "Ball 1: " & y(0) & " " & Rballstack(0,1) & vbnewline & _
+@@ -3663,7 +3674,7 @@
+ 	TriggerRF.TimerEnabled = 1
+ 	RFon = True
+ 	dim x : for x = 0 to 9 'Count X positions of balls in array
+-		if TypeName(Rballstack(x, 0)) = "IBall" then
++		if FixedTypeName(Rballstack(x, 0)) = "IBall" then
+ 			Rballstack(x, 2) = Rballstack(x, 0).X
+ 			Rballstack(x, 3) = Rballstack(x, 0).Y
+ 			Rballstack(x, 4) = Rballstack(x, 0).VelX
+@@ -3743,7 +3754,7 @@
+ 
+ dim PolarityEnabled : PolarityEnabled = True	'debug
+ Sub PolarityCorrect(object, xpos, ypos, xvel, PartialFLipCoef, LR)	'Corrects angle/velocity using ball data captured at flip
+-	if TypeName(object) = "Nothing" then Exit Sub 'Bug - This happens when the ball wavers in and out of trigger maybe
++	if FixedTypeName(object) = "Nothing" then Exit Sub 'Bug - This happens when the ball wavers in and out of trigger maybe
+ 	if object.vely > 0 then TBpl.text = "exit sub" : exit sub
+ 	dim TestVar : 	TestVar = "Cutoff"	'debug string
+ 	dim lrcoef : if lr = 1 then lrcoef = -1 else lrcoef = 1 end if	'Direction Coef- could be used to compress the script. readability tho
