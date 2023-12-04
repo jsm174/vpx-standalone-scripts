@@ -1,0 +1,26 @@
+--- "./Tron Legacy (Stern 2011) VPW Mod v1.1.vbs.original"	2023-12-04 21:11:14.302691128 +0100
++++ "./Tron Legacy (Stern 2011) VPW Mod v1.1.vbs"	2023-12-04 22:46:20.045807916 +0100
+@@ -93,8 +93,11 @@
+ 
+ Const UseVPMModSol = True
+ Dim DesktopMode: DesktopMode = Table.ShowDT
+-Dim UseVPMDMD
+-If VRRoom <> 0 Then UseVPMDMD = True Else UseVPMDMD = DesktopMode
++'Dim UseVPMDMD
++Dim UseVPMColoredDMD
++'If VRRoom <> 0 Then UseVPMDMD = True Else UseVPMDMD = DesktopMode
++If VRRoom <> 0 Then UseVPMColoredDMD = True Else UseVPMColoredDMD = DesktopMode
++ScoreText.intensityScale=3 'boosts luminosity of the dmd
+ 
+ gibleed.opacity = GIBleedOpacity
+ 
+@@ -182,7 +185,8 @@
+ 		.ShowDMDOnly = 1
+ 		.ShowFrame = 0
+ 		.HandleMechanics = 1
+-		.Hidden = UseVPMDMD  
++		'.Hidden = UseVPMDMD
++		.Hidden = UseVPMColoredDMD  
+         .Games(cGameName).Settings.Value("sound") = 1
+ 		On Error Resume Next
+ 		.Run GetPlayerHWnd

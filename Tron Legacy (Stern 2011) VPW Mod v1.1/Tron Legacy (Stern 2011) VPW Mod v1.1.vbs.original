@@ -1,0 +1,4914 @@
+'........'''''.      ..'',,,,,,,,,;;;;;;;;;;;;;;;;;;;;;;;;;;,..                ..';:cc::;,..           .;;;;,                   .''''''.'
+',:'........,dc    ,loc;;;,,,,,,,,,,,;;;;;;;;;;;;;;;;;;;;;;;cod1'           'codlc:,,,,;:loxxc'      ..xx;;;dd.                 cx,....,o'
+',c.        .x:  ,ol'...                                      .,oo'      .:ol,.           ..':xkl.   ..kk. ..ckl.               cO.    'o'
+';l.        .kc cx:..     .......................................;d,   .cd:.        ...       .'oO1. .'kk.   .'lkc.             lO.    'd'
+'.;,,,,,,,,;;c;'ko..   ;ddllllllllooooooooooodddddddddddddddddddxxdo. .dc.     .,:oodddxdl;.    .;kO,.'Ok.    ..'dk:.           lO.    'd'
+'              ,x: .   .kd............................................ol.     ,dl,......'ckOc.....,OO''OO.      ..;xx'          l0.    .d'
+'              ,kc .   .ko..   ....,kdlclllxd'.:kdooodddddddddddddxx':x...  .lo............1Kx.....;0d'OO.        ..cko. .......o0.    ,d'
+'              ,kc .   .kd..  .....:Kd.....O0,.oK;...............:kc.dc.....ck'.............1Xc.....k0,OO.          .,Ox,xc'''',':.    ,x'
+'              ,k: .   .kd..    ...:0d.....O0,.oK;.............;dd,..d:.....lO..............cKc.....x0,0O.    .......;0x;0:            ,x'
+'              ,k: .    kd..      .;0d.....O0,.,kd,.....':::cloc'....co.    ,ko............,OO.....,0x'0O.  ..ox:,,'';:''dx;           ,x,
+'              ,x:      ko..       ;0d.....O0'...ckd;.....'oxc........o,     .ox;.........1Ox......xK;,OO.  ..oO,       ..;xd.         ,x,
+'              ,x:      xo..       ;0o.   .k0'.....:xo,.....'ld;......'o'.    .'colc::cldd1'    ..xK:.'OO.  ..oO,          .cxc.       ,x'
+'              ,x;      xo..       ;Oo.   .k0'.     .;dd;.    .:o;.    .lc.       .......      .;Ox' .'OO.  ..lO,            .cd;      ,x'
+'              ,x;      xl .       ,Oo.   .k0'.       .,od;,    .:dc.    'cc'.              .'lkk;   .'Ok.  ..lO,              .ld;    ,d'
+'              ,d;      xl .       ,kl.   .xO..          'dd;.    .:o:.    .;ll;'........':okxc.     .'kk.  ..lk,               .'oo.  ,d,
+'              .c;;''',;,          .oo::cccl:.             'ldigitalllc.      ..,;:ccllllc:'.         .:c:::
+'
+'***** TRON LEGACY LE *****
+'******* Stern 2011 *******
+'****** VPW Mod v1.0 ******
+'
+'VPW Presents another "Yeah, we'll just do a quick 'add nfozzy physics to this' and get it out the door..." *a month later* "doh, nevermind, maybe next time..." Mod!
+'
+' VPX Programmes;
+' ===============
+' Table Stuff - Astronasty, Sixtoe, Fluffhead35, Wylte, iaakki, tomate, hauntfreaks, apophis
+' VR Stuff - Sixtoe, Rawd, LeoJreimroc
+'
+' We thank the previous friends of TRON (Apologies if we have missed anyone)
+' G5k:	Playfield, plastics, ramps and other graphical improvments, new arcade primitive, modified ramp primitives, Lighting, material and physics adjustments and general trial and error adjustments.
+' DJRobX: Updated physics and code to bring table inline with VPX 10.4 routines, ROM-controlled GI and PWM flasher support. Merging changes between existing tables. Fastflips hardcoded.. 
+' Sixtoe: VR conversion, table mods and tweaking.
+' ICPjuggla, freneticamnesic: Original VPX Table (V1.3f)
+' 85Vette: Original VP9 table
+' Rom: Original FP table
+' TerryRed: PinUp Player original mod removed (to work with Pinup proper May 2018 onward) Table is a standard VPX table now. Ball Controller Mod added.
+' Dozer: Fixed recognizer and disc turntable movement (not all light mods moved to this version)
+' RustyCardores: Surround sound mod, new sounds added (where there were none)
+' Hannibal: Lighting and graphical improvements
+' Draifet: Physics and graphical improvements
+' HauntFreaks: Graphical and material improvements.
+
+Option Explicit
+Randomize
+
+On Error Resume Next
+ExecuteGlobal GetTextFile("controller.vbs")
+If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+On Error Goto 0
+
+Const BallSize = 50
+Const BallMass = 1
+
+'///////////////////////-----General Sound Options-----///////////////////////
+'// VolumeDial:
+'// VolumeDial is the actual global volume multiplier for the mechanical sounds.
+'// Values smaller than 1 will decrease mechanical sounds volume.
+'// Recommended values should be no greater than 1.
+Const VolumeDial = 0.8
+
+'/////////////////////-----BallRoll Sound Amplification -----/////////////////////
+Const BallRollAmpFactor = 0 ' 0 = no amplification, 1 = 2.5db amplification, 2 = 5db amplification, 3 = 7.5db amplification, 4 = 9db amplification (aka: Tie Fighter)
+
+' ***************************
+' User options
+' ***************************
+
+Const RubberizerEnabled = 1			'0 = normal flip rubber, 1 = more lively rubber for flips, 2 = a different rubberizer
+Const FlipperCoilRampupMode = 1   	'0 = fast, 1 = medium, 2 = slow (tap passes should work)
+Const TargetBouncerEnabled = 2 		'0 = normal standup targets, 1 = bouncy targets, 2 = orig TargetBouncer
+Const TargetBouncerFactor = 0.9	 	'Level of bounces. 0.0 thru 1.0, higher value is more bounciness (don't go above 1)
+
+Const DynamicBallShadowsOn = 1		'0 = no dynamic ball shadow, 1 = enable dynamic ball shadow
+Const AmbientShadowOn = 1			'Toggle for just the moving shadow primitive (ninuzzu's)
+Const SpotlightShadowsOn = 1		'Toggle for shadows from spotlights
+
+'*****VR Options *********
+Const VRRoom = 0 					'0 - VR Room Off, 1 - Tron Room 2 - Minimal Room, 3 - Ultra Minimal
+Const Scratches = 1					'0 - Scratches off 1 - Scratches on (only works in VRroom 1 and 2)
+Const PulsingFloor = 1				'0 - Off 1 - Pulsing floor in the VR Tron room
+Const BGLightMod = 1				'0 - Static Backglass, 1 - Backglass Light Mod
+'*****VR Options End *****
+
+Const Cabinetmode = 0				'0 - Siderails On, 1 - Siderails Off
+Const Rubbercolour = 1				'0 - Black,  1 - White LE Rubbers
+Const AcrylicProt = 1				'0 - None, 1 - Acrylic Neon Plastic Protectors
+Const LensFlares = True			' Hannibal lens flares.  Very large textures, may cause lag 
+Const GlowRamps = 50				' Boost neon tube glow (0 = off, 10 = default 100 = very bright)
+Const Sidewall = True				' Dozer's sidewall reflections of neon tubes (new artwork created)
+Const SpecialApron = True  			' False = Stern Cards, True = Lovely Tron lady cards
+Const GIBleedOpacity = 25 			' Blue cast over rear of table.   100= max, 0 = off
+Const WhiteGI = True 				' GI LED Color: Blue = 0, Cool White = 1 
+
+Const UseVPMModSol = True
+Dim DesktopMode: DesktopMode = Table.ShowDT
+Dim UseVPMDMD
+If VRRoom <> 0 Then UseVPMDMD = True Else UseVPMDMD = DesktopMode
+
+gibleed.opacity = GIBleedOpacity
+
+dim bulb, rubberle
+
+if GlowRamps >0 Then
+	for each bulb in RampGlow1
+		bulb.IntensityScale=GlowRamps / 10
+	Next
+	for each bulb in RampGlow2
+		bulb.IntensityScale=GlowRamps / 10 
+	Next
+end if
+
+if rubbercolour > 0 Then
+	for each rubberle in rubbercol:rubberle.material = "Rubber White":Next
+	Else
+	for each rubberle in rubbercol:rubberle.material = "Rubber Black":Next
+End If
+
+If AcrylicProt > 0 Then
+	for each Acrylic in acrylics:Acrylic.visible = 1:Next
+Else
+	for each Acrylic in acrylics:Acrylic.visible = 0:Next
+End If
+
+if WhiteGI Then
+	for each bulb in GI
+	bulb.color = RGB(255,255,255)
+	bulb.colorfull = RGB(255,255,255)
+'	bulb.IntensityScale=.8
+	'bulb.TransmissionScale=.3
+	next
+	' All blue flippers
+	'LFLogo.Image="tron_flipper_blue"
+	'LFLogoUp.Image="tron_flipper_blue"
+	GI_9.IntensityScale = .5
+	GI_9.BulbModulateVsAdd = 1
+	GI_10.IntensityScale = .5
+	GI_16.IntensityScale = .5
+end if
+
+LoadVPM "01560000", "sam.VBS", 3.10
+
+'********************
+'Standard definitions
+'********************
+
+Const cGameName = "trn_174h"
+'Const cGameName = "trn_160"
+
+Const UseSolenoids = 1
+Const UseLamps = 0
+Const UseSync = 1
+Const HandleMech = 0 
+Const UseGI=1
+
+'Standard Sounds
+Const SSolenoidOn = "Solenoid"
+Const SSolenoidOff = ""
+Const SCoin = "CoinIn"
+
+ '************
+' Table init.
+'************
+
+Dim xx
+Dim Bump1, Bump2, Bump3, Mech3bank,bsTrough,bsRHole,DTBank4,turntable,ttDisc1
+Dim PlungerIM
+Dim lighthanmovepos(2)
+Dim wechsel, Drehmerker, Bildschirmaktiv', Arcadetimer1, Arcadetimer2
+DIM Discdir
+Discdir = 40
+
+
+Sub Table_Init
+	vpmInit Me
+	UpPost.Isdropped=true
+	With Controller
+		.GameName = cGameName
+		If Err Then MsgBox "Can't start Game " & cGameName & vbNewLine & Err.Description:Exit Sub
+		.SplashInfoLine = "Tron Legacy LE - VPW Mod (Stern 2011)"
+		.HandleKeyboard = 0
+		.ShowTitle = 0
+		.ShowDMDOnly = 1
+		.ShowFrame = 0
+		.HandleMechanics = 1
+		.Hidden = UseVPMDMD  
+        .Games(cGameName).Settings.Value("sound") = 1
+		On Error Resume Next
+		.Run GetPlayerHWnd
+		If Err Then MsgBox Err.Description
+	End With
+
+    On Error Goto 0
+
+
+       '**Trough
+    Set bsTrough = New cvpmBallStack
+    bsTrough.InitSw 0, 21, 20, 19, 18, 0, 0, 0
+    bsTrough.InitKick BallRelease, 90, 8
+    bsTrough.InitExitSnd SoundFX("ballrelease1",DOFContactors), SoundFX("Solenoid",DOFContactors)
+    bsTrough.Balls = 4
+
+	'***Right Hole bsRHole
+     Set bsRHole = New cvpmBallStack
+     With bsRHole
+         .InitSw 0, 11, 0, 0, 0, 0, 0, 0
+         .InitKick sw11, 200, 24
+         .KickZ = 0.4
+         .InitExitSnd SoundFX("popper_ball",DOFContactors), SoundFX("Solenoid",DOFContactors)
+         .KickForceVar = 2
+     End With
+
+
+ 	'DropTargets
+   	Set DTBank4 = New cvpmDropTarget  
+   	  With DTBank4
+   		.InitDrop Array(sw04,sw03,sw02,sw01),Array(4,3,2,1)
+        .Initsnd SoundFX("fx_droptarget",DOFContactors), SoundFX("fx_droptargetup",DOFContactors)
+       End With
+
+      '**Main Timer init
+	PinMAMETimer.Interval = PinMAMEInterval
+	PinMAMETimer.Enabled = 1
+ 
+	'Nudging
+    	vpmNudge.TiltSwitch=-7
+    	vpmNudge.Sensitivity=3    	
+		vpmNudge.TiltObj=Array(Bumper1b,Bumper2b,Bumper3b,LeftSlingshot,RightSlingshot)
+
+     ' Impulse Plunger
+    Const IMPowerSetting = 150
+    Const IMTime = 0.7
+    Set plungerIM = New cvpmImpulseP
+    With plungerIM
+        .InitImpulseP swplunger, IMPowerSetting, IMTime
+        .Random 0.3
+        .InitExitSnd "plunger2", "plunger"
+        .CreateEvents "plungerIM"
+    End With
+
+	TBPos=28:TBTimer.Enabled=0:TBDown=1:Controller.Switch(52) = 1:Controller.Switch(53) = 0
+
+'   Spinning Disk
+
+	Set ttDisc1 = New myTurnTable
+		ttDisc1.InitTurnTable Disc1Trigger, 8
+		ttDisc1.SpinCW = False
+		ttDisc1.CreateEvents "ttDisc1"
+
+	'vpmMapLights Collection1
+
+	if SpecialApron = true then Apron.Image = "apron-tronspecial"
+
+	InitVpmFFlipsSAM
+
+End Sub
+
+Sub Table_Paused:Controller.Pause = 1:End Sub
+Sub Table_unPaused:Controller.Pause = 0:End Sub
+
+'**********
+'Timer Code
+'**********
+
+Sub FrameTimer_Timer()
+	'TimerPlunger
+	RLS
+	RollingTimer
+	'LampTimer
+'		ArcadeTimer
+	Arcadetimer1
+'		Arcadetimer2
+	UpdateFlipperLogo
+	'Augen
+	sw1T
+	sw2T
+	sw3T
+	sw4T
+	Hanbewegung
+	PrimT
+	PlungerPTimer
+	If DynamicBallShadowsOn=1 Then DynamicBSUpdate 'update ball shadows
+	if VRroom >0 and VRroom <3 then VRStartButton.blenddisablelighting = l01.intensityScale:VRTourneyButton.blenddisablelighting = l02.intensityScale  ' runs the front cabinet lights in VR
+End Sub
+ 
+'*****Keys
+Sub Table_KeyDown(ByVal keycode)
+
+
+If keycode = LeftFlipperKey Then 
+FlipperActivate LeftFlipper, LFPress
+if VRroom >0 and VRroom <3 Then VRFlipperLeft.x = VRFlipperLeft.x + 5
+end If
+
+If keycode = RightFlipperKey Then 
+FlipperActivate RightFlipper, RFPress
+if VRroom >0 and VRroom <3 Then VRFlipperRight.x = VRFlipperRight.x - 5
+end If
+	
+    If keycode = PlungerKey Then 
+	Plunger.Pullback
+	SoundPlungerPull()
+	
+		If VRRoom >0 and VRroom <3 then 
+		TimerVRPlunger.Enabled = True   'VR Plunger
+		TimerVRPlunger2.Enabled = False   'VR Plunger
+		End If
+
+	End If
+
+
+
+	If Keycode = LeftTiltKey Then Nudge 90, 8: SoundNudgeLeft()
+	If Keycode = RightTiltKey Then Nudge 270, 8: SoundNudgeRight()
+	If Keycode = CenterTiltKey Then Nudge 0, 8: SoundNudgeCenter()
+
+
+	If keycode = keyInsertCoin1 or keycode = keyInsertCoin2 or keycode = keyInsertCoin3 or keycode = keyInsertCoin4 Then
+			Select Case Int(rnd*3)
+					Case 0: PlaySound ("Coin_In_1"), 0, CoinSoundLevel, 0, 0.25
+					Case 1: PlaySound ("Coin_In_2"), 0, CoinSoundLevel, 0, 0.25
+					Case 2: PlaySound ("Coin_In_3"), 0, CoinSoundLevel, 0, 0.25
+
+			End Select
+	End If
+
+	if keycode=StartGameKey then 
+	soundStartButton()
+	if VRroom >0 and VRroom <3 Then
+	VRStartButton.y = VRStartButton.y -5
+	VRStartButton2.y = VRStartButton2.y -5
+	End If
+	End if
+    If vpmKeyDown(keycode) Then Exit Sub 
+End Sub
+
+Sub Table_KeyUp(ByVal keycode)
+
+
+	If keycode = LeftFlipperKey Then 
+	FlipperDeActivate LeftFlipper, LFPress
+	if VRroom >0 and VRroom <3 Then VRFlipperLeft.x = VRFlipperLeft.x - 5
+	End If
+
+	If keycode = RightFlipperKey Then 
+	FlipperDeActivate RightFlipper, RFPress
+	if VRroom >0 and VRroom <3 Then VRFlipperRight.x = VRFlipperRight.x + 5
+	End If
+
+	
+	If Keycode = StartGameKey Then 
+	Controller.Switch(16) = 0
+	if VRroom >0 and VRroom <3 Then
+	VRStartButton.y = VRStartButton.y +5
+	VRStartButton2.y = VRStartButton2.y +5
+	End If
+	End if
+
+    If keycode = PlungerKey Then 
+	SoundPlungerReleaseBall()
+	Plunger.Fire
+	If VRRoom >0 And VRroom <3  then
+	TimerVRPlunger.Enabled = False  'VR Plunger
+	TimerVRPlunger2.Enabled = True   ' VR Plunger
+	VRPlunger.Y = -99   ' VR Plunger
+	End if
+	End if
+
+	If vpmKeyUp(keycode) Then Exit Sub
+
+End Sub
+
+'Sub TimerPlunger()
+ 'debug.print plunger.position
+'	VR_Primary_plunger.Y = -100 + (5* Plunger.Position) -20
+'End Sub
+
+   'Solenoids
+SolCallback(1) = "solTrough"
+SolCallback(2) = "solAutofire"
+SolCallback(3) = "DTBank4.SolDropUp"
+SolCallback(4) = "bsRHole.SolOut"
+SolCallback(5)="SolDiscMotor"' spinning disk
+SolCallback(6) = "TBMove"
+SolCallback(7) = "orbitpost"
+'SolCallback(8) = "shaker"
+'SolModCallback(9) = "SetLampMod 9,"
+'SolModCallback(10) = "SetLampMod 10,"
+'SolModCallback(11) = "SetLampMod 11,"
+'SolCallback(12) = "upperleftflipper"
+'SolCallback(13) = "leftslingshot"
+'SolCallback(14) = "rightslingshot"
+SolCallback(15) = "SolLFlipper"
+SolCallback(16) = "SolRFlipper"
+
+
+'Flashers
+SolModCallback(17) = "SetLampMod 17,"	'flash zen
+SolModCallback(18) = "SetLampMod 18,"	'flash videogame
+SolModCallback(25) = "FlashSol25"		'"setlampMod 119,"	'flash right domes x2
+SolModCallback(20) = "setLampMod 20,"	'LE apron left
+SolModCallback(21) = "setlampmod 21,"	'LE apron right
+'SolCallback(22) = "discdirrelay"		'LE disc direction relay
+SolCallback(23) = "recogrelay"			'LE recognizer
+
+SolModCallback(19) = "FlashSol19"		'"setlampmod 125,"	'flash left domes
+SolModCallback(26) = "SetLampMod 26,"	'flash disc left 
+SolModCallback(27) = "SetLampMod 27,"	'flash disc right
+SolModCallback(28) = "FlashSol28"		'"SetLampMod 128,"	'flash backpanel x2
+SolModCallback(29) = "SetLampMod 29,"	'flash recognizer
+SolModCallback(30) = "SetLampMod 30,"	'disc motor relay
+SolModCallback(31) = "SetLampMod 31,"	'flash red disc left x2
+SolModCallback(32) = "SetLampMod 32,"	'LE flash red disc x2
+
+
+
+Dim XLocation,XDir,T(4),ZRot
+Dim recogdir
+XDir=1
+XLocation=-30
+ZRot=1
+
+
+Sub RecognizerTimer_Timer
+	If recognizer.rotz <= -18 Then
+		Controller.Switch(56) = 1
+	Else
+		Controller.Switch(56) = 0
+	End If
+	If recognizer.rotz => 18 Then
+		Controller.Switch(54) = 1
+	Else
+		Controller.Switch(54) = 0
+	End If
+	If recognizer.rotz <=0 AND recognizer.rotz > -1 OR recognizer.rotz => 0 AND recognizer.rotz <= 1 Then
+		Controller.Switch(55) = 1
+	Else
+		Controller.Switch(55) = 0
+	End If 
+
+	Select Case recogdir
+	Case 1:
+		If recognizer.rotz <= -20 Then
+			recogdir = 2
+		End If
+		recognizer.rotz = recognizer.rotz - 0.1
+	Case 2:
+		If recognizer.rotz => 20 Then
+			recogdir = 1
+		End If
+		recognizer.rotz = recognizer.rotz + 0.1
+	End Select
+End Sub
+
+
+Sub recogrelay(Enabled)
+	If Enabled Then 
+		recogdir = 1:RecognizerTimer.enabled=1
+	Else
+		RecognizerTimer.enabled=0
+	End If
+End Sub
+
+Sub solTrough(Enabled)
+	If Enabled Then
+		bsTrough.ExitSol_On
+		vpmTimer.PulseSw 22
+	End If
+ End Sub
+
+
+
+ '******
+ 'Auto Plunger add by Hanibal
+ '******
+
+Dim AP
+Dim Zeit
+
+Sub SolAutofire(Enabled)
+	If Enabled Then
+		AP = True
+'		PlungerIM.AutoFire
+      'PlaySoundAt "plunger", Plunger
+		SoundPlungerReleaseBall
+	End If
+End Sub
+
+Sub PlungerPTimer()
+	if AP = True and Zeit < 10 then Plunger.visible = 0 :Plunger1.visible = 1 : PlungerPTimer1.Enabled = 1	 :Zeit = Zeit +1 ':Test1.state = 1
+	if AP = False and Zeit > 0 then Plunger1.Fire : Zeit = 0 ':Test1.state = 0
+	if Zeit >= 10 then AP = False : 	PlaySoundAt "ShooterLane", Plunger
+End Sub
+
+
+Sub PlungerPTimer1_Timer()
+	Plunger.visible = 1 :Plunger1.visible = 0
+	PlungerPTimer1.Enabled = 0
+End Sub
+
+
+Sub Sol3bankmotor(Enabled)
+	 	If Enabled then
+ 		RiseBank
+		DropBank
+	end if
+End Sub
+
+
+Sub orbitpost(Enabled)
+	If Enabled Then
+		UpPost.Isdropped=false
+	Else
+		UpPost.Isdropped=true
+	End If
+ End Sub
+
+
+
+'Switches
+
+Sub sw01_Hit:DTBank4.Hit 4:End Sub
+Sub sw02_Hit:DTBank4.Hit 3:End Sub
+Sub sw03_Hit:DTBank4.Hit 2:End Sub
+Sub sw04_Hit:DTBank4.Hit 1:End Sub
+Sub sw7_Hit
+	Me.TimerEnabled = 1
+	sw7p.TransX = -2
+	vpmTimer.PulseSw 7
+End Sub
+
+Sub sw7_Timer:Me.TimerEnabled = 0:sw7p.TransX = 0:End Sub
+Sub sw8_Hit
+	Me.TimerEnabled = 1
+	sw8p.TransX = -2
+	vpmTimer.PulseSw 8
+End Sub
+Sub sw8_Timer:Me.TimerEnabled = 0:sw8p.TransX = 0:End Sub
+Sub sw12_Hit:Controller.Switch(12) = 1:End Sub
+Sub sw12_UnHit:Controller.Switch(12) = 0:End Sub
+Sub sw13_Hit
+	Me.TimerEnabled = 1
+	sw13p.TransX = -2
+	vpmTimer.PulseSw 13
+End Sub
+Sub sw13_Timer:Me.TimerEnabled = 0:sw13p.TransX = 0:End Sub
+Sub sw14_Hit
+	Controller.Switch(14) = 1
+End Sub
+Sub sw14_UnHit:Controller.Switch(14) = 0:End Sub
+'Sub sw23:End Sub
+Sub sw24_Hit
+	Controller.Switch(24) = 1
+End Sub
+Sub sw24_UnHit:Controller.Switch(24) = 0:End Sub
+Sub sw25_Hit
+	Controller.Switch(25) = 1
+End Sub
+Sub sw25_UnHit:Controller.Switch(25) = 0:End Sub
+Sub sw28_Hit
+	Controller.Switch(28) = 1
+End Sub
+Sub sw28_UnHit:Controller.Switch(28) = 0:End Sub
+Sub sw29_Hit
+	Controller.Switch(29) = 1
+End Sub
+Sub sw29_UnHit:Controller.Switch(29) = 0:End Sub
+Sub sw34_Hit
+	Controller.Switch(34) = 1
+	'LeftCount = LeftCount + 1
+End Sub
+Sub sw34_UnHit:Controller.Switch(34) = 0:End Sub
+Sub sw35_Hit:Controller.Switch(35) = 1:End Sub
+Sub sw35_UnHit:Controller.Switch(35) = 0:End Sub
+Sub sw36_Spin:vpmTimer.PulseSw 36::PlaySoundAtVol"fx_spinner",sw36,.2:End Sub
+Sub sw37_Hit 
+	Controller.Switch(37) = 1
+	'RightCount = RightCount + 1
+End Sub
+Sub sw37_UnHit:Controller.Switch(37) = 0:End Sub
+Sub sw38_Hit:Controller.Switch(38) = 1:End Sub
+Sub sw38_UnHit:Controller.Switch(38) = 0:End Sub
+Sub sw39_Hit
+	Controller.Switch(39) = 1
+End Sub
+Sub sw39_UnHit:Controller.Switch(39) = 0:End Sub
+Sub sw41_Hit
+	Controller.Switch(41) = 1
+End Sub
+Sub sw41_UnHit:Controller.Switch(41) = 0:End Sub
+Sub sw43_Hit
+	Controller.Switch(43) = 1
+End Sub
+Sub sw43_UnHit:Controller.Switch(43) = 0:End Sub
+Sub sw44_Spin
+	vpmTimer.PulseSw 44
+	PlaySoundAtVol"fx_spinner",l49,.2
+End Sub
+Sub sw46_Hit
+	Controller.Switch(46) = 1
+End Sub
+Sub sw46_UnHit:Controller.Switch(46) = 0:End Sub
+Sub sw48_Hit
+	Me.TimerEnabled = 1
+	sw48p.TransX = -2
+	vpmTimer.PulseSw 48
+End Sub
+Sub sw48_Timer:Me.TimerEnabled = 0:sw48p.TransX = 0:End Sub
+Sub Laneexit_Hit: Ramphelfer.Enabled= True: End Sub
+
+
+Sub Ramphelfer_Timer
+Playsound "DROP_RIGHT"
+Ramphelfer.Enabled=False
+End Sub
+
+
+'Arcade Scoop
+ Dim aBall, aZpos
+ Dim bBall, bZpos
+
+ Sub sw11_Hit
+     Set bBall = ActiveBall
+     PlaySoundAt "VUKEnter", sw11
+     bZpos = 45
+     Me.TimerInterval = 2
+     Me.TimerEnabled = 1
+ End Sub
+ 
+ Sub sw11_Timer
+     bBall.Z = bZpos
+     bZpos = bZpos-4
+     If bZpos <-30 Then
+         Me.TimerEnabled = 0
+         Me.DestroyBall
+         bsRHole.AddBall Me
+     End If
+ End Sub
+ 
+' ===============================================================================================
+' spinning discs (New) Taken from Whirlwind written by Herweh
+' ===============================================================================================
+
+Dim discAngle, stepAngle, stopDiscs, discsAreRunning
+
+Sub discdirrelay(Enabled)
+	If Enabled Then
+		Discdir = -40.0
+	Else
+		Discdir = 40.0
+	End If
+End Sub
+
+
+
+InitDiscs()
+
+Sub InitDiscs()
+	discAngle 			= 0
+	discsAreRunning		= False
+End Sub
+
+Sub SolDiscMotor(Enabled)
+    ttDisc1.MotorOn = Enabled
+	If Enabled Then
+		Disc1.blenddisablelighting = 3
+		stepAngle			= Discdir '40.0
+		discsAreRunning		= True
+		stopDiscs			= False
+		DiscsTimer.Interval = 10
+		DiscsTimer.Enabled 	= True
+		Drehtimer.Enabled  = True
+        playsound "spindisc", -1, 0.02, 0, 0, 5, 1, 0
+	Else
+		Disc1.blenddisablelighting = 1
+		stopDiscs			= True
+		discsAreRunning		= True
+		Drehtimer.Enabled = False
+		Drehlicht1.state = 0: Drehlicht2.state = 0 : Drehlicht3.state = 0
+        stopsound "spindisc"
+	End If
+End Sub
+
+Sub DiscsTimer_Timer()
+	' calc angle
+	discAngle = discAngle + stepAngle
+	If discAngle >= 360 Then
+		discAngle = discAngle - 360
+	End If
+	If discAngle <= 0 Then
+		discAngle = discAngle + 360
+	End If
+
+	' rotate discs
+	Disc1.RotAndTra2 = 360 - discAngle
+
+	If stopDiscs AND Discdir > 0 Then
+		stepAngle = stepAngle -0.1
+		If stepAngle <= 0 Then
+			DiscsTimer.Enabled 	= False
+		End If
+	End If
+
+	If stopDiscs AND Discdir < 0 Then
+		stepAngle = stepAngle + 0.1
+		If stepAngle >= 0 Then
+			DiscsTimer.Enabled 	= False
+		End If
+	End If
+End Sub
+
+
+Class myTurnTable
+	Private mX, mY, mSize, mMotorOn, mDir, mBalls, mTrigger
+	Public MaxSpeed, SpinDown, Speed
+
+	Private Sub Class_Initialize
+		mMotorOn = False : Speed = 0 : mDir = 1 : SpinDown = 15
+		Set mBalls = New cvpmDictionary
+	End Sub
+
+	Public Sub InitTurntable(aTrigger, aMaxSpeed)
+		mX = aTrigger.X : mY = aTrigger.Y : mSize = aTrigger.Radius
+		MaxSpeed = aMaxSpeed : Set mTrigger = aTrigger
+	End Sub
+
+	Public Sub CreateEvents(aName)
+		If vpmCheckEvent(aName, Me) Then
+			vpmBuildEvent mTrigger, "Hit", aName & ".AddBall ActiveBall"
+			vpmBuildEvent mTrigger, "UnHit", aName & ".RemoveBall ActiveBall"
+			vpmBuildEvent mTrigger, "Timer", aName & ".Update"
+		End If
+	End Sub
+
+	Public Sub SolMotorState(aCW, aEnabled)
+		mMotorOn = aEnabled
+		If aEnabled Then If aCW Then mDir = 1 Else mDir = -1
+		NeedUpdate = True
+	End Sub
+	Public Property Let MotorOn(aEnabled)
+		mMotorOn = aEnabled
+		NeedUpdate = (mBalls.Count > 0) Or (SpinDown > 0)
+	End Property
+	Public Property Get MotorOn
+		MotorOn = mMotorOn
+	End Property
+
+	Public Sub AddBall(aBall)
+		On Error Resume Next
+		mBalls.Add aBall,0
+		NeedUpdate = True
+	End Sub
+	Public Sub RemoveBall(aBall)
+		On Error Resume Next
+		mBalls.Remove aBall
+		NeedUpdate = (mBalls.Count > 0) Or (SpinDown > 0)
+	End Sub
+
+	Public Property Let SpinCW(aCW)
+		If aCW Then mDir = 1 Else mDir = -1
+		NeedUpdate = True
+	End Property
+	Public Property Get SpinCW
+		SpinCW = (mDir = 1)
+	End Property
+
+	Public Sub Update
+		If mMotorOn Then
+			Speed = MaxSpeed
+			NeedUpdate = mBalls.Count
+		Else
+			Speed = Speed - SpinDown*MaxSpeed/3000 '100
+			If Speed < 0 Then 
+				Speed = 0
+				'msgbox "off"
+				NeedUpdate = mBalls.Count
+			End If
+		End If
+		If Speed > 0 Then
+			Dim obj
+			On Error Resume Next
+			For Each obj In mBalls.Keys
+				If obj.X < 0 Or Err Then RemoveBall obj Else AffectBall obj
+			Next
+			On Error Goto 0
+		End If
+	End Sub
+
+	Public Sub AffectBall(aBall)
+		Dim dX, dY, dist
+		dX = aBall.X - mX : dY = aBall.Y - mY : dist = Sqr(dX*dX + dY*dY)
+		If dist > mSize Or dist < 1 Or Speed = 0 Then Exit Sub
+		aBall.VelX = aBall.VelX - (dY * mDir * Speed / 1000)
+		aBall.VelY = aBall.VelY + (dX * mDir * Speed / 1000)
+	End Sub
+
+	Private Property Let NeedUpdate(aEnabled)
+		If mTrigger.TimerEnabled <> aEnabled Then
+			mTrigger.TimerInterval = 10
+			mTrigger.TimerEnabled = aEnabled
+		End If
+	End Property
+End Class
+
+'*****************************************************************************************
+'*******************   Arcade Bildwechsel             ************************************
+'*****************************************************************************************
+
+
+Sub Arcadetimer2_timer()
+	IF Bildschirmaktiv = True Then
+		Select Case Int(Rnd*9)+1
+			Case 1 : Monitor.image = "Arcadeframe1"
+			Case 2 : Monitor.image = "Arcadeframe2"
+			Case 3 : Monitor.image = "Arcadeframe3"
+			Case 4 : Monitor.image = "Arcadeframe4" 
+			Case 5 : Monitor.image = "Arcadeframe5"
+			Case 6 : Monitor.image = "Arcadeframe6"
+			Case 7 : Monitor.image = "Arcadeframe7"
+			Case 8 : Monitor.image = "Arcadeframe8"
+			Case 9 : Monitor.image = "Arcadeframe9"
+		End Select
+	End If
+End Sub
+
+
+Sub Arcadetimer1()
+	IF Bildschirmaktiv = True Then
+		Monitorflash.opacity = (RND * 200)
+		Monitorlicht.intensity = 10 + (RND * 5)
+	Else
+		Monitorflash.opacity = 0
+	End If
+End Sub
+
+'*****************************************************************************************
+'*******************   Drehtimer  (Spinning disc lights)            ************************************
+'*****************************************************************************************
+
+Sub Drehtimer_Timer
+	Drehmerker = Drehmerker +1
+	Select Case Drehmerker
+		Case 1 : Drehlicht1.state = 1: Drehlicht2.state = 0 : Drehlicht3.state = 0
+		Case 2 : Drehlicht1.state = 0: Drehlicht2.state = 1 : Drehlicht3.state = 0
+		Case 3 : Drehlicht1.state = 0: Drehlicht2.state = 0 : Drehlicht3.state = 1 : Drehmerker = 0
+	End Select
+End Sub
+
+Const ReflipAngle = 20
+  
+Sub SolLFlipper(Enabled)
+     If Enabled Then
+		LF.fire:LeftFlipper1.RotateToEnd
+		If leftflipper.currentangle < leftflipper.endangle + ReflipAngle Then 
+				RandomSoundReflipUpLeft LeftFlipper
+		Else 
+				SoundFlipperUpAttackLeft LeftFlipper
+				RandomSoundFlipperUpLeft LeftFlipper
+		End If
+     Else
+		LeftFlipper.RotateToStart:LeftFlipper1.RotateToStart
+		If LeftFlipper.currentangle < LeftFlipper.startAngle - 5 Then
+				RandomSoundFlipperDownLeft LeftFlipper
+		End If
+		FlipperLeftHitParm = FlipperUpSoundLevel
+     End If
+ End Sub
+
+Sub SolRFlipper(Enabled)
+
+	If Enabled Then
+			RF.Fire 'rightflipper.rotatetoend
+
+			If rightflipper.currentangle > rightflipper.endangle - ReflipAngle Then
+					RandomSoundReflipUpRight RightFlipper
+			Else 
+					SoundFlipperUpAttackRight RightFlipper
+					RandomSoundFlipperUpRight RightFlipper
+			End If
+	Else
+			RightFlipper.RotateToStart
+			If RightFlipper.currentangle > RightFlipper.startAngle + 5 Then
+					RandomSoundFlipperDownRight RightFlipper
+			End If        
+			FlipperRightHitParm = FlipperUpSoundLevel
+	End If
+ End Sub   
+
+
+ 'Drains and Kickers
+Dim BallCount:BallCount = 0
+
+Sub Drain_Hit()
+	RandomSoundDrain Drain
+	BallCount = BallCount - 1
+	bsTrough.AddBall Me
+	If BallCount = 0 then Bildschirmaktiv = FALSE : Monitor.image = "Arcadeframe0" 
+End Sub
+
+Sub BallRelease_UnHit()
+	RandomSoundBallRelease BallRelease
+	BallCount = BallCount + 1
+	Bildschirmaktiv = True
+End Sub
+
+
+
+'***Slings and rubbers
+
+ Dim LStep, RStep
+
+Sub LeftSlingShot_Slingshot
+	RandomSoundSlingshotLeft SLING2
+	vpmTimer.PulseSw 26
+	LSling.Visible = 0
+    LSling1.Visible = 1
+    sling2.TransZ = -20
+    LStep = 0
+    LeftSlingShot.TimerEnabled = 1
+    LeftSlingShot.TimerInterval = 10
+    Sling_linkslicht.state = True
+End Sub
+
+Sub LeftSlingShot_Timer
+    Select Case LStep
+        Case 3:LSLing1.Visible = 0:LSLing2.Visible = 1:sling2.TransZ = -10
+        Case 4:LSLing2.Visible = 0:LSLing.Visible = 1:sling2.TransZ = 0:LeftSlingShot.TimerEnabled = 0: Sling_linkslicht.state = False
+    End Select
+    LStep = LStep + 1
+End Sub
+
+Sub RightSlingShot_Slingshot
+	RandomSoundSlingshotRight SLING1
+	vpmTimer.PulseSw 27
+	RSling.Visible = 0
+    RSling1.Visible = 1
+    sling1.TransZ = -20
+    RStep = 0
+    RightSlingShot.TimerEnabled = 1
+    RightSlingShot.TimerInterval = 10
+	Sling_rechtslicht.state = True
+End Sub
+
+Sub RightSlingShot_Timer
+    Select Case RStep
+        Case 3:RSLing1.Visible = 0:RSLing2.Visible = 1:sling1.TransZ = -10
+        Case 4:RSLing2.Visible = 0:RSLing.Visible = 1:sling1.TransZ = 0:RightSlingShot.TimerEnabled = 0: Sling_rechtslicht.state = False
+    End Select
+    RStep = RStep + 1
+End Sub
+
+   'Bumpers
+Sub Bumper1b_Hit
+	vpmTimer.PulseSw 31
+	RandomSoundBumperTop Bumper1b
+End Sub
+     
+ 
+Sub Bumper2b_Hit
+	vpmTimer.PulseSw 30
+	RandomSoundBumperMiddle Bumper2b
+End Sub
+
+Sub Bumper3b_Hit
+	vpmTimer.PulseSw 32
+	RandomSoundBumperBottom Bumper3b
+End Sub
+  
+
+
+'Lampz support functions
+Sub DisableLighting(pri, DLintensity, ByVal aLvl)	'cp's script  DLintensity = disabled lighting intesity
+	if Lampz.UseFunction then aLvl = Lampz.FilterOut(aLvl)	'Callbacks don't get this filter automatically
+	pri.blenddisablelighting = aLvl * DLintensity
+End Sub
+
+Sub SetRGBLamp(Lamp, R, G, B)   
+	'debug.print Lamp.name & " RGB: " & R & ":"& G & ":"& B
+     'dim IntensityValue 
+	 'IntensityValue = .2126 * R + .7152 * G + .0722 * B
+	 Lamp.Color = RGB(R, G, B)
+	 Lamp.ColorFull = RGB(R, G, B)
+	 'Lamp.Intensity = IntensityValue *100 / 255
+	 Lamp.State = 1
+End Sub
+
+
+
+'***************************************
+'*** Begin nFozzy lamp handling      ***
+'***************************************
+
+Dim NullFader : set NullFader = new NullFadingObject
+Dim Lampz : Set Lampz = New LampFader
+Dim ModLampz : Set ModLampz = New DynamicLamps
+InitLampsNF              ' Setup lamp assignments
+LampTimer.Interval = -1
+LampTimer.Enabled = 1
+
+
+
+Sub LampTimer_Timer()
+	dim x, chglamp
+	chglamp = Controller.ChangedLamps
+	If Not IsEmpty(chglamp) Then
+		For x = 0 To UBound(chglamp) 			'nmbr = chglamp(x, 0), state = chglamp(x, 1)
+			Lampz.state(chglamp(x, 0)) = chglamp(x, 1)
+		next
+	End If
+	Lampz.Update1	'update (fading logic only)
+	ModLampz.Update1
+
+
+	'MaterialColor "Linkerstring", RGB(Lampz.state(103), Lampz.state(102), Lampz.state(101)) 'not used anymore
+	MaterialColor "Rechterstring", RGB(Lampz.state(106), Lampz.state(105), Lampz.state(104))
+
+	'****************** Hanibal Glowing Lights **********************************
+
+	if GlowRamps > 0 then
+
+		SetRGBLamp Rampenlicht1, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a1, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a2, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a3, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a4, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a5, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a6, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a7, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a8, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a9, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a10, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a11, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a12, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a13, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a14, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a15, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a16, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a17, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a18, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a19, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a20, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a21, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+		SetRGBLamp Rampenlicht1a22, Lampz.state(106),Lampz.state(105),Lampz.state(104)
+
+
+
+
+		SetRGBLamp Rampenlicht2, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a1, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a2, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a3, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a4, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a5, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a6, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a7, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a8, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a9, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a10, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a11, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a12, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a13, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a14, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a15, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a16, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a17, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a18, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a19, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a20, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a21, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a22, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a23, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a24, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a25, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a26, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a27, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+		SetRGBLamp Rampenlicht2a28, Lampz.state(103),Lampz.state(102),Lampz.state(101)
+
+	end if 
+
+	if Sidewall then 
+		Reflect1.Color = RGB(Lampz.state(106),Lampz.state(105),Lampz.state(104))
+		Reflect2.Color = RGB(Lampz.state(103),Lampz.state(102),Lampz.state(101))
+		Reflect3.Color = RGB(Lampz.state(103),Lampz.state(102),Lampz.state(101))
+	end if 
+
+
+
+
+End Sub
+
+
+
+dim FrameTime, InitFrameTime : InitFrameTime = 0
+Wall64.TimerInterval = -1
+Wall64.TimerEnabled = True
+
+Sub Wall64_Timer()	'Stealing this random wall's timer for -1 updates
+	FrameTime = gametime - InitFrameTime : InitFrameTime = gametime	'Count frametime. Unused atm?
+	Lampz.Update 'updates on frametime (Object updates only)
+	ModLampz.Update
+End Sub
+
+Function FlashLevelToIndex(Input, MaxSize)
+	FlashLevelToIndex = cInt(MaxSize * Input)
+End Function
+
+Sub InitLampsNF()
+	'Filtering (comment out to disable)
+	Lampz.Filter = "LampFilter"	'Puts all lamp intensityscale output (no callbacks) through this function before updating
+	ModLampz.Filter = "LampFilter"
+
+	'Adjust fading speeds (1 / full MS fading time)
+	dim x : for x = 0 to 140 : Lampz.FadeSpeedUp(x) = 1/4 : Lampz.FadeSpeedDown(x) = 1/10 : next
+	for x = 0 to 28 : ModLampz.FadeSpeedUp(x) = 1/2 : ModLampz.FadeSpeedDown(x) = 1/25 : Next
+
+	'GI speed	
+	ModLampz.FadeSpeedUp(0) = 1/8 : ModLampz.FadeSpeedDown(0) = 1/30
+
+	'Lamp Assignments
+	'MassAssign is an optional way to do assignments. It'll create arrays automatically / append objects to existing arrays
+
+
+
+
+
+'1 is start button light 2 is tournament button light - Stern Manual
+'Manual says 'shoot again' is light 3 - on this table it is L26 ? wtf???  
+'on Simpsons it is l31 - and the manual matches like it should..
+' Rolling Stones is same year.. in that manual start is also L01, and on that VPX table it IS L01 set with....Set Lights(1)=L01
+
+'' For VR Start and Tournament Buttons on Rolling Stones......
+'Set Lights(1)=L01
+'Set Lights(2)=L02
+
+
+
+' for VR start and tournament button lights
+Lampz.MassAssign(65) = l01
+Lampz.MassAssign(66) = l02
+
+
+	Lampz.MassAssign(1) = l1
+	Lampz.MassAssign(1) = l1a
+
+	Lampz.MassAssign(2) = l2
+	Lampz.MassAssign(2) = l2a
+
+	Lampz.MassAssign(3) = l3
+	Lampz.MassAssign(3) = l3a
+
+	Lampz.MassAssign(4) = l4
+	Lampz.MassAssign(4) = l4a
+
+	Lampz.MassAssign(5) = l5
+	Lampz.MassAssign(5) = l5a
+	Lampz.MassAssign(5) = f5TOP
+	Lampz.Callback(5) = "DisableLighting p5, 50,"
+	Lampz.MassAssign(6) = l6
+	Lampz.MassAssign(6) = l6a
+	Lampz.MassAssign(6) = f6TOP
+	Lampz.Callback(6) = "DisableLighting p6, 50,"
+	Lampz.MassAssign(7) = l7
+	Lampz.MassAssign(7) = l7a
+	Lampz.MassAssign(7) = f7TOP
+	Lampz.Callback(7) = "DisableLighting p7, 50,"
+	Lampz.MassAssign(8) = l8
+	Lampz.MassAssign(8) = l8a
+	Lampz.MassAssign(8) = f8TOP
+	Lampz.Callback(8) = "DisableLighting p8, 50,"
+	Lampz.MassAssign(9) = l9
+	Lampz.MassAssign(9) = l9a
+	Lampz.MassAssign(9) = f9TOP
+	Lampz.Callback(9) = "DisableLighting p9, 50,"
+	Lampz.MassAssign(10) = l10
+	Lampz.MassAssign(10) = l10a
+	Lampz.MassAssign(10) = f10TOP
+	Lampz.Callback(10) = "DisableLighting p10, 50,"
+	Lampz.MassAssign(11) = l11
+	Lampz.MassAssign(11) = l11a
+	Lampz.MassAssign(11) = f11top
+	Lampz.Callback(11) = "DisableLighting p11, 50,"
+	Lampz.MassAssign(12) = l12
+	Lampz.MassAssign(12) = l12a
+	Lampz.MassAssign(12) = f12TOP
+	Lampz.Callback(12) = "DisableLighting p12, 50,"
+	Lampz.MassAssign(13) = l13
+	Lampz.MassAssign(13) = l13a
+	Lampz.MassAssign(13) = f13TOP
+'	Lampz.Callback(13) = "DisableLighting p13, 50,"
+	Lampz.MassAssign(14) = l14
+	Lampz.MassAssign(14) = l14a
+	Lampz.MassAssign(14) = f14top
+	Lampz.Callback(14) = "DisableLighting p14, 50,"
+	Lampz.MassAssign(15) = l15
+	Lampz.MassAssign(15) = l15a
+	Lampz.Callback(15) = "DisableLighting p15, 50,"
+	Lampz.MassAssign(16) = l16
+	Lampz.MassAssign(16) = l16a
+	Lampz.Callback(16) = "DisableLighting p16, 50,"
+	Lampz.MassAssign(17) = l17
+	Lampz.MassAssign(17) = l17a
+	Lampz.MassAssign(17) = f17TOP
+	Lampz.Callback(17) = "DisableLighting p17, 50,"
+	Lampz.MassAssign(18) = l18
+	Lampz.MassAssign(18) = l18a
+	Lampz.Callback(18) = "DisableLighting p18, 50,"
+	Lampz.MassAssign(19) = l19
+	Lampz.MassAssign(19) = l19a
+'	Lampz.Callback(19) = "DisableLighting p19, 50,"
+	Lampz.MassAssign(20) = l20
+	Lampz.MassAssign(20) = l20a
+	Lampz.MassAssign(20) = f20TOP
+	Lampz.Callback(20) = "DisableLighting p20, 50,"
+	Lampz.MassAssign(21) = l21
+	Lampz.MassAssign(21) = l21a
+	Lampz.Callback(21) = "DisableLighting p21, 50,"
+	Lampz.MassAssign(22) = l22
+	Lampz.MassAssign(22) = l22a
+	Lampz.MassAssign(22) = f22TOP
+	Lampz.Callback(22) = "DisableLighting p22, 50,"
+	Lampz.MassAssign(23) = l23
+	Lampz.MassAssign(23) = l23a
+	Lampz.MassAssign(23) = f23TOP
+	Lampz.Callback(23) = "DisableLighting p23, 50,"
+	Lampz.MassAssign(24) = l24
+	Lampz.MassAssign(24) = l24a
+	Lampz.MassAssign(24) = f24TOP	
+	Lampz.Callback(24) = "DisableLighting p24, 50,"
+	Lampz.MassAssign(25) = l25
+	Lampz.MassAssign(25) = l25a
+	Lampz.MassAssign(25) = f25TOP	
+	Lampz.Callback(25) = "DisableLighting p25, 50,"
+	Lampz.MassAssign(26) = l26
+	Lampz.MassAssign(26) = l26a
+	Lampz.MassAssign(26) = f26TOP
+	Lampz.Callback(26) = "DisableLighting p26, 50,"
+	Lampz.MassAssign(27) = l27
+	Lampz.MassAssign(27) = l27a
+	Lampz.MassAssign(27) = f27TOP
+	Lampz.Callback(27) = "DisableLighting p27, 50,"
+	Lampz.MassAssign(28) = l28
+	Lampz.MassAssign(28) = l28d
+	Lampz.MassAssign(28) = f28TOP
+'	Lampz.Callback(28) = "DisableLighting p28, 50,"
+	Lampz.MassAssign(29) = l29
+	Lampz.MassAssign(29) = l29d
+	Lampz.MassAssign(29) = f29TOP
+	Lampz.Callback(29) = "DisableLighting p29, 50,"
+	Lampz.MassAssign(30) = l30
+	Lampz.MassAssign(30) = l30a
+	Lampz.MassAssign(30) = f30TOP
+	Lampz.Callback(30) = "DisableLighting p30, 50,"
+	Lampz.MassAssign(31) = l31
+	Lampz.MassAssign(31) = l31a
+	Lampz.MassAssign(31) = f31TOP
+	Lampz.Callback(31) = "DisableLighting p31, 50,"
+	Lampz.MassAssign(32) = l32
+	Lampz.MassAssign(32) = l32a
+	Lampz.MassAssign(32) = f32TOP
+	Lampz.Callback(32) = "DisableLighting p32, 50,"
+	Lampz.MassAssign(33) = l33
+	Lampz.MassAssign(33) = l33a
+	Lampz.Callback(33) = "DisableLighting p33, 50,"
+	Lampz.MassAssign(34) = l34
+	Lampz.MassAssign(34) = l34a
+	Lampz.Callback(34) = "DisableLighting p34, 50,"
+	Lampz.MassAssign(35) = l35
+	Lampz.MassAssign(35) = l35a
+	Lampz.MassAssign(35) = f35TOP
+	Lampz.Callback(35) = "DisableLighting p35, 50,"
+	Lampz.MassAssign(36) = l36
+	Lampz.MassAssign(36) = l36a
+	Lampz.MassAssign(36) = f36TOP
+'	Lampz.Callback(36) = "DisableLighting p36, 50,"
+	Lampz.MassAssign(37) = l37
+	Lampz.MassAssign(37) = l37a
+	Lampz.MassAssign(37) = f37TOP
+	Lampz.Callback(37) = "DisableLighting p37, 50,"
+	Lampz.MassAssign(38) = l38
+	Lampz.MassAssign(38) = l38a
+	Lampz.MassAssign(38) = f38TOP
+	Lampz.Callback(38) = "DisableLighting p38, 50,"
+	Lampz.MassAssign(39) = l39
+	Lampz.MassAssign(39) = l39a
+	Lampz.MassAssign(39) = f39TOP
+	Lampz.Callback(39) = "DisableLighting p39, 50,"
+	Lampz.MassAssign(40) = l40
+	Lampz.MassAssign(40) = l40a
+	Lampz.MassAssign(40) = f40TOP
+	Lampz.Callback(40) = "DisableLighting p40, 50,"
+	Lampz.MassAssign(42) = l42
+	Lampz.MassAssign(40) = l42a
+	Lampz.MassAssign(42) = f42TOP
+	Lampz.Callback(42) = "DisableLighting p42, 50,"
+	Lampz.MassAssign(43) = l43
+	Lampz.MassAssign(43) = l43a
+	Lampz.MassAssign(43) = f43TOP
+	Lampz.Callback(43) = "DisableLighting p43, 50,"
+	Lampz.MassAssign(45) = l45
+	Lampz.MassAssign(45) = l45a
+	Lampz.MassAssign(45) = f45TOP
+	Lampz.Callback(45) = "DisableLighting p45, 30,"
+
+	Lampz.MassAssign(46) = l46
+	Lampz.Callback(46) = "DisableLighting l46p, 200,"
+	Lampz.MassAssign(47) = l47
+	Lampz.Callback(47) = "DisableLighting l47p, 200,"
+	Lampz.MassAssign(48) = l48
+	Lampz.Callback(48) = "DisableLighting l48p, 200,"
+
+	Lampz.MassAssign(49) = l49
+	Lampz.MassAssign(49) = l49a
+	Lampz.Callback(49) = "DisableLighting p49, 50,"
+	Lampz.MassAssign(50) = l50
+	Lampz.MassAssign(50) = l50a
+	Lampz.Callback(50) = "DisableLighting p50, 50,"
+
+	Lampz.MassAssign(51) = l51
+	Lampz.MassAssign(51) = l51a
+	Lampz.MassAssign(51) = f51TOP
+	Lampz.Callback(51) = "DisableLighting p51, 50,"
+	Lampz.MassAssign(52) = l52
+	Lampz.MassAssign(52) = l52a
+	Lampz.MassAssign(52) = f52TOP
+	Lampz.Callback(52) = "DisableLighting p52, 50,"
+	Lampz.MassAssign(53) = l53
+	Lampz.MassAssign(53) = l53a
+	Lampz.MassAssign(53) = f53TOP
+	Lampz.Callback(53) = "DisableLighting p53, 50,"
+
+	Lampz.MassAssign(54) = l54
+	Lampz.MassAssign(54) = l54a
+	Lampz.MassAssign(54) = f54TOP
+	Lampz.Callback(54) = "DisableLighting p54, 50,"
+	Lampz.MassAssign(55) = l55
+	Lampz.MassAssign(55) = l55a
+	Lampz.Callback(55) = "DisableLighting p55, 50,"
+	Lampz.MassAssign(56) = l56
+	Lampz.MassAssign(56) = l56a
+	Lampz.Callback(56) = "DisableLighting p56, 50,"
+	Lampz.MassAssign(57) = l57
+	Lampz.MassAssign(57) = l57a
+	Lampz.Callback(57) = "DisableLighting p57, 50,"
+	Lampz.MassAssign(58) = l58
+	Lampz.MassAssign(58) = l58a
+	Lampz.Callback(58) = "DisableLighting p58, 50,"
+	Lampz.MassAssign(59) = l59
+	Lampz.MassAssign(59) = l59a
+	Lampz.MassAssign(59) = f59TOP
+	Lampz.Callback(59) = "DisableLighting p59, 50,"
+	Lampz.MassAssign(60) = l60
+	Lampz.MassAssign(60) = l60a
+	Lampz.MassAssign(60) = f60TOP
+	Lampz.Callback(60) = "DisableLighting p60, 50,"
+	Lampz.MassAssign(61) = l61
+	Lampz.MassAssign(61) = l61a
+	Lampz.MassAssign(61) = f61TOP
+'	Lampz.Callback(61) = "DisableLighting p61, 50,"
+	Lampz.MassAssign(62) = l62
+	Lampz.MassAssign(62) = l62a
+	Lampz.MassAssign(62) = f62top
+	Lampz.Callback(62) = "DisableLighting p62, 50,"
+	Lampz.MassAssign(63) = l63
+	Lampz.MassAssign(63) = l63a
+	Lampz.Callback(63) = "DisableLighting p63, 50,"
+	Lampz.MassAssign(64) = l64
+	Lampz.MassAssign(64) = l64a
+	Lampz.Callback(64) = "DisableLighting p64, 50,"
+
+'
+'	Lampz.MassAssign(101) = l101
+'	Lampz.MassAssign(102) = l102
+'	Lampz.MassAssign(103) = l103
+'	Lampz.MassAssign(104) = l104
+'	Lampz.MassAssign(105) = l105
+'	Lampz.MassAssign(106) = l106
+
+
+
+	ModLampz.MassAssign(17) = F117
+
+	ModLampz.MassAssign(18) = Flasher7
+	ModLampz.MassAssign(18) = Monitorlicht1
+	ModLampz.MassAssign(18) = Flasher7a
+
+	ModLampz.MassAssign(21) = Lanelight
+	ModLampz.MassAssign(26) = F126
+	ModLampz.MassAssign(27) = F127
+
+
+	ModLampz.MassAssign(29) = f129
+	ModLampz.MassAssign(29) = f129a
+	
+
+	ModLampz.MassAssign(31) = f131a
+	ModLampz.MassAssign(31) = f131b
+
+	ModLampz.MassAssign(32) = f132a
+	ModLampz.MassAssign(32) = f132b
+
+'	ModLampz.MassAssign(9) = f9
+'	ModLampz.MassAssign(9) = f9a
+
+'	ModLampz.MassAssign(10) = f10
+'	ModLampz.MassAssign(10) = f10a
+
+
+'	ModLampz.MassAssign(11) = f11
+'	ModLampz.MassAssign(11) = f11a
+
+
+	' Hannibal's lens flares
+
+	If LensFlares Then
+		ModLampz.MassAssign(17) = Flasher117
+		ModLampz.MassAssign(18) = Flasher7b
+		ModLampz.MassAssign(29) = Flasher129
+		ModLampz.MassAssign(31) = Flasher131
+'		ModLampz.MassAssign(9) = f9b	
+'		ModLampz.MassAssign(10) = f10b
+'		ModLampz.MassAssign(11) = f11b
+	end if 
+
+
+
+
+	'Turn on GI to Start
+'	for x = 0 to 4 : ModLampz.State(x) = 1 : Next
+
+	ModLampz.MassAssign(0) = ColtoArray(GI)
+	ModLampz.Callback(0) = "GIUpdates"
+	ModLampz.state(0) = 1
+
+	'Turn off all lamps on startup
+	lampz.Init	'This just turns state of any lamps to 1
+	ModLampz.Init
+
+	'Immediate update to turn on GI, turn off lamps
+	lampz.update
+	ModLampz.Update
+
+End Sub
+
+'Lamp Filter
+Function LampFilter(aLvl)
+	LampFilter = aLvl^1.6	'exponential curve?
+End Function
+
+
+'Dim GIoffMult : GIoffMult = 2 'adjust how bright the inserts get when the GI is off
+'Dim GIoffMultFlashers : GIoffMultFlashers = 2	'adjust how bright the Flashers get when the GI is off
+
+
+
+giwhite.visible = 1
+Spot1.visible = 1
+Spot2.visible = 1
+
+Dim acrygi
+
+'GI callback
+Sub GIUpdates(aLvl)	'argument is unused
+
+	if Lampz.UseFunction then aLvl = LampFilter(aLvl)	'Callbacks don't get this filter automatically
+
+	
+	Primitive11.blenddisablelighting = (.2 * aLvl) + 0.1
+	for each acrygi in acrylics:acrygi.blenddisablelighting = (.2 * aLvl) + 0.1:Next
+
+	'debug.print aLvl
+
+	giwhite.opacity = 20 * aLvl
+	Spot1.opacity = 100 * aLvl
+	Spot2.opacity = 100 * aLvl
+
+
+'	'Lut Fading
+'	dim LutName, LutCount, GoLut
+'	LutName = "LutCont_"
+'	LutCount = 27
+'	GoLut = cInt(LutCount * giAvg	)'+1	'+1 if no 0 with these luts
+'	GoLut = LutName & GoLut
+'	if Table1.ColorGradeImage <> GoLut then Table1.ColorGradeImage = GoLut ': 	tb.text = golut
+'
+'	'Brighten inserts when GI is Low
+'	dim GIscale
+'	GiScale = (GIoffMult-1) * (ABS(giAvg-1 )  ) + 1	'invert
+'	dim x : for x = 0 to 100
+'		lampz.Modulate(x) = GiScale
+'	Next
+'
+'	'Brighten Flashers when GI is low
+'	GiScale = (GIoffMultFlashers-1) * (ABS(giAvg-1 )  ) + 1	'invert
+'	for x = 5 to 28
+'		modlampz.modulate(x) = GiScale
+'	Next
+	'tb.text = giscale
+
+End Sub
+
+
+'Helper functions
+
+Function ColtoArray(aDict)	'converts a collection to an indexed array. Indexes will come out random probably.
+	redim a(999)
+	dim count : count = 0
+	dim x  : for each x in aDict : set a(Count) = x : count = count + 1 : Next
+	redim preserve a(count-1) : ColtoArray = a
+End Function
+
+Sub SetLamp(aNr, aOn)
+	Lampz.state(aNr) = abs(aOn)
+End Sub
+
+Sub SetLampMod(aNr, aValue)
+	'debug.print aValue
+	ModLampz.state(aNr) = aValue / 255
+End Sub
+
+
+
+'*******************************
+'Intermediate Solenoid Procedures (Setlamp, etc)
+'********************************
+'Solenoid pipeline looks like this:
+'Pinmame Controller -> UseSolenoids -> Solcallback -> intermediate subs (here) -> ModLampz dynamiclamps object -> object updates / more callbacks
+
+'GI
+'Pinmame Controller -> core.vbs PinMameTimer Loop -> GIcallback2 ->  ModLampz dynamiclamps object -> object updates / more callbacks
+'(Can't even disable core.vbs's GI handling unless you deliberately set GIcallback & GIcallback2 to Empty)
+
+'Lamps, for reference:
+'Pinmame Controller -> LampTimer -> Lampz Fading Object -> Object Updates / callbacks
+
+
+Set GICallback2 = GetRef("SetGI")
+
+'    GI lights controlled by Strings
+' 01 Upper BackGlass		'Case 0
+' 02 Rudy					'Case 1
+' 03 Upper Playfield		'Case 2
+' 04 Center BackGlass		'Case 3
+' 05 Lower Playfield		'Case 4
+
+Sub SetGI(aNr, aValue)
+	'msgbox aNr & " value: " & aValue
+	ModLampz.SetGI aNr, aValue 'Redundant. Could reassign GI indexes here
+End Sub
+
+'***************************************
+'***End nFozzy lamp handling***
+'***************************************
+
+
+'*********************************************************************
+'* TARGETBANK TARGETS Taken from AFM written by Groni ****************
+'*********************************************************************
+
+Sub SW49_Hit
+vpmTimer.PulseSw 49
+SW49P.X=442.9411
+SW49P.Y=449.8546
+MotorBank.Y = 439.95 + (3*RND)
+MotorBank.X = 448.6911 -1 + (2*RND)
+Me.TimerEnabled = 1
+'PlaySoundAt SoundFX("fx_target",DOFContactors),f129a
+Flasherswitch49.state =1
+End Sub
+
+Sub SW49_Timer:SW49P.X=442.6875:SW49P.Y=453.3662:MotorBank.Y = 439.95:MotorBank.X = 448.6911:Me.TimerEnabled = 0:Flasherswitch49.state =0:End Sub
+
+Sub SW50_Hit
+vpmTimer.PulseSw 50
+SW50P.X=448.6911
+SW50P.Y=449.8546
+MotorBank.Y = 439.95 + (3*RND)
+MotorBank.X = 448.6911 -1 + (2*RND)
+Me.TimerEnabled = 1
+'PlaySoundAt SoundFX("fx_target",DOFContactors),f129a
+'If Ballresting = True Then
+ 'DPBall.VelY = ActiveBall.VelY * 3
+'End If
+Flasherswitch50.state =1
+End Sub
+
+Sub SW50_Timer:SW50P.X=448.4375:SW50P.Y=453.3662:MotorBank.Y = 439.95:MotorBank.X = 448.6911:Me.TimerEnabled = 0:Flasherswitch50.state =0:End Sub
+
+Sub SW51_Hit
+vpmTimer.PulseSw 51
+SW51P.X=454.0661
+SW51P.Y=449.8546
+MotorBank.Y = 439.95 + (3*RND)
+MotorBank.X = 448.6911 -1 + (2*RND)
+Me.TimerEnabled = 1
+'PlaySoundAt SoundFX("fx_target",DOFContactors),f129a
+'If Ballresting = True Then
+ 'DPBall.VelY = ActiveBall.VelY * 3
+'End If
+Flasherswitch51.state =1
+End Sub
+
+Sub SW51_Timer:SW51P.X=453.8125:SW51P.Y=453.3662:MotorBank.Y = 439.95:MotorBank.X = 448.6911:Me.TimerEnabled = 0:Flasherswitch51.state =0:End Sub
+
+
+'*********************************************************************
+'* TARGETBANK MOVEMENT Taken from AFM written by Groni ***************
+'*********************************************************************
+
+Dim TBPos, TBDown, TBdif
+
+Sub TBMove (enabled)
+if enabled then
+TBTimer.Enabled=1
+
+PlaySound SoundFX("TargetBank",DOFContactors)
+
+End If
+End Sub
+
+Sub TBTimer_Timer()	
+
+
+IF TBPos = 0 Then
+
+MotorBank.Y = 439.95
+SW49P.Y=451.6104
+SW50P.Y=451.6104
+SW51P.Y=451.6104
+MotorBank.X = 448.6911
+SW49P.X=442.9411
+SW50P.X=448.6911
+SW51P.X=454.0661
+End If
+
+IF TBPos = 29 Then
+
+MotorBank.Y = 439.95
+SW49P.Y=451.6104
+SW50P.Y=451.6104
+SW51P.Y=451.6104
+MotorBank.X = 448.6911
+SW49P.X=442.9411
+SW50P.X=448.6911
+SW51P.X=454.0661
+End If
+
+
+Select Case TBPos
+Case 0: MotorBank.Z=-20:SW49P.Z=-20:SW50P.Z=-20:SW51P.Z=-20:TBPos=0:TBDown=0:TBTimer.Enabled=0:Controller.Switch(52) = 0:Controller.Switch(53) = 1::SW49.isdropped=0:SW50.isdropped=0:SW51.isdropped=0:DPWall.isdropped=0:DPWall1.isdropped=1
+Case 1: MotorBank.Z=-22:SW49P.Z=-22:SW50P.Z=-22:SW51P.Z=-22
+Case 2: MotorBank.Z=-24:SW49P.Z=-24:SW50P.Z=-24:SW51P.Z=-24:Controller.Switch(53) = 0
+Case 3: MotorBank.Z=-26:SW49P.Z=-26:SW50P.Z=-26:SW51P.Z=-26
+Case 4: MotorBank.Z=-28:SW49P.Z=-28:SW50P.Z=-28:SW51P.Z=-28
+Case 5: MotorBank.Z=-30:SW49P.Z=-30:SW50P.Z=-30:SW51P.Z=-30
+Case 6: MotorBank.Z=-32:SW49P.Z=-32:SW50P.Z=-32:SW51P.Z=-32
+Case 7: MotorBank.Z=-34:SW49P.Z=-34:SW50P.Z=-34:SW51P.Z=-34
+Case 8: MotorBank.Z=-36:SW49P.Z=-36:SW50P.Z=-36:SW51P.Z=-36
+Case 9: MotorBank.Z=-38:SW49P.Z=-38:SW50P.Z=-38:SW51P.Z=-38
+Case 10: MotorBank.Z=-40:SW49P.Z=-40:SW50P.Z=-40:SW51P.Z=-40
+Case 11: MotorBank.Z=-42:SW49P.Z=-42:SW50P.Z=-42:SW51P.Z=-42
+Case 12: MotorBank.Z=-44:SW49P.Z=-44:SW50P.Z=-44:SW51P.Z=-44:
+Case 13: MotorBank.Z=-46:SW49P.Z=-46:SW50P.Z=-46:SW51P.Z=-46:
+Case 14: MotorBank.Z=-48:SW49P.Z=-48:SW50P.Z=-48:SW51P.Z=-48
+Case 15: MotorBank.Z=-50:SW49P.Z=-50:SW50P.Z=-50:SW51P.Z=-50
+Case 16: MotorBank.Z=-52:SW49P.Z=-52:SW50P.Z=-52:SW51P.Z=-52
+Case 17: MotorBank.Z=-54:SW49P.Z=-54:SW50P.Z=-54:SW51P.Z=-54
+Case 18: MotorBank.Z=-56:SW49P.Z=-56:SW50P.Z=-56:SW51P.Z=-56
+Case 19: MotorBank.Z=-58:SW49P.Z=-58:SW50P.Z=-58:SW51P.Z=-58
+Case 20: MotorBank.Z=-60:SW49P.Z=-60:SW50P.Z=-60:SW51P.Z=-60
+Case 21: MotorBank.Z=-62:SW49P.Z=-62:SW50P.Z=-62:SW51P.Z=-62
+Case 22: MotorBank.Z=-64:SW49P.Z=-64:SW50P.Z=-64:SW51P.Z=-64
+Case 23: MotorBank.Z=-66:SW49P.Z=-66:SW50P.Z=-66:SW51P.Z=-66
+Case 24: MotorBank.Z=-68:SW49P.Z=-68:SW50P.Z=-68:SW51P.Z=-68
+Case 25: MotorBank.Z=-70:SW49P.Z=-70:SW50P.Z=-70:SW51P.Z=-70
+Case 26: MotorBank.Z=-72:SW49P.Z=-72:SW50P.Z=-72:SW51P.Z=-72:Controller.Switch(52) = 0
+Case 27: MotorBank.Z=-74:SW49P.Z=-74:SW50P.Z=-74:SW51P.Z=-74
+Case 28: MotorBank.Z=-76:SW49P.Z=-76:SW50P.Z=-76:SW51P.Z=-76:SW49.isdropped=1:SW50.isdropped=1:SW51.isdropped=1:DPWALL.isdropped=1
+Case 29: TBTimer.Enabled=0:TBDown=1:Controller.Switch(52) = 1:Controller.Switch(53) = 0
+End Select
+
+If TBDown=0 then TBPos=TBPos+1 
+If TBDown=1 then TBPos=TBPos-1
+
+TBdif = (-1 + (2*RND))/((TBPos/5)+1)
+
+MotorBank.Y = MotorBank.Y + TBdif
+SW49P.Y=SW49P.Y + TBdif
+SW50P.Y=SW50P.Y + TBdif
+SW51P.Y=SW51P.Y + TBdif
+MotorBank.X = MotorBank.X + TBdif
+SW49P.X=SW49P.X + TBdif
+SW50P.X=SW50P.X + TBdif
+SW51P.X=SW51P.X + TBdif
+
+
+End Sub
+
+
+
+
+	
+
+
+Sub ShooterLane_Hit()
+	Controller.Switch(23)=1
+    Lanelight1.state = 1
+
+End Sub
+
+Sub ShooterLane_Unhit()
+	Controller.Switch(23)=0
+    Lanelight1.state = 0
+End Sub
+
+Dim frame, FinalFrame  'ArcadeTimer
+FinalFrame = 126 'number of frames - 1
+frame = 0
+
+' Sub ArcadeTimer()       
+'	Arcade(frame).isdropped = True
+'	frame = frame + 1
+'	If frame = FinalFrame Then frame=0
+'	Arcade(frame).isdropped = False
+' End Sub
+
+Sub Trigger1_hit
+	PlaySound "DROP_LEFT"
+ End Sub
+
+ Sub Trigger2_hit
+	PlaySound "DROP_RIGHT"
+ End Sub 
+
+
+Sub Table_exit()
+	Controller.Pause = False
+	Controller.Stop
+End Sub
+
+
+Sub RLS()
+              RampGate1.RotZ = -(Gate34.currentangle)
+              RampGate2.RotZ = -(Gate35.currentangle)
+              RampGate3.RotZ = -(Gate38.currentangle)
+              RampGate4.RotZ = -(Gate37.currentangle)
+              SpinnerT4.RotZ = -(sw44.currentangle)
+              SpinnerT1.RotZ = -(sw36.currentangle)
+End Sub
+  
+'primitive flippers!
+Sub UpdateFlipperLogo
+    LFLogo.RotY = LeftFlipper.CurrentAngle
+    RFlogo.RotY = RightFlipper.CurrentAngle
+	LFLogoUP.RotY = LeftFlipper1.CurrentAngle
+End Sub
+
+'******DROP TARGET PRIMITIVES******
+Dim sw1up, sw2up, sw3up, sw4up
+'Dim PrimT
+
+Sub PrimT
+	if sw01.IsDropped = True then sw1up = False else sw1up = True
+	if sw02.IsDropped = True then sw2up = False else sw2up = True
+	if sw03.IsDropped = True then sw3up = False else sw3up = True
+	if sw04.IsDropped = True then sw4up = False else sw4up = True
+End Sub
+
+
+Sub sw1T()
+	If sw1up = True and sw1p.z < 0 then sw1p.z = sw1p.z + 3
+	If sw1up = False and sw1p.z > -45 then sw1p.z = sw1p.z - 3
+	If sw1p.z >= -45 then sw1up = False
+End Sub
+
+Sub sw2T()
+	If sw2up = True and sw2p.z < 0 then sw2p.z = sw2p.z + 3
+	If sw2up = False and sw2p.z > -45 then sw2p.z = sw2p.z - 3
+	If sw2p.z >= -45 then sw2up = False
+End Sub
+
+Sub sw3T()
+	If sw3up = True and sw3p.z < 0 then sw3p.z = sw3p.z + 3
+	If sw3up = False and sw3p.z > -45 then sw3p.z = sw3p.z - 3
+	If sw3p.z >= -45 then sw3up = False
+End Sub
+
+Sub sw4T()
+	If sw4up = True and sw4p.z < 0 then sw4p.z = sw4p.z + 3
+	If sw4up = False and sw4p.z > -45 then sw4p.z = sw4p.z - 3
+	If sw4p.z >= -45 then sw4up = False
+End Sub
+
+'Sub GIOn
+'	dim bulb
+'	for each bulb in GI
+'	bulb.state = 1
+'	PinCab_Backglass.blenddisablelighting = 5
+'	giwhite.visible = 1
+'	Spot1.visible = 1
+'	Spot2.visible = 1
+'	next
+'	if GiBleedOpacity > 0 then gibleed.visible = 1
+'End Sub
+
+'Sub GIOff
+'	dim bulb
+'	for each bulb in GI
+'	bulb.state = 0
+'	PinCab_Backglass.blenddisablelighting = 0.2
+'	giwhite.visible = 0
+'	Spot1.visible = 0
+'	Spot2.visible = 0
+'	next
+'	gibleed.visible = 0
+'End Sub
+
+ 'Sub RightSlingShot_Timer:Me.TimerEnabled = 0:End Sub
+ 
+' *********************************************************************
+'                      Supporting Ball & Sound Functions
+' *********************************************************************
+
+'Sub Pins_Hit (idx)
+'	PlaySound "pinhit_low", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub Targets_Hit (idx)
+'	PlaySound "fx_target", 0, 1, Pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub TargetBankWalls_Hit (idx)
+'	PlaySound "fx_target", 0, 1, Pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub Metals_Thin_Hit (idx)
+'	PlaySound "metalhit_thin", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub Metals_Medium_Hit (idx)
+'	PlaySound "metalhit_medium", 0, Vol(ActiveBall)+2, Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub Metals2_Hit (idx)
+'	PlaySound "metalhit2", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub Gates_Hit (idx)
+'	'PlaySound "gate4", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'
+'Sub RampDrop_Hit ' Launch ramp ball drop over small lip
+'	PlaySound "BallDrop", 0, Vol(ActiveBall)*.2, Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+'End Sub
+'
+'Sub UpPost_Hit ' Launch ramp post
+'	PlaySound "metalhit2", 0, Vol(ActiveBall)+2, Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+'End Sub
+
+Sub swplunger1_Hit ' Launch ramp switch
+	PlaySoundAt "rollover", swplunger1
+End Sub
+
+'Sub Rubbers_Hit(idx)
+'    PlaySoundAtBallVol "rubber_hit_" & Int(Rnd*3)+1, 1.6
+'End Sub
+
+
+Sub LeftFlipper_Collide(parm)
+    CheckLiveCatch Activeball, LeftFlipper, LFCount, parm
+    'PlaySoundAtBallVol "flip_hit_" & Int(Rnd*3)+1, 1.5
+    LeftFlipperCollide parm   'This is the Fleep code
+	if RubberizerEnabled = 1 then Rubberizer(parm)
+	if RubberizerEnabled = 2 then Rubberizer2(parm)
+End Sub
+
+Sub LeftFlipper1_Collide(parm)
+	LeftFlipperCollide parm
+    'PlaySoundAtBallVol "flip_hit_" & Int(Rnd*3)+1, 1.5
+End Sub
+
+
+Sub RightFlipper_Collide(parm)
+    CheckLiveCatch Activeball, RightFlipper, RFCount, parm
+    'PlaySoundAtBallVol "flip_hit_" & Int(Rnd*3)+1, 1.5
+    RightFlipperCollide parm  'This is the Fleep code
+	if RubberizerEnabled = 1 then Rubberizer(parm)
+	if RubberizerEnabled = 2 then Rubberizer2(parm)
+End Sub
+
+'*******************************************
+'  VPW Rubberizer by Iaakki
+'*******************************************
+
+' iaakki Rubberizer
+sub Rubberizer(parm)
+	if parm < 10 And parm > 2 And Abs(activeball.angmomz) < 10 then
+		'debug.print "parm: " & parm & " momz: " & activeball.angmomz &" vely: "& activeball.vely
+		activeball.angmomz = activeball.angmomz * 1.2
+		activeball.vely = activeball.vely * 1.2
+		'debug.print ">> newmomz: " & activeball.angmomz&" newvely: "& activeball.vely
+	Elseif parm <= 2 and parm > 0.2 Then
+		'debug.print "* parm: " & parm & " momz: " & activeball.angmomz &" vely: "& activeball.vely
+		activeball.angmomz = activeball.angmomz * -1.1
+		activeball.vely = activeball.vely * 1.4
+		'debug.print "**** >> newmomz: " & activeball.angmomz&" newvely: "& activeball.vely
+	end if
+end sub
+
+
+' apophis Rubberizer
+sub Rubberizer2(parm)
+	if parm < 10 And parm > 2 And Abs(activeball.angmomz) < 10 then
+		'debug.print "parm: " & parm & " momz: " & activeball.angmomz &" vely: "& activeball.vely
+		activeball.angmomz = -activeball.angmomz * 2
+		activeball.vely = activeball.vely * 1.2
+		'debug.print ">> newmomz: " & activeball.angmomz&" newvely: "& activeball.vely
+	Elseif parm <= 2 and parm > 0.2 Then
+		'debug.print "* parm: " & parm & " momz: " & activeball.angmomz &" vely: "& activeball.vely
+		activeball.angmomz = -activeball.angmomz * 0.5
+		activeball.vely = activeball.vely * (1.2 + rnd(1)/3 )
+		'debug.print "**** >> newmomz: " & activeball.angmomz&" newvely: "& activeball.vely
+	end if
+end sub
+
+
+Const tnob = 5 ' total number of balls
+ReDim rolling(tnob)
+InitRolling
+
+Dim DropCount
+ReDim DropCount(tnob)
+
+Dim ampFactor
+
+Sub InitRolling
+	Dim i
+	For i = 0 to tnob
+		rolling(i) = False
+	Next
+	Select Case BallRollAmpFactor
+		Case 0
+			ampFactor = "_amp0"
+		Case 1
+			ampFactor = "_amp2_5"
+		Case 2
+			ampFactor = "_amp5"
+		Case 3
+			ampFactor = "_amp7_5"
+		Case 4
+			ampFactor = "_amp9"
+		Case Else
+			ampFactor = "_amp0"
+	End Select
+End Sub
+
+Sub RollingTimer()
+	Dim BOT, b
+	BOT = GetBalls
+
+	' stop the sound of deleted balls
+	For b = UBound(BOT) + 1 to tnob
+		rolling(b) = False
+		StopSound("BallRoll_" & b & ampFactor)
+	Next
+
+	' exit the sub if no balls on the table
+	If UBound(BOT) = -1 Then Exit Sub
+
+	' play the rolling sound for each ball
+
+	For b = 0 to UBound(BOT)
+		If BallVel(BOT(b)) > 1 AND BOT(b).z < 30 Then
+			rolling(b) = True
+			PlaySound ("BallRoll_" & b & ampFactor), -1, VolPlayfieldRoll(BOT(b)) * 1.1 * VolumeDial, AudioPan(BOT(b)), 0, PitchPlayfieldRoll(BOT(b)), 1, 0, AudioFade(BOT(b))
+
+		Else
+			If rolling(b) = True Then
+				StopSound("BallRoll_" & b & ampFactor)
+				rolling(b) = False
+			End If
+		End If
+
+		'***Ball Drop Sounds***
+		If BOT(b).VelZ < -1 and BOT(b).z < 55 and BOT(b).z > 27 Then 'height adjust for ball drop sounds
+			If DropCount(b) >= 5 Then
+				DropCount(b) = 0
+				If BOT(b).velz > -7 Then
+					RandomSoundBallBouncePlayfieldSoft BOT(b)
+				Else
+					RandomSoundBallBouncePlayfieldHard BOT(b)
+				End If				
+			End If
+		End If
+		If DropCount(b) < 5 Then
+			DropCount(b) = DropCount(b) + 1
+		End If
+	Next
+End Sub
+
+'**********************
+' Ball Collision Sound
+'**********************
+'
+
+
+Sub leftdrop_hit
+	'PlaySoundAt "BallDrop",leftdrop
+	BumpStop
+End Sub
+
+Sub rightdrop_hit
+	'PlaySoundAt "BallDrop",rightdrop
+	BumpStop
+End Sub
+
+'**************************************************************************
+'                 Positional Sound Playback Functions by DJRobX
+'**************************************************************************
+
+
+' Plastic Ramp Sounds
+
+Dim NextOrbitHit:NextOrbitHit = 0 
+
+Sub PlasticRampBumps_Hit(idx)
+	if BallVel(ActiveBall) > .3 and Timer > NextOrbitHit then
+		RandomBump 2, Pitch(ActiveBall)
+		' Schedule the next possible sound time.  This prevents it from rapid-firing noises too much. 
+		' Lowering these numbers allow more closely-spaced clunks.
+		NextOrbitHit = Timer + .1 + (Rnd * .2)
+	end if 
+End Sub
+
+' Requires rampbump1 to 7 in Sound Manager
+Sub RandomBump(voladj, freq)
+	dim BumpSnd:BumpSnd= "rampbump" & CStr(Int(Rnd*7)+1)
+		PlaySound BumpSnd, 0, Vol(ActiveBall)*voladj, AudioPan(ActiveBall), 0, freq, 0, 1, AudioFade(ActiveBall)
+End Sub
+
+Sub BumpStop()
+dim i:for i=1 to 4:StopSound "rampbump" & i:next
+NextOrbitHit = Timer + 1
+End Sub
+
+
+
+Sub Hanbewegung
+
+ '************************************
+ '***** Hanibal special moving Light1
+ '************************************
+
+
+dim anglehan, dirhan, anglezhan, dirzhan, angleXYoffsethan, lengthhanoffset, hanmoveX, hanmoveY
+
+
+    lighthanmovepos(0) = recognizer.x + recognizer.transx
+	lighthanmovepos(1) = recognizer.y +30 
+	lighthanmovepos(2) = recognizer.z +200  
+	anglehan = - recognizer.transx
+	anglezhan = -recognizer.rotz
+    lengthhanoffset = 200
+    Bewegungslicht.x = lighthanmovepos(0)
+	Bewegungslicht.y = lighthanmovepos(1)
+
+
+    'debug.print anglehan & ":" &  anglezhan & ": " &  Bewegungslicht.x &  ":" &  Bewegungslicht.y
+
+
+
+
+'		recognizer.transx=XLocation
+'		recognizer.rotz=zrot
+
+End Sub
+
+
+'Sub Augen()
+'
+'	' ******Hanibals Random Lights Script
+'
+'	Lightcycle1.Intensity = (5+(1*Rnd))
+'	Lightcycle2.Intensity =Lightcycle1.Intensity
+'
+'	Ship1.Intensity = (2+(1*Rnd))
+'	Ship2.Intensity = (2+(1*Rnd))
+'
+'
+'	Lightcycle3.Intensity = (5+(2*Rnd))
+'	Lightcycle4.Intensity =	Lightcycle3.Intensity 
+'	Lightcycle5.Intensity =	Lightcycle3.Intensity 
+'
+'	Schild.Intensity = (35+(10*Rnd))
+'
+'
+'	'Flasher1a1.Intensity = (150+(30*Rnd))
+'	'Flasher2a1.Intensity = Flasher1a1.Intensity 
+'	'Flasher3a.Intensity = (150+(30*Rnd))
+'	'Flasher4a.Intensity = Flasher3a.Intensity 
+'	'Flasher5a.Intensity = (60+(30*Rnd))
+'	'Flasher6a.Intensity = Flasher5a.Intensity 
+'
+'	Flasher7.Intensity = (15+(3*Rnd))
+'	Flasher7a.Intensity =  (Flasher7.Intensity  *3)
+'
+'	Lanelight1.Intensity = (100+(10*Rnd))
+'	Lanelight.Intensity = Lanelight1.Intensity
+'
+'	'Linkerflasher.Intensity = (50+(10*Rnd))
+'	'Rechterflasher.Intensity = Linkerflasher.Intensity
+'
+'	l28a.Intensity = (50+(2*Rnd))
+'	l28b.Intensity = l28a.Intensity
+'	l28c.Intensity = l28a.Intensity
+'	l29a.Intensity = l28a.Intensity
+'	l29b.Intensity = l28a.Intensity
+'	l29c.Intensity = l28a.Intensity
+'
+'	l46.Intensity = (2+(10*Rnd))
+'	l47.Intensity = (2+(10*Rnd))
+'	l48.Intensity = (2+(7*Rnd))
+'
+'
+'End Sub
+
+
+
+ '************************************
+ '***** HNew GI Controller
+ '************************************
+
+'*************************
+' GI - needs new vpinmame
+'*************************
+'
+'Set GICallback = GetRef("GIUpdate")
+'
+'Sub GIUpdate(no, Enabled)
+'	If enabled Then
+'		GIOn
+'    Else 
+'		GIOff
+'	end if 
+'End Sub
+
+
+'***************************************************************
+'****  VPW DYNAMIC BALL SHADOWS by Iakki, Apophis, and Wylte
+'***************************************************************
+
+'****** INSTRUCTIONS please read ******
+
+' The "DynamicBSUpdate" sub should be called with an interval of -1 (framerate)
+' Place a toggleable variable (DynamicBallShadowsOn) in user options at the top of the script
+' Import the "bsrtx7" and "ballshadow" images
+' Import the shadow materials file (3 sets included) (you can also export the 3 sets from this table to create the same file)
+' Copy in the sets of primitives named BallShadow#, RtxBallShadow#, and RtxBall2Shadow#, with at least as many objects each as there can be balls
+'
+' Create a collection called DynamicSources that includes all light sources you want to cast ball shadows
+'***These must be organized in order, so that lights that intersect on the table are adjacent in the collection***
+' This is because the code will only project two shadows if they are coming from lights that are consecutive in the collection
+' The easiest way to keep track of this is to start with the group on the left slingshot and move clockwise around the table
+'	For example, if you use 6 lights: A & B on the left slingshot and C & D on the right, with E near A&B and F next to C&D, your collection would look like EBACDF
+'
+'																E
+'	A		 C													B
+'	 B		D			your collection should look like		A		because E&B, B&A, etc. intersect; but B&D or E&F do not
+'  E		  F													C
+'																D
+'																F
+'
+'Update shadow options in the code to fit your table and preference
+
+'****** End Instructions ******
+
+' *** These are usually defined elsewhere (ballrolling), but activate here if necessary
+
+'Const tnob = 10 ' total number of balls
+Const lob = 0	'locked balls on start; might need some fiddling depending on how your locked balls are done
+
+' *** Shadow Options ***
+Const fovY					= 0		'Offset y position under ball to account for layback or inclination (more pronounced need further back, -2 seems best for alignment at slings)
+Const DynamicBSFactor 		= 0.99	'0 to 1, higher is darker, 1 will always be maxed even with 2 sources
+Const AmbientBSFactor 		= 0.9	'0 to 1, higher is darker
+Const Wideness				= 20	'Sets how wide the shadows can get (20 +5 thinness should be most realistic)
+Const Thinness				= 5		'Sets minimum as ball moves away from source
+' ***				 ***
+
+Dim sourcenames, currentShadowCount
+
+sourcenames = Array ("","","","","","","","","","","","")
+currentShadowCount = Array (0,0,0,0,0,0,0,0,0,0,0,0)
+
+dim objrtx1(20), objrtx2(20)
+dim objSpotShadow1(20), objSpotShadow2(20)
+dim objBallShadow(20)
+Dim BallShadowA
+BallShadowA = Array (BallShadowA1,BallShadowA2,BallShadowA3,BallShadowA4,BallShadowA5,BallShadowA6,BallShadowA7,BallShadowA8,BallShadowA9,BallShadowA10)
+DynamicBSInit
+
+sub DynamicBSInit()
+	Dim iii
+
+	for iii = 0 to tnob									'Prepares the shadow objects before play begins
+		Set objrtx1(iii) = Eval("RtxBallShadow" & iii)
+		objrtx1(iii).material = "RtxBallShadow" & iii
+		objrtx1(iii).z = iii/1000 + 0.01
+		objrtx1(iii).visible = 0
+		'objrtx1(iii).uservalue=0
+
+		Set objrtx2(iii) = Eval("RtxBall2Shadow" & iii)
+		objrtx2(iii).material = "RtxBallShadow2_" & iii
+		objrtx2(iii).z = (iii)/1000 + 0.02
+		objrtx2(iii).visible = 0
+		'objrtx2(iii).uservalue=0
+		currentShadowCount(iii) = 0
+		Set objBallShadow(iii) = Eval("BallShadow" & iii)
+		objBallShadow(iii).material = "BallShadow" & iii
+		objBallShadow(iii).Z = iii/1000 + 0.04
+
+		Set objSpotShadow1(iii) = Eval("SpotlightShadow" & iii)
+		objSpotShadow1(iii).material = "BallSpotShadow" & iii
+		objSpotShadow1(iii).Z = iii/1000 + 0.06
+		objSpotShadow1(iii).visible = 0
+		Set objSpotShadow2(iii) = Eval("Spotlight2Shadow" & iii)
+		objSpotShadow2(iii).material = "BallSpot2Shadow" & iii
+		objSpotShadow2(iii).Z = iii/1000 + 0.07
+		objSpotShadow2(iii).visible = 0
+
+	Next
+end sub
+
+
+Sub DynamicBSUpdate
+	Dim falloff:	falloff = 150			'Max distance to light sources, can be changed if you have a reason
+	Dim Spotfalloff: SpotFalloff = 200
+	Dim ShadowOpacity, ShadowOpacity2 
+	Dim s, Source, LSd, LSd1, LSd2, b, currentMat, AnotherSource, AnotherSpotSource, BOT
+	BOT = GetBalls
+
+	Const SpotlightsOn = 1				'0 = Spotlights off, 1 = Spotlights on (Playfield Lights only, not the spotlights themselves)
+'	If SpotlightsOn = 1 Then	'Too drunk and distracted by kid to figure out how to work this into Lampz, so leaving it down here for now
+'		f128b1.state = 1
+'		f128b2.state = 1
+'	Else
+'		f128b1.state = 0
+'		f128b2.state = 0
+'	End If
+
+	'Hide shadow of deleted balls
+	For s = UBound(BOT) + 1 to tnob
+		objrtx1(s).visible = 0
+		objrtx2(s).visible = 0
+		objBallShadow(s).visible = 0
+		objSpotShadow1(s).visible = 0
+		objSpotShadow2(s).visible = 0
+	Next
+
+	If UBound(BOT) = lob - 1 Then Exit Sub		'No balls in play, exit
+
+'The Magic happens here
+	For s = lob to UBound(BOT)
+
+' *** Normal "ambient light" ball shadow
+		If AmbientShadowOn = 1 Then
+			If BOT(s).X < tablewidth/2 Then
+				objBallShadow(s).X = ((BOT(s).X) - (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/13)) + 5
+			Else
+				objBallShadow(s).X = ((BOT(s).X) + (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/13)) - 5
+			End If
+			objBallShadow(s).Y = BOT(s).Y + fovY
+
+			If BOT(s).Z < 30 Then 'or BOT(s).Z > 105 Then		'Defining when (height-wise) you want ambient shadows
+				BallShadowA(s).visible = 0
+				objBallShadow(s).visible = 1
+	'			objBallShadow(s).Z = BOT(s).Z - 25 + s/1000 + 0.04		'Uncomment if you want to add shadows to an upper/lower pf
+			Else
+'				objBallShadow(s).visible = 0
+				BallShadowA(s).X = BOT(s).X			'Flasher shadows for ramps
+				ballShadowA(s).Y = BOT(s).Y + 12.5 + fovY
+				BallShadowA(s).visible = 1
+				BallShadowA(s).height=BOT(s).z - 12.5
+			end if
+		End If
+
+' *** Spotlight Shadows
+		If SpotlightsOn = 1 And SpotlightShadowsOn = 1 Then
+			If BOT(s).X > 170 And BOT(s).X < 340 And BOT(s).Y < 1340 And BOT(s).Y > 1200 Then 	'Defining where the spotlight is in effect
+				objSpotShadow2(s).visible = 0
+				LSd1=DistanceFast((BOT(s).x-f128b2.x),(BOT(s).y-f128b2.y))
+				If LSd1 < Spotfalloff And f128b2.state=1 Then
+					currentMat = objSpotShadow1(s).material
+					objSpotShadow1(s).visible = 1 : objSpotShadow1(s).X = BOT(s).X : objSpotShadow1(s).Y = BOT(s).Y + fovY
+					objSpotShadow1(s).rotz = AnglePP(179, 1392, BOT(s).X, BOT(s).Y) + 90	'Had to use custom coordinates, light and primitive are shifted
+					objSpotShadow1(s).size_y = Wideness/2
+					ShadowOpacity = (Spotfalloff-LSd1)/Spotfalloff			'Sets opacity/darkness of shadow by distance to light
+					UpdateMaterial currentMat,1,0,0,0,0,0,0.5*ShadowOpacity*DynamicBSFactor^2,RGB(0,0,0),0,0,False,True,0,0,0,0
+
+				Else
+					objSpotShadow1(s).visible = 0
+				End If
+
+			ElseIf BOT(s).X > 460 And BOT(s).X < 615 And BOT(s).Y < 1340 And BOT(s).Y > 1200 Then 	'Defining where the spotlight is in effect
+				objSpotShadow1(s).visible = 0
+				LSd2=DistanceFast((BOT(s).x-f128b1.x),(BOT(s).y-f128b1.y))
+				If LSd2 < Spotfalloff And f128b1.state=1 Then
+					currentMat = objSpotShadow2(s).material
+					objSpotShadow2(s).visible = 1 : objSpotShadow2(s).X = BOT(s).X : objSpotShadow2(s).Y = BOT(s).Y + fovY
+					objSpotShadow2(s).rotz = AnglePP(600, 1388, BOT(s).X, BOT(s).Y) + 90
+					objSpotShadow2(s).size_y = Wideness/2
+					ShadowOpacity = (Spotfalloff-LSd2)/Spotfalloff			'Sets opacity/darkness of shadow by distance to light
+					UpdateMaterial currentMat,1,0,0,0,0,0,0.5*ShadowOpacity*DynamicBSFactor^2,RGB(0,0,0),0,0,False,True,0,0,0,0
+
+				Else
+					objSpotShadow2(s).visible = 0
+				End If
+			Else
+				objSpotShadow1(s).visible = 0 : objSpotShadow2(s).visible = 0
+			End If
+		End If
+
+' *** Dynamic shadows
+		For Each Source in DynamicSources
+			LSd=DistanceFast((BOT(s).x-Source.x),(BOT(s).y-Source.y))	'Calculating the Linear distance to the Source
+			If BOT(s).Z < 30 Then 'Or BOT(s).Z > 105 Then				'Defining when (height-wise) you want dynamic shadows
+				If LSd < falloff and Source.state=1 Then	    		'If the ball is within the falloff range of a light and light is on
+					currentShadowCount(s) = currentShadowCount(s) + 1	'Within range of 1 or 2
+					if currentShadowCount(s) = 1 Then					'1 dynamic shadow source
+						sourcenames(s) = source.name
+						currentMat = objrtx1(s).material
+						objrtx2(s).visible = 0 : objrtx1(s).visible = 1 : objrtx1(s).X = BOT(s).X : objrtx1(s).Y = BOT(s).Y + fovY
+'						objrtx1(s).Z = BOT(s).Z - 25 + s/1000 + 0.01							'Uncomment if you want to add shadows to an upper/lower pf
+						objrtx1(s).rotz = AnglePP(Source.x, Source.y, BOT(s).X, BOT(s).Y) + 90
+						ShadowOpacity = (falloff-LSd)/falloff									'Sets opacity/darkness of shadow by distance to light
+						objrtx1(s).size_y = Wideness*ShadowOpacity+Thinness						'Scales shape of shadow with distance/opacity
+						UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity*DynamicBSFactor^2,RGB(0,0,0),0,0,False,True,0,0,0,0
+						'debug.print "update1" & source.name & " at:" & ShadowOpacity
+
+						currentMat = objBallShadow(s).material
+						UpdateMaterial currentMat,1,0,0,0,0,0,AmbientBSFactor*(1-ShadowOpacity),RGB(0,0,0),0,0,False,True,0,0,0,0
+
+					Elseif currentShadowCount(s) = 2 Then
+																'Same logic as 1 shadow, but twice
+						currentMat = objrtx1(s).material
+						set AnotherSource = Eval(sourcenames(s))
+						objrtx1(s).visible = 1 : objrtx1(s).X = BOT(s).X : objrtx1(s).Y = BOT(s).Y + fovY
+'						objrtx1(s).Z = BOT(s).Z - 25 + s/1000 + 0.01							'Uncomment if you want to add shadows to an upper/lower pf
+						objrtx1(s).rotz = AnglePP(AnotherSource.x, AnotherSource.y, BOT(s).X, BOT(s).Y) + 90
+						ShadowOpacity = (falloff-(((BOT(s).x-AnotherSource.x)^2+(BOT(s).y-AnotherSource.y)^2)^0.5))/falloff
+						objrtx1(s).size_y = Wideness*ShadowOpacity+Thinness
+						UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity*DynamicBSFactor^3,RGB(0,0,0),0,0,False,True,0,0,0,0
+
+						currentMat = objrtx2(s).material
+						objrtx2(s).visible = 1 : objrtx2(s).X = BOT(s).X : objrtx2(s).Y = BOT(s).Y + fovY
+'						objrtx2(s).Z = BOT(s).Z - 25 + s/1000 + 0.02							'Uncomment if you want to add shadows to an upper/lower pf
+						objrtx2(s).rotz = AnglePP(Source.x, Source.y, BOT(s).X, BOT(s).Y) + 90
+						ShadowOpacity2 = (falloff-LSd)/falloff
+						objrtx2(s).size_y = Wideness*ShadowOpacity2+Thinness
+						UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity2*DynamicBSFactor^3,RGB(0,0,0),0,0,False,True,0,0,0,0
+						'debug.print "update2: " & source.name & " at:" & ShadowOpacity & " and "  & Eval(sourcenames(s)).name & " at:" & ShadowOpacity2
+
+						currentMat = objBallShadow(s).material
+						UpdateMaterial currentMat,1,0,0,0,0,0,AmbientBSFactor*(1-max(ShadowOpacity,ShadowOpacity2)),RGB(0,0,0),0,0,False,True,0,0,0,0
+					end if
+				Else
+					currentShadowCount(s) = 0
+				End If
+			Else									'Hide dynamic shadows everywhere else
+				objrtx2(s).visible = 0 : objrtx1(s).visible = 0
+			End If
+		Next
+	Next
+End Sub
+
+
+Function DistanceFast(x, y)
+	dim ratio, ax, ay
+	'Get absolute value of each vector
+	ax = abs(x)
+	ay = abs(y)
+	'Create a ratio
+	ratio = 1 / max(ax, ay)
+	ratio = ratio * (1.29289 - (ax + ay) * ratio * 0.29289)
+	if ratio > 0 then
+		DistanceFast = 1/ratio
+	Else
+		DistanceFast = 0
+	End if
+end Function
+
+Function max(a,b)
+	if a > b then 
+		max = a
+	Else
+		max = b
+	end if
+end Function
+
+Dim PI: PI = 4*Atn(1)
+
+'****************************************************************
+'****  END VPW DYNAMIC BALL SHADOWS by Iakki, Apophis, and Wylte
+'****************************************************************
+
+
+''keydown
+'if KeyCode = LeftFlipperKey then vpmFlipsSam.FlipL True : vpmFlipsSam.FlipUL True
+'if KeyCode = RightFlipperKey then vpmFlipsSam.FlipR True : vpmFlipsSam.FlipUR True
+
+''KeyUp
+'if KeyCode = LeftFlipperKey then vpmFlipsSam.FlipL False : vpmFlipsSam.FlipUL False
+'if KeyCode = RightFlipperKey then vpmFlipsSam.FlipR False : vpmFlipsSam.FlipUR False
+
+
+
+
+'dim vpmFlipsSAM : set vpmFlipsSAM = New cvpmFlipsSAM : vpmFlipsSAM.Name = "vpmFlipsSAM"
+'
+''*************************************************
+'Sub InitVpmFlipsSAM()
+'	vpmFlipsSAM.CallBackL = SolCallback(vpmflipsSAM.FlipperSolNumber(0))          'Lower Flippers
+'	vpmFlipsSAM.CallBackR = SolCallback(vpmFlipsSAM.FlipperSolNumber(1))
+'	On Error Resume Next
+'		if cSingleLflip or Err then vpmFlipsSAM.CallbackUL=SolCallback(vpmFlipsSAM.FlipperSolNumber(2))
+'		err.clear
+'		if cSingleRflip or Err then vpmFlipsSAM.CallbackUR=SolCallback(vpmFlipsSAM.FlipperSolNumber(3))
+'	On Error Goto 0
+'	'msgbox "~Debug-Active Flipper subs~" & vbnewline & vpmFlipsSAM.SubL &vbnewline& vpmFlipsSAM.SubR &vbnewline& vpmFlipsSAM.SubUL &vbnewline& vpmFlipsSAM.SubUR' & 
+'
+'End Sub
+'
+
+
+'New Command - 
+'vpmflipsSam.RomControl=True/False 		-	 True for rom controlled flippers, False for FastFlips (Assumes flippers are On)
+
+
+'Debug Stuff ~~~~~~~~~~~~~
+'Sub TestFF_Timer()	'Testing switching back and forth between fastflips and rom controlled flips on a timer 
+'	me.interval = 500'RndNum(100, 500)
+'	vpmFlipsSAM.RomControl = Not vpmFlipsSAM.RomControl
+'End Sub
+'
+'tb.timerinterval = -1 : tb.timerenabled=1	'debug textbox
+'Sub tb_Timer()
+'	tb.text = vpmFlipsSAM.SolState(0) & " " & vpmFlipsSAM.ButtonState(0) & " " & vbnewline & vpmFlipsSAM.romcontrol
+'End Sub
+'~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+'
+'Class cvpmFlipsSAM	'test fastflips with support for both Rom and Game-On Solenoid flipping
+'	Public TiltObjects, DebugOn, Name, Delay
+'	Public SubL, SubUL, SubR, SubUR, FlippersEnabled,  LagCompensation, ButtonState(3), Sol	'set private
+'	Public RomMode,	SolState(3)'set private
+'	Public FlipperSolNumber(3)	'0=left 1=right 2=Uleft 3=URight
+'
+'	Private Sub Class_Initialize()
+'		dim idx :for idx = 0 to 3 :ButtonState(idx)=0:SolState(idx)=0: Next : Delay=0: FlippersEnabled=1: DebugOn=0 : LagCompensation=0 : Sol=0 : TiltObjects=1
+'		SubL = "NullFunction": SubR = "NullFunction" : SubUL = "NullFunction": SubUR = "NullFunction"
+'		RomMode=True :FlipperSolNumber(0)=sLLFlipper :FlipperSolNumber(1)=sLRFlipper :FlipperSolNumber(2)=sULFlipper :FlipperSolNumber(3)=sURFlipper
+'		SolCallback(33)="vpmFlipsSAM.RomControl = not "
+'	End Sub
+'
+'	'set callbacks
+'	Public Property Let CallBackL(aInput) : if Not IsEmpty(aInput) then SubL  = aInput :SolCallback(FlipperSolNumber(0)) = name & ".RomFlip(0)=":end if :End Property	'execute
+'	Public Property Let CallBackR(aInput) : if Not IsEmpty(aInput) then SubR  = aInput :SolCallback(FlipperSolNumber(1)) = name & ".RomFlip(1)=":end if :End Property
+'	Public Property Let CallBackUL(aInput): if Not IsEmpty(aInput) then SubUL = aInput :SolCallback(FlipperSolNumber(2)) = name & ".RomFlip(2)=":end if :End Property	'this should no op if aInput is empty
+'	Public Property Let CallBackUR(aInput): if Not IsEmpty(aInput) then SubUR = aInput :SolCallback(FlipperSolNumber(3)) = name & ".RomFlip(3)=":end if :End Property
+'	
+'	Public Property Let RomFlip(idx, ByVal aEnabled)
+'		aEnabled = abs(aEnabled)
+'		SolState(idx) = aEnabled
+'		If Not RomMode then Exit Property
+'		Select Case idx
+'			Case 0 : execute subL & " " & aEnabled
+'			Case 1 : execute subR & " " & aEnabled
+'			Case 2 : execute subUL &" " & aEnabled
+'			Case 3 : execute subUR &" " & aEnabled
+'		End Select
+'	End property
+'	
+'	Public Property Let RomControl(aEnabled) 		'todo improve choreography
+'		'MsgBox "Rom Control " & CStr(aEnabled)
+'		RomMode = aEnabled
+'		If aEnabled then 					'Switch to ROM solenoid states or button states
+'			Execute SubL &" "& SolState(0)
+'			Execute SubR &" "& SolState(1)
+'			Execute SubUL &" "& SolState(2)
+'			Execute SubUR &" "& SolState(3)
+'		Else
+'			Execute SubL &" "& ButtonState(0)
+'			Execute SubR &" "& ButtonState(1)
+'			Execute SubUL &" "& ButtonState(2)
+'			Execute SubUR &" "& ButtonState(3)
+'		End If
+'	End Property
+'	Public Property Get RomControl : RomControl = RomMode : End Property
+'
+'	public DebugTestKeys, DebugTestInit	'orphaned (stripped out the debug stuff)
+'
+'	Public Property Let Solenoid(aInput) : if not IsEmpty(aInput) then Sol = aInput : end if : End Property	'set solenoid
+'	Public Property Get Solenoid : Solenoid = sol : End Property
+'	
+'	'call callbacks
+'	Public Sub FlipL(ByVal aEnabled)
+'		aEnabled = abs(aEnabled) 'True / False is not region safe with execute. Convert to 1 or 0 instead.
+'		DebugTestKeys = 1
+'		ButtonState(0) = aEnabled	'track flipper button states: the game-on sol flips immediately if the button is held down (1.1)
+'		If FlippersEnabled and Not Romcontrol or DebugOn then execute subL & " " & aEnabled end If
+'	End Sub
+'
+'	Public Sub FlipR(ByVal aEnabled)
+'		aEnabled = abs(aEnabled) : ButtonState(1) = aEnabled : DebugTestKeys = 1
+'		If FlippersEnabled and Not Romcontrol or DebugOn then execute subR & " " & aEnabled end If
+'	End Sub
+'
+'	Public Sub FlipUL(ByVal aEnabled)
+'		aEnabled = abs(aEnabled)  : ButtonState(2) = aEnabled
+'		If FlippersEnabled and Not Romcontrol or DebugOn then execute subUL & " " & aEnabled end If
+'	End Sub	
+'
+'	Public Sub FlipUR(ByVal aEnabled)
+'		aEnabled = abs(aEnabled)  : ButtonState(3) = aEnabled
+'		If FlippersEnabled and Not Romcontrol or DebugOn then execute subUR & " " & aEnabled end If
+'	End Sub	
+'	
+'	Public Sub TiltSol(aEnabled)	'Handle solenoid / Delay (if delayinit)
+'		If delay > 0 and not aEnabled then 	'handle delay
+'			vpmtimer.addtimer Delay, Name & ".FireDelay" & "'"
+'			LagCompensation = 1
+'		else
+'			If Delay > 0 then LagCompensation = 0
+'			EnableFlippers(aEnabled)
+'		end If
+'	End Sub
+'	
+'	Sub FireDelay() : If LagCompensation then EnableFlippers 0 End If : End Sub
+'	
+'	Public Sub EnableFlippers(aEnabled)	'private
+'		If aEnabled then execute SubL &" "& ButtonState(0) :execute SubR &" "& ButtonState(1) :execute subUL &" "& ButtonState(2): execute subUR &" "& ButtonState(3)':end if
+'		FlippersEnabled = aEnabled
+'		If TiltObjects then vpmnudge.solgameon aEnabled
+'		If Not aEnabled then
+'			execute subL & " " & 0 : execute subR & " " & 0
+'			execute subUL & " " & 0 : execute subUR & " " & 0
+'		End If
+'	End Sub
+'End Class
+
+
+dim LF : Set LF = New FlipperPolarity
+dim RF : Set RF = New FlipperPolarity
+
+InitPolarity
+
+Sub InitPolarity()
+        dim x, a : a = Array(LF, RF)
+        for each x in a
+                x.AddPoint "Ycoef", 0, RightFlipper.Y-65, 1        'disabled
+                x.AddPoint "Ycoef", 1, RightFlipper.Y-11, 1
+                x.enabled = True
+                x.TimeDelay = 60
+        Next
+
+        AddPt "Polarity", 0, 0, 0
+        AddPt "Polarity", 1, 0.05, -5.5
+        AddPt "Polarity", 2, 0.4, -5.5
+        AddPt "Polarity", 3, 0.6, -5.0
+        AddPt "Polarity", 4, 0.65, -4.5
+        AddPt "Polarity", 5, 0.7, -4.0
+        AddPt "Polarity", 6, 0.75, -3.5
+        AddPt "Polarity", 7, 0.8, -3.0
+        AddPt "Polarity", 8, 0.85, -2.5
+        AddPt "Polarity", 9, 0.9,-2.0
+        AddPt "Polarity", 10, 0.95, -1.5
+        AddPt "Polarity", 11, 1, -1.0
+        AddPt "Polarity", 12, 1.05, -0.5
+        AddPt "Polarity", 13, 1.1, 0
+        AddPt "Polarity", 14, 1.3, 0
+
+        addpt "Velocity", 0, 0,         1
+        addpt "Velocity", 1, 0.16, 1.06
+        addpt "Velocity", 2, 0.41,         1.05
+        addpt "Velocity", 3, 0.53,         1'0.982
+        addpt "Velocity", 4, 0.702, 0.968
+        addpt "Velocity", 5, 0.95,  0.968
+        addpt "Velocity", 6, 1.03,         0.945
+
+        LF.Object = LeftFlipper        
+        LF.EndPoint = EndPointLp
+        RF.Object = RightFlipper
+        RF.EndPoint = EndPointRp
+End Sub
+
+Sub TriggerLF_Hit() : LF.Addball activeball : End Sub
+Sub TriggerLF_UnHit() : LF.PolarityCorrect activeball : End Sub
+Sub TriggerRF_Hit() : RF.Addball activeball : End Sub
+Sub TriggerRF_UnHit() : RF.PolarityCorrect activeball : End Sub
+
+
+'******************************************************
+'                        FLIPPER CORRECTION FUNCTIONS
+'******************************************************
+
+Sub AddPt(aStr, idx, aX, aY)        'debugger wrapper for adjusting flipper script in-game
+        dim a : a = Array(LF, RF)
+        dim x : for each x in a
+                x.addpoint aStr, idx, aX, aY
+        Next
+End Sub
+
+Class FlipperPolarity
+        Public DebugOn, Enabled
+        Private FlipAt        'Timer variable (IE 'flip at 723,530ms...)
+        Public TimeDelay        'delay before trigger turns off and polarity is disabled TODO set time!
+        private Flipper, FlipperStart,FlipperEnd, FlipperEndY, LR, PartialFlipCoef
+        Private Balls(20), balldata(20)
+        
+        dim PolarityIn, PolarityOut
+        dim VelocityIn, VelocityOut
+        dim YcoefIn, YcoefOut
+        Public Sub Class_Initialize 
+                redim PolarityIn(0) : redim PolarityOut(0) : redim VelocityIn(0) : redim VelocityOut(0) : redim YcoefIn(0) : redim YcoefOut(0)
+                Enabled = True : TimeDelay = 50 : LR = 1:  dim x : for x = 0 to uBound(balls) : balls(x) = Empty : set Balldata(x) = new SpoofBall : next 
+        End Sub
+        
+        Public Property let Object(aInput) : Set Flipper = aInput : StartPoint = Flipper.x : End Property
+        Public Property Let StartPoint(aInput) : if IsObject(aInput) then FlipperStart = aInput.x else FlipperStart = aInput : end if : End Property
+        Public Property Get StartPoint : StartPoint = FlipperStart : End Property
+        Public Property Let EndPoint(aInput) : FlipperEnd = aInput.x: FlipperEndY = aInput.y: End Property
+        Public Property Get EndPoint : EndPoint = FlipperEnd : End Property        
+        Public Property Get EndPointY: EndPointY = FlipperEndY : End Property
+        
+        Public Sub AddPoint(aChooseArray, aIDX, aX, aY) 'Index #, X position, (in) y Position (out) 
+                Select Case aChooseArray
+                        case "Polarity" : ShuffleArrays PolarityIn, PolarityOut, 1 : PolarityIn(aIDX) = aX : PolarityOut(aIDX) = aY : ShuffleArrays PolarityIn, PolarityOut, 0
+                        Case "Velocity" : ShuffleArrays VelocityIn, VelocityOut, 1 :VelocityIn(aIDX) = aX : VelocityOut(aIDX) = aY : ShuffleArrays VelocityIn, VelocityOut, 0
+                        Case "Ycoef" : ShuffleArrays YcoefIn, YcoefOut, 1 :YcoefIn(aIDX) = aX : YcoefOut(aIDX) = aY : ShuffleArrays YcoefIn, YcoefOut, 0
+                End Select
+                if gametime > 100 then Report aChooseArray
+        End Sub 
+
+        Public Sub Report(aChooseArray)         'debug, reports all coords in tbPL.text
+                if not DebugOn then exit sub
+                dim a1, a2 : Select Case aChooseArray
+                        case "Polarity" : a1 = PolarityIn : a2 = PolarityOut
+                        Case "Velocity" : a1 = VelocityIn : a2 = VelocityOut
+                        Case "Ycoef" : a1 = YcoefIn : a2 = YcoefOut 
+                        case else :tbpl.text = "wrong string" : exit sub
+                End Select
+                dim str, x : for x = 0 to uBound(a1) : str = str & aChooseArray & " x: " & round(a1(x),4) & ", " & round(a2(x),4) & vbnewline : next
+                tbpl.text = str
+        End Sub
+        
+        Public Sub AddBall(aBall) : dim x : for x = 0 to uBound(balls) : if IsEmpty(balls(x)) then set balls(x) = aBall : exit sub :end if : Next  : End Sub
+
+        Private Sub RemoveBall(aBall)
+                dim x : for x = 0 to uBound(balls)
+                        if TypeName(balls(x) ) = "IBall" then 
+                                if aBall.ID = Balls(x).ID Then
+                                        balls(x) = Empty
+                                        Balldata(x).Reset
+                                End If
+                        End If
+                Next
+        End Sub
+        
+        Public Sub Fire() 
+                Flipper.RotateToEnd
+                processballs
+        End Sub
+
+        Public Property Get Pos 'returns % position a ball. For debug stuff.
+                dim x : for x = 0 to uBound(balls)
+                        if not IsEmpty(balls(x) ) then
+                                pos = pSlope(Balls(x).x, FlipperStart, 0, FlipperEnd, 1)
+                        End If
+                Next                
+        End Property
+
+        Public Sub ProcessBalls() 'save data of balls in flipper range
+                FlipAt = GameTime
+                dim x : for x = 0 to uBound(balls)
+                        if not IsEmpty(balls(x) ) then
+                                balldata(x).Data = balls(x)
+                        End If
+                Next
+                PartialFlipCoef = ((Flipper.StartAngle - Flipper.CurrentAngle) / (Flipper.StartAngle - Flipper.EndAngle))
+                PartialFlipCoef = abs(PartialFlipCoef-1)
+        End Sub
+        Private Function FlipperOn() : if gameTime < FlipAt+TimeDelay then FlipperOn = True : End If : End Function        'Timer shutoff for polaritycorrect
+        
+        Public Sub PolarityCorrect(aBall)
+                if FlipperOn() then 
+                        dim tmp, BallPos, x, IDX, Ycoef : Ycoef = 1
+
+                        'y safety Exit
+                        if aBall.VelY > -8 then 'ball going down
+                                RemoveBall aBall
+                                exit Sub
+                        end if
+
+                        'Find balldata. BallPos = % on Flipper
+                        for x = 0 to uBound(Balls)
+                                if aBall.id = BallData(x).id AND not isempty(BallData(x).id) then 
+                                        idx = x
+                                        BallPos = PSlope(BallData(x).x, FlipperStart, 0, FlipperEnd, 1)
+                                        if ballpos > 0.65 then  Ycoef = LinearEnvelope(BallData(x).Y, YcoefIn, YcoefOut)                                'find safety coefficient 'ycoef' data
+                                end if
+                        Next
+
+                        If BallPos = 0 Then 'no ball data meaning the ball is entering and exiting pretty close to the same position, use current values.
+                                BallPos = PSlope(aBall.x, FlipperStart, 0, FlipperEnd, 1)
+                                if ballpos > 0.65 then  Ycoef = LinearEnvelope(aBall.Y, YcoefIn, YcoefOut)                                                'find safety coefficient 'ycoef' data
+                        End If
+
+                        'Velocity correction
+                        if not IsEmpty(VelocityIn(0) ) then
+                                Dim VelCoef
+         :                         VelCoef = LinearEnvelope(BallPos, VelocityIn, VelocityOut)
+
+                                if partialflipcoef < 1 then VelCoef = PSlope(partialflipcoef, 0, 1, 1, VelCoef)
+
+                                if Enabled then aBall.Velx = aBall.Velx*VelCoef
+                                if Enabled then aBall.Vely = aBall.Vely*VelCoef
+                        End If
+
+                        'Polarity Correction (optional now)
+                        if not IsEmpty(PolarityIn(0) ) then
+                                If StartPoint > EndPoint then LR = -1        'Reverse polarity if left flipper
+                                dim AddX : AddX = LinearEnvelope(BallPos, PolarityIn, PolarityOut) * LR
+        
+                                if Enabled then aBall.VelX = aBall.VelX + 1 * (AddX*ycoef*PartialFlipcoef)
+                                'playsound "fx_knocker"
+                        End If
+                End If
+                RemoveBall aBall
+        End Sub
+End Class
+
+'******************************************************
+'                FLIPPER POLARITY AND RUBBER DAMPENER
+'                        SUPPORTING FUNCTIONS 
+'******************************************************
+
+' Used for flipper correction and rubber dampeners
+Sub ShuffleArray(ByRef aArray, byVal offset) 'shuffle 1d array
+        dim x, aCount : aCount = 0
+        redim a(uBound(aArray) )
+        for x = 0 to uBound(aArray)        'Shuffle objects in a temp array
+                if not IsEmpty(aArray(x) ) Then
+                        if IsObject(aArray(x)) then 
+                                Set a(aCount) = aArray(x)
+                        Else
+                                a(aCount) = aArray(x)
+                        End If
+                        aCount = aCount + 1
+                End If
+        Next
+        if offset < 0 then offset = 0
+        redim aArray(aCount-1+offset)        'Resize original array
+        for x = 0 to aCount-1                'set objects back into original array
+                if IsObject(a(x)) then 
+                        Set aArray(x) = a(x)
+                Else
+                        aArray(x) = a(x)
+                End If
+        Next
+End Sub
+
+' Used for flipper correction and rubber dampeners
+Sub ShuffleArrays(aArray1, aArray2, offset)
+        ShuffleArray aArray1, offset
+        ShuffleArray aArray2, offset
+End Sub
+
+' Used for flipper correction, rubber dampeners, and drop targets
+Function BallSpeed(ball) 'Calculates the ball speed
+    BallSpeed = SQR(ball.VelX^2 + ball.VelY^2 + ball.VelZ^2)
+End Function
+
+' Used for flipper correction and rubber dampeners
+Function PSlope(Input, X1, Y1, X2, Y2)        'Set up line via two points, no clamping. Input X, output Y
+        dim x, y, b, m : x = input : m = (Y2 - Y1) / (X2 - X1) : b = Y2 - m*X2
+        Y = M*x+b
+        PSlope = Y
+End Function
+
+' Used for flipper correction
+Class spoofball 
+        Public X, Y, Z, VelX, VelY, VelZ, ID, Mass, Radius 
+        Public Property Let Data(aBall)
+                With aBall
+                        x = .x : y = .y : z = .z : velx = .velx : vely = .vely : velz = .velz
+                        id = .ID : mass = .mass : radius = .radius
+                end with
+        End Property
+        Public Sub Reset()
+                x = Empty : y = Empty : z = Empty  : velx = Empty : vely = Empty : velz = Empty 
+                id = Empty : mass = Empty : radius = Empty
+        End Sub
+End Class
+
+' Used for flipper correction and rubber dampeners
+Function LinearEnvelope(xInput, xKeyFrame, yLvl)
+        dim y 'Y output
+        dim L 'Line
+        dim ii : for ii = 1 to uBound(xKeyFrame)        'find active line
+                if xInput <= xKeyFrame(ii) then L = ii : exit for : end if
+        Next
+        if xInput > xKeyFrame(uBound(xKeyFrame) ) then L = uBound(xKeyFrame)        'catch line overrun
+        Y = pSlope(xInput, xKeyFrame(L-1), yLvl(L-1), xKeyFrame(L), yLvl(L) )
+
+        if xInput <= xKeyFrame(lBound(xKeyFrame) ) then Y = yLvl(lBound(xKeyFrame) )         'Clamp lower
+        if xInput >= xKeyFrame(uBound(xKeyFrame) ) then Y = yLvl(uBound(xKeyFrame) )        'Clamp upper
+
+        LinearEnvelope = Y
+End Function
+
+
+'******************************************************
+'                        FLIPPER TRICKS
+'******************************************************
+
+RightFlipper.timerinterval=1
+Rightflipper.timerenabled=True
+
+sub RightFlipper_timer()
+        FlipperTricks LeftFlipper, LFPress, LFCount, LFEndAngle, LFState
+        FlipperTricks RightFlipper, RFPress, RFCount, RFEndAngle, RFState
+        FlipperNudge RightFlipper, RFEndAngle, RFEOSNudge, LeftFlipper, LFEndAngle
+        FlipperNudge LeftFlipper, LFEndAngle, LFEOSNudge,  RightFlipper, RFEndAngle
+end sub
+
+Dim LFEOSNudge, RFEOSNudge
+
+Sub FlipperNudge(Flipper1, Endangle1, EOSNudge1, Flipper2, EndAngle2)
+        Dim BOT, b
+
+        If Flipper1.currentangle = Endangle1 and EOSNudge1 <> 1 Then
+                EOSNudge1 = 1
+                'debug.print Flipper1.currentangle &" = "& Endangle1 &"--"& Flipper2.currentangle &" = "& EndAngle2
+                If Flipper2.currentangle = EndAngle2 Then 
+                        BOT = GetBalls
+                        For b = 0 to Ubound(BOT)
+                                If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper1) Then
+                                        'Debug.Print "ball in flip1. exit"
+                                         exit Sub
+                                end If
+                        Next
+                        For b = 0 to Ubound(BOT)
+                                If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper2) Then
+                                        BOT(b).velx = BOT(b).velx / 1.7
+                                        BOT(b).vely = BOT(b).vely - 1
+                                end If
+                        Next
+                End If
+        Else 
+                If Flipper1.currentangle <> EndAngle1 then 
+                        EOSNudge1 = 0
+                end if
+        End If
+End Sub
+
+'*****************
+' Maths
+'*****************
+'Const PI = 3.1415927
+
+Function dSin(degrees)
+        dsin = sin(degrees * Pi/180)
+End Function
+
+Function dCos(degrees)
+        dcos = cos(degrees * Pi/180)
+End Function
+
+'*************************************************
+' Check ball distance from Flipper for Rem
+'*************************************************
+
+Function Distance(ax,ay,bx,by)
+        Distance = SQR((ax - bx)^2 + (ay - by)^2)
+End Function
+
+Function DistancePL(px,py,ax,ay,bx,by) ' Distance between a point and a line where point is px,py
+        DistancePL = ABS((by - ay)*px - (bx - ax) * py + bx*ay - by*ax)/Distance(ax,ay,bx,by)
+End Function
+
+Function Radians(Degrees)
+        Radians = Degrees * PI /180
+End Function
+
+Function AnglePP(ax,ay,bx,by)
+        AnglePP = Atn2((by - ay),(bx - ax))*180/PI
+End Function
+
+Function DistanceFromFlipper(ballx, bally, Flipper)
+        DistanceFromFlipper = DistancePL(ballx, bally, Flipper.x, Flipper.y, Cos(Radians(Flipper.currentangle+90))+Flipper.x, Sin(Radians(Flipper.currentangle+90))+Flipper.y)
+End Function
+
+Function FlipperTrigger(ballx, bally, Flipper)
+        Dim DiffAngle
+        DiffAngle  = ABS(Flipper.currentangle - AnglePP(Flipper.x, Flipper.y, ballx, bally) - 90)
+        If DiffAngle > 180 Then DiffAngle = DiffAngle - 360
+
+        If DistanceFromFlipper(ballx,bally,Flipper) < 48 and DiffAngle <= 90 and Distance(ballx,bally,Flipper.x,Flipper.y) < Flipper.Length Then
+                FlipperTrigger = True
+        Else
+                FlipperTrigger = False
+        End If        
+End Function
+
+' Used for drop targets and stand up targets
+Function Atn2(dy, dx)
+'        dim pi
+'        pi = 4*Atn(1)
+
+        If dx > 0 Then
+                Atn2 = Atn(dy / dx)
+        ElseIf dx < 0 Then
+                If dy = 0 Then 
+                        Atn2 = pi
+                Else
+                        Atn2 = Sgn(dy) * (pi - Atn(Abs(dy / dx)))
+                end if
+        ElseIf dx = 0 Then
+                if dy = 0 Then
+                        Atn2 = 0
+                else
+                        Atn2 = Sgn(dy) * pi / 2
+                end if
+        End If
+End Function
+
+'*************************************************
+' End - Check ball distance from Flipper for Rem
+'*************************************************
+
+dim LFPress, RFPress, LFCount, RFCount
+dim LFState, RFState
+dim EOST, EOSA,Frampup, FElasticity,FReturn
+dim RFEndAngle, LFEndAngle
+
+EOST = leftflipper.eostorque
+EOSA = leftflipper.eostorqueangle
+Frampup = LeftFlipper.rampup
+FElasticity = LeftFlipper.elasticity
+FReturn = LeftFlipper.return
+Const EOSTnew = 0.8 
+Const EOSAnew = 1
+Const EOSRampup = 0
+Dim SOSRampup
+Select Case FlipperCoilRampupMode 
+	Case 0:
+		SOSRampup = 2.5
+	Case 1:
+		SOSRampup = 6
+	Case 2:
+		SOSRampup = 8.5
+End Select
+Const LiveCatch = 16
+Const LiveElasticity = 0.45
+Const SOSEM = 0.815
+Const EOSReturn = 0.025
+
+LFEndAngle = Leftflipper.endangle
+RFEndAngle = RightFlipper.endangle
+
+Sub FlipperActivate(Flipper, FlipperPress)
+        FlipperPress = 1
+        Flipper.Elasticity = FElasticity
+
+        Flipper.eostorque = EOST         
+        Flipper.eostorqueangle = EOSA         
+End Sub
+
+Sub FlipperDeactivate(Flipper, FlipperPress)
+        FlipperPress = 0
+        Flipper.eostorqueangle = EOSA
+        Flipper.eostorque = EOST*EOSReturn/FReturn
+
+        
+        If Abs(Flipper.currentangle) <= Abs(Flipper.endangle) + 0.1 Then
+                Dim BOT, b
+                BOT = GetBalls
+                        
+                For b = 0 to UBound(BOT)
+                        If Distance(BOT(b).x, BOT(b).y, Flipper.x, Flipper.y) < 55 Then 'check for cradle
+                                If BOT(b).vely >= -0.4 Then BOT(b).vely = -0.4
+                        End If
+                Next
+        End If
+End Sub
+
+Sub FlipperTricks (Flipper, FlipperPress, FCount, FEndAngle, FState) 
+        Dim Dir
+        Dir = Flipper.startangle/Abs(Flipper.startangle)        '-1 for Right Flipper
+
+        If Abs(Flipper.currentangle) > Abs(Flipper.startangle) - 0.05 Then
+                If FState <> 1 Then
+                        Flipper.rampup = SOSRampup 
+                        Flipper.endangle = FEndAngle - 3*Dir
+                        Flipper.Elasticity = FElasticity * SOSEM
+                        FCount = 0 
+                        FState = 1
+                End If
+        ElseIf Abs(Flipper.currentangle) <= Abs(Flipper.endangle) and FlipperPress = 1 then
+                if FCount = 0 Then FCount = GameTime
+
+                If FState <> 2 Then
+                        Flipper.eostorqueangle = EOSAnew
+                        Flipper.eostorque = EOSTnew
+                        Flipper.rampup = EOSRampup                        
+                        Flipper.endangle = FEndAngle
+                        FState = 2
+                End If
+        Elseif Abs(Flipper.currentangle) > Abs(Flipper.endangle) + 0.01 and FlipperPress = 1 Then 
+                If FState <> 3 Then
+                        Flipper.eostorque = EOST        
+                        Flipper.eostorqueangle = EOSA
+                        Flipper.rampup = Frampup
+                        Flipper.Elasticity = FElasticity
+                        FState = 3
+                End If
+
+        End If
+End Sub
+
+Const LiveDistanceMin = 30  'minimum distance in vp units from flipper base live catch dampening will occur
+Const LiveDistanceMax = 114  'maximum distance in vp units from flipper base live catch dampening will occur (tip protection)
+
+Sub CheckLiveCatch(ball, Flipper, FCount, parm) 'Experimental new live catch
+        Dim Dir
+        Dir = Flipper.startangle/Abs(Flipper.startangle)    '-1 for Right Flipper
+        Dim LiveCatchBounce                                                                                                                        'If live catch is not perfect, it won't freeze ball totally
+        Dim CatchTime : CatchTime = GameTime - FCount
+
+        if CatchTime <= LiveCatch and parm > 6 and ABS(Flipper.x - ball.x) > LiveDistanceMin and ABS(Flipper.x - ball.x) < LiveDistanceMax Then
+                if CatchTime <= LiveCatch*0.5 Then                                                'Perfect catch only when catch time happens in the beginning of the window
+                        LiveCatchBounce = 0
+                else
+                        LiveCatchBounce = Abs((LiveCatch/2) - CatchTime)        'Partial catch when catch happens a bit late
+                end If
+
+                If LiveCatchBounce = 0 and ball.velx * Dir > 0 Then ball.velx = 0
+                ball.vely = LiveCatchBounce * (32 / LiveCatch) ' Multiplier for inaccuracy bounce
+                ball.angmomx= 0
+                ball.angmomy= 0
+                ball.angmomz= 0
+        End If
+End Sub
+
+
+'****************************************************************************
+'PHYSICS DAMPENERS
+'****************************************************************************
+
+'These are data mined bounce curves, 
+'dialed in with the in-game elasticity as much as possible to prevent angle / spin issues.
+'Requires tracking ballspeed to calculate COR
+
+
+Sub dPosts_Hit(idx) 
+	RubbersD.dampen Activeball
+	TargetBouncer Activeball, 1
+End Sub
+
+Sub dSleeves_Hit(idx) 
+	SleevesD.Dampen Activeball
+	TargetBouncer Activeball, 0.7
+End Sub
+
+
+dim RubbersD : Set RubbersD = new Dampener        'frubber
+RubbersD.name = "Rubbers"
+RubbersD.debugOn = False        'shows info in textbox "TBPout"
+RubbersD.Print = False        'debug, reports in debugger (in vel, out cor)
+'cor bounce curve (linear)
+'for best results, try to match in-game velocity as closely as possible to the desired curve
+'RubbersD.addpoint 0, 0, 0.935        'point# (keep sequential), ballspeed, CoR (elasticity)
+RubbersD.addpoint 0, 0, 0.96        'point# (keep sequential), ballspeed, CoR (elasticity)
+RubbersD.addpoint 1, 3.77, 0.96
+RubbersD.addpoint 2, 5.76, 0.967        'dont take this as gospel. if you can data mine rubber elasticitiy, please help!
+RubbersD.addpoint 3, 15.84, 0.874
+RubbersD.addpoint 4, 56, 0.64        'there's clamping so interpolate up to 56 at least
+
+dim SleevesD : Set SleevesD = new Dampener        'this is just rubber but cut down to 85%...
+SleevesD.name = "Sleeves"
+SleevesD.debugOn = False        'shows info in textbox "TBPout"
+SleevesD.Print = False        'debug, reports in debugger (in vel, out cor)
+SleevesD.CopyCoef RubbersD, 0.85
+
+Class Dampener
+        Public Print, debugOn 'tbpOut.text
+        public name, Threshold         'Minimum threshold. Useful for Flippers, which don't have a hit threshold.
+        Public ModIn, ModOut
+        Private Sub Class_Initialize : redim ModIn(0) : redim Modout(0): End Sub 
+
+        Public Sub AddPoint(aIdx, aX, aY) 
+                ShuffleArrays ModIn, ModOut, 1 : ModIn(aIDX) = aX : ModOut(aIDX) = aY : ShuffleArrays ModIn, ModOut, 0
+                if gametime > 100 then Report
+        End Sub
+
+        public sub Dampen(aBall)
+                if threshold then if BallSpeed(aBall) < threshold then exit sub end if end if
+                dim RealCOR, DesiredCOR, str, coef
+                DesiredCor = LinearEnvelope(cor.ballvel(aBall.id), ModIn, ModOut )
+                RealCOR = BallSpeed(aBall) / cor.ballvel(aBall.id)
+                coef = desiredcor / realcor 
+                if debugOn then str = name & " in vel:" & round(cor.ballvel(aBall.id),2 ) & vbnewline & "desired cor: " & round(desiredcor,4) & vbnewline & _
+                "actual cor: " & round(realCOR,4) & vbnewline & "ballspeed coef: " & round(coef, 3) & vbnewline 
+                if Print then debug.print Round(cor.ballvel(aBall.id),2) & ", " & round(desiredcor,3)
+                
+                aBall.velx = aBall.velx * coef : aBall.vely = aBall.vely * coef
+                if debugOn then TBPout.text = str
+        End Sub
+
+        Public Sub CopyCoef(aObj, aCoef) 'alternative addpoints, copy with coef
+                dim x : for x = 0 to uBound(aObj.ModIn)
+                        addpoint x, aObj.ModIn(x), aObj.ModOut(x)*aCoef
+                Next
+        End Sub
+
+
+        Public Sub Report()         'debug, reports all coords in tbPL.text
+                if not debugOn then exit sub
+                dim a1, a2 : a1 = ModIn : a2 = ModOut
+                dim str, x : for x = 0 to uBound(a1) : str = str & x & ": " & round(a1(x),4) & ", " & round(a2(x),4) & vbnewline : next
+                TBPout.text = str
+        End Sub
+        
+
+End Class
+
+'******************************************************
+' VPW TargetBouncer for targets and posts by Iaakki, Wrd1972, Apophis
+'******************************************************
+
+sub TargetBouncer(aBall,defvalue)
+    dim zMultiplier, vel, vratio
+
+
+	if TargetBouncerEnabled = 1 and aball.z < 30 then
+		'debug.print "velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
+		vel = BallSpeed(aBall)
+		if aBall.velx = 0 then vratio = 1 else vratio = aBall.vely/aBall.velx
+		Select Case Int(Rnd * 6) + 1
+			Case 1: zMultiplier = 0.2*defvalue
+			Case 2: zMultiplier = 0.25*defvalue
+			Case 3: zMultiplier = 0.3*defvalue
+			Case 4: zMultiplier = 0.4*defvalue
+			Case 5: zMultiplier = 0.45*defvalue
+			Case 6: zMultiplier = 0.5*defvalue
+		End Select
+		aBall.velz = abs(vel * zMultiplier * TargetBouncerFactor)
+		aBall.velx = sgn(aBall.velx) * sqr(abs((vel^2 - aBall.velz^2)/(1+vratio^2)))
+		aBall.vely = aBall.velx * vratio
+		'debug.print "---> velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
+		'debug.print "conservation check: " & BallSpeed(aBall)/vel
+	elseif TargetBouncerEnabled = 2 and aball.z < 30 then
+		if aball.vely > 3 then	'only hard hits
+			'debug.print "velz: " & activeball.velz & " vely: " & activeball.vely
+			Select Case Int(Rnd * 4) + 1
+				Case 1: zMultiplier = defvalue+1.1
+				Case 2: zMultiplier = defvalue+1.05
+				Case 3: zMultiplier = defvalue+0.7
+				Case 4: zMultiplier = defvalue+0.3
+			End Select
+			aBall.velz = aBall.velz * zMultiplier * TargetBouncerFactor
+			debug.print "----> velz: " & activeball.velz
+			'debug.print "conservation check: " & BallSpeed(aBall)/vel
+		end if
+	end if
+end sub
+
+
+
+'******************************************************
+'                TRACK ALL BALL VELOCITIES
+'                 FOR RUBBER DAMPENER AND DROP TARGETS
+'******************************************************
+
+dim cor : set cor = New CoRTracker
+
+Class CoRTracker
+        public ballvel, ballvelx, ballvely
+
+        Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+
+        Public Sub Update()        'tracks in-ball-velocity
+                dim str, b, AllBalls, highestID : allBalls = getballs
+
+                for each b in allballs
+                        if b.id >= HighestID then highestID = b.id
+                Next
+
+                if uBound(ballvel) < highestID then redim ballvel(highestID)        'set bounds
+                if uBound(ballvelx) < highestID then redim ballvelx(highestID)        'set bounds
+                if uBound(ballvely) < highestID then redim ballvely(highestID)        'set bounds
+
+                for each b in allballs
+                        ballvel(b.id) = BallSpeed(b)
+                        ballvelx(b.id) = b.velx
+                        ballvely(b.id) = b.vely
+                Next
+        End Sub
+End Class
+
+'*** Determines if a Points (px,py) is inside a 4 point polygon A-D in Clockwise/CCW order
+Function InRect(px,py,ax,ay,bx,by,cx,cy,dx,dy)
+        Dim AB, BC, CD, DA
+        AB = (bx*py) - (by*px) - (ax*py) + (ay*px) + (ax*by) - (ay*bx)
+        BC = (cx*py) - (cy*px) - (bx*py) + (by*px) + (bx*cy) - (by*cx)
+        CD = (dx*py) - (dy*px) - (cx*py) + (cy*px) + (cx*dy) - (cy*dx)
+        DA = (ax*py) - (ay*px) - (dx*py) + (dy*px) + (dx*ay) - (dy*ax)
+ 
+        If (AB <= 0 AND BC <=0 AND CD <= 0 AND DA <= 0) Or (AB >= 0 AND BC >=0 AND CD >= 0 AND DA >= 0) Then
+                InRect = True
+        Else
+                InRect = False       
+        End If
+End Function
+
+Sub RDampen_Timer()
+Cor.Update
+End Sub
+
+
+' #####################################
+' ###### Flupper Flasher Domes    #####
+' #####################################
+
+Dim TestFlashers, TableRef, FlasherLightIntensity, FlasherFlareIntensity, FlasherBloomIntensity, FlasherOffBrightness
+
+								' *********************************************************************
+TestFlashers = 0				' *** set this to 1 to check position of flasher object 			***
+Set TableRef = Table   			' *** change this, if your table has another name       			***
+FlasherLightIntensity = 0.1		' *** lower this, if the VPX lights are too bright (i.e. 0.1)		***
+FlasherFlareIntensity = 0.5		' *** lower this, if the flares are too bright (i.e. 0.1)			***
+FlasherBloomIntensity = 1
+FlasherOffBrightness = 0.4		' *** brightness of the flasher dome when switched off (range 0-2)	***
+								' *********************************************************************
+
+Dim ObjLevel(20), objbase(20), objlit(20), objflasher(20), objbloom(20), objlight(20)
+Dim tablewidth, tableheight : tablewidth = TableRef.width : tableheight = TableRef.height
+''initialise the flasher color, you can only choose from "green", "red", "purple", "blue", "white" and "yellow"
+InitFlasher 1, "blue" : InitFlasher 2, "blue" : InitFlasher 3, "yellow" : InitFlasher 4, "yellow" : InitFlasher 5, "blue" : InitFlasher 6, "blue"
+''' rotate the flasher with the command below (first argument = flasher nr, second argument = angle in degrees)
+rotateflasher 1,90
+rotateflasher 2,90
+
+'Flasherflash4.height = 255
+'Flasherflash3.height = 235
+
+Sub InitFlasher(nr, col)
+	' store all objects in an array for use in FlashFlasher subroutine
+	Set objbase(nr) = Eval("Flasherbase" & nr) : Set objlit(nr) = Eval("Flasherlit" & nr)
+	Set objflasher(nr) = Eval("Flasherflash" & nr) : Set objlight(nr) = Eval("Flasherlight" & nr)
+	Set objbloom(nr) = Eval("Flasherbloom" & nr)
+	' If the flasher is parallel to the playfield, rotate the VPX flasher object for POV and place it at the correct height
+	If objbase(nr).RotY = 0 Then
+		objbase(nr).ObjRotZ =  atn( (tablewidth/2 - objbase(nr).x) / (objbase(nr).y - tableheight*1.1)) * 180 / 3.14159
+		objflasher(nr).RotZ = objbase(nr).ObjRotZ : objflasher(nr).height = objbase(nr).z + 40
+	End If
+	' set all effects to invisible and move the lit primitive at the same position and rotation as the base primitive
+	objlight(nr).IntensityScale = 0 : objlit(nr).visible = 0 : objlit(nr).material = "Flashermaterial" & nr
+	objlit(nr).RotX = objbase(nr).RotX : objlit(nr).RotY = objbase(nr).RotY : objlit(nr).RotZ = objbase(nr).RotZ
+	objlit(nr).ObjRotX = objbase(nr).ObjRotX : objlit(nr).ObjRotY = objbase(nr).ObjRotY : objlit(nr).ObjRotZ = objbase(nr).ObjRotZ
+	objlit(nr).x = objbase(nr).x : objlit(nr).y = objbase(nr).y : objlit(nr).z = objbase(nr).z
+	objbase(nr).BlendDisableLighting = FlasherOffBrightness
+	' set the texture and color of all objects
+	select case objbase(nr).image
+		Case "dome2basewhite" : objbase(nr).image = "dome2base" & col : objlit(nr).image = "dome2lit" & col : 
+		Case "ronddomebasewhite" : objbase(nr).image = "ronddomebase" & col : objlit(nr).image = "ronddomelit" & col
+		Case "domeearbasewhite" : objbase(nr).image = "domeearbase" & col : objlit(nr).image = "domeearlit" & col
+	end select
+	If TestFlashers = 0 Then objflasher(nr).imageA = "domeflashwhite" : objflasher(nr).visible = 0 : End If
+	select case col
+		Case "blue" :   objlight(nr).color = RGB(4,120,255) : objflasher(nr).color = RGB(20,155,255) ': objlight(nr).intensity = 5000
+		Case "green" :  objlight(nr).color = RGB(12,255,4) : objflasher(nr).color = RGB(12,255,4)
+		Case "red" :    objlight(nr).color = RGB(255,32,4) : objflasher(nr).color = RGB(255,32,4)
+		Case "purple" : objlight(nr).color = RGB(230,49,255) : objflasher(nr).color = RGB(255,64,255) 
+		Case "yellow" : objlight(nr).color = RGB(200,173,25) : objflasher(nr).color = RGB(255,200,50)
+		Case "white" :  objlight(nr).color = RGB(255,240,150) : objflasher(nr).color = RGB(100,86,59)
+	end select
+	objlight(nr).colorfull = objlight(nr).color
+	If TableRef.ShowDT and ObjFlasher(nr).RotX = -15 Then 
+		objflasher(nr).height = objflasher(nr).height + 25 * ObjFlasher(nr).y / tableheight
+		ObjFlasher(nr).y = ObjFlasher(nr).y + 10
+	End If
+	FlasherFlash1.height = 235
+	FlasherFlash2.height = 235
+	FlasherFlash4.height = 200
+	FlasherFlash6.height = 200
+	Flasherbase4.ObjRotZ = 18
+	Flasherbase5.ObjRotZ = -35
+	Flasherbase6.ObjRotZ = 53
+End Sub
+
+Sub RotateFlasher(nr, angle) : angle = ((angle + 360 - objbase(nr).ObjRotZ) mod 180)/30 : objbase(nr).showframe(angle) : objlit(nr).showframe(angle) : End Sub
+
+Sub FlashFlasher(nr)
+	If not objflasher(nr).TimerEnabled Then objflasher(nr).TimerEnabled = True : objflasher(nr).visible = 1 : objlit(nr).visible = 1 : objbloom(nr).visible = 1 : End If
+	objflasher(nr).opacity = 1000 *  FlasherFlareIntensity * ObjLevel(nr)^2.5
+	objbloom(nr).opacity = 100 *  FlasherBloomIntensity * ObjLevel(nr)^2.5
+	objlight(nr).IntensityScale = 0.5 * FlasherLightIntensity * ObjLevel(nr)^3
+	objbase(nr).BlendDisableLighting =  FlasherOffBrightness + 10 * ObjLevel(nr)^3	
+	objlit(nr).BlendDisableLighting = 10 * ObjLevel(nr)^2
+	UpdateMaterial "Flashermaterial" & nr,0,0,0,0,0,0,ObjLevel(nr),RGB(255,255,255),0,0,False,True,0,0,0,0 
+	ObjLevel(nr) = ObjLevel(nr) * 0.9 - 0.01
+	If ObjLevel(nr) < 0 Then objflasher(nr).TimerEnabled = False : objflasher(nr).visible = 0 : objlit(nr).visible = 0 : objbloom(nr).visible = 0 : End If
+End Sub
+
+Sub FlasherFlash1_Timer() : FlashFlasher(1) : End Sub
+Sub FlasherFlash2_Timer() : FlashFlasher(2) : End Sub
+Sub FlasherFlash3_Timer() : FlashFlasher(3) : End Sub
+Sub FlasherFlash4_Timer() : FlashFlasher(4) : End Sub
+Sub FlasherFlash5_Timer() : FlashFlasher(5) : End Sub
+Sub FlasherFlash6_Timer() : FlashFlasher(6) : End Sub
+
+' ###############################################
+' ############# Flasher dome settings ###########
+' ###############################################
+
+Sub FlashSol19(flstate) ' right blue
+	If Flstate Then
+		Objlevel(5) = 1 : FlasherFlash5_Timer
+		Objlevel(6) = 1 : FlasherFlash6_Timer
+	End If
+End Sub
+
+Sub FlashSol25(flstate) ' left yellow
+	If Flstate Then
+		Objlevel(3) = 1 : FlasherFlash3_Timer
+		Objlevel(4) = 1 : FlasherFlash4_Timer
+	End If
+End Sub
+
+Sub FlashSol28(flstate) ' backboard blue
+	If Flstate Then
+		Objlevel(1) = 1 : FlasherFlash1_Timer
+		Objlevel(2) = 1 : FlasherFlash2_Timer
+	End If
+End Sub
+
+'****************************************************************
+'		Cabinet Mode
+'****************************************************************
+
+If CabinetMode Then
+	PinCab_Rails.visible = 0
+	Sideblades.size_y = 3.3
+Else
+	PinCab_Rails.visible = 1
+	Sideblades.size_y = 1.85
+End If
+
+'****************************************************************
+'		Cabinet Mode
+'****************************************************************
+
+DIM Acrylic
+If AcrylicProt > 0 Then
+	for each Acrylic in acrylics:Acrylic.visible = 1:Next
+Else
+	for each Acrylic in acrylics:Acrylic.visible = 0:Next
+End If
+
+'****************************************************************
+'		VR Mode
+'****************************************************************
+DIM VRThings
+
+
+if VRRoom = 0 then ' Hide all VRBG components
+for each VRThings in VRBackglass: VRThings.visible = false: next
+for each VRThings in VRBackglassLights: VRThings.visible = false: next
+		BGDiscRight.visible = false
+		BGFaceRight.visible = false
+		BGTron.visible = false
+		BGBigShip.visible = false
+		BGStern.visible = false
+		BGLeftShip2.visible = false
+		BGLeftShip1.visible = false
+		BGArm.visible = false
+		BGManLeft.visible = false
+		BGDisney.visible = false
+		BGRightShip.visible = false
+		BGCouple.visible = false
+end if
+
+If VRRoom = 1 then 
+ScoreText.visible = 0
+for each VRThings in VRTronRoom:VRThings.visible = 1:Next
+for each VRThings in VRCab:VRThings.visible = 1:Next
+SkyLightTimer1.enabled = True
+VRCyclesTimer.enabled = True
+VRCycle2.visible = true
+VRCycle4.visible = true
+VRCycle2Wall.visible = true
+VRCycle4Wall.visible = true
+VRTank1.visible = true
+VRTank2.visible = true
+VR_Sphere1.visible = true
+TimerVRPlunger2.enabled = True
+if Scratches = 1 then GlassImpurities.visible = true
+if PulsingFloor = 0 then VRBlueFloor.visible = false
+SetBackglass
+If BGLightMod = 1 Then VRBGFlash.enabled = 1
+playsound "TronLegacy", -1 'starts VR Scene intro music  (ends when Start is pressed)
+End If
+
+If VRRoom = 2 then 
+ScoreText.visible = 0
+for each VRThings in VRMinimal:VRThings.visible = 1:Next
+for each VRThings in VRCab:VRThings.visible = 1:Next
+if Scratches = 1 then GlassImpurities.visible = true
+TimerVRPlunger2.enabled = True
+SetBackglass
+If BGLightMod = 1 Then VRBGFlash.enabled = 1
+End If
+
+If VRRoom = 3 then 
+ScoreText.visible = 0
+PinCab_Backbox.visible = 1
+DMD.visible = 1
+VRBackglassBlocker.visible = 1
+VRBackglassGlass.visible = 1
+SetBackglass
+If BGLightMod = 1 Then VRBGFlash.enabled = 1
+End If
+
+
+
+'////////////////////////////  MECHANICAL SOUNDS  ///////////////////////////
+'//  This part in the script is an entire block that is dedicated to the physics sound system.
+'//  Various scripts and sounds that may be pretty generic and could suit other WPC systems, but the most are tailored specifically for this table.
+
+'///////////////////////////////  SOUNDS PARAMETERS  //////////////////////////////
+Dim GlobalSoundLevel, CoinSoundLevel, PlungerReleaseSoundLevel, PlungerPullSoundLevel, NudgeLeftSoundLevel
+Dim NudgeRightSoundLevel, NudgeCenterSoundLevel, StartButtonSoundLevel, RollingSoundFactor
+
+CoinSoundLevel = 1														'volume level; range [0, 1]
+NudgeLeftSoundLevel = 1													'volume level; range [0, 1]
+NudgeRightSoundLevel = 1												'volume level; range [0, 1]
+NudgeCenterSoundLevel = 1												'volume level; range [0, 1]
+StartButtonSoundLevel = 0.1												'volume level; range [0, 1]
+PlungerReleaseSoundLevel = 0.8 '1 wjr											'volume level; range [0, 1]
+PlungerPullSoundLevel = 1												'volume level; range [0, 1]
+RollingSoundFactor = 1.1/5		
+
+'///////////////////////-----Solenoids, Kickers and Flash Relays-----///////////////////////
+Dim FlipperUpAttackMinimumSoundLevel, FlipperUpAttackMaximumSoundLevel, FlipperUpAttackLeftSoundLevel, FlipperUpAttackRightSoundLevel
+Dim FlipperUpSoundLevel, FlipperDownSoundLevel, FlipperLeftHitParm, FlipperRightHitParm
+Dim SlingshotSoundLevel, BumperSoundFactor, KnockerSoundLevel
+
+FlipperUpAttackMinimumSoundLevel = 0.010           						'volume level; range [0, 1]
+FlipperUpAttackMaximumSoundLevel = 0.635								'volume level; range [0, 1]
+FlipperUpSoundLevel = 1.0                        						'volume level; range [0, 1]
+FlipperDownSoundLevel = 0.45                      						'volume level; range [0, 1]
+FlipperLeftHitParm = FlipperUpSoundLevel								'sound helper; not configurable
+FlipperRightHitParm = FlipperUpSoundLevel								'sound helper; not configurable
+SlingshotSoundLevel = 0.95												'volume level; range [0, 1]
+BumperSoundFactor = 4.25												'volume multiplier; must not be zero
+KnockerSoundLevel = 1 													'volume level; range [0, 1]
+
+'///////////////////////-----Ball Drops, Bumps and Collisions-----///////////////////////
+Dim RubberStrongSoundFactor, RubberWeakSoundFactor, RubberFlipperSoundFactor,BallWithBallCollisionSoundFactor
+Dim BallBouncePlayfieldSoftFactor, BallBouncePlayfieldHardFactor, PlasticRampDropToPlayfieldSoundLevel, WireRampDropToPlayfieldSoundLevel, DelayedBallDropOnPlayfieldSoundLevel
+Dim WallImpactSoundFactor, MetalImpactSoundFactor, SubwaySoundLevel, SubwayEntrySoundLevel, ScoopEntrySoundLevel
+Dim SaucerLockSoundLevel, SaucerKickSoundLevel
+
+BallWithBallCollisionSoundFactor = 3.2									'volume multiplier; must not be zero
+RubberStrongSoundFactor = 0.055/5											'volume multiplier; must not be zero
+RubberWeakSoundFactor = 0.075/5											'volume multiplier; must not be zero
+RubberFlipperSoundFactor = 0.075/5										'volume multiplier; must not be zero
+BallBouncePlayfieldSoftFactor = 0.025									'volume multiplier; must not be zero
+BallBouncePlayfieldHardFactor = 0.025									'volume multiplier; must not be zero
+DelayedBallDropOnPlayfieldSoundLevel = 0.8									'volume level; range [0, 1]
+WallImpactSoundFactor = 0.075											'volume multiplier; must not be zero
+MetalImpactSoundFactor = 0.075/3
+SaucerLockSoundLevel = 0.8
+SaucerKickSoundLevel = 0.8
+
+'///////////////////////-----Gates, Spinners, Rollovers and Targets-----///////////////////////
+
+Dim GateSoundLevel, TargetSoundFactor, SpinnerSoundLevel, RolloverSoundLevel, DTSoundLevel
+
+GateSoundLevel = 0.5/5													'volume level; range [0, 1]
+TargetSoundFactor = 0.0025 * 10											'volume multiplier; must not be zero
+DTSoundLevel = 0.25														'volume multiplier; must not be zero
+RolloverSoundLevel = 0.25                              					'volume level; range [0, 1]
+
+'///////////////////////-----Ball Release, Guides and Drain-----///////////////////////
+Dim DrainSoundLevel, BallReleaseSoundLevel, BottomArchBallGuideSoundFactor, FlipperBallGuideSoundFactor 
+
+DrainSoundLevel = 0.8														'volume level; range [0, 1]
+BallReleaseSoundLevel = 1												'volume level; range [0, 1]
+BottomArchBallGuideSoundFactor = 0.2									'volume multiplier; must not be zero
+FlipperBallGuideSoundFactor = 0.015										'volume multiplier; must not be zero
+
+'///////////////////////-----Loops and Lanes-----///////////////////////
+Dim ArchSoundFactor
+ArchSoundFactor = 0.025/5													'volume multiplier; must not be zero
+
+
+'/////////////////////////////  SOUND PLAYBACK FUNCTIONS  ////////////////////////////
+'/////////////////////////////  POSITIONAL SOUND PLAYBACK METHODS  ////////////////////////////
+' Positional sound playback methods will play a sound, depending on the X,Y position of the table element or depending on ActiveBall object position
+' These are similar subroutines that are less complicated to use (e.g. simply use standard parameters for the PlaySound call)
+' For surround setup - positional sound playback functions will fade between front and rear surround channels and pan between left and right channels
+' For stereo setup - positional sound playback functions will only pan between left and right channels
+' For mono setup - positional sound playback functions will not pan between left and right channels and will not fade between front and rear channels
+
+' PlaySound full syntax - PlaySound(string, int loopcount, float volume, float pan, float randompitch, int pitch, bool useexisting, bool restart, float front_rear_fade)
+' Note - These functions will not work (currently) for walls/slingshots as these do not feature a simple, single X,Y position
+Sub PlaySoundAtLevelStatic(playsoundparams, aVol, tableobj)
+    PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(tableobj), 0, 0, 0, 0, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtLevelExistingStatic(playsoundparams, aVol, tableobj)
+    PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(tableobj), 0, 0, 1, 0, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtLevelStaticLoop(playsoundparams, aVol, tableobj)
+    PlaySound playsoundparams, -1, aVol * VolumeDial, AudioPan(tableobj), 0, 0, 0, 0, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtLevelStaticRandomPitch(playsoundparams, aVol, randomPitch, tableobj)
+    PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(tableobj), randomPitch, 0, 0, 0, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtLevelActiveBall(playsoundparams, aVol)
+	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ActiveBall), 0, 0, 0, 0, AudioFade(ActiveBall)
+End Sub
+
+Sub PlaySoundAtLevelExistingActiveBall(playsoundparams, aVol)
+	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ActiveBall), 0, 0, 1, 0, AudioFade(ActiveBall)
+End Sub
+
+Sub PlaySoundAtLeveTimerActiveBall(playsoundparams, aVol, ballvariable)
+	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ballvariable), 0, 0, 0, 0, AudioFade(ballvariable)
+End Sub
+
+Sub PlaySoundAtLevelTimerExistingActiveBall(playsoundparams, aVol, ballvariable)
+	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ballvariable), 0, 0, 1, 0, AudioFade(ballvariable)
+End Sub
+
+Sub PlaySoundAtLevelRoll(playsoundparams, aVol, pitch)
+    PlaySound playsoundparams, -1, aVol * VolumeDial, AudioPan(tableobj), randomPitch, 0, 0, 0, AudioFade(tableobj)
+End Sub
+
+' Previous Positional Sound Subs
+
+Sub PlaySoundAt(soundname, tableobj)
+    PlaySound soundname, 1, 1 * VolumeDial, AudioPan(tableobj), 0,0,0, 1, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtVol(soundname, tableobj, aVol)
+    PlaySound soundname, 1, aVol * VolumeDial, AudioPan(tableobj), 0,0,0, 1, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtBall(soundname)
+    PlaySoundAt soundname, ActiveBall
+End Sub
+
+Sub PlaySoundAtBallVol (Soundname, aVol)
+	Playsound soundname, 1,aVol * VolumeDial, AudioPan(ActiveBall), 0,0,0, 1, AudioFade(ActiveBall)
+End Sub
+
+Sub PlaySoundAtBallVolM (Soundname, aVol)
+	Playsound soundname, 1,aVol * VolumeDial, AudioPan(ActiveBall), 0,0,0, 0, AudioFade(ActiveBall)
+End Sub
+
+Sub PlaySoundAtVolLoops(sound, tableobj, Vol, Loops)
+	PlaySound sound, Loops, Vol * VolumeDial, AudioPan(tableobj), 0,0,0, 1, AudioFade(tableobj)
+End Sub
+
+
+' *********************************************************************
+'                     Fleep  Supporting Ball & Sound Functions
+' *********************************************************************
+
+'Dim tablewidth, tableheight : tablewidth = Table.width : tableheight = Table.height
+
+Function AudioFade(tableobj) ' Fades between front and back of the table (for surround systems or 2x2 speakers, etc), depending on the Y position on the table. "table1" is the name of the table
+	Dim tmp
+	tmp = tableobj.y * 2 / tableheight-1
+
+	if tmp > 7000 Then
+		tmp = 7000
+	elseif tmp < -7000 Then
+		tmp = -7000
+	end if
+
+    	If tmp > 0 Then
+		AudioFade = Csng(tmp ^10)
+	Else
+		AudioFade = Csng(-((- tmp) ^10) )
+	End If
+End Function
+
+Function AudioPan(tableobj) ' Calculates the pan for a tableobj based on the X position on the table. "table1" is the name of the table
+	Dim tmp
+	tmp = tableobj.x * 2 / tablewidth-1
+
+	if tmp > 7000 Then
+		tmp = 7000
+	elseif tmp < -7000 Then
+		tmp = -7000
+	end if
+
+	If tmp > 0 Then
+		AudioPan = Csng(tmp ^10)
+	Else
+		AudioPan = Csng(-((- tmp) ^10) )
+	End If
+End Function
+
+Function Vol(ball) ' Calculates the volume of the sound based on the ball speed
+	Vol = Csng(BallVel(ball) ^2)
+End Function
+
+Function Volz(ball) ' Calculates the volume of the sound based on the ball speed
+	Volz = Csng((ball.velz) ^2)
+End Function
+
+Function Pitch(ball) ' Calculates the pitch of the sound based on the ball speed
+    Pitch = BallVel(ball) * 20
+End Function
+
+Function BallVel(ball) 'Calculates the ball speed
+    BallVel = INT(SQR((ball.VelX ^2) + (ball.VelY ^2) ) )
+End Function
+
+Function VolPlayfieldRoll(ball) ' Calculates the roll volume of the sound based on the ball speed
+	VolPlayfieldRoll = RollingSoundFactor * 0.0005 * Csng(BallVel(ball) ^3)
+End Function
+
+Function PitchPlayfieldRoll(ball) ' Calculates the roll pitch of the sound based on the ball speed
+    PitchPlayfieldRoll = BallVel(ball) ^2 * 15
+End Function
+
+Function RndInt(min, max)
+    RndInt = Int(Rnd() * (max-min + 1) + min)' Sets a random number integer between min and max
+End Function
+
+Function RndNum(min, max)
+    RndNum = Rnd() * (max-min) + min' Sets a random number between min and max
+End Function
+
+'/////////////////////////////  GENERAL SOUND SUBROUTINES  ////////////////////////////
+Sub SoundStartButton()
+	PlaySound ("Start_Button"), 0, StartButtonSoundLevel, 0, 0.25
+
+	'VR Related......
+	If VRRoom >0 and VRroom < 3 then
+	roomsounds=False
+	stopsound "explosion"
+	stopsound "manscream"
+	stopsound "TronLegacy"
+	End If
+
+End Sub
+
+Sub SoundNudgeLeft()
+	PlaySound ("Nudge_" & Int(Rnd*2)+1), 0, NudgeLeftSoundLevel * VolumeDial, -0.1, 0.25
+End Sub
+
+Sub SoundNudgeRight()
+	PlaySound ("Nudge_" & Int(Rnd*2)+1), 0, NudgeRightSoundLevel * VolumeDial, 0.1, 0.25
+End Sub
+
+Sub SoundNudgeCenter()
+	PlaySound ("Nudge_" & Int(Rnd*2)+1), 0, NudgeCenterSoundLevel * VolumeDial, 0, 0.25
+End Sub
+
+
+Sub SoundPlungerPull()
+	PlaySoundAtLevelStatic ("Plunger_Pull_1"), PlungerPullSoundLevel, Plunger
+End Sub
+
+Sub SoundPlungerReleaseBall()
+	PlaySoundAtLevelStatic ("Plunger_Release_Ball"), PlungerReleaseSoundLevel, Plunger	
+End Sub
+
+Sub SoundPlungerReleaseNoBall()
+	PlaySoundAtLevelStatic ("Plunger_Release_No_Ball"), PlungerReleaseSoundLevel, Plunger
+End Sub
+
+
+'/////////////////////////////  KNOCKER SOLENOID  ////////////////////////////
+Sub KnockerSolenoid()
+	PlaySoundAtLevelStatic SoundFX("Knocker_1",DOFKnocker), KnockerSoundLevel, KnockerPosition
+End Sub
+
+'/////////////////////////////  DRAIN SOUNDS  ////////////////////////////
+Sub RandomSoundDrain(drainswitch)
+	PlaySoundAtLevelStatic ("Drain_" & Int(Rnd*11)+1), DrainSoundLevel, drainswitch
+End Sub
+
+'/////////////////////////////  TROUGH BALL RELEASE SOLENOID SOUNDS  ////////////////////////////
+
+Sub RandomSoundBallRelease(drainswitch)
+	PlaySoundAtLevelStatic SoundFX("BallRelease" & Int(Rnd*7)+1,DOFContactors), BallReleaseSoundLevel, drainswitch
+End Sub
+
+'/////////////////////////////  SLINGSHOT SOLENOID SOUNDS  ////////////////////////////
+Sub RandomSoundSlingshotLeft(sling)
+	PlaySoundAtLevelStatic SoundFX("Sling_L" & Int(Rnd*10)+1,DOFContactors), SlingshotSoundLevel, Sling
+End Sub
+
+Sub RandomSoundSlingshotRight(sling)
+	PlaySoundAtLevelStatic SoundFX("Sling_R" & Int(Rnd*8)+1,DOFContactors), SlingshotSoundLevel, Sling
+End Sub
+
+'/////////////////////////////  BUMPER SOLENOID SOUNDS  ////////////////////////////
+Sub RandomSoundBumperTop(Bump)
+	PlaySoundAtLevelStatic SoundFX("Bumpers_Top_" & Int(Rnd*5)+1,DOFContactors), Vol(ActiveBall) * BumperSoundFactor, Bump
+End Sub
+
+Sub RandomSoundBumperMiddle(Bump)
+	PlaySoundAtLevelStatic SoundFX("Bumpers_Middle_" & Int(Rnd*5)+1,DOFContactors), Vol(ActiveBall) * BumperSoundFactor, Bump
+End Sub
+
+Sub RandomSoundBumperBottom(Bump)
+	PlaySoundAtLevelStatic SoundFX("Bumpers_Bottom_" & Int(Rnd*5)+1,DOFContactors), Vol(ActiveBall) * BumperSoundFactor, Bump
+End Sub
+
+'/////////////////////////////  FLIPPER BATS SOUND SUBROUTINES  ////////////////////////////
+'/////////////////////////////  FLIPPER BATS SOLENOID ATTACK SOUND  ////////////////////////////
+Sub SoundFlipperUpAttackLeft(flipper)
+	FlipperUpAttackLeftSoundLevel = RndNum(FlipperUpAttackMinimumSoundLevel, FlipperUpAttackMaximumSoundLevel)
+	PlaySoundAtLevelStatic ("Flipper_Attack-L01"), FlipperUpAttackLeftSoundLevel, flipper
+End Sub
+
+Sub SoundFlipperUpAttackRight(flipper)
+	FlipperUpAttackRightSoundLevel = RndNum(FlipperUpAttackMinimumSoundLevel, FlipperUpAttackMaximumSoundLevel)
+		PlaySoundAtLevelStatic ("Flipper_Attack-R01"), FlipperUpAttackLeftSoundLevel, flipper
+End Sub
+
+'/////////////////////////////  FLIPPER BATS SOLENOID CORE SOUND  ////////////////////////////
+Sub RandomSoundFlipperUpLeft(flipper)
+	PlaySoundAtLevelStatic SoundFX("Flipper_L0" & Int(Rnd*9)+1,DOFFlippers), FlipperLeftHitParm, Flipper
+End Sub
+
+Sub RandomSoundFlipperUpRight(flipper)
+	PlaySoundAtLevelStatic SoundFX("Flipper_R0" & Int(Rnd*9)+1,DOFFlippers), FlipperRightHitParm, Flipper
+End Sub
+
+Sub RandomSoundReflipUpLeft(flipper)
+	PlaySoundAtLevelStatic SoundFX("Flipper_ReFlip_L0" & Int(Rnd*3)+1,DOFFlippers), (RndNum(0.8, 1))*FlipperUpSoundLevel, Flipper
+End Sub
+
+Sub RandomSoundReflipUpRight(flipper)
+	PlaySoundAtLevelStatic SoundFX("Flipper_ReFlip_R0" & Int(Rnd*3)+1,DOFFlippers), (RndNum(0.8, 1))*FlipperUpSoundLevel, Flipper
+End Sub
+
+Sub RandomSoundFlipperDownLeft(flipper)
+	PlaySoundAtLevelStatic SoundFX("Flipper_Left_Down_" & Int(Rnd*7)+1,DOFFlippers), FlipperDownSoundLevel, Flipper
+End Sub
+
+Sub RandomSoundFlipperDownRight(flipper)
+	PlaySoundAtLevelStatic SoundFX("Flipper_Right_Down_" & Int(Rnd*8)+1,DOFFlippers), FlipperDownSoundLevel, Flipper
+End Sub
+
+'/////////////////////////////  FLIPPER BATS BALL COLLIDE SOUND  ////////////////////////////
+
+Sub LeftFlipperCollide(parm)
+	FlipperLeftHitParm = parm/10
+	If FlipperLeftHitParm > 1 Then
+		FlipperLeftHitParm = 1
+	End If
+	FlipperLeftHitParm = FlipperUpSoundLevel * FlipperLeftHitParm
+	RandomSoundRubberFlipper(parm)
+End Sub
+
+Sub RightFlipperCollide(parm)
+	FlipperRightHitParm = parm/10
+	If FlipperRightHitParm > 1 Then
+		FlipperRightHitParm = 1
+	End If
+	FlipperRightHitParm = FlipperUpSoundLevel * FlipperRightHitParm
+ 	RandomSoundRubberFlipper(parm)
+End Sub
+
+Sub RandomSoundRubberFlipper(parm)
+	PlaySoundAtLevelActiveBall ("Flipper_Rubber_" & Int(Rnd*7)+1), parm  * RubberFlipperSoundFactor
+End Sub
+
+'/////////////////////////////  ROLLOVER SOUNDS  ////////////////////////////
+Sub RandomSoundRollover()
+	PlaySoundAtLevelActiveBall ("Rollover_" & Int(Rnd*4)+1), RolloverSoundLevel
+End Sub
+
+Sub Rollovers_Hit(idx)
+	RandomSoundRollover
+End Sub
+
+'/////////////////////////////  VARIOUS PLAYFIELD SOUND SUBROUTINES  ////////////////////////////
+'/////////////////////////////  RUBBERS AND POSTS  ////////////////////////////
+'/////////////////////////////  RUBBERS - EVENTS  ////////////////////////////
+Sub Rubbers_Hit(idx)
+ 	dim finalspeed
+  	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+ 	If finalspeed > 5 then		
+ 		RandomSoundRubberStrong 1
+	End if
+	If finalspeed <= 5 then
+ 		RandomSoundRubberWeak()
+ 	End If	
+End Sub
+
+'/////////////////////////////  RUBBERS AND POSTS - STRONG IMPACTS  ////////////////////////////
+Sub RandomSoundRubberStrong(voladj)
+	Select Case Int(Rnd*10)+1
+		Case 1 : PlaySoundAtLevelActiveBall ("Rubber_Strong_1"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 2 : PlaySoundAtLevelActiveBall ("Rubber_Strong_2"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 3 : PlaySoundAtLevelActiveBall ("Rubber_Strong_3"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 4 : PlaySoundAtLevelActiveBall ("Rubber_Strong_4"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 5 : PlaySoundAtLevelActiveBall ("Rubber_Strong_5"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 6 : PlaySoundAtLevelActiveBall ("Rubber_Strong_6"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 7 : PlaySoundAtLevelActiveBall ("Rubber_Strong_7"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 8 : PlaySoundAtLevelActiveBall ("Rubber_Strong_8"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 9 : PlaySoundAtLevelActiveBall ("Rubber_Strong_9"), Vol(ActiveBall) * RubberStrongSoundFactor*voladj
+		Case 10 : PlaySoundAtLevelActiveBall ("Rubber_1_Hard"), Vol(ActiveBall) * RubberStrongSoundFactor * 0.6*voladj
+	End Select
+End Sub
+
+'/////////////////////////////  RUBBERS AND POSTS - WEAK IMPACTS  ////////////////////////////
+Sub RandomSoundRubberWeak()
+	PlaySoundAtLevelActiveBall ("Rubber_" & Int(Rnd*9)+1), Vol(ActiveBall) * RubberWeakSoundFactor
+End Sub
+
+'/////////////////////////////  WALL IMPACTS  ////////////////////////////
+Sub Walls_Hit(idx)
+ 	dim finalspeed
+  	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+ 	If finalspeed > 5 then
+ 		RandomSoundRubberStrong 1 
+	End if
+	If finalspeed <= 5 then
+ 		RandomSoundRubberWeak()
+ 	End If	
+End Sub
+
+Sub RandomSoundWall()
+ 	dim finalspeed
+  	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+ 	If finalspeed > 16 then 
+		Select Case Int(Rnd*5)+1
+			Case 1 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_1"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 2 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_2"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 3 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_5"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 4 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_7"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 5 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_9"), Vol(ActiveBall) * WallImpactSoundFactor
+		End Select
+	End if
+	If finalspeed >= 6 AND finalspeed <= 16 then
+		Select Case Int(Rnd*4)+1
+			Case 1 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_3"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 2 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_4"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 3 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_6"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 4 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_8"), Vol(ActiveBall) * WallImpactSoundFactor
+		End Select
+ 	End If
+	If finalspeed < 6 Then
+		Select Case Int(Rnd*3)+1
+			Case 1 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_4"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 2 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_6"), Vol(ActiveBall) * WallImpactSoundFactor
+			Case 3 : PlaySoundAtLevelExistingActiveBall ("Wall_Hit_8"), Vol(ActiveBall) * WallImpactSoundFactor
+		End Select
+	End if
+End Sub
+
+'/////////////////////////////  METAL TOUCH SOUNDS  ////////////////////////////
+Sub RandomSoundMetal()
+	PlaySoundAtLevelActiveBall ("Metal_Touch_" & Int(Rnd*13)+1), Vol(ActiveBall) * MetalImpactSoundFactor
+End Sub
+
+'/////////////////////////////  METAL - EVENTS  ////////////////////////////
+
+Sub Metals_Hit (idx)
+	RandomSoundMetal
+End Sub
+
+Sub ShooterDiverter_collide(idx)
+	RandomSoundMetal
+End Sub
+
+'/////////////////////////////  BOTTOM ARCH BALL GUIDE  ////////////////////////////
+'/////////////////////////////  BOTTOM ARCH BALL GUIDE - SOFT BOUNCES  ////////////////////////////
+Sub RandomSoundBottomArchBallGuide()
+ 	dim finalspeed
+  	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+ 	If finalspeed > 16 then 
+		PlaySoundAtLevelActiveBall ("Apron_Bounce_"& Int(Rnd*2)+1), Vol(ActiveBall) * BottomArchBallGuideSoundFactor
+	End if
+	If finalspeed >= 6 AND finalspeed <= 16 then
+ 		Select Case Int(Rnd*2)+1
+			Case 1 : PlaySoundAtLevelActiveBall ("Apron_Bounce_1"), Vol(ActiveBall) * BottomArchBallGuideSoundFactor
+			Case 2 : PlaySoundAtLevelActiveBall ("Apron_Bounce_Soft_1"), Vol(ActiveBall) * BottomArchBallGuideSoundFactor
+		End Select
+ 	End If
+	If finalspeed < 6 Then
+ 		Select Case Int(Rnd*2)+1
+			Case 1 : PlaySoundAtLevelActiveBall ("Apron_Bounce_Soft_1"), Vol(ActiveBall) * BottomArchBallGuideSoundFactor
+			Case 2 : PlaySoundAtLevelActiveBall ("Apron_Medium_3"), Vol(ActiveBall) * BottomArchBallGuideSoundFactor
+		End Select
+	End if
+End Sub
+
+'/////////////////////////////  BOTTOM ARCH BALL GUIDE - HARD HITS  ////////////////////////////
+Sub RandomSoundBottomArchBallGuideHardHit()
+	PlaySoundAtLevelActiveBall ("Apron_Hard_Hit_" & Int(Rnd*3)+1), BottomArchBallGuideSoundFactor * 0.25
+End Sub
+
+Sub Apron_Hit (idx)
+	If Abs(cor.ballvelx(activeball.id) < 4) and cor.ballvely(activeball.id) > 7 then
+		RandomSoundBottomArchBallGuideHardHit()
+	Else
+		RandomSoundBottomArchBallGuide
+	End If
+End Sub
+
+'/////////////////////////////  FLIPPER BALL GUIDE  ////////////////////////////
+Sub RandomSoundFlipperBallGuide()
+ 	dim finalspeed
+  	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+ 	If finalspeed > 16 then 
+ 		Select Case Int(Rnd*2)+1
+			Case 1 : PlaySoundAtLevelActiveBall ("Apron_Hard_1"),  Vol(ActiveBall) * FlipperBallGuideSoundFactor
+			Case 2 : PlaySoundAtLevelActiveBall ("Apron_Hard_2"),  Vol(ActiveBall) * 0.8 * FlipperBallGuideSoundFactor
+		End Select
+	End if
+	If finalspeed >= 6 AND finalspeed <= 16 then
+		PlaySoundAtLevelActiveBall ("Apron_Medium_" & Int(Rnd*3)+1),  Vol(ActiveBall) * FlipperBallGuideSoundFactor
+ 	End If
+	If finalspeed < 6 Then
+		PlaySoundAtLevelActiveBall ("Apron_Soft_" & Int(Rnd*7)+1),  Vol(ActiveBall) * FlipperBallGuideSoundFactor
+	End If
+End Sub
+
+'/////////////////////////////  TARGET HIT SOUNDS  ////////////////////////////
+Sub RandomSoundTargetHitStrong()
+	PlaySoundAtLevelActiveBall SoundFX("Target_Hit_" & Int(Rnd*4)+5,DOFTargets), Vol(ActiveBall) * 0.45 * TargetSoundFactor
+End Sub
+
+Sub RandomSoundTargetHitWeak()		
+	PlaySoundAtLevelActiveBall SoundFX("Target_Hit_" & Int(Rnd*4)+1,DOFTargets), Vol(ActiveBall) * TargetSoundFactor
+End Sub
+
+Sub PlayTargetSound()
+ 	dim finalspeed
+  	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+ 	If finalspeed > 10 then
+ 		RandomSoundTargetHitStrong()
+		RandomSoundBallBouncePlayfieldSoft Activeball
+	Else 
+ 		RandomSoundTargetHitWeak()
+ 	End If	
+End Sub
+
+Sub Targets_Hit (idx)
+	PlayTargetSound	
+	TargetBouncer Activeball, 1
+End Sub
+
+'/////////////////////////////  BALL BOUNCE SOUNDS  ////////////////////////////
+Sub RandomSoundBallBouncePlayfieldSoft(aBall)
+	Select Case Int(Rnd*9)+1
+		Case 1 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Soft_1"), volz(aBall) * BallBouncePlayfieldSoftFactor, aBall
+		Case 2 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Soft_2"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.5, aBall
+		Case 3 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Soft_3"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.8, aBall
+		Case 4 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Soft_4"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.5, aBall
+		Case 5 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Soft_5"), volz(aBall) * BallBouncePlayfieldSoftFactor, aBall
+		Case 6 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Hard_1"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.2, aBall
+		Case 7 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Hard_2"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.2, aBall
+		Case 8 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Hard_5"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.2, aBall
+		Case 9 : PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Hard_7"), volz(aBall) * BallBouncePlayfieldSoftFactor * 0.3, aBall
+	End Select
+End Sub
+
+Sub RandomSoundBallBouncePlayfieldHard(aBall)
+	PlaySoundAtLevelStatic ("Ball_Bounce_Playfield_Hard_" & Int(Rnd*7)+1), volz(aBall) * BallBouncePlayfieldHardFactor, aBall
+End Sub
+
+'/////////////////////////////  DELAYED DROP - TO PLAYFIELD - SOUND  ////////////////////////////
+Sub RandomSoundDelayedBallDropOnPlayfield(aBall)
+	Select Case Int(Rnd*5)+1
+		Case 1 : PlaySoundAtLevelStatic ("Ball_Drop_Playfield_1_Delayed"), DelayedBallDropOnPlayfieldSoundLevel, aBall
+		Case 2 : PlaySoundAtLevelStatic ("Ball_Drop_Playfield_2_Delayed"), DelayedBallDropOnPlayfieldSoundLevel, aBall
+		Case 3 : PlaySoundAtLevelStatic ("Ball_Drop_Playfield_3_Delayed"), DelayedBallDropOnPlayfieldSoundLevel, aBall
+		Case 4 : PlaySoundAtLevelStatic ("Ball_Drop_Playfield_4_Delayed"), DelayedBallDropOnPlayfieldSoundLevel, aBall
+		Case 5 : PlaySoundAtLevelStatic ("Ball_Drop_Playfield_5_Delayed"), DelayedBallDropOnPlayfieldSoundLevel, aBall
+	End Select
+End Sub
+
+'/////////////////////////////  BALL GATES AND BRACKET GATES SOUNDS  ////////////////////////////
+
+Sub SoundPlayfieldGate()			
+	PlaySoundAtLevelStatic ("Gate_FastTrigger_" & Int(Rnd*2)+1), GateSoundLevel, Activeball
+End Sub
+
+Sub SoundHeavyGate()
+	PlaySoundAtLevelStatic ("Gate_2"), GateSoundLevel, Activeball
+End Sub
+
+Sub Gates_hit(idx)
+	SoundHeavyGate
+End Sub
+
+Sub GatesWire_hit(idx)	
+	SoundPlayfieldGate	
+End Sub	
+
+'/////////////////////////////  LEFT LANE ENTRANCE - SOUNDS  ////////////////////////////
+
+Sub RandomSoundLeftArch()
+	PlaySoundAtLevelActiveBall ("Arch_L" & Int(Rnd*4)+1), Vol(ActiveBall) * ArchSoundFactor
+End Sub
+
+Sub RandomSoundRightArch()
+	PlaySoundAtLevelActiveBall ("Arch_R" & Int(Rnd*4)+1), Vol(ActiveBall) * ArchSoundFactor
+End Sub
+
+
+Sub Arch1_hit()
+	If Activeball.velx > 1 Then SoundPlayfieldGate
+	StopSound "Arch_L1"
+	StopSound "Arch_L2"
+	StopSound "Arch_L3"
+	StopSound "Arch_L4"
+End Sub
+
+Sub Arch1_unhit()
+	If activeball.velx < -8 Then
+		RandomSoundRightArch
+	End If
+End Sub
+
+Sub Arch2_hit()
+	If Activeball.velx < 1 Then SoundPlayfieldGate
+	StopSound "Arch_R1"
+	StopSound "Arch_R2"
+	StopSound "Arch_R3"
+	StopSound "Arch_R4"
+End Sub
+
+Sub Arch2_unhit()
+	If activeball.velx > 10 Then
+		RandomSoundLeftArch
+	End If
+End Sub
+
+'/////////////////////////////  SAUCERS (KICKER HOLES)  ////////////////////////////
+
+Sub SoundSaucerLock()
+	PlaySoundAtLevelStatic ("Saucer_Enter_" & Int(Rnd*2)+1), SaucerLockSoundLevel, Activeball
+End Sub
+
+Sub SoundSaucerKick(scenario, saucer)
+	Select Case scenario
+		Case 0: PlaySoundAtLevelStatic SoundFX("Saucer_Empty", DOFContactors), SaucerKickSoundLevel, saucer
+		Case 1: PlaySoundAtLevelStatic SoundFX("Saucer_Kick", DOFContactors), SaucerKickSoundLevel, saucer
+	End Select
+End Sub
+
+'/////////////////////////////  BALL COLLISION SOUND  ////////////////////////////
+Sub OnBallBallCollision(ball1, ball2, velocity)
+	Dim snd
+	Select Case Int(Rnd*7)+1
+		Case 1 : snd = "Ball_Collide_1"
+		Case 2 : snd = "Ball_Collide_2"
+		Case 3 : snd = "Ball_Collide_3"
+		Case 4 : snd = "Ball_Collide_4"
+		Case 5 : snd = "Ball_Collide_5"
+		Case 6 : snd = "Ball_Collide_6"
+		Case 7 : snd = "Ball_Collide_7"
+	End Select
+
+	PlaySound (snd), 0, Csng(velocity) ^2 / 200 * BallWithBallCollisionSoundFactor * VolumeDial, AudioPan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
+End Sub
+
+
+'/////////////////////////////////////////////////////////////////
+'					End Mechanical Sounds
+'/////////////////////////////////////////////////////////////////
+
+
+
+'====================
+'Class jungle nf
+'=============
+
+'No-op object instead of adding more conditionals to the main loop
+'It also prevents errors if empty lamp numbers are called, and it's only one object
+'should be g2g?
+
+Class NullFadingObject : Public Property Let IntensityScale(input) : : End Property : End Class
+
+'version 0.11 - Mass Assign, Changed modulate style
+'version 0.12 - Update2 (single -1 timer update) update method for core.vbs
+'Version 0.12a - Filter can now be accessed via 'FilterOut'
+'Version 0.12b - Changed MassAssign from a sub to an indexed property (new syntax: lampfader.MassAssign(15) = Light1 )
+'Version 0.13 - No longer requires setlocale. Callback() can be assigned multiple times per index
+' Note: if using multiple 'LampFader' objects, set the 'name' variable to avoid conflicts with callbacks
+
+Class LampFader
+	Public FadeSpeedDown(140), FadeSpeedUp(140)
+	Private Lock(140), Loaded(140), OnOff(140)
+	Public UseFunction
+	Private cFilter
+	Public UseCallback(140), cCallback(140)
+	Public Lvl(140), Obj(140)
+	Private Mult(140)
+	Public FrameTime
+	Private InitFrame
+	Public Name
+
+	Sub Class_Initialize()
+		InitFrame = 0
+		dim x : for x = 0 to uBound(OnOff) 	'Set up fade speeds
+			FadeSpeedDown(x) = 1/100	'fade speed down
+			FadeSpeedUp(x) = 1/80		'Fade speed up
+			UseFunction = False
+			lvl(x) = 0
+			OnOff(x) = False
+			Lock(x) = True : Loaded(x) = False
+			Mult(x) = 1
+		Next
+		Name = "LampFaderNF" 'NEEDS TO BE CHANGED IF THERE'S MULTIPLE OF THESE OBJECTS, OTHERWISE CALLBACKS WILL INTERFERE WITH EACH OTHER!!
+		for x = 0 to uBound(OnOff) 		'clear out empty obj
+			if IsEmpty(obj(x) ) then Set Obj(x) = NullFader' : Loaded(x) = True
+		Next
+	End Sub
+
+	Public Property Get Locked(idx) : Locked = Lock(idx) : End Property		'debug.print Lampz.Locked(100)	'debug
+	Public Property Get state(idx) : state = OnOff(idx) : end Property
+	Public Property Let Filter(String) : Set cFilter = GetRef(String) : UseFunction = True : End Property
+	Public Function FilterOut(aInput) : if UseFunction Then FilterOut = cFilter(aInput) Else FilterOut = aInput End If : End Function
+	'Public Property Let Callback(idx, String) : cCallback(idx) = String : UseCallBack(idx) = True : End Property
+	Public Property Let Callback(idx, String)
+		UseCallBack(idx) = True
+		'cCallback(idx) = String 'old execute method
+		'New method: build wrapper subs using ExecuteGlobal, then call them
+		cCallback(idx) = cCallback(idx) & "___" & String	'multiple strings dilineated by 3x _
+
+		dim tmp : tmp = Split(cCallback(idx), "___")
+
+		dim str, x : for x = 0 to uBound(tmp)	'build proc contents
+			'If Not tmp(x)="" then str = str & "	" & tmp(x) & " aLVL" & "	'" & x & vbnewline	'more verbose
+			If Not tmp(x)="" then str = str & tmp(x) & " aLVL:"
+		Next
+
+		dim out : out = "Sub " & name & idx & "(aLvl):" & str & "End Sub"
+		'if idx = 132 then msgbox out	'debug
+		ExecuteGlobal Out
+
+	End Property
+
+	Public Property Let state(ByVal idx, input) 'Major update path
+		if Input <> OnOff(idx) then  'discard redundant updates
+			OnOff(idx) = input
+			Lock(idx) = False
+			Loaded(idx) = False
+		End If
+	End Property
+
+	'Mass assign, Builds arrays where necessary
+	'Sub MassAssign(aIdx, aInput)
+	Public Property Let MassAssign(aIdx, aInput)
+		If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set
+			if IsArray(aInput) then
+				obj(aIdx) = aInput
+			Else
+				Set obj(aIdx) = aInput
+			end if
+		Else
+			Obj(aIdx) = AppendArray(obj(aIdx), aInput)
+		end if
+	end Property
+
+	Sub SetLamp(aIdx, aOn) : state(aIdx) = aOn : End Sub	'Solenoid Handler
+
+	Public Sub TurnOnStates()	'If obj contains any light objects, set their states to 1 (Fading is our job!)
+		dim debugstr
+		dim idx : for idx = 0 to uBound(obj)
+			if IsArray(obj(idx)) then
+				'debugstr = debugstr & "array found at " & idx & "..."
+				dim x, tmp : tmp = obj(idx) 'set tmp to array in order to access it
+				for x = 0 to uBound(tmp)
+					if typename(tmp(x)) = "Light" then DisableState tmp(x)' : debugstr = debugstr & tmp(x).name & " state'd" & vbnewline
+					tmp(x).intensityscale = 0.001 ' this can prevent init stuttering
+				Next
+			Else
+				if typename(obj(idx)) = "Light" then DisableState obj(idx)' : debugstr = debugstr & obj(idx).name & " state'd (not array)" & vbnewline
+				obj(idx).intensityscale = 0.001 ' this can prevent init stuttering
+			end if
+		Next
+		'debug.print debugstr
+	End Sub
+	Private Sub DisableState(ByRef aObj) : aObj.FadeSpeedUp = 0.2 : aObj.State = 1 : End Sub	'turn state to 1
+
+	Public Sub Init()	'Just runs TurnOnStates right now
+		TurnOnStates
+	End Sub
+
+	Public Property Let Modulate(aIdx, aCoef) : Mult(aIdx) = aCoef : Lock(aIdx) = False : Loaded(aIdx) = False: End Property
+	Public Property Get Modulate(aIdx) : Modulate = Mult(aIdx) : End Property
+
+	Public Sub Update1()	 'Handle all boolean numeric fading. If done fading, Lock(x) = True. Update on a '1' interval Timer!
+		dim x : for x = 0 to uBound(OnOff)
+			if not Lock(x) then 'and not Loaded(x) then
+				if OnOff(x) then 'Fade Up
+					Lvl(x) = Lvl(x) + FadeSpeedUp(x)
+					if Lvl(x) >= 1 then Lvl(x) = 1 : Lock(x) = True
+				elseif Not OnOff(x) then 'fade down
+					Lvl(x) = Lvl(x) - FadeSpeedDown(x)
+					if Lvl(x) <= 0 then Lvl(x) = 0 : Lock(x) = True
+				end if
+			end if
+		Next
+	End Sub
+
+	Public Sub Update2()	 'Both updates on -1 timer (Lowest latency, but less accurate fading at 60fps vsync)
+		FrameTime = gametime - InitFrame : InitFrame = GameTime	'Calculate frametime
+		dim x : for x = 0 to uBound(OnOff)
+			if not Lock(x) then 'and not Loaded(x) then
+				if OnOff(x) then 'Fade Up
+					Lvl(x) = Lvl(x) + FadeSpeedUp(x) * FrameTime
+					if Lvl(x) >= 1 then Lvl(x) = 1 : Lock(x) = True
+				elseif Not OnOff(x) then 'fade down
+					Lvl(x) = Lvl(x) - FadeSpeedDown(x) * FrameTime
+					if Lvl(x) <= 0 then Lvl(x) = 0 : Lock(x) = True
+				end if
+			end if
+		Next
+		Update
+	End Sub
+
+	Public Sub Update()	'Handle object updates. Update on a -1 Timer! If done fading, loaded(x) = True
+		dim x,xx : for x = 0 to uBound(OnOff)
+			if not Loaded(x) then
+				if IsArray(obj(x) ) Then	'if array
+					If UseFunction then
+						for each xx in obj(x) : xx.IntensityScale = cFilter(Lvl(x)*Mult(x)) : Next
+					Else
+						for each xx in obj(x) : xx.IntensityScale = Lvl(x)*Mult(x) : Next
+					End If
+				else						'if single lamp or flasher
+					If UseFunction then
+						obj(x).Intensityscale = cFilter(Lvl(x)*Mult(x))
+					Else
+						obj(x).Intensityscale = Lvl(x)
+					End If
+				end if
+				if TypeName(lvl(x)) <> "Double" and typename(lvl(x)) <> "Integer" then msgbox "uhh " & 2 & " = " & lvl(x)
+				'If UseCallBack(x) then execute cCallback(x) & " " & (Lvl(x))	'Callback
+				If UseCallBack(x) then Proc name & x,Lvl(x)*mult(x)	'Proc
+				If Lock(x) Then
+					if Lvl(x) = 1 or Lvl(x) = 0 then Loaded(x) = True	'finished fading
+				end if
+			end if
+		Next
+	End Sub
+End Class
+
+
+
+
+'version 0.11 - Mass Assign, Changed modulate style
+'version 0.12 - Update2 (single -1 timer update) update method for core.vbs
+'Version 0.12a - Filter can now be publicly accessed via 'FilterOut'
+'Version 0.12b - Changed MassAssign from a sub to an indexed property (new syntax: lampfader.MassAssign(15) = Light1 )
+'Version 0.13 - No longer requires setlocale. Callback() can be assigned multiple times per index
+'Version 0.13a - fixed DynamicLamps hopefully
+' Note: if using multiple 'DynamicLamps' objects, change the 'name' variable to avoid conflicts with callbacks
+
+Class DynamicLamps 'Lamps that fade up and down. GI and Flasher handling
+	Public Loaded(50), FadeSpeedDown(50), FadeSpeedUp(50)
+	Private Lock(50), SolModValue(50)
+	Private UseCallback(50), cCallback(50)
+	Public Lvl(50)
+	Public Obj(50)
+	Private UseFunction, cFilter
+	private Mult(50)
+	Public Name
+
+	Public FrameTime
+	Private InitFrame
+
+	Private Sub Class_Initialize()
+		InitFrame = 0
+		dim x : for x = 0 to uBound(Obj)
+			FadeSpeedup(x) = 0.01
+			FadeSpeedDown(x) = 0.01
+			lvl(x) = 0.0001 : SolModValue(x) = 0
+			Lock(x) = True : Loaded(x) = False
+			mult(x) = 1
+			Name = "DynamicFaderNF" 'NEEDS TO BE CHANGED IF THERE'S MULTIPLE OBJECTS, OTHERWISE CALLBACKS WILL INTERFERE WITH EACH OTHER!!
+			if IsEmpty(obj(x) ) then Set Obj(x) = NullFader' : Loaded(x) = True
+		next
+	End Sub
+
+	Public Property Get Locked(idx) : Locked = Lock(idx) : End Property
+	'Public Property Let Callback(idx, String) : cCallback(idx) = String : UseCallBack(idx) = True : End Property
+	Public Property Let Filter(String) : Set cFilter = GetRef(String) : UseFunction = True : End Property
+	Public Function FilterOut(aInput) : if UseFunction Then FilterOut = cFilter(aInput) Else FilterOut = aInput End If : End Function
+
+	Public Property Let Callback(idx, String)
+		UseCallBack(idx) = True
+		'cCallback(idx) = String 'old execute method
+		'New method: build wrapper subs using ExecuteGlobal, then call them
+		cCallback(idx) = cCallback(idx) & "___" & String	'multiple strings dilineated by 3x _
+
+		dim tmp : tmp = Split(cCallback(idx), "___")
+
+		dim str, x : for x = 0 to uBound(tmp)	'build proc contents
+			'debugstr = debugstr & x & "=" & tmp(x) & vbnewline
+			'If Not tmp(x)="" then str = str & "	" & tmp(x) & " aLVL" & "	'" & x & vbnewline	'more verbose
+			If Not tmp(x)="" then str = str & tmp(x) & " aLVL:"
+		Next
+
+		dim out : out = "Sub " & name & idx & "(aLvl):" & str & "End Sub"
+		'if idx = 132 then msgbox out	'debug
+		ExecuteGlobal Out
+
+	End Property
+
+
+	Public Property Let State(idx,Value)
+		'If Value = SolModValue(idx) Then Exit Property ' Discard redundant updates
+		If Value <> SolModValue(idx) Then ' Discard redundant updates
+			SolModValue(idx) = Value
+			Lock(idx) = False : Loaded(idx) = False
+		End If
+	End Property
+	Public Property Get state(idx) : state = SolModValue(idx) : end Property
+
+	'Mass assign, Builds arrays where necessary
+	'Sub MassAssign(aIdx, aInput)
+	Public Property Let MassAssign(aIdx, aInput)
+		If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set
+			if IsArray(aInput) then
+				obj(aIdx) = aInput
+			Else
+				Set obj(aIdx) = aInput
+			end if
+		Else
+			Obj(aIdx) = AppendArray(obj(aIdx), aInput)
+		end if
+	end Property
+
+	'solcallback (solmodcallback) handler
+	Sub SetLamp(aIdx, aInput) : state(aIdx) = aInput : End Sub	'0->1 Input
+	Sub SetModLamp(aIdx, aInput) : state(aIdx) = aInput/255 : End Sub	'0->255 Input
+	Sub SetGI(aIdx, ByVal aInput) : if aInput = 8 then aInput = 7 end if : state(aIdx) = aInput/7 : End Sub	'0->8 WPC GI input
+
+	Public Sub TurnOnStates()	'If obj contains any light objects, set their states to 1 (Fading is our job!)
+		dim debugstr
+		dim idx : for idx = 0 to uBound(obj)
+			if IsArray(obj(idx)) then
+				'debugstr = debugstr & "array found at " & idx & "..."
+				dim x, tmp : tmp = obj(idx) 'set tmp to array in order to access it
+				for x = 0 to uBound(tmp)
+					if typename(tmp(x)) = "Light" then DisableState tmp(x) ': debugstr = debugstr & tmp(x).name & " state'd" & vbnewline
+
+				Next
+			Else
+				if typename(obj(idx)) = "Light" then DisableState obj(idx) ': debugstr = debugstr & obj(idx).name & " state'd (not array)" & vbnewline
+
+			end if
+		Next
+		'debug.print debugstr
+	End Sub
+	Private Sub DisableState(ByRef aObj) : aObj.FadeSpeedUp = 1000 : aObj.State = 1 : End Sub	'turn state to 1
+
+	Public Sub Init()	'just call turnonstates for now
+		TurnOnStates
+	End Sub
+
+	Public Property Let Modulate(aIdx, aCoef) : Mult(aIdx) = aCoef : Lock(aIdx) = False : Loaded(aIdx) = False: End Property
+	Public Property Get Modulate(aIdx) : Modulate = Mult(aIdx) : End Property
+
+	Public Sub Update1()	 'Handle all numeric fading. If done fading, Lock(x) = True
+		'dim stringer
+		dim x : for x = 0 to uBound(Lvl)
+			'stringer = "Locked @ " & SolModValue(x)
+			if not Lock(x) then 'and not Loaded(x) then
+				If lvl(x) < SolModValue(x) then '+
+					'stringer = "Fading Up " & lvl(x) & " + " & FadeSpeedUp(x)
+					Lvl(x) = Lvl(x) + FadeSpeedUp(x)
+					if Lvl(x) >= SolModValue(x) then Lvl(x) = SolModValue(x) : Lock(x) = True
+				ElseIf Lvl(x) > SolModValue(x) Then '-
+					Lvl(x) = Lvl(x) - FadeSpeedDown(x)
+					'stringer = "Fading Down " & lvl(x) & " - " & FadeSpeedDown(x)
+					if Lvl(x) <= SolModValue(x) then Lvl(x) = SolModValue(x) : Lock(x) = True
+				End If
+			end if
+		Next
+		'tbF.text = stringer
+	End Sub
+
+	Public Sub Update2()	 'Both updates on -1 timer (Lowest latency, but less accurate fading at 60fps vsync)
+		FrameTime = gametime - InitFrame : InitFrame = GameTime	'Calculate frametime
+		dim x : for x = 0 to uBound(Lvl)
+			if not Lock(x) then 'and not Loaded(x) then
+				If lvl(x) < SolModValue(x) then '+
+					Lvl(x) = Lvl(x) + FadeSpeedUp(x) * FrameTime
+					if Lvl(x) >= SolModValue(x) then Lvl(x) = SolModValue(x) : Lock(x) = True
+				ElseIf Lvl(x) > SolModValue(x) Then '-
+					Lvl(x) = Lvl(x) - FadeSpeedDown(x) * FrameTime
+					if Lvl(x) <= SolModValue(x) then Lvl(x) = SolModValue(x) : Lock(x) = True
+				End If
+			end if
+		Next
+		Update
+	End Sub
+
+	Public Sub Update()	'Handle object updates. Update on a -1 Timer! If done fading, loaded(x) = True
+		dim x,xx
+		for x = 0 to uBound(Lvl)
+			if not Loaded(x) then
+				if IsArray(obj(x) ) Then	'if array
+					If UseFunction then
+						for each xx in obj(x) : xx.IntensityScale = cFilter(abs(Lvl(x))*mult(x)) : Next
+					Else
+						for each xx in obj(x) : xx.IntensityScale = Lvl(x)*mult(x) : Next
+					End If
+				else						'if single lamp or flasher
+					If UseFunction then
+						obj(x).Intensityscale = cFilter(abs(Lvl(x))*mult(x))
+					Else
+						obj(x).Intensityscale = Lvl(x)*mult(x)
+					End If
+				end if
+				'If UseCallBack(x) then execute cCallback(x) & " " & (Lvl(x)*mult(x))	'Callback
+				If UseCallBack(x) then Proc name & x,Lvl(x)*mult(x)	'Proc
+				If Lock(x) Then
+					Loaded(x) = True
+				end if
+			end if
+		Next
+	End Sub
+End Class
+
+'Helper functions
+Sub Proc(string, Callback)	'proc using a string and one argument
+	'On Error Resume Next
+	dim p : Set P = GetRef(String)
+	P Callback
+	If err.number = 13 then  msgbox "Proc error! No such procedure: " & vbnewline & string
+	if err.number = 424 then msgbox "Proc error! No such Object"
+End Sub
+
+Function AppendArray(ByVal aArray, aInput)	'append one value, object, or Array onto the end of a 1 dimensional array
+	if IsArray(aInput) then 'Input is an array...
+		dim tmp : tmp = aArray
+		If not IsArray(aArray) Then	'if not array, create an array
+			tmp = aInput
+		Else						'Append existing array with aInput array
+			Redim Preserve tmp(uBound(aArray) + uBound(aInput)+1)	'If existing array, increase bounds by uBound of incoming array
+			dim x : for x = 0 to uBound(aInput)
+				if isObject(aInput(x)) then
+					Set tmp(x+uBound(aArray)+1 ) = aInput(x)
+				Else
+					tmp(x+uBound(aArray)+1 ) = aInput(x)
+				End If
+			Next
+		AppendArray = tmp	 'return new array
+		End If
+	Else 'Input is NOT an array...
+		If not IsArray(aArray) Then	'if not array, create an array
+			aArray = Array(aArray, aInput)
+		Else
+			Redim Preserve aArray(uBound(aArray)+1)	'If array, increase bounds by 1
+			if isObject(aInput) then
+				Set aArray(uBound(aArray)) = aInput
+			Else
+				aArray(uBound(aArray)) = aInput
+			End If
+		End If
+		AppendArray = aArray 'return new array
+	End If
+End Function
+
+'***********************class jungle**************
+
+
+
+
+'************* VR Room Code - Rawd ****************
+
+Dim roomsounds, boomscream
+roomsounds=True:boomscream=False
+Dim FloorSpeed:FloorSpeed =  1
+Dim Tankrot1:Tankrot1 = false
+Dim Tankrot2:Tankrot2 = false
+Dim TankMove1:TankMove1 = true
+Dim TankMove2:TankMove2 = false
+Dim TankMove3:TankMove3 = false
+Dim BlueTankMove1:BlueTankMove1 = True
+Dim BlueTankRot1:BlueTankRot1 = false
+Dim BlueTankRot2:BlueTankRot2 = false
+Dim BlueTankMove2:BlueTankMove2 = false
+Dim BlueTankMove3:BlueTankMove3 = false
+Dim TankFire:TankFire = false
+Dim RecMove1:RecMove1 = True
+Dim RecMove2:RecMove2 = False
+Dim RecMove3:RecMove3 = False
+Dim RecMove4:RecMove4 = False
+Dim RecRot:RecRot = .2
+'playsound "TronLegacy", -1
+VRCycle2Wall.blenddisablelighting = 48
+VRCycle4Wall.blenddisablelighting = 10
+VRCycle1Wall.blenddisablelighting = 48
+VRCycle3Wall.blenddisablelighting = 2 'orange looks yellow too high
+VRrecognizer.blenddisablelighting = 0.2
+
+Sub RunCycles()
+
+RecMove1 = true
+RecMove2 = false
+VRCycle2.x = 477878
+VRCycle2Wall.x = 1170837
+VRCycle2Wall.z = -1850	' need to bring this back up now cause we dropped it slowly..
+VRCycle2Wall.Size_Z =2000
+VRCycle4.y = -500000
+VRCycle4.z = -62000
+VRCycle4Wall.y = -1189918
+VRCycle4Wall.z = -125750
+VRCycle4Wall.Size_Z =2000
+VRCycle4.objrotX = 0
+VRCycle4.visible = True
+VRExplosion.visible = false
+VRExplosion.opacity = 1000
+VRCycleBroken1.x = 5325.744
+VRCycleBroken1.y = 33402.28
+VRCycleBroken2.x = 7213.612
+VRCycleBroken2.y = 36638.63
+VRCycleBroken3.x = 6134.83
+VRCycleBroken3.y = 36503.77
+VRCycleBroken3.z = -6590
+VRCycleBroken1.visible = false
+VRCycleBroken2.visible = false
+VRCycleBroken3.visible = false
+VRCycle4Wall.visible = true
+VRCycle2Wall.visible = true
+VRCycle2.visible = true
+boomscream=False
+VRExplosion2.visible = false
+VRExplosion2.opacity = 1500
+VRCyclesTimer.enabled=true
+End Sub
+
+
+Sub VRCyclesTimer_timer()
+
+if VRCycle3Wall.Size_Z > 1 then VRCycle3Wall.Size_Z = VRCycle3Wall.Size_Z - 20 '
+if VRCycle3Wall.Size_Z <=1 then VRCycle3Wall.visible = false
+
+if RecMove1 = true then
+VRrecognizer.y = VRrecognizer.y + 400
+end if
+
+if VRrecognizer.y > -153000 then RecMove1 = False: RecMove2 = true
+If RecMove2 = true and VRrecognizer.x < 80000 then VRrecognizer.x = VRrecognizer.x + 200
+VRCycle2.x = VRCycle2.x - 400
+VRCycle2Wall.x = VRCycle2Wall.x - 400
+VRCycle4.y = VRCycle4.y + 400
+VRCycle4.z = VRCycle4.z + 42
+VRCycle4Wall.y = VRCycle4Wall.y +400
+VRCycle4Wall.z = VRCycle4Wall.z +42
+
+if VRCycle4.y => 500000 then 
+VRCycle4Wall.visible = false
+VRCycle2.visible = false
+VRCycle4.visible = false
+BlueTankMove1 = true
+TankMove1 = True
+RunTanks
+VRCyclesTimer.enabled=false
+exit sub
+end If
+
+if VRCycle4.y => -25050 Then  'hits wall flies through air
+if VRCycle4Wall.Size_Z > 1 then VRCycle4Wall.Size_Z = VRCycle4Wall.Size_Z - 20 '
+if VRCycle4Wall.Size_Z <=1 then VRCycle4Wall.visible = false
+VRCycle4Wall.z = VRCycle4Wall.z - 42 ' counteract movement to stop it.. so dumb, but doesnt run long. lol.
+VRCycle4Wall.y = VRCycle4Wall.y - 400 ' counteract movement to stop it.. so dumb, but doesnt run long. lol.
+VRCycle4.z = VRCycle4.z +66
+VRCycle4.objrotX = VRCycle4.objrotX + .9
+end If
+
+if VRCycle4.y => 42050 Then  VRExplosion.visible = True
+if VRCycle4.y => 48000 Then 
+VRCycle4.visible = false  ' hits ground and disapears, put explosion here.
+If roomsounds=true and boomscream= false then playsound "explosion":playsound "manscream":boomscream=true
+VRExplosion.opacity = VRExplosion.opacity - 10
+VRCycleBroken1.visible = True
+VRCycleBroken2.visible = True
+VRCycleBroken3.visible = True
+VRCycleBroken1.x = VRCycleBroken1.x +600
+VRCycleBroken2.x = VRCycleBroken2.x -500
+VRCycleBroken3.y = VRCycleBroken3.y +450
+VRCycleBroken3.z = VRCycleBroken3.z +45
+end If
+
+if PulsingFloor = 1 then
+VRBlueFloor.opacity = VRBlueFloor.opacity + FloorSpeed
+If VRBlueFloor.opacity =<20 then FloorSpeed = 1
+If VRBlueFloor.opacity =>140 then FloorSpeed = -1
+end if
+End Sub
+
+
+Sub RunTanks()
+boomscream=False
+VRTankTimer.Enabled = true
+RecMove1 = false
+RecMove2 = false
+End Sub
+
+
+sub VRTankTimer_Timer()
+
+if VRCycle2Wall.Size_Z > 1 then VRCycle2Wall.Size_Z = VRCycle2Wall.Size_Z - 20 '
+if VRCycle2Wall.Size_Z <=1 then VRCycle2Wall.visible = false
+
+VRrecognizer.rotz = VRrecognizer.rotz + RecRot
+If VRrecognizer.rotz > 15 then RecRot = -.2
+If VRrecognizer.rotz < -15 then RecRot = .2
+
+VRrecognizer.x = VRrecognizer.x - 35
+VRrecognizer.y = VRrecognizer.y - 35
+
+' putting this here also - change color?
+
+if PulsingFloor = 1 then
+VRBlueFloor.opacity = VRBlueFloor.opacity + FloorSpeed
+If VRBlueFloor.opacity =<20 then FloorSpeed = 1
+If VRBlueFloor.opacity =>140 then FloorSpeed = -1
+end If
+
+If TankMove1 = true then
+If VRTank1.x => -14800 then VRTank1.x = VRTank1.x - 300
+If VRTank1.x =< -14800 then TankMove1 = False: TankRot1 = true
+end If
+
+if Tankrot1 = True then VRTank1.roty = VRTank1.roty - 1: VRTank1.z = VRTank1.z + 3
+if VRTank1.roty = 0 then Tankrot1 = false: TankMove2 = True
+
+if TankMove2 = true Then
+VRTank1.y = VRTank1.y + 200
+VRTank1.z = VRTank1.z + 21
+end If
+
+If VRTank1.y => 100000 Then TankMove2 = False: TankRot2 = true
+If TankRot2 = true then VRTank1.roty = VRTank1.roty - 1
+if VRTank1.roty = -90 then VRTank1.y = 99999: TankRot2 = false: TankMove3 = true:VRTank1.roty = -89.9
+if TankMove3 = true then VRTank1.x = VRtank1.x +300
+If VRTank1.x => 220000 and VRTank1.y => 99999 then TankFire = True: TankMove3 = false
+
+If TankFire = true Then
+TankFire1.visible = True
+TankFire1.x = TankFire1.x +1200
+TankFire1.y = TankFire1.y +1000
+TankFire1.z = TankFire1.z +80
+
+if TankFire1.x => 101600 then 
+TankFire1.visible = false
+VRExplosion2.visible = true
+If roomsounds=true and boomscream= false then playsound "explosion":boomscream=true
+VRExplosion2.opacity = VRExplosion2.opacity - 10
+VRTank1.z = VRTank1.z - 20
+BlueTankMove3 = True
+end If
+End If
+
+if BlueTankMove1 = true then VRTank2.x = VRTank2.x + 230
+if VRTank2.x => 10000 then BlueTankMove1 = false : BlueTankRot1 = True: VRTank2.x = 9999
+if BlueTankRot1 = true then VRTank2.roty = VRTank2.roty + 1
+if VRTank2.roty = 359 then BlueTankRot1 = false: BlueTankRot2 = true 
+if BlueTankRot2 = true then VRTank2.roty = VRTank2.roty - .1
+if VRTank2.roty =< 310 then BlueTankRot2 = False
+
+If BlueTankMove3 = true then
+VRTank2.x = VRTank2.x + 250 ' we made x = 9999 above. this is why it stgarst spinning
+VRTank2.y = VRTank2.y + 150  
+VRTank2.roty = VRTank2.roty - .9  'counteracting spin above.  I'm so stupid I hate myself.
+VRTank2.z = VRTank2.z + 16
+End if
+
+if VRTank2.y =>600000 then 
+' reset tank componets..
+VRTank2.x = -605266.3
+VRTank2.y = -34996.14
+VRTank2.z = -6950
+VRTank2.Roty = 270
+VRTank1.x = 595107.3
+VRTank1.y = -32338.48
+VRTank1.z = -6950
+VRTank1.Roty = 90
+TankFire1.x = 19968.18
+TankFire1.y = -27488.4
+TankFire1.z = 200
+BlueTankMove1 = false
+BlueTankMove3 = false
+BlueTankRot2 = false
+BlueTankRot1 = false
+Tankrot1 = false
+TankMove1 = false
+TankMove2 = false
+TankMove3 = false
+TankFire = false
+Runcycles2
+VRTankTimer.enabled = false
+exit sub
+end If
+End Sub
+
+
+Sub RunCycles2()
+VRCycle1.visible = true
+VRCycle1Wall.visible = true
+VRCycle1.x = 478845.8
+VRCycle1Wall.x = 1171806
+VRCycle1Wall.z = -4050
+VRCycle1Wall.Size_Z =2000
+
+VRCycle3.y = -499831.7
+VRCycle3.z = -62000
+VRCycle3Wall.y = -1189750
+VRCycle3Wall.z = -125750
+VRCycle3Wall.Size_Z =2000
+VRCycles2Timer.enabled = true
+End Sub
+
+
+Sub VRCycles2Timer_timer()
+' putting this here also - change color?
+if PulsingFloor = 1 then
+VRBlueFloor.opacity = VRBlueFloor.opacity + FloorSpeed
+If VRBlueFloor.opacity =<20 then FloorSpeed = 1
+If VRBlueFloor.opacity =>140 then FloorSpeed = -1
+end If
+
+
+VRrecognizer.rotz = VRrecognizer.rotz + RecRot  'pivot in position
+If VRrecognizer.rotz > 15 then RecRot = -.2
+If VRrecognizer.rotz < -15 then RecRot = .2
+
+if VRCycle1.x <500000 then
+VRCycle1.x = VRCycle1.x - 400
+VRCycle1Wall.x = VRCycle1Wall.x - 400
+end If
+
+if VRCycle1.x <-500000 then
+VRCycle1.visible = False
+
+if VRCycle1Wall.Size_Z > 1 then VRCycle1Wall.Size_Z = VRCycle1Wall.Size_Z - 20 '
+if VRCycle1Wall.Size_Z <=1 then VRCycle1Wall.visible = false
+
+VRCycle3.visible = True
+VRCycle3wall.visible = True
+VRCycle3.y = VRCycle3.y + 400
+VRCycle3.z = VRCycle3.z + 42
+VRCycle3Wall.y = VRCycle3Wall.y +400
+VRCycle3Wall.z = VRCycle3Wall.z +42.1
+end If
+
+if VRCycle3.y > 500000 Then
+VRCycle3.visible = False
+RunCycles
+VRCycles2Timer.enabled = false
+end If
+end Sub
+
+' for randomizing lightning
+Dim Lightningnumber:Lightningnumber = 1
+Dim max2,min2
+max2=2
+min2=1
+Randomize
+
+
+Sub SkyLightTimer1_timer()
+	SkyLightTimer2.interval = 40 + rnd(1)*120  ' random between 40 and 160ms	
+	VR_Sphere1.visible = false
+	If LightningNumber = 1 then VR_Sphere2.visible = true
+	If LightningNumber = 2 then VR_Sphere3.visible = true
+	SkyLightTimer1.enabled = false
+	SkyLightTimer2.enabled = true
+End Sub
+
+Sub SkyLightTimer2_timer()
+	SkyLightTimer1.interval = 4000 + rnd(1)*4000  ' random between 4 and 8 seconds
+	' randomize lightning between 1 and 2
+	LightningNumber = (Int((max2-min2+1)*Rnd+min2))
+	VR_Sphere1.visible = true
+	VR_Sphere2.visible = false
+	VR_Sphere3.visible = False
+	SkyLightTimer1.enabled = true
+	SkyLightTimer2.enabled = false
+End Sub
+
+
+
+' VR Plunger stuff below..........
+Sub TimerVRPlunger_Timer
+  If VRPlunger.Y < 10 then    'guessing on number..  trial and error..		
+	 VRPlunger.y = VRPlunger.y + 5	
+  End If
+End Sub
+
+Sub TimerVRPlunger2_Timer
+  VRPlunger.Y = -99 + (5* Plunger.Position) -20
+End Sub
+
+Sub SetBackglass()
+	Dim obj
+
+
+	For Each obj In VRBackglass
+		obj.x = obj.x
+		obj.height = - obj.y + 335
+		obj.y = -150 'adjusts the distance from the backglass towards the user
+		obj.rotx = -86.5
+	Next
+
+	For Each obj In VRBackglassLights
+		obj.x = obj.x
+		obj.height = - obj.y + 335
+		obj.y = -190 'adjusts the distance from the backglass towards the user
+		obj.rotx = -86.5
+	Next
+
+		BGDiscRight.height = - BGDiscRight.y + 335 :BGDiscRight.y = -110
+		BGFaceRight.height = - BGFaceRight.y + 335 :BGFaceRight.y = -125
+		BGTron.height = - BGTron.y + 335 : 			BGTron.y = -85
+		BGBigShip.height = - BGBigShip.y + 335 : 	BGBigShip.y = -120
+		BGStern.height = - BGStern.y + 335 : 		BGStern.y = -100
+
+		BGLeftShip2.height = - BGLeftShip2.y + 335 :		BGLeftShip2.y = -140
+		BGLeftShip1.height = - BGLeftShip1.y + 335 : 		BGLeftShip1.y = -135
+		BGArm.height = - BGArm.y + 335 : 				BGArm.y = -110
+		BGManLeft.height = - BGManLeft.y + 335 : 			BGManLeft.y = -125
+		BGDisney.height = - BGDisney.y + 335 : 			BGDisney.y = -90
+		BGRightShip.height = - BGRightShip.y + 335 : 	BGRightShip.y = -110
+		BGCouple.height = - BGCouple.y + 335 : 			BGCouple.y = -135
+End Sub
+
+dim BGFlasherseq
+Sub VRBGFlash_timer
+	Select Case BGFlasherseq
+		Case 1:VRBGFlash1.visible = 1: VRBGFlash2.visible = 1: VRBGFlash3.visible = 1: Flasher13.visible = 1
+		Case 2:VRBGFlash4.visible = 1: VRBGFlash5.visible = 1: VRBGFlash1.visible = 0: VRBGFlash2.visible = 0: VRBGFlash3.visible = 0: Flasher13.visible = 0
+		Case 3:VRBGFlash6.visible = 1: VRBGFlash4.visible = 0: VRBGFlash5.visible = 0
+		Case 4:VRBGFlash7.visible = 1: VRBGFlash6.visible = 0
+		Case 5:VRBGFlash8.visible = 1: VRBGFlash7.visible = 0
+		Case 6:VRBGFlash9.visible = 1: VRBGFlash8.visible = 0
+		Case 7:VRBGFlash10.visible = 1: VRBGFlash9.visible = 0
+		Case 8:VRBGFlash11.visible = 1: VRBGFlash10.visible = 0
+		Case 9:VRBGFlash12.visible = 1: VRBGFlash11.visible = 0
+		Case 10:VRBGFlash13.visible = 1: VRBGFlash12.visible = 0
+		Case 11:VRBGFlash14.visible = 1: VRBGFlash13.visible = 0
+		Case 12:VRBGFlash14.visible = 0
+	End Select	
+	BGFlasherseq = BGFlasherseq + 1
+	If BGFlasherseq > 20 Then
+		BGFlasherseq = 1
+	End if
+End Sub
+
+
+'0.00 - Astronasty - Added nfozzy physics, rubberizer aand target bouncer code.
+'0.01 - Sixtoe - Physical object table rebuild including missing rubbers and objects, flupper flashers added, nfozzy physics table objects added on layer 9, realigned some visual table objects, some other tweaks, cut lights to VR cabinet dimensions.
+'0.02 - Sixtoe - Significantly adjusted all collidable objects, filled holes, added missing rubbers in shooter lane and above pop bumpers and removed certain things.
+'0.03 - Fluffhead35 - Completed Nfozzy Physics.  Added new targetbouncer logic, added 2nd rummberizer function for flippers, added coil rampup, fleep sound
+'0.04 - Fluffhead35 - Fixed typo in Class_Initialize in myTurnTable class
+'0.05 - Wylte - Dynamic Ball Shadows, Spotlight tweaks
+'0.06 - iaakki - Ball image update, FastFlips changed, Alternative TargetBouncer added as option 2, Left orb return fixed
+'0.07 - Wylte - Fixed spotlights not being in GI -_-"
+'0.08 - iaakki - Right outlane fix, all lights moved to use NF Lampz, GI redone, some insert prims, textures and materials imported, TargetBouncer values tuned
+'0.09 - Scrapped
+'0.10 - Sixtoe - Insert prims set up (still WIP, need some new textures), slings redone (still WIP), disc texture touched up, some table prims edited, maybe other tweaks.
+'0.11 - iaakki - added one missing insert texture. Fixed some other insert textures.
+'0.12 - iaakki - new PF and insert text images added, positions fine tuned, adding lights to lit the texts properly. Adding fXXTOP flashers to inserts to light the text properly
+'0.13 - iaakki - saved insert text layer on PSP and it fixed the edges, now all insert Z's are at zero
+'0.14 - Astronasty - Added new PF/inserts images with recognizer cutout. Shifted end of ramp stop to make ball bounce back more.
+'0.15 - Sixtoe - Added disc overlays to their inserts and changed insert primitives, redid most of the ambient insert lighting, added text flasher overlay to most inserts, messed around with light colours, added optional aftermarket acrylics, tweaked some stuff, probably other things...
+'0.16 - tomate - Added plastic ramps prims with some fixes and new textures, POV fixed, night/day cycle reduced a bit
+'0.17 - Astronasty - Actually changed the POV, commented out blue flippers and added white one, added new PF with yellow top lanes.
+'0.18 - iaakki - reworked some GI areas so they don't affect inserts that much. Adjusted Tron inserts and some other inserts.
+'0.19 - Astronasty - New PF and insert PNGs to try to reduce jaggies.
+'0.20 - tomate - Right ramp beginning fixed, ramps metal plates fixed, left VPX ramp cap fixed, LED strip prim and VPX fixed to match the new ramp shape, Astronasty's improved playfield placed
+'0.21 - Fluffhead35 - Added in option for original target bouncer alongside new one
+'0.22 - Messed with GI more, split out lighting so that's easier to mess with now, added missing rubber.
+'0.23 - iaakki - fixed some lights and code. Made that top flip shot possible. Targetbouncer fiddled once more.
+'0.24 - iaakki - cabinet mode improved, flipper strength to 2900, FlipperCoilRampupMode default to 1, Wall54 fixed so orb feels better. Green insert off materials done, inserts 51-53 done
+'0.25 - Sixtoe - Added discs back on playfield, added color corrected slings, adjusted flynn kicker, adjusted height of acrylic walls, fixed VR depth bias issues (argh!), added LE rubbers (White) with switch, hooked up flynn sign to GI, flasherbases adjusted so they're rotated correctly.
+'0.26 - HauntFreaks - GI tweaks
+'0.27 - Wylte - Added fading materials to spotlight shadows, tweaks to cutoff.  Attempted to add a toggle, but I don't know Lampz well enough yet
+'0.28 - iaakki - Adjusted SW7 and SW8 collidables, adjusted Wall61, double checked default options
+'0.29 - Sixtoe - Hooked up acrylics to GI, fixed f129a floating, fixed primitive32 sunken plastic, fixed rear flasher flares so they're correctly aligned, moved spotlight shadow prims so they're hidden in vr, set some solid prims to disable light from below, fixed some metals material & texture issues, changed height of shadows to stop z clashing, fixed rear right vr cabinet foot normals, tweaked GI on left inlane to better match right side and stop blowing out left sling plastic as much.
+'0.30 - apophis - Fixed spotlight shadow error.
+'v1.0 - Sixtoe - Tidied up for release, changed VR backbox shape.
+'v1.01 - Rawd - New VR Room, cabinet work, animated flipper buttons, plunger and start button, glass scratches option
+'v1.01 - LeoJreimroc - VR Backglass
+'v1.02 - Wylte - Spotlights less ridiculous
+'v1.03 - Sixtoe - Pop bumper lighting redone and flashers removed, some physics changes, flynn arcade entrance tweaked
+'v1.1 Release
