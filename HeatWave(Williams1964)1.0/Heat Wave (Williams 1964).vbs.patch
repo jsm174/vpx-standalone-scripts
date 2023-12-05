@@ -1,0 +1,91 @@
+--- "Heat Wave (Williams 1964).vbs.original"	2023-12-05 10:37:58.456843739 +0100
++++ "Heat Wave (Williams 1964).vbs"	2023-12-05 10:35:39.480962170 +0100
+@@ -1988,7 +1988,40 @@
+ 
+ 'An array of objects for each DT of (primary wall, secondary wall, primitive, switch, animate variable)
+ Dim DT001
+-DT001 = Array(MainTarget, MainTargetOffset, drop, 01, 0)
++Class DropTarget
++  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
++
++  Public Property Get Primary(): Set Primary = m_primary: End Property
++  Public Property Let Primary(input): Set m_primary = input: End Property
++
++  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
++  Public Property Let Secondary(input): Set m_secondary = input: End Property
++
++  Public Property Get Prim(): Set Prim = m_prim: End Property
++  Public Property Let Prim(input): Set m_prim = input: End Property
++
++  Public Property Get Sw(): Sw = m_sw: End Property
++  Public Property Let Sw(input): m_sw = input: End Property
++
++  Public Property Get Animate(): Animate = m_animate: End Property
++  Public Property Let Animate(input): m_animate = input: End Property
++
++  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
++  Public Property Let IsDropped(input): m_isDropped = input: End Property
++
++  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
++    Set m_primary = primary
++    Set m_secondary = secondary
++    Set m_prim = prim
++    m_sw = sw
++    m_animate = animate
++    m_isDropped = isDropped
++
++    Set Init = Me
++  End Function
++End Class
++
++Set DT001 = (new DropTarget)(MainTarget, MainTargetOffset, drop, 01, 0, false)
+ 
+ 'An array of DT arrays
+ Dim DTArray
+@@ -1998,31 +2031,31 @@
+ Function DTArrayID(switch)
+     Dim i
+     For i = 0 to uBound(DTArray) 
+-		If DTArray(i)(3) = switch Then DTArrayID = i: Exit Function 
++		If DTArray(i).sw = switch Then DTArrayID = i: Exit Function 
+     Next
+ End Function' This function looks over the DTArray and pulls the ID the target hit (ie 06))
+ 
+ Sub DTRaise(switch)
+     Dim i
+     i = DTArrayID(switch)
+-    DTArray(i)(4) = -1 'this sets the last variable in the DT array to -1 from 0 to raise DT
++    DTArray(i).animate = -1 'this sets the last variable in the DT array to -1 from 0 to raise DT
+     DoDTAnim
+ End Sub
+ 
+ Sub DTDrop(switch)
+ 	Dim i
+     i = DTArrayID(switch)
+-    DTArray(i)(4) = 1 'this sets the last variable in the DT array to 1 from 0
++    DTArray(i).animate = 1 'this sets the last variable in the DT array to 1 from 0
+     DoDTAnim
+ End Sub
+ 
+ Sub DTHit(switch)
+     Dim i
+     i = DTArrayID(switch) ' this sets i to be the position of the DT in the array DTArray
+-    DTArray(i)(4) =  DTCheckBrick(Activeball, DTArray(i)(2)) ' this sets the animate value (-1 raise, 1&4 drop, 0 do nothing, 3 bend backwards, 2 BRICK
++    DTArray(i).animate =  DTCheckBrick(Activeball, DTArray(i).prim) ' this sets the animate value (-1 raise, 1&4 drop, 0 do nothing, 3 bend backwards, 2 BRICK
+ 
+-    If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then ' if the value from brick checking is not 2 then apply ball physics
+-	DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
++    If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then ' if the value from brick checking is not 2 then apply ball physics
++	DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
+     End If
+     DoDTAnim
+ End Sub
+@@ -2083,7 +2116,7 @@
+ Sub DoDTAnim()
+         Dim i
+         For i = 0 to Ubound(DTArray)
+-	    DTArray(i)(4) = DTAnimate(DTArray(i)(0), DTArray(i)(1), DTArray(i)(2), DTArray(i)(3), DTArray(i)(4))
++	    DTArray(i).animate = DTAnimate(DTArray(i).primary, DTArray(i).secondary, DTArray(i).prim, DTArray(i).sw, DTArray(i).animate)
+         Next
+ End Sub
+ 
