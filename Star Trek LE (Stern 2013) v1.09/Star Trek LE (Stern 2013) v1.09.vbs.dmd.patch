@@ -1,0 +1,20 @@
+--- "./Star Trek LE (Stern 2013) v1.09.vbs"	2023-12-05 00:08:23.291410365 +0100
++++ "./Star Trek LE (Stern 2013) v1.09.vbs.dmd"	2023-12-05 00:03:57.471312176 +0100
+@@ -91,6 +91,19 @@
+ 	For Each VR_Obj in VRRoom : VR_Obj.Visible = 0 : Next
+ End If
+ 
++UseVPMDMD=DesktopMode
++Sub ImplicitDMD_Init
++   Me.x = 30
++   Me.y = 30
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++   Me.intensityScale=1.2
++   Me.fontColor = RGB(102,255,255)
++End Sub
++
+ '---------------
+ 'Debug stuff
+ Dim DebugFlippers : DebugFlippers = False
