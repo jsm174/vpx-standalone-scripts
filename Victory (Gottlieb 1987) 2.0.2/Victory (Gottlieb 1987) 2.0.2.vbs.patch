@@ -1,0 +1,272 @@
+--- "Victory (Gottlieb 1987) 2.0.2.vbs.original"	2023-11-29 16:55:10.393456734 +0100
++++ "Victory (Gottlieb 1987) 2.0.2.vbs"	2023-11-29 16:40:28.357492253 +0100
+@@ -179,6 +179,131 @@
+ 
+ 
+ '***********************************************************************************
++'****				        	Lamp reference      				  		  	****
++'***********************************************************************************
++Const lBallRelease					= 2
++Const lShootAgain					= 3
++Const lLeft50k1						= 5
++Const lLeft50k2						= 6
++Const lLeft50k3						= 7
++Const lLeft50k4						= 8
++Const lExtraBall					= 9
++Const lLeftOutlane					= 10
++Const lRightOutlane					= 11
++Const lTopKicker					= 12
++Const l100k							= 13
++Const lCenterLamps1					= 14
++Const lTopRamp						= 15
++Const lCenterLamps2					= 16
++Const lCar1							= 17
++Const lCar2							= 18
++Const lCar3							= 19
++Const lCar4							= 20
++Const lCar5							= 21
++Const lCar6							= 22
++Const lCar7							= 23
++Const lCar8							= 24
++Const lSpotTarget1					= 25
++Const lSpotTarget2					= 26
++Const lSpotTarget3					= 27
++Const lSpotTarget4					= 28
++Const lSpotTarget5					= 29
++Const lSpotTarget6					= 30
++Const lMultiplier1X					= 31
++Const lMultiplier2X					= 32
++Const lMultiplier4X					= 33
++Const lMultiplier8X					= 34
++Const lLeftSpinnerDouble			= 35
++Const lDropTarget1					= 36
++Const lDropTarget2					= 37
++Const lDropTarget3					= 38
++Const lDropTarget4					= 39
++Const lDropTarget50k				= 40
++Const lDropTarget100k				= 41
++Const lDropTarget200k				= 42
++Const lDropTargetSpecial			= 43
++Const lRightExtraBall				= 44
++Const lTopRace						= 45
++Const lRightBottomRace				= 46
++Const lRightSpinner					= 47
++Const lLeftSpinner					= 51
++' start of virtual lamps
++Const lLightshowL1					= 60
++Const lLightshowL2					= 61
++Const lLightshowL3					= 62
++Const lLightshowL4					= 63
++Const lLightshowL5					= 64
++Const lLightshowR1					= 65
++Const lLightshowR2					= 66
++Const lLightshowR3					= 67
++Const lLightshowR4					= 68
++Const lLightshowR5					= 69
++Const lLeft100k						= 70
++Const lRight100k					= 71
++Const lFlashersTop					= 196 '(virtual lamp for top flashers)
++Const lFlashersLeft					= 197 '(virtual lamp for left flashers)
++Const lFlashersRight				= 198 '(virtual lamp for right flashers)
++Const lGI							= 199 '(virtual lamp for GI_Flasher)
++
++'***********************************************************************************
++'****				        	Switch reference      				  		  	****
++'***********************************************************************************
++Const swTopRightRampRollunder		= 30
++Const swSpotTarget1					= 40
++Const swSpotTarget4					= 41
++Const swDropTarget1					= 42
++Const swTopLeftRampRollunder		= 43
++Const swTopRollover					= 44
++Const swLeftOutlane					= 45
++Const swSling						= 46
++Const swSpotTarget2					= 50
++Const swSpotTarget5					= 51
++Const swDropTarget2					= 52
++Const swLeftSpinner					= 53
++Const swRightSpinner				= 54
++Const swLeftReturnlane				= 55
++Const swTrough						= 56
++Const swTiltMe						= 57
++Const swSpotTarget3					= 60
++Const swSpotTarget6					= 61
++Const swDropTarget3					= 62
++Const swLeftRollUnder				= 63
++Const swTopKicker					= 64
++Const swRightReturnlane				= 65
++Const swOuthole						= 66
++Const swLeftSpotTarget				= 70
++Const swRightSpotTarget				= 71
++Const swDropTarget4					= 72
++Const swLeftTrackExitRollunder		= 73
++Const swRightKicker					= 74
++Const swRightOutlane				= 75
++Const swHoleKicker					= 76
++
++
++'***********************************************************************************
++'****				        	Solenoid reference      				    	****
++'***********************************************************************************
++const sHoleKicker					= 1
++const sDropTargetsReset				= 2
++const sFlashersTop	 				= 3
++const sFlashersRight 				= 4
++const sRightKicker	 				= 5
++const sFlashersLeft	 				= 7
++const sKnocker		 				= 8
++const sOuthole		 				= 9
++const sFlippersEnable				= 10
++
++
++'***********************************************************************************
++'****				       		DOF reference	 	     				    	****
++'***********************************************************************************
++const dShooterLane	 				= 201	' Shooterlane
++const dLeftSlingshot 				= 211	' Left Slingshot
++const dRightSlingshot 				= 212	' Right Slingshot
++
++
++
++'***********************************************************************************
+ '****								Knocker               						****
+ '*********************************************************************************** 
+ SolCallback(sKnocker) = "DoKnocker"
+@@ -974,7 +1099,7 @@
+  	TableOptions = LoadValue(TableName,"Options")			
+ 	If TableOptions = "" Or OptionReset Then 
+ 		TableOptions = 1				
+-		OptionsEdit							
++		'OptionsEdit							
+ 	Else
+ 		If TableOptions And 1 = 0 Then
+ 			TableOptions = TableOptions OR 1		
+@@ -1145,128 +1270,6 @@
+ 
+ 
+ 
+-'***********************************************************************************
+-'****				        	Lamp reference      				  		  	****
+-'***********************************************************************************
+-Const lBallRelease					= 2
+-Const lShootAgain					= 3
+-Const lLeft50k1						= 5
+-Const lLeft50k2						= 6
+-Const lLeft50k3						= 7
+-Const lLeft50k4						= 8
+-Const lExtraBall					= 9
+-Const lLeftOutlane					= 10
+-Const lRightOutlane					= 11
+-Const lTopKicker					= 12
+-Const l100k							= 13
+-Const lCenterLamps1					= 14
+-Const lTopRamp						= 15
+-Const lCenterLamps2					= 16
+-Const lCar1							= 17
+-Const lCar2							= 18
+-Const lCar3							= 19
+-Const lCar4							= 20
+-Const lCar5							= 21
+-Const lCar6							= 22
+-Const lCar7							= 23
+-Const lCar8							= 24
+-Const lSpotTarget1					= 25
+-Const lSpotTarget2					= 26
+-Const lSpotTarget3					= 27
+-Const lSpotTarget4					= 28
+-Const lSpotTarget5					= 29
+-Const lSpotTarget6					= 30
+-Const lMultiplier1X					= 31
+-Const lMultiplier2X					= 32
+-Const lMultiplier4X					= 33
+-Const lMultiplier8X					= 34
+-Const lLeftSpinnerDouble			= 35
+-Const lDropTarget1					= 36
+-Const lDropTarget2					= 37
+-Const lDropTarget3					= 38
+-Const lDropTarget4					= 39
+-Const lDropTarget50k				= 40
+-Const lDropTarget100k				= 41
+-Const lDropTarget200k				= 42
+-Const lDropTargetSpecial			= 43
+-Const lRightExtraBall				= 44
+-Const lTopRace						= 45
+-Const lRightBottomRace				= 46
+-Const lRightSpinner					= 47
+-Const lLeftSpinner					= 51
+-' start of virtual lamps
+-Const lLightshowL1					= 60
+-Const lLightshowL2					= 61
+-Const lLightshowL3					= 62
+-Const lLightshowL4					= 63
+-Const lLightshowL5					= 64
+-Const lLightshowR1					= 65
+-Const lLightshowR2					= 66
+-Const lLightshowR3					= 67
+-Const lLightshowR4					= 68
+-Const lLightshowR5					= 69
+-Const lLeft100k						= 70
+-Const lRight100k					= 71
+-Const lFlashersTop					= 196 '(virtual lamp for top flashers)
+-Const lFlashersLeft					= 197 '(virtual lamp for left flashers)
+-Const lFlashersRight				= 198 '(virtual lamp for right flashers)
+-Const lGI							= 199 '(virtual lamp for GI_Flasher)
+-
+-'***********************************************************************************
+-'****				        	Switch reference      				  		  	****
+-'***********************************************************************************
+-Const swTopRightRampRollunder		= 30
+-Const swSpotTarget1					= 40
+-Const swSpotTarget4					= 41
+-Const swDropTarget1					= 42
+-Const swTopLeftRampRollunder		= 43
+-Const swTopRollover					= 44
+-Const swLeftOutlane					= 45
+-Const swSling						= 46
+-Const swSpotTarget2					= 50
+-Const swSpotTarget5					= 51
+-Const swDropTarget2					= 52
+-Const swLeftSpinner					= 53
+-Const swRightSpinner				= 54
+-Const swLeftReturnlane				= 55
+-Const swTrough						= 56
+-Const swTiltMe						= 57
+-Const swSpotTarget3					= 60
+-Const swSpotTarget6					= 61
+-Const swDropTarget3					= 62
+-Const swLeftRollUnder				= 63
+-Const swTopKicker					= 64
+-Const swRightReturnlane				= 65
+-Const swOuthole						= 66
+-Const swLeftSpotTarget				= 70
+-Const swRightSpotTarget				= 71
+-Const swDropTarget4					= 72
+-Const swLeftTrackExitRollunder		= 73
+-Const swRightKicker					= 74
+-Const swRightOutlane				= 75
+-Const swHoleKicker					= 76
+-
+-
+-'***********************************************************************************
+-'****				        	Solenoid reference      				    	****
+-'***********************************************************************************
+-const sHoleKicker					= 1
+-const sDropTargetsReset				= 2
+-const sFlashersTop	 				= 3
+-const sFlashersRight 				= 4
+-const sRightKicker	 				= 5
+-const sFlashersLeft	 				= 7
+-const sKnocker		 				= 8
+-const sOuthole		 				= 9
+-const sFlippersEnable				= 10
+-
+-
+-'***********************************************************************************
+-'****				       		DOF reference	 	     				    	****
+-'***********************************************************************************
+-const dShooterLane	 				= 201	' Shooterlane
+-const dLeftSlingshot 				= 211	' Left Slingshot
+-const dRightSlingshot 				= 212	' Right Slingshot
+ 
+ 
+ 
