@@ -1,0 +1,24 @@
+--- "./Diner (Williams 1990) VPW Mod 1.0.2.vbs"	2023-11-29 13:37:09.000000000 +0100
++++ "./Diner (Williams 1990) VPW Mod 1.0.2.vbs.dmd"	2023-12-03 23:33:16.806190181 +0100
+@@ -446,8 +446,20 @@
+ 	End If
+ End Sub
+ 
+-
+ ' *** Start VPM ***
++'Colored Dmd Hack
++'to have a colored Dmd, put the serum diner_l4.cRZ file in your pinmame/altcolor/diner_l4 folder
++Dim UseVPMColoredDMD
++UseVPMColoredDMD=DesktopMode
++Sub ImplicitDMD_Init
++   Me.x = 20
++   Me.y = 220
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++   Me.intensityScale = 2
++End Sub
++'End of Colored Dmd Hack
+ 
+ On Error Resume Next
+ ExecuteGlobal GetTextFile("controller.vbs")
