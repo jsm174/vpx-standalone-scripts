@@ -1,0 +1,42 @@
+--- "./Champion Pub (Williams 1998) v1.43.vbs.original"	2023-12-04 21:32:02.206715415 +0100
++++ "./Champion Pub (Williams 1998) v1.43.vbs"	2023-12-04 22:22:41.898085174 +0100
+@@ -87,25 +87,27 @@
+ 
+ Const UseB2SBG=0				'set to 1, if You are using my B2S Backglass for direct B2S communication 
+ 
+-Dim DesktopMode, UseVPMDMD: DesktopMode = CP.ShowDT
++Dim DesktopMode, UseVPMColoredDMD: DesktopMode = CP.ShowDT
+ 
+ If DesktopMode = True Then ' Show Desktop components
+ 	SideWood.visible=1
+ 	LeftRail.visible=1
+ 	RightRail.visible=1
+ 	If ShowVPMDMD = True Then
+-		UseVPMDMD = True
++		UseVPMColoredDMD = True
+ 	End If
+ Else
+ 	SideWood.visible=0
+ 	LeftRail.visible=0
+ 	RightRail.visible=0
+-	UseVPMDMD = False
++	UseVPMColoredDMD = False
+ End If
+ 
+ Dim cGameName
+ cGameName = "cp_16"
+ 
++VPinDMD.intensityScale=1.6 'boosts luminosity
++
+ LoadVPM "01560000", "WPC.VBS", 3.26
+ 
+ ' VR Room Setup
+@@ -126,7 +128,7 @@
+ 	For Each VR_Obj in VRMinimalRoom : VR_Obj.visible = 1 : Next
+ 	For Each VR_Obj in VRBackFlashers : VR_Obj.visible = 1 : Next
+ 	If ShowVPMDMD = True Then
+-		UseVPMDMD = True
++		UseVPMDColoredMD = True
+ 	End If
+ Else
+ 	For Each VR_Obj in VRCabinet : VR_Obj.visible = 0 : Next	
