@@ -1,0 +1,20 @@
+--- "./Cue Ball Wizard (Gottlieb 1992) v1.2.4.vbs.original"	2023-12-04 21:46:08.962255175 +0100
++++ "./Cue Ball Wizard (Gottlieb 1992) v1.2.4.vbs"	2023-12-03 07:54:55.571184805 +0100
+@@ -97,7 +97,16 @@
+ 
+ Dim Lspeed(7), Lbob(7), blobAng(7), blobRad(7), blobSiz(7), Blob, Bcnt   ' for VR Lavalamp
+ 
+-Const cGameName="cueball",UseSolenoids=2,UseLamps=0,UseGI=0,SSolenoidOn="",SSolenoidOff="", SCoin="", UseVPMDMD = True
++Const cGameName="cueball",UseSolenoids=2,UseLamps=0,UseGI=0,SSolenoidOn="",SSolenoidOff="", SCoin="", UseVPMColoredDMD = True
++
++Sub ImplicitDMD_Init
++   Me.x = 30
++   Me.y = 30
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++   Me.intensityScale = 2
++End Sub
+ 
+ LoadVPM "01570000", "gts3.vbs", 3.26
+ 
