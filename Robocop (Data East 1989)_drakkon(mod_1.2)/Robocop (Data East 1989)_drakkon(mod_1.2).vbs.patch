@@ -1,5 +1,5 @@
---- "Robocop (Data East 1989)_drakkon(mod_1.2).vbs.original"	2023-12-06 14:00:22.244776509 +0100
-+++ "Robocop (Data East 1989)_drakkon(mod_1.2).vbs"	2023-12-06 13:58:33.401935591 +0100
+--- "Robocop (Data East 1989)_drakkon(mod_1.2).vbs.original"	2023-12-06 14:11:00.921303809 +0100
++++ "Robocop (Data East 1989)_drakkon(mod_1.2).vbs"	2023-12-06 14:08:45.365854304 +0100
 @@ -2457,6 +2457,31 @@
  '		STAND-UP TARGET INITIALIZATION
  '******************************************************
@@ -87,7 +87,46 @@
  	Next
  End Sub
  
-@@ -2619,9 +2644,9 @@
+@@ -2614,14 +2639,48 @@
+ '  DROP TARGETS FUNCTIONS
+ '******************************************************
+ 
++Class DropTarget
++	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
++  
++	Public Property Get Primary(): Set Primary = m_primary: End Property
++	Public Property Let Primary(input): Set m_primary = input: End Property
++  
++	Public Property Get Secondary(): Set Secondary = m_secondary: End Property
++	Public Property Let Secondary(input): Set m_secondary = input: End Property
++  
++	Public Property Get Prim(): Set Prim = m_prim: End Property
++	Public Property Let Prim(input): Set m_prim = input: End Property
++  
++	Public Property Get Sw(): Sw = m_sw: End Property
++	Public Property Let Sw(input): m_sw = input: End Property
++  
++	Public Property Get Animate(): Animate = m_animate: End Property
++	Public Property Let Animate(input): m_animate = input: End Property
++  
++	Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
++	Public Property Let IsDropped(input): m_isDropped = input: End Property
++  
++	Public default Function init(primary, secondary, prim, sw, animate, isDropped)
++	  Set m_primary = primary
++	  Set m_secondary = secondary
++	  Set m_prim = prim
++	  m_sw = sw
++	  m_animate = animate
++	  m_isDropped = isDropped
++  
++	  Set Init = Me
++	End Function
++  End Class
++  
++
+ Sub DTHit(switch)
+ 	Dim i
  	i = DTArrayID(switch)
  
  	PlayTargetSound
@@ -100,7 +139,7 @@
  	End If
  	DoDTAnim
  End Sub
-@@ -2630,7 +2655,7 @@
+@@ -2630,7 +2689,7 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -109,7 +148,7 @@
  	DoDTAnim
  End Sub
  
-@@ -2638,14 +2663,14 @@
+@@ -2638,14 +2697,14 @@
  	Dim i
  	i = DTArrayID(switch)
  
@@ -126,7 +165,7 @@
  	Next
  End Function
  
-@@ -2700,7 +2725,7 @@
+@@ -2700,7 +2759,7 @@
  Sub DoDTAnim()
  	Dim i
  	For i=0 to Ubound(DTArray)
@@ -135,40 +174,3 @@
  	Next
  End Sub
  
-@@ -4042,3 +4067,35 @@
- 	End If
- 
- End Sub
-\ No newline at end of file
-+Class DropTarget
-+  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
-+
-+  Public Property Get Primary(): Set Primary = m_primary: End Property
-+  Public Property Let Primary(input): Set m_primary = input: End Property
-+
-+  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
-+  Public Property Let Secondary(input): Set m_secondary = input: End Property
-+
-+  Public Property Get Prim(): Set Prim = m_prim: End Property
-+  Public Property Let Prim(input): Set m_prim = input: End Property
-+
-+  Public Property Get Sw(): Sw = m_sw: End Property
-+  Public Property Let Sw(input): m_sw = input: End Property
-+
-+  Public Property Get Animate(): Animate = m_animate: End Property
-+  Public Property Let Animate(input): m_animate = input: End Property
-+
-+  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
-+  Public Property Let IsDropped(input): m_isDropped = input: End Property
-+
-+  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
-+    Set m_primary = primary
-+    Set m_secondary = secondary
-+    Set m_prim = prim
-+    m_sw = sw
-+    m_animate = animate
-+    m_isDropped = isDropped
-+
-+    Set Init = Me
-+  End Function
-+End Class
