@@ -1,0 +1,11 @@
+--- PVM.vbs.original	2023-12-07 15:38:22.564080424 +0100
++++ PVM.vbs	2023-12-07 15:36:15.044865292 +0100
+@@ -2181,7 +2181,7 @@
+                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, 3 + 16 + 2, 8, 8
+             Next
+             For i = 20 to 35 ' Bottom
+-                DMDScene.GetImage("Dig" & i).SetBounds (i - 20) * 8, 3, 8, 16
++                DMDScene.GetImage("Dig" & i).SetBounds 8 * (i - 20), 3, 8, 16
+             Next
+             FlexDMD.LockRenderThread
+             FlexDMD.Stage.AddActor DMDScene
