@@ -1,0 +1,11 @@
+--- speakeasy2.vbs.original	2023-12-12 00:40:32.695959139 +0100
++++ speakeasy2.vbs	2023-12-12 00:39:11.714104008 +0100
+@@ -1775,7 +1775,7 @@
+ 			For each ii in Rswitches:Controller.switch(ii)=0:next
+ 			roulettesw.enabled = false
+ 			For ii = 0 to 11
+-				GWHoles(ii).kick (ii+1)*30+60, (rnd(4))+12
++				GWHoles(ii).kick 30*(ii+1)+60, (rnd(4))+12
+ 				GWHoles(ii).enabled = false
+ 			Next			
+ 			GWRamp.collidable = 1
