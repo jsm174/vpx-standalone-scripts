@@ -367,20 +367,20 @@ Dim OptRom
 Dim OptYield
 Dim OptSkip
 Sub PlayboyShowDips
-	' If Not IsObject(vpmDips) Then
-	' 	Set vpmDips = New cvpmDips
-	' 	With vpmDips
-	' 		.AddForm 100, 100, "Playboy Game Settings"
-	' 		.AddFrameExtra 0, 0, 250, "ROM Version", &Hf0, Array("International Display (default)", &H00, "France Display", &H10, "German Display", &H20, "Italy Display", &H40, "Spain Display", &H80)
-	' 	    .AddChkExtra 7,100,250,Array("Enable YieldTime (for slow computers)", &H100)
-	' 		.AddChkExtra 7,120,250,Array("Do not show this menu again at startup", &H200)
-	' 		.AddLabel 7,140,250,20,"Press F6 during play to bring up this menu."
-	' 		.AddLabel 7,160,250,20,"Quit and restart game for changes to take effect."
-	' 	End With
-	' End If
-	' PlayboyOptions = vpmDips.ViewDipsExtra(PlayboyOptions)
-	' SaveValue cRegistryName,cOptionsName,PlayboyOptions
-	' PlayboySetOptions
+	If Not IsObject(vpmDips) Then
+		Set vpmDips = New cvpmDips
+		With vpmDips
+			.AddForm 100, 100, "Playboy Game Settings"
+			.AddFrameExtra 0, 0, 250, "ROM Version", &Hf0, Array("International Display (default)", &H00, "France Display", &H10, "German Display", &H20, "Italy Display", &H40, "Spain Display", &H80)
+		    .AddChkExtra 7,100,250,Array("Enable YieldTime (for slow computers)", &H100)
+			.AddChkExtra 7,120,250,Array("Do not show this menu again at startup", &H200)
+			.AddLabel 7,140,250,20,"Press F6 during play to bring up this menu."
+			.AddLabel 7,160,250,20,"Quit and restart game for changes to take effect."
+		End With
+	End If
+	PlayboyOptions = vpmDips.ViewDipsExtra(PlayboyOptions)
+	SaveValue cRegistryName,cOptionsName,PlayboyOptions
+	PlayboySetOptions
 End Sub
 
 Set vpmShowDips = GetRef("PlayboyShowDips")
@@ -652,7 +652,7 @@ Sub table1_Init
 
 	PlayboySetOptions
 
-	If optSkip = False Then vpmShowDips
+	'If optSkip = False Then vpmShowDips
 
 	PlayboySetOptions
 	With Controller
