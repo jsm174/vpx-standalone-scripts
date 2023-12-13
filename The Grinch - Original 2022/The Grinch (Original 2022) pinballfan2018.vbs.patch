@@ -1,0 +1,11 @@
+--- "The Grinch (Original 2022) pinballfan2018.vbs.original"	2023-12-12 00:14:39.859253121 +0100
++++ "The Grinch (Original 2022) pinballfan2018.vbs"	2023-12-12 00:13:24.325165916 +0100
+@@ -870,7 +870,7 @@
+ End Sub
+ 
+ Sub Display_Match()
+-    MatchReel.SetValue(Match \ 10) + 1
++    MatchReel.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100
