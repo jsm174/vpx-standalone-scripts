@@ -1,0 +1,74 @@
+--- "Junkyard Cats_1.07.vbs.original"	2023-12-11 23:33:27.758925944 +0100
++++ "Junkyard Cats_1.07.vbs"	2023-12-11 23:31:12.211175150 +0100
+@@ -508,10 +508,10 @@
+ 		jenkins = false
+ 		scarla = false
+        If B2SOn Then
+-        : Controller.B2SSetData 9, 0
+-        : Controller.B2SSetData 10, 0
+-        : Controller.B2SSetData 11, 0
+-        : Controller.B2SSetData 12, 0
++        Controller.B2SSetData 9, 0
++        Controller.B2SSetData 10, 0
++        Controller.B2SSetData 11, 0
++        Controller.B2SSetData 12, 0
+           Controller.B2SSetData 13, 0
+        End If
+ 		resetlocklights()
+@@ -1147,11 +1147,11 @@
+ 
+ 	endattractmode()
+   If B2SOn Then
+-    :Controller.B2SSetData 9, 0
+-:    Controller.B2SSetData 10, 0
+-    :Controller.B2SSetData 11, 0
+-    :Controller.B2SSetData 12, 0
+-    :Controller.B2SSetData 13, 0
++    Controller.B2SSetData 9, 0
++    Controller.B2SSetData 10, 0
++    Controller.B2SSetData 11, 0
++    Controller.B2SSetData 12, 0
++    Controller.B2SSetData 13, 0
+   End If
+ 	wardlight.state = 0
+ 	axellight.state = 0
+@@ -1213,14 +1213,14 @@
+ 	bo7.state = bulboff
+ 	bo8.state = bulboff
+    If B2SOn Then
+-   :Controller.B2SSetData 1, 0
+-   :Controller.B2SSetData 2, 0
+-   :Controller.B2SSetData 3, 0
+-   :Controller.B2SSetData 4, 0
+-   :Controller.B2SSetData 5, 0
+-   :Controller.B2SSetData 6, 0
+-   :Controller.B2SSetData 7, 0
+-   :Controller.B2SSetData 8, 0
++    Controller.B2SSetData 1, 0
++    Controller.B2SSetData 2, 0
++    Controller.B2SSetData 3, 0
++    Controller.B2SSetData 4, 0
++    Controller.B2SSetData 5, 0
++    Controller.B2SSetData 6, 0
++    Controller.B2SSetData 7, 0
++    Controller.B2SSetData 8, 0
+    End If
+ 
+ 	TurnGIoff()
+@@ -1366,11 +1366,11 @@
+ 
+ Sub Tablereset()
+  If B2SOn Then
+-: Controller.B2SSetData 9, 0
+-: Controller.B2SSetData 10, 0
+-: Controller.B2SSetData 11, 0
+-: Controller.B2SSetData 12, 0
+-: Controller.B2SSetData 13, 0
++  Controller.B2SSetData 9, 0
++  Controller.B2SSetData 10, 0
++  Controller.B2SSetData 11, 0
++  Controller.B2SSetData 12, 0
++  Controller.B2SSetData 13, 0
+  End If
+ 
+ 	noswitchhit = true
