@@ -1,0 +1,11 @@
+--- "Playboy (Stern 2002) v1.1.vbs.original"	2023-12-11 22:38:00.122604106 +0100
++++ "Playboy (Stern 2002) v1.1.vbs"	2023-12-11 22:37:29.413793173 +0100
+@@ -652,7 +652,7 @@
+ 
+ 	PlayboySetOptions
+ 
+-	If optSkip = False Then vpmShowDips
++	'If optSkip = False Then vpmShowDips
+ 
+ 	PlayboySetOptions
+ 	With Controller
