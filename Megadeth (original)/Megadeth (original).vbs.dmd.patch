@@ -1,0 +1,18 @@
+--- "./Megadeth (original).vbs.original"	2023-12-15 08:12:05.320425296 +0100
++++ "./Megadeth (original).vbs"	2023-12-15 08:12:02.283761725 +0100
+@@ -66,13 +66,13 @@
+ Randomize
+ 
+ '***************************************** USER OPTIONS****************************************
+-Const Videos = True					 ' If using PupPack = True 
++Const Videos = False					 ' If using PupPack = True 
+ Const FlexDMDHighQuality = True		' If using RealDMD set to False
+ Dim VRRoomChoice: VRRoomChoice = 1   '1 = Prison Room  2 = Minimal Room  3 = Ultra Minimal Room.
+ '***************MINI GAME ***************************** AOR
+ 
+ 'Const bIsMiniGameActive = 1  'is Minigame Active   Don't Launch MiniGame = 0,  Launch Minigame = 1, using Const Videos variable, line 69 :) 
+-Const PupScreenMiniGame = 2  '5 = FullDMD, Backglass = 2
++Const PupScreenMiniGame = 5  '5 = FullDMD, Backglass = 2
+ '*****************************************END OF USER OPTIONS**********************************
+ 'Minigame variable AOR
+ Dim iMiniGameCnt(4) 'reset to zero on game init, adds one each time player plays minigame (limits to 1 minigame per Player, per Game)
