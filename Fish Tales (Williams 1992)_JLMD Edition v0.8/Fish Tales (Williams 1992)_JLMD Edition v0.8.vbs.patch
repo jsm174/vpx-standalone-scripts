@@ -1,0 +1,11 @@
+--- "Fish Tales (Williams 1992)_JLMD Edition v0.8.vbs.original"	2023-12-21 14:59:51.379015351 +0100
++++ "Fish Tales (Williams 1992)_JLMD Edition v0.8.vbs"	2023-12-21 14:59:41.818737737 +0100
+@@ -909,7 +909,7 @@
+ 			bsReel3.AddBall 0
+ 		Case Else
+ 		     'No hole up, we'll call this method again in 500 ms, and try again!
+-		     VPMPulseTimer.AddTimer 500,"ReelEnter_Hit '"
++		     VPMTimer.AddTimer 500,"ReelEnter_Hit '"
+ 	End Select	 
+ End Sub
+  
