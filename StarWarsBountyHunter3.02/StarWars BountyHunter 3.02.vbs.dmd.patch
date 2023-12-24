@@ -1,0 +1,349 @@
+--- "./StarWars BountyHunter 3.02.vbs.original"	2023-12-24 09:25:58.711348951 +0100
++++ "./StarWars BountyHunter 3.02.vbs"	2023-12-24 09:25:53.411313820 +0100
+@@ -32,7 +32,9 @@
+ Const TournamentMode=		False	' False/True : Enabled = NO extra balls, lower ballsave . lower centerpin, tournament mode disables Orbital Scoreboard !
+ Const VRroom=				0		' 1=on 0=off : Need flex DMD !! will override some other settings !
+ FlexDMD=					0		' 1=on 0=off : See instructions over for FLEX and Freezy
+-MiddleDisplay=				1		' 1=on 0=off ( 2=FlexDMD on Playfield: Will override FlexDMD setting )
++'MiddleDisplay=				1		' 1=on 0=off ( 2=FlexDMD on Playfield: Will override FlexDMD setting )
++MiddleDisplay=				2		' 1=on 0=off ( 2=FlexDMD on Playfield: Will override FlexDMD setting )
++
+ ForceBackScreen=			0		' 1=on 0=off : dB2S
+ DTScore=					1		' 1=On 0=Auto: show desktop score reels 
+ '* Game too heavy ? You can turn off stuff here : 	
+@@ -55,7 +57,9 @@
+ '*******  MUSIC
+ Dim MusicFile(20)
+ Dim PlayVolume(20)
+-	MusicFile(1) ="Bountyhunter/Mandalorian_Official_Trailer_2.mp3" : PlayVolume(1) =0.7
++'	MusicFile(1) ="Bountyhunter/Mandalorian_Official_Trailer_2.mp3" : PlayVolume(1) =0.7
++	MusicFile(1) ="BountyHunter/Mandalorian_Official_Trailer_2.mp3" : PlayVolume(1) =0.7
++
+ 	MusicFile(2) ="BountyHunter/Razor_Crest_Crash_Landing.mp3"		: PlayVolume(2) =0.7
+ '*	Link Your Mp3's under here
+ 	MusicFile(3) ="BountyHunter/Boba_Fett_Theme.mp3" 				: PlayVolume(4) =0.15
+@@ -6934,7 +6938,7 @@
+ 		If LightSeq002.timerenabled=0 Then LightSeq002.timerenabled=1 
+ 		If WaitforInitialsstatus=5 Then '  only after entering highscore name
+ 			WaitforInitialsstatus=4
+-			If FlexDMD then UmainDMD.cancelrendering() : UMainDMD.DisplayScene00ExWithId "attract1",false,"grogu2.wmv", "    ", 15, 0, "PLAY AGAIN ! ", 15, 0, 14, 44000, 14
++			If FlexDMD then UmainDMD.cancelrendering() : UMainDMD.DisplayScene00ExWithId "attract1",false,"grogu2.gif", "    ", 15, 0, "PLAY AGAIN ! ", 15, 0, 14, 44000, 14
+ 
+ 		End If
+ 		If WaitforInitialsstatus=4 Then
+@@ -9968,7 +9972,7 @@
+ 	If NOT UMainDMD.isrendering Then 
+ 		If mission(1)=1 Then
+ 			creditsmissionstatus=1
+-			FormatScore(12000-(missionstatus(1)*1000)) : UMainDMD.DisplayScene00ex "coins1.wmv", "GET CREDITS", 0, 12, FlexScore & " MISSING", 15, 1, 10, 1500, 8
++			FormatScore(12000-(missionstatus(1)*1000)) : UMainDMD.DisplayScene00ex "coins1.gif", "GET CREDITS", 0, 12, FlexScore & " MISSING", 15, 1, 10, 1500, 8
+ 			
+ 			CreditMissionDMD.enabled=0
+ 		Else
+@@ -11359,7 +11363,7 @@
+ 		DisplayString2="  THE  WAY  " 
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0 
+ 		PlaySound "thisistheway3" ,0,BackGlassVolumeDial
+-		If FlexDMD Then  UMainDMD.DisplayScene00Ex "theway2.wmv", Displaystring1, 0, 12, DisplayString2 , 15, 1, 14, 1600, 11 
++		If FlexDMD Then  UMainDMD.DisplayScene00Ex "theway2.gif", Displaystring1, 0, 12, DisplayString2 , 15, 1, 14, 1600, 11
+ 	End If
+ 
+ 
+@@ -11400,7 +11404,7 @@
+ 			DisplayString1=" DARK BONUS "
+ 
+ 			DisplayString2=FormatScore((JackPotScoring*(25 + WizardBonusLevel * 10 )) *P1scorebonus)
+-			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "coins1.wmv", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 2700, 14 : ClearAllStatus
++			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "coins1.gif", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 2700, 14 : ClearAllStatus
+ 			PlaySound "fireworks" ,0,BackGlassVolumeDial
+ 			DOF 142,2
+ 			DOF 112,1
+@@ -11432,7 +11436,7 @@
+ 		DisplayString1=" GIDEON HIT "
+ 		DisplayString2=FormatScore((EvasiveOneScoring*P1scorebonus))
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0 
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "boss.wmv", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 2000, 14: ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "boss.gif", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 2000, 14: ClearAllStatus
+ 	End If
+ 	If Displaybuzy=0 And GideonStatus = 2 Then
+ 		GideonStatus=0
+@@ -11442,7 +11446,7 @@
+ 		DisplayString1="MONSTERS HIT"
+ 		DisplayString2=FormatScore((EvasiveOneScoring*P1scorebonus))
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0 
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "boss.wmv", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 2000, 14: ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "boss.gif", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 2000, 14: ClearAllStatus
+ 	End If
+ 
+ 
+@@ -11454,7 +11458,7 @@
+ 		DisplayString2="  COMPLETED  "
+ 		If FlexDMD Then 
+ 			UMainDMD.cancelrendering()
+-			UMainDMD.DisplayScene00Ex "DarkEnd.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 14, 12000, 14
++			UMainDMD.DisplayScene00Ex "DarkEnd.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 14, 12000, 14
+ 			ClearAllStatus
+ 		End If
+ 		playsound "DarkEnd" ,0,BackGlassVolumeDial
+@@ -11500,7 +11504,7 @@
+ 		DisplayEffect=4 : DisplayCounter=0 : DisplayBlank=0 
+ 		If FlexDMD then 
+ 			UmainDMD.cancelrendering()
+-			UMainDMD.DisplayScene00ExWithId "attract1",false, "DarkStart.wmv", "DARK TROOPERS", 0, 12, "DEFEAT THEM" , 15, 1, 11, 11000, 14
++			UMainDMD.DisplayScene00ExWithId "attract1",false, "DarkStart.gif", "DARK TROOPERS", 0, 12, "DEFEAT THEM" , 15, 1, 11, 11000, 14
+ 			ClearAllStatus
+ 		End If
+ 		PlaySound "DarkStart" ,0,BackGlassVolumeDial
+@@ -11564,7 +11568,7 @@
+ 
+ 		If FlexDMD then 
+ 			UmainDMD.cancelrendering()
+-			UMainDMD.DisplayScene00Ex "Ramps.wmv", "DARK TROOPERS", 0, 12, Flexscore , 15, 1, 11, 3800, 14
++			UMainDMD.DisplayScene00Ex "Ramps.gif", "DARK TROOPERS", 0, 12, Flexscore , 15, 1, 11, 3800, 14
+ 			ClearAllStatus
+ 		End If
+ 	End If
+@@ -11587,9 +11591,9 @@
+ 		DisplayEffect=4 : DisplayCounter=0 : DisplayBlank=0 
+ 		If FlexDMD then 
+ 			UmainDMD.cancelrendering()
+-			If BossLevel=2 Then UMainDMD.DisplayScene00Ex "MudhornStart.wmv", "MUDHORN", 0, 12, "TAKE HIM OUT" , 15, 1, 11, 8300, 14
+-			If BossLevel=4 Then UMainDMD.DisplayScene00Ex "SpiderStart.wmv", "SPIDER QUEEN", 0, 12, "TAKE HER OUT" , 15, 1, 11, 8000, 14
+-			If BossLevel=6 Then UMainDMD.DisplayScene00Ex "DragonStart.wmv", "KRAYT DRAGON", 0, 12, "TAKE HIM OUT" , 15, 1, 11, 9500, 14
++			If BossLevel=2 Then UMainDMD.DisplayScene00Ex "MudhornStart.gif", "MUDHORN", 0, 12, "TAKE HIM OUT" , 15, 1, 11, 8300, 14
++			If BossLevel=4 Then UMainDMD.DisplayScene00Ex "SpiderStart.gif", "SPIDER QUEEN", 0, 12, "TAKE HER OUT" , 15, 1, 11, 8000, 14
++			If BossLevel=6 Then UMainDMD.DisplayScene00Ex "DragonStart.gif", "KRAYT DRAGON", 0, 12, "TAKE HIM OUT" , 15, 1, 11, 9500, 14
+ 			ClearAllStatus
+ 		End If
+ 
+@@ -11644,18 +11648,18 @@
+ 
+ 		If BossLevel=2 Then 
+ 			DisplayString1="MUDHORN +" & BigDThitsCounter & "  "
+-			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "MudhornEnd.wmv", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 7800, 14: ClearAllStatus
++			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "MudhornEnd.gif", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 7800, 14: ClearAllStatus
+ 			Playsound "mudhornend" ,0,0.8*BackGlassVolumeDial
+ 		End If
+ 
+ 		If BossLevel=4 Then
+ 			DisplayString1="SPIDERS +" & BigDThitsCounter & "  "
+-			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "spiderend.wmv", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 6000, 14: ClearAllStatus
++			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "spiderend.gif", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 6000, 14: ClearAllStatus
+ 			Playsound "SpiderEnd" ,0,0.8*BackGlassVolumeDial
+ 		End If
+ 		If BossLevel=6 Then
+ 			DisplayString1=" DRAGON +" & BigDThitsCounter & "  "
+-			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "dragonend.wmv", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 6800, 14: ClearAllStatus
++			If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "dragonend.gif", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 6800, 14: ClearAllStatus
+ 			Playsound "dragonend" ,0,0.8*BackGlassVolumeDial
+ 		End If
+ 		scoring(EvasiveOneScoring+2000000)
+@@ -11684,7 +11688,7 @@
+ 		DisplayEffect=4 : DisplayCounter=0 : DisplayBlank=0 
+ 		If FlexDMD then 
+ 			UmainDMD.cancelrendering()
+-			UMainDMD.DisplayScene00Ex "Somethingiwant.wmv", "BOSS FIGHT", 0, 12, "TAKE HIM OUT" , 15, 1, 11, 7250, 14
++			UMainDMD.DisplayScene00Ex "Somethingiwant.gif", "BOSS FIGHT", 0, 12, "TAKE HIM OUT" , 15, 1, 11, 7250, 14
+ 			ClearAllStatus
+ 		End If
+ 		PlaySound "youhavesomething" ,0,0.7*BackGlassVolumeDial
+@@ -11699,7 +11703,7 @@
+ 		Displaybuzy=1  
+ 		DisplayString2=FormatScore((EvasiveOneScoring+2000000)/20*P1scorebonus)
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0 
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "boss.wmv", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 4000, 14: ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "boss.gif", DisplayString1 , 0, 12, Flexscore , 15, 1, 14, 4000, 14: ClearAllStatus
+ 		scoring((EvasiveOneScoring+2000000)/20)
+ 		If Lidouble2.state>0 Then  doubleblinker.Play SeqBlinking,,2,80  
+ 		If LiTripple2.state>0 Then trippleblinker.Play SeqBlinking,,2,80  
+@@ -11712,7 +11716,7 @@
+ 		DisplayString1="BOSS  4 MORE"
+ 		DisplayString2=FormatScore((EvasiveOneScoring+2000000)/20*P1scorebonus)
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit11.wmv", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 2900, 14 : ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit11.gif", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 2900, 14 : ClearAllStatus
+ 		scoring((EvasiveOneScoring+2000000)/20)
+ 		If Lidouble2.state>0 Then  doubleblinker.Play SeqBlinking,,2,80  
+ 		If LiTripple2.state>0 Then trippleblinker.Play SeqBlinking,,2,80 
+@@ -11725,7 +11729,7 @@
+ 		DisplayString1="BOSS  3 MORE"
+ 		DisplayString2=FormatScore((EvasiveOneScoring+2000000)/20*P1scorebonus)
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit21.wmv", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 3900, 14 : ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit21.gif", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 3900, 14 : ClearAllStatus
+ 		scoring((EvasiveOneScoring+2000000)/20)
+ 		If Lidouble2.state>0 Then  doubleblinker.Play SeqBlinking,,2,80  
+ 		If LiTripple2.state>0 Then trippleblinker.Play SeqBlinking,,2,80 
+@@ -11737,7 +11741,7 @@
+ 		DisplayString1="BOSS  2 MORE"
+ 		DisplayString2=FormatScore((EvasiveOneScoring+2000000)/20*P1scorebonus)
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit21.wmv", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 3900, 14 : ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit21.gif", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 3900, 14 : ClearAllStatus
+ 		scoring((EvasiveOneScoring+2000000)/20)
+ 		If Lidouble2.state>0 Then  doubleblinker.Play SeqBlinking,,2,80  
+ 		If LiTripple2.state>0 Then trippleblinker.Play SeqBlinking,,2,80 
+@@ -11749,7 +11753,7 @@
+ 		DisplayString1="ONE HIT LEFT"
+ 		DisplayString2=FormatScore((EvasiveOneScoring+2000000)/20*P1scorebonus)
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit31.wmv", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 2000, 14 : ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit31.gif", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 2000, 14 : ClearAllStatus
+ 		scoring((EvasiveOneScoring+2000000)/20)
+ 		If Lidouble2.state>0 Then  doubleblinker.Play SeqBlinking,,2,80  
+ 		If LiTripple2.state>0 Then trippleblinker.Play SeqBlinking,,2,80 
+@@ -11760,7 +11764,7 @@
+ 		DisplayString2=FormatScore(EvasiveOneScoring*P1scorebonus)
+ 		Displaybuzy=1  
+ 		DisplayEffect=5 : DisplayCounter=0 : DisplayBlank=0
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit41.wmv", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 5000, 14 : ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit41.gif", DisplayString1, 0, 12, Flexscore , 15, 1, 14, 5000, 14 : ClearAllStatus
+ 		If int(rnd(1)*2)=1 Then 
+ 			Stoptalking: talkingdelay=11 : PlaySound "bescarbelong", 0, BackGlassVolumeDial, AudioPan(Light059), 0.05,0,0,1,AudioFade(Light059)
+ 		Else
+@@ -11781,7 +11785,7 @@
+ 		DisplayString1="  YOU  WIN  "
+ 		DisplayString2="FREE  REPLAY"
+ 		DisplayEffect=4 : DisplayCounter=0 : DisplayBlank=0
+-		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit11.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 14, 2900, 14 : ClearAllStatus
++		If FlexDMD Then UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "Hit11.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 14, 2900, 14 : ClearAllStatus
+ 	End If
+ 
+ 	If Displaybuzy=0 And BonusStatus=1 Then 
+@@ -11973,7 +11977,7 @@
+ 		If FlexDMD Then
+ 		'	UMainDMD.DisplayScene00Ex vid7, Displaystring1, 0, 12, DisplayString2 , 15, 1, 10, 2000, 14
+ 			If attract1mode=0 Then
+-				UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "blink1.wmv", DisplayString1, 0, 12, flexscore , 15, 1, 14, 1300, 14 : ClearAllStatus
++				UMainDMD.cancelrendering() : UMainDMD.DisplayScene00Ex "blink1.gif", DisplayString1, 0, 12, flexscore , 15, 1, 14, 1300, 14 : ClearAllStatus
+ 			Else
+ 				UMainDMD.ModifyScene00 "attract1",DisplayString1, DisplayString2 
+ 			End If
+@@ -12051,12 +12055,12 @@
+ 			DisplayString1="BALLCAPTURED"
+ 			DisplayString2="            "
+ 			DisplayEffect=6
+-			If FlexDMD Then  UMainDMD.DisplayScene00Ex "spots2.wmv", "B A L L  1", 0, 12, "L O C K E D" , 15, 1, 11, 2000, 14 
++			If FlexDMD Then  UMainDMD.DisplayScene00Ex "spots2.gif", "B A L L  1", 0, 12, "L O C K E D" , 15, 1, 11, 2000, 14
+ 		Else
+ 			DisplayString1="ONE MORE FOR"
+ 			DisplayString2=" MULTIBALL  "
+ 			DisplayEffect=4
+-			If FlexDMD Then  UMainDMD.DisplayScene00Ex "spots2.wmv", "LOCK 1 MORE", 0, 12, "FOR MULTIBALL" , 15, 1, 11, 2000, 14 
++			If FlexDMD Then  UMainDMD.DisplayScene00Ex "spots2.gif", "LOCK 1 MORE", 0, 12, "FOR MULTIBALL" , 15, 1, 11, 2000, 14
+ 		End if
+ 		DisplayCounter=0
+ 		DisplayBlank=0
+@@ -12071,7 +12075,7 @@
+ 		DisplayEffect=6
+ 		DisplayCounter=0
+ 		DisplayBlank=0
+-		If FlexDMD Then  UMainDMD.DisplayScene00Ex "multi1.wmv", "GET READY FOR", 0, 12, "MULTIBALL" , 15, 1, 10, 5000, 14 
++		If FlexDMD Then  UMainDMD.DisplayScene00Ex "multi1.gif", "GET READY FOR", 0, 12, "MULTIBALL" , 15, 1, 10, 5000, 14
+ 	End If
+ 
+ 
+@@ -12088,7 +12092,7 @@
+ 		DisplayEffect=4
+ 		DisplayCounter=0
+ 		DisplayBlank=0
+-		If FlexDMD Then  UMainDMD.DisplayScene00Ex "coins1.wmv", "MAX BALLS SCORE", 0, 12, Flexscore , 15, 1, 11, 2800, 14 
++		If FlexDMD Then  UMainDMD.DisplayScene00Ex "coins1.gif", "MAX BALLS SCORE", 0, 12, Flexscore , 15, 1, 11, 2800, 14
+ 	End If
+ 
+ 
+@@ -12174,7 +12178,7 @@
+ 		DisplayEffect=6
+ 		DisplayCounter=0 
+ 		DisplayBlank=0
+-		If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", "STARTING", 0, 12, "MISSIONS" , 15, 1, 11, 1600, 14 
++		If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", "STARTING", 0, 12, "MISSIONS" , 15, 1, 11, 1600, 14
+ 
+ 	End If
+ 
+@@ -12191,17 +12195,17 @@
+ 		If mysteryreward=1 Then	DisplayString2= FormatScore(mysteryscoring*5*P1scorebonus) : If FlexDMD Then  UMainDMD.DisplayScene00Ex "gold1.jpg", DisplayString1, 0, 12, Flexscore , 15, 1, 11, 1600, 14 
+ 		If mysteryreward=3 Then	DisplayString2= FormatScore(mysteryscoring*P1scorebonus)  : If FlexDMD Then  UMainDMD.DisplayScene00Ex "gold1.jpg", DisplayString1, 0, 12, Flexscore , 15, 1, 11, 1600, 14  
+ 		If mysteryreward=4 Then	DisplayString2= FormatScore(mysteryscoring*2*P1scorebonus)  : If FlexDMD Then  UMainDMD.DisplayScene00Ex "gold1.jpg", DisplayString1, 0, 12, Flexscore , 15, 1, 11, 1600, 14 
+-		If mysteryreward=2 Or mysteryreward=9 Then	DisplayString2="EXTRAMISSION" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14 
++		If mysteryreward=2 Or mysteryreward=9 Then	DisplayString2="EXTRAMISSION" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+ 		If mysteryreward=5 Then	DisplayString2=" ADV  BONUS " : If FlexDMD Then  UMainDMD.DisplayScene00Ex "yoda1.jpg", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14 
+ 		If mysteryreward=6 Then	DisplayString2="ADV 2LETTERS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "yoda1.jpg", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14 
+-		If mysteryreward=7 Then	DisplayString2="2 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=8 Then	DisplayString2="2 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=10 Then DisplayString2="3 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=11 Then DisplayString2="2 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=12 Then DisplayString2="3 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=13 Then DisplayString2="ADV 4LETTERS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=14 Then DisplayString2="LOCK IS  LIT" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+-		If mysteryreward=15 Then DisplayString2="LOCK IS  LIT" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.wmv", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=7 Then	DisplayString2="2 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=8 Then	DisplayString2="2 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=10 Then DisplayString2="3 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=11 Then DisplayString2="2 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=12 Then DisplayString2="3 X MISSIONS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=13 Then DisplayString2="ADV 4LETTERS" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=14 Then DisplayString2="LOCK IS  LIT" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
++		If mysteryreward=15 Then DisplayString2="LOCK IS  LIT" : If FlexDMD Then  UMainDMD.DisplayScene00Ex "door2.gif", DisplayString1, 0, 12, DisplayString2 , 15, 1, 11, 1600, 14
+ 		
+ 	End If
+ 
+@@ -12214,7 +12218,7 @@
+ 		DisplayEffect=6
+ 		DisplayCounter=0
+ 		DisplayBlank=0 
+-		If FlexDMD Then  UMainDMD.DisplayScene00Ex "greenlight.wmv", "L O C K", 0, 12, "I S   L I T" , 15, 1, 11, 1600, 14 
++		If FlexDMD Then  UMainDMD.DisplayScene00Ex "greenlight.gif", "L O C K", 0, 12, "I S   L I T" , 15, 1, 11, 1600, 14
+ 
+ 	End If
+ 
+@@ -12226,7 +12230,7 @@
+ 		DisplayEffect=4
+ 		DisplayCounter=0
+ 		DisplayBlank=0 
+-		If FlexDMD Then  UMainDMD.DisplayScene00Ex "greenlight.wmv", "MULTIBALL", 0, 12, "I S   L I T" , 15, 1, 11, 1600, 14 
++		If FlexDMD Then  UMainDMD.DisplayScene00Ex "greenlight.gif", "MULTIBALL", 0, 12, "I S   L I T" , 15, 1, 11, 1600, 14
+ 
+ 	End If
+ 
+@@ -13449,18 +13453,28 @@
+ 	UMainDMD.Init
+ 
+ 
+-	vid0 = UMainDMD.RegisterVideo(1, FALSE, "Trailer2.wmv")
+-	vid1 = UMainDMD.RegisterVideo(1, FALSE, "CrashLanding.wmv")
+-	vid2 = UMainDMD.RegisterVideo(1, FALSE, "ramp21.wmv")
+-	vid3 = UMainDMD.RegisterVideo(1, FALSE, "ramps.wmv")
+-	vid4 = UMainDMD.RegisterVideo(1, FALSE, "star1.wmv")
+-	vid5 = UMainDMD.RegisterVideo(1, FALSE, "arrow1.wmv")
+-	vid6 = UMainDMD.RegisterVideo(1, FALSE, "circle1.wmv")
+-	vid7 = UMainDMD.RegisterVideo(1, FALSE, "bluestars.wmv")
+-	vid8 = UMainDMD.RegisterVideo(1, FALSE, "blink1.wmv")
+-	vid9 = UMainDMD.RegisterVideo(1, TRUE, "robot1.wmv")
+-
+-
++'	vid0 = UMainDMD.RegisterVideo(1, FALSE, "Trailer2.gif")
++'	vid1 = UMainDMD.RegisterVideo(1, FALSE, "CrashLanding.gif")
++'	vid2 = UMainDMD.RegisterVideo(1, FALSE, "ramp21.gif")
++'	vid3 = UMainDMD.RegisterVideo(1, FALSE, "ramps.gif")
++'	vid4 = UMainDMD.RegisterVideo(1, FALSE, "star1.gif")
++'	vid5 = UMainDMD.RegisterVideo(1, FALSE, "arrow1.gif")
++'	vid6 = UMainDMD.RegisterVideo(1, FALSE, "circle1.gif")
++'	vid7 = UMainDMD.RegisterVideo(1, FALSE, "bluestars.gif")
++'	vid8 = UMainDMD.RegisterVideo(1, FALSE, "blink1.gif")
++'	vid9 = UMainDMD.RegisterVideo(1, TRUE, "robot1.gif")
++
++'For standalone
++	vid0 = "Trailer2.gif"
++	vid1 = "CrashLanding.gif"
++	vid2 = "ramp21.gif"
++	vid3 = "ramps.gif"
++	vid4 = "star1.gif"
++	vid5 = "arrow1.gif"
++	vid6 = "circle1.gif"
++	vid7 = "bluestars.gif"
++	vid8 = "blink1.gif"
++	vid9 = "robot1.gif"
+ 
+ 
+ 	Set fso = CreateObject("Scripting.FileSystemObject")
