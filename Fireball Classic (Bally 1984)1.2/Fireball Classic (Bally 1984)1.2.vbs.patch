@@ -1,0 +1,137 @@
+--- "./Fireball Classic (Bally 1984)1.2/Fireball Classic (Bally 1984)1.2.vbs.original"	2023-12-14 17:53:46.997379418 +0100
++++ "./Fireball Classic (Bally 1984)1.2/Fireball Classic (Bally 1984)1.2.vbs"	2023-12-14 17:53:46.997379418 +0100
+@@ -1,6 +1,48 @@
+ Option Explicit
+ Randomize
+ 
++if Table1.showdt = false then ramp008.visible = 0:ramp011.visible = 0
++
++ExecuteGlobal GetTextFile("controller.vbs")
++If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
++On Error Goto 0
++
++LoadVPM "01120100", "BALLY.VBS", 3.02
++
++Const cGameName="fbclass",cCredits="Fireball Classic (Bally 1984) by bigus1",UseSolenoids=2,UseLamps=1,UseGI=0,UseSync=0
++Const SSolenoidOn="solon",SSolenoidOff="soloff",SFlipperOn="FlipperUp",SFlipperOff="FlipperDown",sCoin="coin3"
++
++Set LampCallback=GetRef("UpdateMultipleLamps")
++
++Sub SolLeftF(Enabled)
++If Enabled Then PlaySound"LeftFlipper"
++vpmSolFlipper LeftFlipper,nothing,Enabled
++End Sub
++
++Sub SolRightF(Enabled)
++If Enabled Then PlaySound"RightFlipper"
++vpmSolFlipper RightFlipper,nothing,Enabled
++End Sub
++
++Const sKnocker=15'11
++Const SLSling=11'7
++Const sRSling=12'8
++Const sYLBumper=8'4
++Const sBBumper=10'6
++Const sYRBumper=9'5
++Const sRSaucer=2'2
++Const sLSaucer=1'1
++Const sGate=17'12
++Const sOuthole=13'9
++Const sBallRelease=14'10
++Const sRKicker=7'3
++Const sCLO=18'13
++Const sEnable=19'14
++
++Dim bsTrough,bsLSaucer,bsRSaucer
++Dim  Turntable,  MagnetsOn, MotorDirection,d
++
++
+ Class cTurntable
+ 	private cX, cY, cSize, cMaxSpeed, cSpinUp, cSpinDown
+ 	private cTempX, cTempY, cCurspeed, cMotorOn, cClockwise
+@@ -94,62 +136,7 @@
+ 	End Sub
+ End Class
+ 
+-if Table1.showdt = false then ramp008.visible = 0:ramp011.visible = 0
+-
+-ExecuteGlobal GetTextFile("controller.vbs")
+-If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+-On Error Goto 0
+-
+-LoadVPM "01120100", "BALLY.VBS", 3.02
+-
+-Const cGameName="fbclass",cCredits="Fireball Classic (Bally 1984) by bigus1",UseSolenoids=2,UseLamps=1,UseGI=0,UseSync=0
+-Const SSolenoidOn="solon",SSolenoidOff="soloff",SFlipperOn="FlipperUp",SFlipperOff="FlipperDown",sCoin="coin3"
+-
+-Set LampCallback=GetRef("UpdateMultipleLamps")
+  
+-SolCallback(sKnocker)="vpmSolSound ""knocker"","
+-SolCallback(sLSling)="vpmSolSound ""sling""," 
+-SolCallback(sRSling)="vpmSolSound""sling""," 
+-SolCallback(sYLBumper)="vpmSolSound ""jet3"","  
+-SolCallback(sBBumper)="vpmSolSound ""jet3"","  
+-SolCallback(sYRBumper)="vpmSolSound ""jet3"","  
+-SolCallBack(sRSaucer)="bsRSaucer.SolOut"
+-SolCallBack(sLSaucer)="bsLSaucer.SolOut"
+-SolCallback(sGate)="vpmSolDiverter Gate,""diverter"","
+-SolCallback(sOuthole)="SolBallEntry"
+-SolCallback(sBallRelease)="bsTrough.SolOut"
+-SolCallback(sRKicker)="vpmSolAutoPlunger Plunger1, 0,"
+-SolCallback(sLLFlipper)="SolLeftF" 
+-SolCallback(sLRFlipper)="SolRightF" 
+-SolCallback(sEnable)="vpmNudge.SolGameOn"
+-
+-Sub SolLeftF(Enabled)
+-If Enabled Then PlaySound"LeftFlipper"
+-vpmSolFlipper LeftFlipper,nothing,Enabled
+-End Sub
+-
+-Sub SolRightF(Enabled)
+-If Enabled Then PlaySound"RightFlipper"
+-vpmSolFlipper RightFlipper,nothing,Enabled
+-End Sub
+-
+-Const sKnocker=15'11
+-Const SLSling=11'7
+-Const sRSling=12'8
+-Const sYLBumper=8'4
+-Const sBBumper=10'6
+-Const sYRBumper=9'5
+-Const sRSaucer=2'2
+-Const sLSaucer=1'1
+-Const sGate=17'12
+-Const sOuthole=13'9
+-Const sBallRelease=14'10
+-Const sRKicker=7'3
+-Const sCLO=18'13
+-Const sEnable=19'14
+-
+-Dim bsTrough,bsLSaucer,bsRSaucer
+-Dim  Turntable,  MagnetsOn, MotorDirection,d
+ Sub Table1_Init()
+ 	KickerLane.CreateBall
+ KickerLane.Kick 180,4
+@@ -222,6 +209,22 @@
+ Plunger1.Pullback
+ End Sub 
+ 
++SolCallback(sKnocker)="vpmSolSound ""knocker"","
++SolCallback(sLSling)="vpmSolSound ""sling""," 
++SolCallback(sRSling)="vpmSolSound""sling""," 
++SolCallback(sYLBumper)="vpmSolSound ""jet3"","  
++SolCallback(sBBumper)="vpmSolSound ""jet3"","  
++SolCallback(sYRBumper)="vpmSolSound ""jet3"","  
++SolCallBack(sRSaucer)="bsRSaucer.SolOut"
++SolCallBack(sLSaucer)="bsLSaucer.SolOut"
++SolCallback(sGate)="vpmSolDiverter Gate,""diverter"","
++SolCallback(sOuthole)="SolBallEntry"
++SolCallback(sBallRelease)="bsTrough.SolOut"
++SolCallback(sRKicker)="vpmSolAutoPlunger Plunger1, 0,"
++SolCallback(sLLFlipper)="SolLeftF" 
++SolCallback(sLRFlipper)="SolRightF" 
++SolCallback(sEnable)="vpmNudge.SolGameOn"
++
+ Sub SpindiskTimer_timer
+ spindisk.ObjRotZ = spindisk.ObjRotZ -1
+ End Sub
