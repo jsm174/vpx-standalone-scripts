@@ -1,0 +1,43 @@
+--- "Cybernaut darkmod.vbs.original"	2023-12-22 11:02:09.720591131 +0100
++++ "Cybernaut darkmod.vbs"	2023-12-22 10:59:30.264146189 +0100
+@@ -43,9 +43,17 @@
+ End if
+ 
+ 
+-
+-
+-
++Const sSaucer=9'1
++Const sLT=10'2              drop target reset
++Const sBumper=11'3         
++Const sRightSlingshot=12'4
++Const sLeftSlingshot=13'5
++Const sBallRelease=14'6     outhole
++Const sKnocker=15'7
++Const sGate=17'8            left gate
++Const sCLo=18'9             ?
++Const sEnable=19'10         K1 reley ( flipper enable )
++Const sRightGate=20'11
+ 
+ 
+ '*************************************************************
+@@ -83,19 +91,6 @@
+ End Sub
+ 
+ 
+-Const sSaucer=9'1
+-Const sLT=10'2              drop target reset
+-Const sBumper=11'3         
+-Const sRightSlingshot=12'4
+-Const sLeftSlingshot=13'5
+-Const sBallRelease=14'6     outhole
+-Const sKnocker=15'7
+-Const sGate=17'8            left gate
+-Const sCLo=18'9             ?
+-Const sEnable=19'10         K1 reley ( flipper enable )
+-Const sRightGate=20'11
+-
+-
+ '**********************************************************************************************************
+ 
+  Sub FlipperTimer_Timer
