@@ -1,0 +1,43 @@
+--- "Lawman (Gottlieb 1971) 1.1.vbs.original"	2023-12-29 19:47:13.154001570 +0100
++++ "Lawman (Gottlieb 1971) 1.1.vbs"	2023-12-29 15:54:25.325130056 +0100
+@@ -340,23 +340,23 @@
+ end sub
+ 
+ Sub MusicOn
+-	If PUPStatus=true then Exit Sub
+-    Dim FileSystemObject, folder, r, ct, file, musicPath
+-    Set FileSystemObject = CreateObject("Scripting.FileSystemObject")
+-    musicPath = FileSystemObject.GetAbsolutePathName(".") ' get path to Visual Pinball\table
+-    musicPath = Left(musicPath, Len(musicPath) - 6) + "music\" 'get path to Visual Pinball\music
+-    Set folder = FileSystemObject.GetFolder(musicPath + myMusicFolder)
+-    Randomize
+-    r = INT(folder.Files.Count * Rnd + 1)
+-    ct=1
+-    For Each file in folder.Files
+-        if ct = r Then 
+-            if (LCase(Right(file,4))) = ".mp3" Then ' can only play mp3 files
+-               PlayMusic Mid(file, Len(musicPath) + 1, 1000) 
+-            End If 
+-       End If
+-   ct = ct + 1
+-   Next
++' 	If PUPStatus=true then Exit Sub
++'     Dim FileSystemObject, folder, r, ct, file, musicPath
++'     Set FileSystemObject = CreateObject("Scripting.FileSystemObject")
++'     musicPath = FileSystemObject.GetAbsolutePathName(".") ' get path to Visual Pinball\table
++'     musicPath = Left(musicPath, Len(musicPath) - 6) + "music\" 'get path to Visual Pinball\music
++'     Set folder = FileSystemObject.GetFolder(musicPath + myMusicFolder)
++'     Randomize
++'     r = INT(folder.Files.Count * Rnd + 1)
++'     ct=1
++'     For Each file in folder.Files
++'         if ct = r Then 
++'             if (LCase(Right(file,4))) = ".mp3" Then ' can only play mp3 files
++'                PlayMusic Mid(file, Len(musicPath) + 1, 1000) 
++'             End If 
++'        End If
++'    ct = ct + 1
++'    Next
+  End Sub
+  
+ Sub Table1_MusicDone() 
