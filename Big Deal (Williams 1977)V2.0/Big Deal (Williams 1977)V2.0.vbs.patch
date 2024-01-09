@@ -1,0 +1,11 @@
+--- "Big Deal (Williams 1977)V2.0.vbs.original"	2024-01-09 10:55:27.519257992 +0100
++++ "Big Deal (Williams 1977)V2.0.vbs"	2024-01-09 10:53:54.812858241 +0100
+@@ -1063,7 +1063,7 @@
+ End Sub
+ 
+ Sub Display_Match()
+-	If (Match \ 10) < 5 Then  MatchReel1.SetValue(Match \ 10) + 1  Else  MatchReel2.SetValue(Match \ 10) + 1
++	If (Match \ 10) < 5 Then  MatchReel1.SetValue 1 + (Match \ 10)  Else  MatchReel2.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100
