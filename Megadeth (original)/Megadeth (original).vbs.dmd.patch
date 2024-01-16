@@ -1,5 +1,5 @@
---- "./Megadeth (original).vbs.original"	2023-12-15 08:12:05.320425296 +0100
-+++ "./Megadeth (original).vbs"	2023-12-15 08:12:02.283761725 +0100
+--- "./Megadeth (original).vbs"	2024-01-16 23:03:02.228567594 +0100
++++ "./Megadeth (original).vbs.dmd"	2023-12-15 07:55:37.959933763 +0100
 @@ -66,13 +66,13 @@
  Randomize
  
