@@ -1,0 +1,20 @@
+--- "AC-DC Pro Vault-1.0.vbs.original"	2024-01-16 16:16:39.127304673 +0100
++++ "AC-DC Pro Vault-1.0.vbs"	2024-01-16 16:10:30.387364926 +0100
+@@ -89,6 +89,8 @@
+ Const Ballsize = 51
+ Const BallMass = 1.1
+ 
++Const cGameName = "acd_170"
++
+ Const UseVPMModSol = True
+ Dim UseVPMDMD,CustomDMD,DesktopMode
+ DesktopMode = ACDC.ShowDT : CustomDMD = False
+@@ -118,8 +120,6 @@
+ '						 INIT TABLE
+ '************************************************************************
+ 
+-Const cGameName = "acd_170"
+-
+ Dim bsTrough, bsTEject, PlungerIM
+ 
+ Sub ACDC_Init
