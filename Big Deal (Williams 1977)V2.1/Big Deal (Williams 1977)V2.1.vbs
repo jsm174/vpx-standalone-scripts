@@ -1,5 +1,5 @@
 ' ******************************************************************
-'       VPX7 - version by Klodo81 2022, Big Deal version 2.0
+'       VPX7 - version by Klodo81 2022, Big Deal version 2.1
 '
 '                 VISUAL PINBALL X EM Script Based on
 '               JPSalas Basic EM script up to 4 players		          
@@ -25,6 +25,9 @@
 '- New images Playfield and Plastics
 '- Added Playfield Mesh
 '- Some others things
+'
+'Version 2.1 : mod table only
+'- Added "Same player shoots again" on Backglass DT 
 ' ******************************************************************
 
 Option Explicit
@@ -124,7 +127,7 @@ Dim bBallSaverActive
 Sub Table1_Init()
     Dim x
 
-    ' Init som objects, like walls, targets
+    ' Init some objects, like walls, targets
     VPObjects_Init
     LoadEM
 
@@ -918,6 +921,7 @@ Sub EndOfBall2
         ' turn off light if no more extra balls
         If(ExtraBallsAwards(CurrentPlayer) = 0) Then
 			LightShootAgain.State = 0
+			ShootAgainR.SetValue 0
 			If B2SOn then
 				Controller.B2SSetShootAgain 0
 			End If
@@ -1253,13 +1257,9 @@ Sub ResetScores
     ScoreReel4.ResetToZero
     If B2SOn then
         Controller.B2SSetScorePlayer1 0
-        Controller.B2SSetScoreRolloverPlayer1 0
         Controller.B2SSetScorePlayer2 0
-        Controller.B2SSetScoreRolloverPlayer2 0
         Controller.B2SSetScorePlayer3 0
-        Controller.B2SSetScoreRolloverPlayer3 0
         Controller.B2SSetScorePlayer4 0
-        Controller.B2SSetScoreRolloverPlayer4 0
 		Controller.B2SSetData 81,0
 		Controller.B2SSetData 82,0
 		Controller.B2SSetData 83,0
@@ -1343,6 +1343,7 @@ Sub AwardExtraBall()
         ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
         bExtraBallWonThisBall = True
 		LightShootAgain.State = 1
+		ShootAgainR.SetValue 1
         If B2SOn Then
             Controller.B2SSetShootAgain 1
         End If		
@@ -1372,6 +1373,7 @@ Sub StartAttractMode()
         Controller.B2SSetBallInPlay 0
 		Controller.B2SSetPlayerUp 0
         Controller.B2SSetCanPlay 1
+		Controller.B2SSetShootAgain 0
 		Controller.B2SSetTilt 0
 		Controller.B2SSetData 81,1
 		Controller.B2SSetData 82,1
@@ -1380,6 +1382,7 @@ Sub StartAttractMode()
     end if
     GameOverR.SetValue 1
     BallInPlayR.SetValue 0
+	ShootAgainR.SetValue 0
 	pl1.State = 0:pl2.State = 0:pl3.State = 0:pl4.State = 0
     cp1.State = 1 : cp2.State = 0 : cp3.State = 0 : cp4.State = 0
 	TiltReel.SetValue 0	
