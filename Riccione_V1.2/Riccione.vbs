@@ -53,8 +53,10 @@ End Sub
 Const Tiempo = 27 '30 seconds, 20 seconds o 10 seconds
 
 ' Constant values
+' for DOF users: make a new line in VPMAlias.txt "T1D_123_riccione,T1D_123" to use existing DOF values from 1-2-3
+
 Const TableName = "Riccione" ' used to load and record highscore and credits
-Const cGameName = "Riccione" ' for B2S
+Const cGameName = "T1D_123_riccione" ' for B2S
 Const MaxPlayers = 1        
 Const MaxMultiplier = 5     
 Const BallsPerGame = 5      
@@ -851,8 +853,6 @@ Sub CreateNewBall()
     PlaySoundAt SoundFXDOF ("fx_Ballrel", 104, DOFPulse, DOFContactors), BallRelease
     BallRelease.Kick 90, 4
 	
-	li3.State = 0 
-	li4.State = 0
 	bBallSaverActive = True
 	BallSaver.State = 1
 	vpmtimer.addtimer 15000, "TurnOffBallSaver '"
@@ -1027,6 +1027,11 @@ Sub EndOfGame()
     bJustStarted = False
 	ResetNewBallLights
 	StopSound "riccione_instrumental"
+	
+	'reset BAR Lights
+		li10.State = 1
+		li11.State = 1
+		li12.State = 1
 
 	'Strandkabine zurücksetzen
 		Kicker001.DestroyBall	' Kick the ball (direction, force)
@@ -1123,7 +1128,7 @@ Sub Clear_Match()
 End Sub
 
 Sub Display_Match()
-    MatchReel.SetValue(Match \ 10) + 1
+    MatchReel.SetValue 1 + (Match \ 10)
     If B2SOn then
         If Match = 0 then
             Controller.B2SSetMatch 100
@@ -1364,6 +1369,8 @@ Sub AwardExtraBall()
         DOF 230, DOFPulse
         ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
         bExtraBallWonThisBall = True
+		li3.State = 0 
+		li4.State = 0
     'LightShootAgain.State = 1
     'If B2SOn then
     '    Controller.B2SSetShootAgain 1
@@ -1707,6 +1714,7 @@ Sub Trigger8_Hit
     If li8.State Then
         AwardSpecial
         ResetAdvance
+		AddScore 2000
     End If
 End Sub
 
@@ -1720,6 +1728,7 @@ Sub Trigger9_Hit
     If li9.State Then
         AwardSpecial
         ResetAdvance
+		AddScore 2000
     End If
 End Sub
 
@@ -1793,7 +1802,9 @@ Sub CheckTopLights 'BAR Lichter beleuchten die Bumper und die speziellen Outlane
 			PlaySound "sottoilsole"
             SpecialTimer_Timer
             SpecialTimer.Enabled = 1
+			If B2sOn then
 			Controller.B2SSetData 77, 1
+			End If
         End If
     End If
 End Sub
@@ -1840,7 +1851,7 @@ End Sub
 
 Sub StopSpecialTimer
     StopSound "sottoilsole"
-	Controller.B2SSetData 77, 0
+	
 	PlaySound "riccione_instrumental",-1
     Dim x
     For each x in bumperlights
@@ -1850,6 +1861,7 @@ Sub StopSpecialTimer
         x.State = 0
     Next
     If B2SOn then
+	Controller.B2SSetData 77, 0
         For x = 50 to 59
             Controller.B2SSetData x, 0
         next
