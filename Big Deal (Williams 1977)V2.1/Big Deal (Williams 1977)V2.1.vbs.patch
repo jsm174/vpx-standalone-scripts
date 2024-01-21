@@ -1,6 +1,6 @@
---- "Big Deal (Williams 1977)V2.0.vbs.original"	2024-01-09 10:55:27.519257992 +0100
-+++ "Big Deal (Williams 1977)V2.0.vbs"	2024-01-09 10:53:54.812858241 +0100
-@@ -1063,7 +1063,7 @@
+--- "Big Deal (Williams 1977)V2.1.vbs.original"	2024-01-20 21:01:36.247492747 +0100
++++ "Big Deal (Williams 1977)V2.1.vbs"	2024-01-20 21:00:33.097816925 +0100
+@@ -1067,7 +1067,7 @@
  End Sub
  
  Sub Display_Match()
