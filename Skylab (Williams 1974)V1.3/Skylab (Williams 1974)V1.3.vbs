@@ -1,5 +1,5 @@
 ' ******************************************************************
-'       VPX7 - version by Klodo81 2023, Skylab version 1.0
+'       VPX7 - version by Klodo81 2023, Skylab version 1.3
 '
 '                 VISUAL PINBALL X EM Script Based on
 '               JPSalas Basic EM script up to 4 players		          
@@ -7,6 +7,18 @@
 '
 '          Skylab / IPD No.2202 / June 14, 1974 / 1 Player   
 '
+'Version 1.1
+' - Added rolling sound
+'
+'Version 1.2
+' - "Balls To Play" on the Backglass counting down rather than up
+' - HorseshoeTimer must be disabled by default to have 2/3 balls instead of 0/5 balls in Horseshoe
+' - If 100000 Lit, it stay lit until attrack mode stop
+'
+'Version 1.3
+' - Added Playfield Mesh
+' - Updated sound files fx_ballrolling2 to 7 as ballrolling1
+' - Some others things
 ' ******************************************************************
 
 Option Explicit
@@ -44,6 +56,7 @@ End Sub
 Const BallsPerGame = 5     ' to play with 3 or 5 balls
 Const AttractMode = 1      ' 0 = no attract mode
 Const FreePlay = False     ' Free play or coins
+
 '*************************************************************
 
 ' Constants
@@ -110,14 +123,19 @@ Sub Table1_Init()
 
     ' load highscores and credits
     Loadhs
-    ScoreReel1.SetValue HSScore(1)
+
 	If HSScore(1) >= 100000 Then
         RolloverReel1.setvalue 1
+		ScoreReel1.SetValue (HSScore(1) - 100000)
+	Else
+		ScoreReel1.SetValue HSScore(1)
     End If
     If B2SOn then
-        Controller.B2SSetScorePlayer 1, HSScore(1)
         If HSScore(1) >= 100000 then
             Controller.B2SSetScoreRolloverPlayer1 1
+			Controller.B2SSetScorePlayer 1, (HSScore(1) - 100000)
+		Else
+			Controller.B2SSetScorePlayer 1, HSScore(1)
         end if
     end if
     UpdateCredits
@@ -313,14 +331,14 @@ Sub Table1_KeyDown(ByVal Keycode)
             If((PlayersPlayingGame <MaxPlayers) AND(bOnTheFirstBall = True) ) Then
                 If(bFreePlay = True) Then
                     PlayersPlayingGame = PlayersPlayingGame + 1    
-                    UpdateBallInPlay
+                    UpdateBallsToPlay
 					UpdatePlayers
                 Else
                     If(Credits> 0) then
                         PlayersPlayingGame = PlayersPlayingGame + 1
                         Credits = Credits - 1
                         UpdateCredits
-                        UpdateBallInPlay
+                        UpdateBallsToPlay
 						UpdatePlayers
 						Playsound"BallyStartButtonPlayers2-4 plus 10dB"
                     End If
@@ -872,7 +890,7 @@ Sub ResetForNewGame()
     Next
     BonusMultiplier = 1
     Bonus = 0
-    UpdateBallInPlay
+    UpdateBallsToPlay
 	UpdatePlayers	
     Clear_Match
 
@@ -915,7 +933,7 @@ End Sub
 Sub CreateNewBall()
     BallRelease.CreateSizedBallWithMass BallSize / 2, BallMass
     BallsOnPlayfield = BallsOnPlayfield + 1
-    UpdateBallInPlay
+    UpdateBallsToPlay
 	vpmtimer.addtimer 1000, "PlaySoundAt SoundFXDOF (""fx_Ballrel"", 104, DOFPulse, DOFContactors), Plunger : BallRelease.Kick 90, 4 '"
 End Sub
 
@@ -1062,17 +1080,6 @@ Sub EndOfGame()
     ' start the attract mode
     StartAttractMode
 End Sub
-
-' Function to calculate the balls left to 10 balls max
-Function Balls
-    Dim tmp
-    tmp = BallsPerGame - BallsRemaining(CurrentPlayer) + ExtraBallsAwards(CurrentPlayer) + 1
-    If tmp> 10 Then
-        Balls = 10
-    Else
-        Balls = tmp
-    End If
-End Function
 
 ' check the highscore
 Sub CheckHighscore
@@ -1338,8 +1345,8 @@ Sub UpdateCredits
     end if
 End Sub
 
-Sub UpdateBallInPlay
-    Select Case(Balls)
+Sub UpdateBallsToPlay
+    Select Case(BallsRemaining(CurrentPlayer))
         Case 1:BallInPlayR.SetValue 1
         Case 2:BallInPlayR.SetValue 2
         Case 3:BallInPlayR.SetValue 3
@@ -1352,9 +1359,11 @@ Sub UpdateBallInPlay
         Case 10:BallInPlayR.SetValue 10
     End Select
     If B2SOn Then
-        Controller.B2SSetBallInPlay Balls
+        Controller.B2SSetBallInPlay BallsRemaining(CurrentPlayer)
     End If
 End Sub
+
+
 
 Sub UpdatePlayers
     If B2SOn Then	
@@ -1367,10 +1376,11 @@ End Sub
 '*************************
 
 Sub AwardExtraBall()
-	If bExtraBallWonThisBall = False Then
-		PlaySound SoundfXDOF ("fx_knocker", 110, DOFPulse, DOFKnocker)
+	If bExtraBallWonThisBall = False And BallsRemaining(CurrentPlayer) < 10 Then
+		'PlaySound SoundfXDOF ("fx_knocker", 110, DOFPulse, DOFKnocker)
 		ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
 		BallsRemaining(CurrentPlayer) = BallsRemaining(CurrentPlayer) + 1
+		UpdateBallsToPlay
 	End If
 	bExtraBallWonThisBall = True
 End Sub
@@ -1409,12 +1419,10 @@ Sub StartAttractMode()
         Controller.B2SSetBallInPlay 0
 		Controller.B2SSetTilt 0
 		Controller.B2SSetData 81,1
-		Controller.B2SSetScoreRolloverPlayer1 0
     end if
     GameOverR.SetValue 1
     BallInPlayR.SetValue 0
-	TiltReel.SetValue 0
-	RolloverReel1.setvalue 0 	
+	TiltReel.SetValue 0 	
 End Sub
 
 Sub StopAttractMode()
