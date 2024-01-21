@@ -1,6 +1,6 @@
---- "Pat Hand (Williams 1975)V1.3.vbs.original"	2023-11-27 09:16:26.087893639 +0100
-+++ "Pat Hand (Williams 1975)V1.3.vbs"	2023-11-27 09:11:50.079892096 +0100
-@@ -1056,7 +1056,7 @@
+--- "Pat Hand (Williams 1975)V1.4.vbs.original"	2024-01-20 20:55:02.605056615 +0100
++++ "Pat Hand (Williams 1975)V1.4.vbs"	2024-01-20 20:53:32.574674221 +0100
+@@ -1081,7 +1081,7 @@
  End Sub
  
  Sub Display_Match()
