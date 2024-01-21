@@ -1,0 +1,43 @@
+--- "./Bad Cats (Williams 1989) VPW 3.0.vbs"	2024-01-16 18:41:22.281728413 +0100
++++ "./Bad Cats (Williams 1989) VPW 3.0.vbs.dmd"	2024-01-15 13:33:14.335165006 +0100
+@@ -384,9 +384,10 @@
+ End Sub
+ 
+ Dim CabinetMode, DesktopMode: DesktopMode = Table1.ShowDT
+-Dim UseVPMDMD, VRRoom
++'Dim UseVPMDMD, VRRoom
++Dim VRRoom
+ If RenderingMode = 2 Then  VRRoom = VRRoomChoice Else VRRoom = 0 					
+-If VRRoom <> 0 Then UseVPMDMD = True Else UseVPMDMD = DesktopMode
++If VRRoom <> 0 Then UseVPMColoredDMD = True Else UseVPMColoredDMD = DesktopMode
+ If Not DesktopMode and VRRoom=0 Then CabinetMode=1 Else CabinetMode=0
+ 
+ 
+@@ -416,12 +417,26 @@
+ Const UseSync = 1
+ Const HandleMech = 0
+ 
++'Colored Dmd Hack
++'to have a colored Dmd, put the serum diner_l4.cRZ file in your pinmame/altcolor/diner_l4 folder
++Dim UseVPMColoredDMD
++UseVPMColoredDMD=DesktopMode
++Sub ImplicitDMD_Init
++   Me.x = 20
++   Me.y = 120
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++   Me.intensityScale = 2
++End Sub
++'End of Colored Dmd Hack
+ 
+ LoadVPM "03060000", "S11.vbs", 3.26
+ 
+ Dim bsTrash
+ Dim BCBall1, gBOT
+-Const cGameName = "bcats_l5"
++'Const cGameName = "bcats_l5"
++Const cGameName = "bcats_tcm"
+ 
+ 
+ 'Standard Sounds
