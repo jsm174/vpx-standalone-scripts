@@ -3,7 +3,7 @@ Table patches for VPX Standalone
 
 Since [Visual Pinball](https://github.com/vpinball/vpinball) Standalone is using the [wine](https://www.winehq.org/) vbscript engine there are some slight [incompatibilities](https://github.com/vpinball/vpinball/blob/10.8.1/standalone/README.md#background). Luckily only a few tables require modifications.
 
-This repositoy contains the original script, patch and fixed script for tables that do not run properly by default.
+This repository contains the original script, patch and fixed script for tables that do not run properly by default.
 
 ## Installation of a patch
 
