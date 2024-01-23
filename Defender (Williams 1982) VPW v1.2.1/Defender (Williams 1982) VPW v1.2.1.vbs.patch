@@ -1,0 +1,42 @@
+--- "Defender (Williams 1982) VPW v1.2.1.vbs.original"	2024-01-23 10:32:54.541102040 +0100
++++ "Defender (Williams 1982) VPW v1.2.1.vbs"	2024-01-23 10:32:29.604305401 +0100
+@@ -4437,8 +4437,8 @@
+ 				Case 18,19,20
+ 					j = 3
+ 				End Select
+-				.GetImage("Seg" & cstr(i)).SetAlignedPosition ((i - 14) * 7) + j,0,0
+-				.GetImage("Seg" & cstr(i + 7)).SetAlignedPosition ((i - 14) * 7) + 77 + j,0,0
++				.GetImage("Seg" & cstr(i)).SetAlignedPosition j + ((i - 14) * 7),0,0
++				.GetImage("Seg" & cstr(i + 7)).SetAlignedPosition 77 + j + ((i - 14) * 7),0,0
+ 				'large scores
+ 				.AddActor FlexDMD.NewImage("SegL" & cstr(i), "VPX.DMD_L_Blank")
+ 				.AddActor FlexDMD.NewImage("SegL" & cstr(i + 7), "VPX.DMD_L_Blank")
+@@ -4450,8 +4450,8 @@
+ 				Case 18,19,20
+ 					j = 8
+ 				End Select
+-				.GetImage("SegL" & cstr(i)).SetAlignedPosition ((i - 14) * 16) + j,9,0
+-				.GetImage("SegL" & cstr(i + 7)).SetAlignedPosition ((i - 14) * 16) + j,9,0
++				.GetImage("SegL" & cstr(i)).SetAlignedPosition j + ((i - 14) * 16),9,0
++				.GetImage("SegL" & cstr(i + 7)).SetAlignedPosition j + ((i - 14) * 16),9,0
+ 				.GetImage("SegL" & cstr(i)).Visible = False
+ 				.GetImage("SegL" & cstr(i + 7)).Visible = False
+ 			Next 
+@@ -4473,7 +4473,7 @@
+ 			'credit and ball/match number
+ 			For i = 28 to 29
+ 				.AddActor FlexDMD.NewImage("Ball" & cstr(i), "VPX.DMD_S_Blank")
+-				.GetImage("Ball" & cstr(i)).SetAlignedPosition ((i - 28) * 7) + 42,25,0
++				.GetImage("Ball" & cstr(i)).SetAlignedPosition 42 + ((i - 28) * 7),25,0
+ 				.GetImage("Ball" & cstr(i)).Visible = False
+ 			Next
+ 			.AddActor FlexDMD.NewImage("BallMatch", "VPX.DMD_Image_Match")
+@@ -4481,7 +4481,7 @@
+ 			.GetImage("BallMatch").Visible = False
+ 			For i = 30 to 31
+ 				.AddActor FlexDMD.NewImage("Credit" & cstr(i), "VPX.DMD_S_Blank")
+-				.GetImage("Credit" & cstr(i)).SetAlignedPosition ((i - 30) * 7) + 115,25,0
++				.GetImage("Credit" & cstr(i)).SetAlignedPosition 115 + ((i - 30) * 7),25,0
+ 				.GetImage("Credit" & cstr(i)).Visible = False
+ 			Next
+ 			.AddActor FlexDMD.NewImage("CreditsWave", "VPX.DMD_Image_Credits")
