@@ -1,0 +1,39 @@
+--- "./The Goonies Never Say Die Pinball (VPW 2021) v1.4.vbs.original"	2024-01-27 10:15:50.658349790 +0100
++++ "./The Goonies Never Say Die Pinball (VPW 2021) v1.4.vbs"	2024-01-27 10:13:22.198402827 +0100
+@@ -104,6 +104,27 @@
+ '1.3.13 - fluffhead35 - Fixed drop targets when they are being immediately raised again.  Race condition found by apophis
+ 'Release v1.4
+ 
++'///////////////////////-----Hack to display FlexDMD on Vpx-standalone-----///////////////////////
++Sub ImplicitDMD_Init
++   Me.x = 30
++   Me.y = 30
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.fontColor = RGB(255, 255, 255)
++   Me.visible = true
++   Me.intensityScale = 1.5
++   Me.timerenabled = true
++End Sub
++
++Sub ImplicitDMD_Timer
++   Dim DMDp: DMDp = FlexDMD.DMDColoredPixels
++   If Not IsEmpty(DMDp) Then
++      DMDWidth = FlexDMD.Width
++      DMDHeight = FlexDMD.Height
++      DMDColoredPixels = DMDp
++   End If
++End Sub
++'///////////////////////-----End of Hack to display FlexDMD on Vpx-standalone-----///////////////////////
+ 
+ Const UsingROM = False
+ 
+@@ -131,7 +152,7 @@
+ Const myVersion = "1.4"
+ Const MaxPlayers = 4      ' from 1 to 4
+ Const BallSaverTime = 10  ' in seconds
+-Const BallsPerGame = 3    ' usually 3 or 5
++Const BallsPerGame = 10    ' usually 3 or 5
+ 
+ '///////////////////////-----General Sound Options-----///////////////////////
+ '// VolumeDial:
