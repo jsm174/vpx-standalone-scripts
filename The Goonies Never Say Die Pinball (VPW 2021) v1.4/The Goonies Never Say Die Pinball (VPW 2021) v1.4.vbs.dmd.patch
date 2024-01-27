@@ -32,8 +32,6 @@
  Const myVersion = "1.4"
  Const MaxPlayers = 4      ' from 1 to 4
  Const BallSaverTime = 10  ' in seconds
--Const BallsPerGame = 3    ' usually 3 or 5
-+Const BallsPerGame = 10    ' usually 3 or 5
  
  '///////////////////////-----General Sound Options-----///////////////////////
  '// VolumeDial:
