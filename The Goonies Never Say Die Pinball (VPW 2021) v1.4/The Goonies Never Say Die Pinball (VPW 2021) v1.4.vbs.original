@@ -87,9 +87,25 @@ Randomize
 '
 'Thank you to Rothbauerw and nFozzy for the physics. Thanks to Fleep for sounds.
 
-
+'Change Log
 '1.2.1 - Wylte	- Shadow update, rolling sounds broken out (sub call added to rdampen timer), narnia check added to ballrolling, diverter timer saved from shadows
 '1.2.2 - fluffhead35 - updated physics and ballroll sounds and wireramp sounds and logic.  Added GIOn Sound. Added apophis slingshot corrections.
+'1.3.1 - DGrimmReaper - Hybrid VR
+'1.3.2 - passion4pins - Fixed cabinet alignments
+'1.3.3 - updated EOSTnew to 1.2.  Added FlipperCradleCollision code. Set Primary_environment to 150 objrotz.
+'1.3.4 - DGrimmReaper - script edits to hide lockdown bar and rails in VR and cabinet
+'1.3.5 - somatik - standalone script edits (edited table name in Table Info)
+'1.3.6 - fluffhead35 - updating standup and drop target physics
+'1.3.8 - sixtoe - added new wire ramp
+'1.3.9 - fluffhead35 - renamed layers for targets and hid ramp001 and ramp002
+'1.3.10 - fluffhead35 - added wall to make balls drop better out of wire ramp.  Moved ramp triggers to be on ramp.
+'1.3.11 - apophis - Spaced out multiball ball releases. Updated physics scripts. Fleep VolumeDial fix.
+'1.3.12 - fluffhead35 - Added inreact to stop ball collision sound on wire ramp when ball is locked.
+'1.3.13 - fluffhead35 - Fixed drop targets when they are being immediately raised again.  Race condition found by apophis
+'Release v1.4
+
+
+Const UsingROM = False
 
 Const BallSize = 50
 Const BallMass = 1
@@ -112,7 +128,7 @@ End Sub
 
 Const cGameName = "goonies"
 Const TableName = "The_Goonies"
-Const myVersion = "1.03"
+Const myVersion = "1.4"
 Const MaxPlayers = 4      ' from 1 to 4
 Const BallSaverTime = 10  ' in seconds
 Const BallsPerGame = 3    ' usually 3 or 5
@@ -138,28 +154,63 @@ Const AmbientBallShadowOn = 1		'0 = Static shadow under ball ("flasher" image, l
 Const enablePupPack		= False
 Const enablePupDMD      = False ' Enable PupPack must be true if this is set to true
 
-Const enableFlexDmd		= True
+Const enableFlexDmd		= True  
 
-Const enableEyeColors	= False
-Const enableRampColors	= False
+Const enableEyeColors	= True
+Const enableRampColors	= True
 
 Dim DisableLUTSelector
 DisableLUTSelector = 0  ' Disables the ability to change LUT option with magna saves in game when set to 1
 
+'----- VR Room Options and Auto-Detect -----
+Dim VRRoom, VR_Obj
 
+VRRoom = 1 '1 = 360 Sphere, 0 = Minimal Room
+If RenderingMode = 2 Then
 
-if Table1.ShowDT Then
+	sidewalls.visible = 0
+	backwall.visible = 0
+	Shadows001.visible = 0
+	d1.visible = 0
+    d2.visible = 0
+    DispDmd2.visible = 0
+	LeftRailtop.visible = 0
+	RightRailtop.visible = 0
+	Ramp008.visible = 0
+
+	For Each VR_Obj in VRCabinet : VR_Obj.Visible = 1 : Next
+
+	If VRRoom = 1 Then
+		For Each VR_Obj in VRSphere : VR_Obj.Visible = 1 : Next
+		For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
+	Else
+		For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 1 : Next
+		For Each VR_Obj in VRSphere : VR_Obj.Visible = 0 : Next
+	End if
+Else
+	For Each VR_Obj in VRCabinet : VR_Obj.Visible = 0 : Next
+	For Each VR_Obj in VRMinRoom : VR_Obj.Visible = 0 : Next
+	For Each VR_Obj in VRSphere : VR_Obj.Visible = 0 : Next
+End If
+
+if Table1.ShowDT and RenderingMode <> 2 Then
 	hdisplay1.visible =1
 	display1.visible = 1
 	hdisplay2.visible = 1
 	display2.visible = 1
 	DispDmd1.visible = 0
+	LeftRailtop.visible = 1
+	RightRailtop.visible = 1
+	Ramp008.visible = 1
 Else
 	hdisplay1.visible = 0
 	display1.visible = 0
 	hdisplay2.visible = 0
 	display2.visible = 0
 	DispDmd1.visible = 0
+	LeftRailtop.visible = 0
+	RightRailtop.visible = 0
+	Ramp008.visible = 0
 End If
 
 'P002.Image = "InsertRectangleDDOn_25frst"
@@ -207,7 +258,7 @@ Dim bMusicOn
 Dim plungerIM 'used mostly as an autofire plunger during multiballs
 
 ' Define Game Flags
-Dim bFreePlay					' Either in Free Play or Handling Credits
+Dim bFreePlay				' Either in Free Play or Handling Credits
 Dim bOnTheFirstBall			' First Ball (player one). Used for Adding New Players
 Dim bBallInPlungerLane		' is there a ball in the plunger lane
 Dim bBallSaverActive		' is the ball saver active 
@@ -1123,7 +1174,8 @@ End Sub
 Dim DOorDieFlag, BlockDoorDIe
 Dim LastDODscore : LastDODscore=False
 Sub Table1_KeyDown(ByVal Keycode)
-
+	If keycode = LeftFlipperKey Then PinCab_LeftFlipperButton.X = PinCab_LeftFlipperButton.X + 10
+	If keycode = RightFlipperKey Then PinCab_RightFlipperButton.X = PinCab_RightFlipperButton.X - 10
 	If keycode = PlungerKey and introcounter>640 Then
 		If SLS(175,1)>1 Then SLS(175,1)=1
 		DoorDieLight.intensity = 55
@@ -1332,7 +1384,8 @@ Sub Table1_KeyDown(ByVal Keycode)
 End Sub
 
 Sub Table1_KeyUp(ByVal keycode)
-
+	If keycode = LeftFlipperKey Then PinCab_LeftFlipperButton.X = PinCab_LeftFlipperButton.X - 10
+	If keycode = RightFlipperKey Then PinCab_RightFlipperButton.X = PinCab_RightFlipperButton.X + 10
 	if keycode = 19 then ScoreCard=0
 
 	If bGameInPLay AND NOT Tilted Then
@@ -2199,20 +2252,20 @@ Sub FLEXdata
 	'		if SLS(29,1)=1 then AlphaState=AlphaState&"1" else AlphaState=AlphaState&"0"
 	'		if SLS(30,1)=1 then AlphaState=AlphaState&"1" else AlphaState=AlphaState&"0"
 	'	Dim scene6 : Set scene5 = FlexDMD.NewGroup("AnimData")
-	'	scene6.AddActor FlexDMD.NewImage("data0","gooniesBG4.png") : scene6.GetImage("Data0").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("data1","databg0.png") : scene6.GetImage("Data1").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("data2","databg1.png") : scene6.GetImage("Data2").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("data3","databg2.png") : scene6.GetImage("Data3").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("data4","databg3.png") : scene6.GetImage("Data4").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("data5","databg4.png") : scene6.GetImage("Data5").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataD0","dataD0.png") : scene6.GetImage("dataD0").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataD1","dataD1.png") : scene6.GetImage("dataD1").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataA10","dataA10.png") : scene6.GetImage("dataA10").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataA11","dataA11.png") : scene6.GetImage("dataA11").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataT0","dataT0.png") : scene6.GetImage("dataT0").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataT1","dataT1.png") : scene6.GetImage("dataT1").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataA20","dataA20.png") : scene6.GetImage("dataA20").Visible=False
-	'	scene6.AddActor FlexDMD.NewImage("dataA21","dataA21.png") : scene6.GetImage("dataA21").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("data0", "gooniesBG4.png") : scene6.GetImage("Data0").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("data1", "databg0.png") : scene6.GetImage("Data1").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("data2", "databg1.png") : scene6.GetImage("Data2").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("data3", "databg2.png") : scene6.GetImage("Data3").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("data4", "databg3.png") : scene6.GetImage("Data4").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("data5", "databg4.png") : scene6.GetImage("Data5").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataD0", "dataD0.png") : scene6.GetImage("dataD0").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataD1", "dataD1.png") : scene6.GetImage("dataD1").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataA10", "dataA10.png") : scene6.GetImage("dataA10").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataA11", "dataA11.png") : scene6.GetImage("dataA11").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataT0", "dataT0.png") : scene6.GetImage("dataT0").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataT1", "dataT1.png") : scene6.GetImage("dataT1").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataA20", "dataA20.png") : scene6.GetImage("dataA20").Visible=False
+	'	scene6.AddActor FlexDMD.NewImage("dataA21", "dataA21.png") : scene6.GetImage("dataA21").Visible=False
 End Sub
 
 
@@ -2736,22 +2789,7 @@ Sub Game_Init
 	modejp = false
 	PlaySong "end"
 	DOF 122, DOFPulse
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 	tchr = 34
 	modetime = 0
 	keysearch = 0
@@ -4268,22 +4306,7 @@ sub starttransmap()
 	SPB1 3,3	,5,5,0,1
 
 	DOF 122, DOFPulse
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 
 
 	Select Case mapModeIdx
@@ -4516,22 +4539,8 @@ sub startkeymode_Timer() :PuPEvent 805
 	startkeymode.Enabled = false
 	modename = "key"
 
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
+
 	modetime = 61
 	modetimer.Interval = 8000
 	modetimer.Enabled = true ', 8000
@@ -4596,22 +4605,8 @@ GIOFF
 	startbouldermode.Enabled = false
 	modename = "boulder"
 
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
+
 	playsound "boulders", 0, 1 * BackGlassVolumeDial
 	modetime = 45
 	modetimer.Interval = 8000
@@ -4658,22 +4653,7 @@ GIOFF
 	modename = "bone"
 	modetime = 45
 
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 
 	modetimer.Interval = 14000
 	modetimer.Enabled = true ', 14000
@@ -4747,22 +4727,7 @@ GIOFF
 	modename = "water"
 	modetime = 45
 
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 
 
 
@@ -4816,22 +4781,8 @@ GIOFF
 	modetime = 45
 
 
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
+
 	modetimer.Interval = 8000
 	modetimer.Enabled = true ' 8000
 	'keysearch = 30
@@ -4995,7 +4946,33 @@ end sub
 
 '==========  Bones Organ Targets ====================
 'need to add hits left display
+
+sub bone_organ_dt_reset()
+
+	RandomSoundDropTargetReset Target10p
+	DTRaise 10
+	DTRaise 11
+	DTRaise 12
+	RandomSoundDropTargetReset Target13p
+	DTRaise 13
+	DTRaise 14
+	DTRaise 15
+	DTRaise 16
+	shadowT10.visible = True
+	shadowT11.visible = True
+	shadowT12.visible = True
+	shadowT13.visible = True
+	shadowT14.visible = True
+	shadowT15.visible = True
+	shadowT16.visible = True
+
+end sub
+
 sub target10_hit()
+	DTHit 10
+end Sub
+
+sub target10_code()
 	ShadowT10.visible=False
 	DMDflash=1
 	Lookout=192
@@ -5009,7 +4986,7 @@ sub target10_hit()
 	DOF 147,DOFPulse
 	SPB1 116,100,2,1,5,1 ' trailblink test
 	OrganBlinks=20
-	PlaySoundAt SoundFXDOF("DTDrop", 119, DOFPulse, DOFDropTargets), target10
+	'PlaySoundAt SoundFXDOF("DTDrop", 119, DOFPulse, DOFDropTargets), target10
 	if modename = "truffle" then
 		trufflehit
 		Exit sub ' fixing for all others
@@ -5048,21 +5025,29 @@ end sub
 
 sub Target10_Dropped()
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard" or modename ="truffle" then  '*****fixing on all others
-		target10.Isdropped = 0
+		'target10.Isdropped = 0
+		'ShadowT10.visible=True
+		'PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
 		ShadowT10.visible=True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target10.Timerenabled = True
 	end if
 	if organhitsleft = 0 or mapModeIdx >= 5 then 
-		target10.isdropped = 0
 		ShadowT10.visible=True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target10.Timerenabled = True
 	end if
 end Sub
 
+sub target10_timer()
+		RandomSoundDropTargetReset Target10p
+		DTRaise 10
+		target10.Timerenabled = False
+End sub
 
 sub target11_hit()
+	DTHit 11
+end Sub
+
+sub target11_code()
 	ShadowT11.visible=False
 
 	DMDflash=1
@@ -5078,7 +5063,7 @@ sub target11_hit()
 	OrganBlinks=20
 	SPB1 116,100,2,1,5,1 ' trailblink test
 
-	PlaySoundAt SoundFXDOF("DTDrop", 119, DOFPulse, DOFDropTargets), Target11
+	'PlaySoundAt SoundFXDOF("DTDrop", 119, DOFPulse, DOFDropTargets), Target11
 '	Debug.Print "Target11 modename = " & modename
 	'playsound "fx_droptarget"
 	if modename = "truffle" then
@@ -5121,21 +5106,26 @@ end sub
 sub Target11_Dropped()
 	'if modename <> "" then
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard" then
-		target11.Isdropped = 0
 		ShadowT11.visible=True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target11.Timerenabled = True
 	end if
 	if organhitsleft = 0 or mapModeIdx >= 5 then 
-		target11.isdropped = 0
 		ShadowT11.visible=True
-
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target11.Timerenabled = True
 	end if
 end Sub
 
+sub target11_timer()
+		RandomSoundDropTargetReset Target11p
+		DTRaise 11
+		target11.Timerenabled = False
+End sub
+
 sub target12_hit()
+	DTHit 12
+end Sub
+
+sub target12_code()
 	ShadowT12.visible=False
 	DMDflash=1
 
@@ -5151,7 +5141,7 @@ sub target12_hit()
 	OrganBlinks=20
 	SPB1 116,100,2,1,5,1 ' trailblink test
 
-	PlaySoundAt SoundFXDOF("DTDrop", 119, DOFPulse, DOFDropTargets), Target12
+	'PlaySoundAt SoundFXDOF("DTDrop", 119, DOFPulse, DOFDropTargets), Target12
 '	Debug.Print "Target12 modename = " & modename
 	'playsound "fx_droptarget"
 	if modename = "truffle" then
@@ -5198,22 +5188,26 @@ end sub
 sub Target12_Dropped()
 	'if modename <> "" then
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard"  then
-		target12.Isdropped = 0
-	ShadowT12.visible=true
-
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		ShadowT12.visible=True
+		target12.Timerenabled = True
 	end if
 	if organhitsleft = 0  or mapModeIdx >= 5 then 
-		target12.isdropped = 0
-	ShadowT12.visible=true
-
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		ShadowT12.visible=True
+		target12.Timerenabled = True
 	end if
 end Sub
 
+sub target12_timer()
+		RandomSoundDropTargetReset Target12p
+		DTRaise 12
+		target12.Timerenabled = False
+End sub
+
 sub target13_hit()
+	DTHit 13
+end Sub
+
+sub target13_code()
 	ShadowT13.visible=False
 
 	DMDflash=1
@@ -5230,7 +5224,7 @@ sub target13_hit()
 	OrganBlinks=20
 	SPB1 116,100,2,1,5,1 ' trailblink test
 
-	PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target13
+	'PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target13
 '	Debug.Print "Target13 modename = " & modename
 	'playsound "fx_droptarget"
 	if modename = "truffle" then
@@ -5275,21 +5269,26 @@ end sub
 sub Target13_Dropped()
 	'if modename <> "" then
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard"  then
-		target13.Isdropped = 0
-		ShadowT13.visible=true
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		ShadowT13.visible=True
+		target13.Timerenabled = True
 	end if
 	if organhitsleft = 0  or mapModeIdx >= 5 then 
-		target13.isdropped = 0
-	ShadowT13.visible=true
-
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		ShadowT13.visible=True
+		target13.Timerenabled = True
 	end if
 end Sub
 
+sub target13_timer()
+		RandomSoundDropTargetReset Target13p
+		DTRaise 13
+		target13.Timerenabled = False
+End sub
+
 sub target14_hit()
+	DTHit 14
+end Sub
+
+sub target14_code()
 	ShadowT14.visible=False
 
 	DMDflash=1
@@ -5306,7 +5305,7 @@ sub target14_hit()
 	OrganBlinks=20
 	SPB1 116,100,2,1,5,1 ' trailblink test
 
-	PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target14
+	'PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target14
 	'playsound "fx_droptarget"
 '	Debug.Print "Target14 modename = " & modename
 	if modename = "truffle" then
@@ -5353,22 +5352,26 @@ end sub
 sub Target14_Dropped()
 	'if modename <> "" then
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard"  then
-'		Debug.Print "Target14 should be dropped as any mode name"
-		target14.Isdropped = 0
 		ShadowT14.visible=True
-
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target14.Timerenabled = True
 	end if
 	if organhitsleft = 0 or mapModeIdx >= 5 then 
-		target14.isdropped = 0
 		ShadowT14.visible=True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target14.Timerenabled = True
 	end if
 end Sub
 
+sub target14_timer()
+		RandomSoundDropTargetReset Target14p
+		DTRaise 14
+		target14.Timerenabled = False
+End sub
+
 sub target15_hit()
+	DTHit 15
+end Sub
+
+sub target15_code()
 	ShadowT15.visible=False
 
 	DMDflash=1
@@ -5385,7 +5388,7 @@ sub target15_hit()
 	OrganBlinks=20
 	SPB1 116,100,2,1,5,1 ' trailblink test
 
-	PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target15
+	'PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target15
 '	Debug.Print "Target15 modename = " & modename
 	'playsound "fx_droptarget"
 
@@ -5437,41 +5440,26 @@ end sub
 sub Target15_Dropped()
 	'if modename <> "" then
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard"  then
-		target15.Isdropped = 0
 		ShadowT15.visible=True
-
-		PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
+		target15.Timerenabled = True
 	end if
 	if organhitsleft = 0 or mapModeIdx >= 5 then 
-		target15.isdropped = 0
 		ShadowT15.visible=True
-
-		PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target15.Timerenabled = True
 	end if
 end Sub
 
-Sub Trigger004_hit
-	Lookout=9
-	ShakerOrgan
-
-	'SND TEST
-	'playsound "rattle3",1,0.3
-	playsound "rattle3", 1, 0.4 * BackGlassVolumeDial
-
-	' Adding logic to open and close diverter if wwBound is active
-	if loopd = "r" Then
-		if wwbonus or extraballActive Then
-			wwDiverter = true
-		Else
-			wwDiverter = false
-		end if
-	end if
-
-End Sub
-
+sub target15_timer()
+		RandomSoundDropTargetReset Target15p
+		DTRaise 15
+		target15.Timerenabled = False
+End sub
 
 sub target16_hit()
+	DTHit 16
+end Sub
+
+sub target16_code()
 	ShadowT16.visible=False
 
 	DMDflash=1
@@ -5487,7 +5475,7 @@ sub target16_hit()
 	OrganBlinks=20
 	SPB1 116,100,2,1,5,1 ' trailblink test
 
-	PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target16
+	'PlaySoundAt SoundFXDOF("DTDrop", 120, DOFPulse, DOFDropTargets), Target16
 '	Debug.Print "Target16 modename = " & modename
 	'playsound "fx_droptarget"
 
@@ -5539,18 +5527,39 @@ end sub
 sub Target16_Dropped()
 	'if modename <> "" then
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" or modename = "wizard"  then
-		target16.Isdropped = 0
 		ShadowT16.visible=True
-
-		PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
+		target16.Timerenabled = True
 	end if
 	if organhitsleft = 0 or mapModeIdx >= 5 then 
-		target16.isdropped = 0
 		ShadowT16.visible=True
-		PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-
+		target16.Timerenabled = True
 	end if
 end Sub
+
+sub target16_timer()
+		RandomSoundDropTargetReset Target16p
+		DTRaise 16
+		target16.Timerenabled = False
+End sub
+
+Sub Trigger004_hit
+	Lookout=9
+	ShakerOrgan
+
+	'SND TEST
+	'playsound "rattle3",1,0.3
+	playsound "rattle3", 1, 0.4 * BackGlassVolumeDial
+
+	' Adding logic to open and close diverter if wwBound is active
+	if loopd = "r" Then
+		if wwbonus or extraballActive Then
+			wwDiverter = true
+		Else
+			wwDiverter = false
+		end if
+	end if
+
+End Sub
 
 ' ==== Bones Organ Targets - End
 
@@ -5802,8 +5811,11 @@ sub delaymulti_Timer()
 	delaymulti.Enabled = false
 	restartmusic.Interval = 500
 	restartmusic.Enabled = true ', 500
+
 	popup1.IsDropped = 1
 	Popup.TransY = -25
+	PopupCount = 0
+	popup1.Timerenabled = True
 
 	PlaySound SoundFXDOF("DiverterOn", 130, DOFPulse, DOFContactors)
 	bmultiballmode = true
@@ -5816,6 +5828,19 @@ sub delaymulti_Timer()
 	BallSaveGraceTimer.Enabled = False
     SLS(1,1)=2 
 end sub
+
+Popup1.TimerInterval = 250
+Dim PopupCount : PopupCount = 0
+Sub Popup1_Timer
+	PopupCount = PopupCount + 1
+	Select Case PopupCount
+		Case 1: popup1.IsDropped = 0: Popup.TransY = 0
+		Case 3: popup1.IsDropped = 1: Popup.TransY = -25: PlaySound SoundFXDOF("DiverterOn", 130, DOFPulse, DOFContactors)
+		Case 4: popup1.IsDropped = 0: Popup.TransY = 0
+		Case 6: popup1.IsDropped = 1: Popup.TransY = -25: PlaySound SoundFXDOF("DiverterOn", 130, DOFPulse, DOFContactors)
+		Case 7: popup1.IsDropped = 0: Popup.TransY = 0: PopupCount=0: Popup1.TimerEnabled = False
+	End Select
+End Sub
 
 
 ' Multiball Jackpot but hitting skull ramp
@@ -6144,6 +6169,11 @@ End Sub
 
 ' Data D Target
 sub target6_hit()
+	STHit 6
+end sub
+
+sub target6_code()
+
 	Lookout=173
 
 	DOF 142,DOFPulse
@@ -6179,6 +6209,10 @@ end sub
 
 ' Data A Target
 sub target7_hit()
+	SThit 7
+end sub
+
+sub target7_code()
 	Lookout=174
 
 	DOF 142,DOFPulse
@@ -6212,6 +6246,10 @@ end sub
 
 'Data T Target
 sub target8_hit()
+	SThit 8
+end sub
+
+sub target8_code()
 	Lookout=175
 
 	DOF 142,DOFPulse
@@ -6247,6 +6285,10 @@ end sub
 
 ' Data A2 Target
 sub target9_hit()
+	STHit 9
+end sub
+
+sub target9_code()
 	Lookout=176
 
 	DOF 142,DOFPulse
@@ -6284,6 +6326,10 @@ end sub
 
 ' Sloth S target
 sub target1_hit()
+	STHit 1
+end sub
+
+sub target1_code()
 	Lookout=112
 
 	'debug.print "target1hit &mode=" & modename
@@ -6327,6 +6373,10 @@ end sub
 
 ' Sloth L Target
 sub target2_hit()
+	STHit 2
+end sub
+
+sub target2_code()
 	Lookout=114
 
 	'debug.print "target2hit &mode=" & modename
@@ -6366,7 +6416,12 @@ sub target2_hit()
 end sub
 
 'Sloth O Targets
+
 sub target3_hit()
+	STHit 3
+end sub
+
+sub target3_code()
 	Lookout=116
 
 	'debug.print "target3hit &mode=" & modename
@@ -6411,6 +6466,10 @@ end sub
 
 'Sloth T Target
 sub target4_hit()
+	STHit 4
+end sub
+
+sub target4_code()
 	Lookout=117
 
 	'debug.print "target4hit &mode=" & modename
@@ -6453,6 +6512,10 @@ end sub
 
 'Sloth H Target
 sub target5_hit()
+	SThit 5
+end sub
+
+sub target5_code()
 	Lookout=119
 
 	'debug.print "target5hit &mode=" & modename
@@ -6801,7 +6864,12 @@ end sub
 '*********************************************************************************
 'FRETELLIS Hideout
 '*********************************************************************************
-sub target17_hit()
+
+sub target17_hit() 
+	STHit 17
+end sub
+
+sub target17_code()
 	'PlaySoundAt SoundFX("fx3", DOFContactors), Target17
 
 	If Tilted Then Exit Sub
@@ -6823,7 +6891,11 @@ sub target17_hit()
 
 end sub
 
+
 sub target18_hit()
+	STHit 18
+end sub
+sub target18_code()
 	'PlaySoundAt SoundFX("fx3", DOFContactors), Target17
 
 	If Tilted Then Exit Sub
@@ -6846,6 +6918,10 @@ sub target18_hit()
 end sub
 
 sub target19_hit()
+	STHit 19
+end sub
+
+sub target19_code()
 	'PlaySoundAt SoundFX("fx3", DOFContactors), Target17
 
 	If Tilted Then Exit Sub
@@ -8657,6 +8733,10 @@ end sub
 
 'Freezer Bonus Target
 sub target20_hit()
+	SThit 20
+end sub
+
+sub target20_code()
 	DOF 128, DOFPulse
 	spb1 98,98,7,0,0,1
 	if modename = "key" or modename = "bone" or modename = "boulder" or modename = "water" or modename = "fight" then
@@ -8731,23 +8811,8 @@ Sub DoorDown(FrameStart, FrameEnd)
 	HPos2 = FrameStart         
 	HPosEnd2 = FrameEnd
 	' reset the drop targets
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
 
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 
 
 	DoorDownSolenoidpulse.enabled = 1
@@ -8812,22 +8877,7 @@ sub resettable()
 	modejp = false
 
 	DOF 122, DOFPulse
-	target10.Isdropped = 0
-	target11.Isdropped = 0
-	target12.Isdropped = 0
-	target13.Isdropped = 0
-	target14.Isdropped = 0
-	target15.Isdropped = 0
-	target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 	tchr = 34
 	modetime = 0
 	keysearch = 0
@@ -9150,7 +9200,6 @@ Dim fDMDCurPriority: fDMDCurPriority =-1
 Dim fPriorityReset:fPriorityReset=-1
 DIM fAttractReset:fAttractReset=-1
 DIM fAttractBetween: fAttractBetween=2000 '1 second between calls to next attract page
-'Dim FlexPath
 
 Sub FlexDMDInit()
 	Dim fso,curdir
@@ -9177,10 +9226,6 @@ Sub FlexDMDInit()
 		.Run = True
 	End With
 
-	'Set fso = CreateObject("Scripting.FileSystemObject")
-	'curDir = fso.GetAbsolutePathName(".")
-	'FlexPath = curDir & "\TheGooniesDMD\"	
-
 	'CreateScoreSceneWilliamsStyle()
 
 	FlexIntro
@@ -9198,12 +9243,12 @@ Sub FlexIntro()
 
 	Set scene = FlexDMD.NewGroup("Score")
 	dim vidvid
-	Set vidvid=FlexDMD.Newvideo ("test","goonieintro.gif")
+	Set vidvid=FlexDMD.Newvideo ("test", "goonieintro.gif")
 	scene.AddActor vidvid
 	scene.Getvideo("test").SetBounds 0, 0, 128, 32
 	scene.Getvideo("test").visible = True
 	
-	scene.AddActor FlexDMD.NewImage("logo","VPWLogo32.png") : scene.GetImage("logo").Visible=False
+	scene.AddActor FlexDMD.NewImage("logo", "VPWLogo32.png") : scene.GetImage("logo").Visible=False
 
 	FlexDMD.LockRenderThread
 	FlexDMD.RenderMode = FlexDMD_RenderMode_DMD_RGB
@@ -9275,43 +9320,43 @@ Sub FlexDmdLayout()
 
 
 	' to flash BG
-	scene.AddActor FlexDMD.NewImage("logo0","gooniesBG4.png")
+	scene.AddActor FlexDMD.NewImage("logo0", "gooniesBG4.png")
 	scene.GetImage("logo0").Visible=True
-	scene.AddActor FlexDMD.NewImage("logo1","gooniesBG3.png")
+	scene.AddActor FlexDMD.NewImage("logo1", "gooniesBG3.png")
 	scene.GetImage("logo1").Visible=False
-	scene.AddActor FlexDMD.NewImage("logo2","gooniesBG2.png")
+	scene.AddActor FlexDMD.NewImage("logo2", "gooniesBG2.png")
 	scene.GetImage("logo2").Visible=False
-	scene.AddActor FlexDMD.NewImage("logo3","gooniesBG1.png")
+	scene.AddActor FlexDMD.NewImage("logo3", "gooniesBG1.png")
 	scene.GetImage("logo3").Visible=False
-	scene.AddActor FlexDMD.NewImage("logo4","gooniesBG0.png")
+	scene.AddActor FlexDMD.NewImage("logo4", "gooniesBG0.png")
 	scene.GetImage("logo4").Visible=False
 
 	' Skull pop
-	scene.AddActor FlexDMD.NewImage("skull0","slothBG0.png")
+	scene.AddActor FlexDMD.NewImage("skull0", "slothBG0.png")
 	scene.GetImage("skull0").Visible=False
-	scene.AddActor FlexDMD.NewImage("skull1","slothBG1.png")
+	scene.AddActor FlexDMD.NewImage("skull1", "slothBG1.png")
 	scene.GetImage("skull1").Visible=False
-	scene.AddActor FlexDMD.NewImage("skull2","slothBG2.png")
+	scene.AddActor FlexDMD.NewImage("skull2", "slothBG2.png")
 	scene.GetImage("skull2").Visible=False
-	scene.AddActor FlexDMD.NewImage("skull3","slothBG3.png")
+	scene.AddActor FlexDMD.NewImage("skull3", "slothBG3.png")
 	scene.GetImage("skull3").Visible=False
-	scene.AddActor FlexDMD.NewImage("skull4","slothBG4.png")
+	scene.AddActor FlexDMD.NewImage("skull4", "slothBG4.png")
 	scene.GetImage("skull4").Visible=False
 
 	' Fog
-	scene.AddActor FlexDMD.NewImage("fog0","gooniesBGfog0.png")
+	scene.AddActor FlexDMD.NewImage("fog0", "gooniesBGfog0.png")
 	scene.GetImage("fog0").Visible=False
-	scene.AddActor FlexDMD.NewImage("fog1","gooniesBGfog1.png")
+	scene.AddActor FlexDMD.NewImage("fog1", "gooniesBGfog1.png")
 	scene.GetImage("fog1").Visible=False
-	scene.AddActor FlexDMD.NewImage("fog2","gooniesBGfog1.png")
+	scene.AddActor FlexDMD.NewImage("fog2", "gooniesBGfog1.png")
 	scene.GetImage("fog2").Visible=False
-	scene.AddActor FlexDMD.NewImage("fog3","gooniesBGfog2.png")
+	scene.AddActor FlexDMD.NewImage("fog3", "gooniesBGfog2.png")
 	scene.GetImage("fog3").Visible=False
-	scene.AddActor FlexDMD.NewImage("fog4","gooniesBGfog3.png")
+	scene.AddActor FlexDMD.NewImage("fog4", "gooniesBGfog3.png")
 	scene.GetImage("fog4").Visible=False
 
 	'ship
-	Set title = FlexDMD.NewImage("ship","gooniesBGShip.png")
+	Set title = FlexDMD.NewImage("ship", "gooniesBGShip.png")
 	title.visible=false
 	Set af = title.ActionFactory
 	Set list = af.Sequence()
@@ -9319,7 +9364,7 @@ Sub FlexDmdLayout()
 	title.AddAction af.Repeat(list, 1)
 	scene.AddActor title
 
-	Set title = FlexDMD.NewImage("ship2","gooniesBGShipL.png")
+	Set title = FlexDMD.NewImage("ship2", "gooniesBGShipL.png")
 	title.visible=false
 	Set af = title.ActionFactory
 	Set list = af.Sequence()
@@ -9328,7 +9373,7 @@ Sub FlexDmdLayout()
 	scene.AddActor title
 
 	'cannonball
-	Set title = FlexDMD.NewImage("ball","gooniesBGball.png")
+	Set title = FlexDMD.NewImage("ball", "gooniesBGball.png")
 	title.visible=false
 	Set af = title.ActionFactory
 	Set list = af.Sequence()
@@ -9373,26 +9418,26 @@ Sub FlexDmdLayout()
 	scene.GetLabel("Splash3c").Visible=False
 '	scene.GetGroup("Splash3").Visible = False
 
-	scene.AddActor FlexDMD.NewImage("data0","gooniesBG5.png") : scene.GetImage("data0").Visible=False
-	scene.AddActor FlexDMD.NewImage("data1","databg0.png") : scene.GetImage("data1").Visible=False
-	scene.AddActor FlexDMD.NewImage("data2","databg1.png") : scene.GetImage("data2").Visible=False
-	scene.AddActor FlexDMD.NewImage("data3","databg2.png") : scene.GetImage("data3").Visible=False
-	scene.AddActor FlexDMD.NewImage("data4","databg3.png") : scene.GetImage("data4").Visible=False
-	scene.AddActor FlexDMD.NewImage("data5","databg4.png") : scene.GetImage("data5").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataD0","dataD0.png") : scene.GetImage("dataD0").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataD1","dataD1.png") : scene.GetImage("dataD1").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataA10","dataA10.png") : scene.GetImage("dataA10").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataA11","dataA11.png") : scene.GetImage("dataA11").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataT0","dataT0.png") : scene.GetImage("dataT0").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataT1","dataT1.png") : scene.GetImage("dataT1").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataA20","dataA20.png") : scene.GetImage("dataA20").Visible=False
-	scene.AddActor FlexDMD.NewImage("dataA21","dataA21.png") : scene.GetImage("dataA21").Visible=False
+	scene.AddActor FlexDMD.NewImage("data0", "gooniesBG5.png") : scene.GetImage("data0").Visible=False
+	scene.AddActor FlexDMD.NewImage("data1", "databg0.png") : scene.GetImage("data1").Visible=False
+	scene.AddActor FlexDMD.NewImage("data2", "databg1.png") : scene.GetImage("data2").Visible=False
+	scene.AddActor FlexDMD.NewImage("data3", "databg2.png") : scene.GetImage("data3").Visible=False
+	scene.AddActor FlexDMD.NewImage("data4", "databg3.png") : scene.GetImage("data4").Visible=False
+	scene.AddActor FlexDMD.NewImage("data5", "databg4.png") : scene.GetImage("data5").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataD0", "dataD0.png") : scene.GetImage("dataD0").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataD1", "dataD1.png") : scene.GetImage("dataD1").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataA10", "dataA10.png") : scene.GetImage("dataA10").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataA11", "dataA11.png") : scene.GetImage("dataA11").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataT0", "dataT0.png") : scene.GetImage("dataT0").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataT1", "dataT1.png") : scene.GetImage("dataT1").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataA20", "dataA20.png") : scene.GetImage("dataA20").Visible=False
+	scene.AddActor FlexDMD.NewImage("dataA21", "dataA21.png") : scene.GetImage("dataA21").Visible=False
 
 
 	scene.AddActor FlexDMD.NewLabel("playerup2", FontSplashMedium2, " ") : scene.GetLabel("playerup2").Visible=False
 	scene.AddActor FlexDMD.NewLabel("playerup", FontScoreActive, " ") : scene.GetLabel("playerup").Visible=False
 
-	scene.AddActor FlexDMD.NewImage("logo","VPWLogo32.png")
+	scene.AddActor FlexDMD.NewImage("logo", "VPWLogo32.png")
 	scene.GetImage("logo").Visible=False
 
 
@@ -10485,203 +10530,245 @@ dim RF : Set RF = New FlipperPolarity
 InitPolarity
 
 Sub InitPolarity()
-	dim x, a : a = Array(LF, RF)
-	for each x in a
-		x.AddPoint "Ycoef", 0, RightFlipper.Y-65, 1        'disabled
-		x.AddPoint "Ycoef", 1, RightFlipper.Y-11, 1
+	Dim x, a
+	a = Array(LF, RF)
+	For Each x In a
+		x.AddPt "Ycoef", 0, RightFlipper.Y-65, 1 'disabled
+		x.AddPt "Ycoef", 1, RightFlipper.Y-11, 1
 		x.enabled = True
 		x.TimeDelay = 60
+		x.DebugOn=False ' prints some info in debugger
+		
+		x.AddPt "Polarity", 0, 0, 0
+		x.AddPt "Polarity", 1, 0.05, -5.5
+		x.AddPt "Polarity", 2, 0.4, -5.5
+		x.AddPt "Polarity", 3, 0.6, -5.0
+		x.AddPt "Polarity", 4, 0.65, -4.5
+		x.AddPt "Polarity", 5, 0.7, -4.0
+		x.AddPt "Polarity", 6, 0.75, -3.5
+		x.AddPt "Polarity", 7, 0.8, -3.0
+		x.AddPt "Polarity", 8, 0.85, -2.5
+		x.AddPt "Polarity", 9, 0.9,-2.0
+		x.AddPt "Polarity", 10, 0.95, -1.5
+		x.AddPt "Polarity", 11, 1, -1.0
+		x.AddPt "Polarity", 12, 1.05, -0.5
+		x.AddPt "Polarity", 13, 1.1, 0
+		x.AddPt "Polarity", 14, 1.3, 0
+		
+		x.AddPt "Velocity", 0, 0,	   1
+		x.AddPt "Velocity", 1, 0.160, 1.06
+		x.AddPt "Velocity", 2, 0.410, 1.05
+		x.AddPt "Velocity", 3, 0.530, 1'0.982
+		x.AddPt "Velocity", 4, 0.702, 0.968
+		x.AddPt "Velocity", 5, 0.95,  0.968
+		x.AddPt "Velocity", 6, 1.03,  0.945
 	Next
-
-	AddPt "Polarity", 0, 0, 0
-	AddPt "Polarity", 1, 0.05, -5.5
-	AddPt "Polarity", 2, 0.4, -5.5
-	AddPt "Polarity", 3, 0.6, -5.0
-	AddPt "Polarity", 4, 0.65, -4.5
-	AddPt "Polarity", 5, 0.7, -4.0
-	AddPt "Polarity", 6, 0.75, -3.5
-	AddPt "Polarity", 7, 0.8, -3.0
-	AddPt "Polarity", 8, 0.85, -2.5
-	AddPt "Polarity", 9, 0.9,-2.0
-	AddPt "Polarity", 10, 0.95, -1.5
-	AddPt "Polarity", 11, 1, -1.0
-	AddPt "Polarity", 12, 1.05, -0.5
-	AddPt "Polarity", 13, 1.1, 0
-	AddPt "Polarity", 14, 1.3, 0
-
-	addpt "Velocity", 0, 0,         1
-	addpt "Velocity", 1, 0.16, 1.06
-	addpt "Velocity", 2, 0.41,         1.05
-	addpt "Velocity", 3, 0.53,         1'0.982
-	addpt "Velocity", 4, 0.702, 0.968
-	addpt "Velocity", 5, 0.95,  0.968
-	addpt "Velocity", 6, 1.03,         0.945
-
-	LF.Object = LeftFlipper        
-	LF.EndPoint = EndPointLp
-	RF.Object = RightFlipper
-	RF.EndPoint = EndPointRp
+	
+	' SetObjects arguments: 1: name of object 2: flipper object: 3: Trigger object around flipper
+	LF.SetObjects "LF", LeftFlipper, TriggerLF
+	RF.SetObjects "RF", RightFlipper, TriggerRF
 End Sub
-
-Sub TriggerLF_Hit() : LF.Addball activeball : End Sub
-Sub TriggerLF_UnHit() : LF.PolarityCorrect activeball : End Sub
-Sub TriggerRF_Hit() : RF.Addball activeball : End Sub
-Sub TriggerRF_UnHit() : RF.PolarityCorrect activeball : End Sub
 
 
 '******************************************************
-'                        FLIPPER CORRECTION FUNCTIONS
+'  FLIPPER CORRECTION FUNCTIONS
 '******************************************************
 
-Sub AddPt(aStr, idx, aX, aY)        'debugger wrapper for adjusting flipper script in-game
-	dim a : a = Array(LF, RF)
-	dim x : for each x in a
-		x.addpoint aStr, idx, aX, aY
-	Next
-End Sub
+' modified 2023 by nFozzy
+' Removed need for 'endpoint' objects
+' Added 'createvents' type thing for TriggerLF / TriggerRF triggers.
+' Removed AddPt function which complicated setup imo
+' made DebugOn do something (prints some stuff in debugger)
+'   Otherwise it should function exactly the same as before
 
 Class FlipperPolarity
 	Public DebugOn, Enabled
-	Private FlipAt        'Timer variable (IE 'flip at 723,530ms...)
-	Public TimeDelay        'delay before trigger turns off and polarity is disabled TODO set time!
-	private Flipper, FlipperStart,FlipperEnd, FlipperEndY, LR, PartialFlipCoef
+	Private FlipAt		'Timer variable (IE 'flip at 723,530ms...)
+	Public TimeDelay		'delay before trigger turns off and polarity is disabled
+	Private Flipper, FlipperStart, FlipperEnd, FlipperEndY, LR, PartialFlipCoef
 	Private Balls(20), balldata(20)
-
-	dim PolarityIn, PolarityOut
-	dim VelocityIn, VelocityOut
-	dim YcoefIn, YcoefOut
-	Public Sub Class_Initialize 
-		redim PolarityIn(0) : redim PolarityOut(0) : redim VelocityIn(0) : redim VelocityOut(0) : redim YcoefIn(0) : redim YcoefOut(0)
-		Enabled = True : TimeDelay = 50 : LR = 1:  dim x : for x = 0 to uBound(balls) : balls(x) = Empty : set Balldata(x) = new SpoofBall : next 
+	Private Name
+	
+	Dim PolarityIn, PolarityOut
+	Dim VelocityIn, VelocityOut
+	Dim YcoefIn, YcoefOut
+	Public Sub Class_Initialize
+		ReDim PolarityIn(0)
+		ReDim PolarityOut(0)
+		ReDim VelocityIn(0)
+		ReDim VelocityOut(0)
+		ReDim YcoefIn(0)
+		ReDim YcoefOut(0)
+		Enabled = True
+		TimeDelay = 50
+		LR = 1
+		Dim x
+		For x = 0 To UBound(balls)
+			balls(x) = Empty
+			Set Balldata(x) = new SpoofBall
+		Next
 	End Sub
-
-	Public Property let Object(aInput) : Set Flipper = aInput : StartPoint = Flipper.x : End Property
-	Public Property Let StartPoint(aInput) : if IsObject(aInput) then FlipperStart = aInput.x else FlipperStart = aInput : end if : End Property
-	Public Property Get StartPoint : StartPoint = FlipperStart : End Property
-	Public Property Let EndPoint(aInput) : FlipperEnd = aInput.x: FlipperEndY = aInput.y: End Property
-	Public Property Get EndPoint : EndPoint = FlipperEnd : End Property        
-	Public Property Get EndPointY: EndPointY = FlipperEndY : End Property
-
-	Public Sub AddPoint(aChooseArray, aIDX, aX, aY) 'Index #, X position, (in) y Position (out) 
+	
+	Public Sub SetObjects(aName, aFlipper, aTrigger)
+		
+		If TypeName(aName) <> "String" Then MsgBox "FlipperPolarity: .SetObjects error: first argument must be a String (And name of Object). Found:" & TypeName(aName) End If
+		If TypeName(aFlipper) <> "Flipper" Then MsgBox "FlipperPolarity: .SetObjects error: Second argument must be a flipper. Found:" & TypeName(aFlipper) End If
+		If TypeName(aTrigger) <> "Trigger" Then MsgBox "FlipperPolarity: .SetObjects error: third argument must be a trigger. Found:" & TypeName(aTrigger) End If
+		If aFlipper.EndAngle > aFlipper.StartAngle Then LR = -1 Else LR = 1 End If
+		Name = aName
+		Set Flipper = aFlipper
+		FlipperStart = aFlipper.x
+		FlipperEnd = Flipper.Length * Sin((Flipper.StartAngle / 57.295779513082320876798154814105)) + Flipper.X ' big floats for degree to rad conversion
+		FlipperEndY = Flipper.Length * Cos(Flipper.StartAngle / 57.295779513082320876798154814105)*-1 + Flipper.Y
+		
+		Dim str
+		str = "Sub " & aTrigger.name & "_Hit() : " & aName & ".AddBall ActiveBall : End Sub'"
+		ExecuteGlobal(str)
+		str = "Sub " & aTrigger.name & "_UnHit() : " & aName & ".PolarityCorrect ActiveBall : End Sub'"
+		ExecuteGlobal(str)
+		
+	End Sub
+	
+	' Legacy: just no op
+	Public Property Let EndPoint(aInput)
+		
+	End Property
+	
+	Public Sub AddPt(aChooseArray, aIDX, aX, aY) 'Index #, X position, (in) y Position (out)
 		Select Case aChooseArray
-			case "Polarity" : ShuffleArrays PolarityIn, PolarityOut, 1 : PolarityIn(aIDX) = aX : PolarityOut(aIDX) = aY : ShuffleArrays PolarityIn, PolarityOut, 0
-			Case "Velocity" : ShuffleArrays VelocityIn, VelocityOut, 1 :VelocityIn(aIDX) = aX : VelocityOut(aIDX) = aY : ShuffleArrays VelocityIn, VelocityOut, 0
-			Case "Ycoef" : ShuffleArrays YcoefIn, YcoefOut, 1 :YcoefIn(aIDX) = aX : YcoefOut(aIDX) = aY : ShuffleArrays YcoefIn, YcoefOut, 0
+			Case "Polarity"
+				ShuffleArrays PolarityIn, PolarityOut, 1
+				PolarityIn(aIDX) = aX
+				PolarityOut(aIDX) = aY
+				ShuffleArrays PolarityIn, PolarityOut, 0
+			Case "Velocity"
+				ShuffleArrays VelocityIn, VelocityOut, 1
+				VelocityIn(aIDX) = aX
+				VelocityOut(aIDX) = aY
+				ShuffleArrays VelocityIn, VelocityOut, 0
+			Case "Ycoef"
+				ShuffleArrays YcoefIn, YcoefOut, 1
+				YcoefIn(aIDX) = aX
+				YcoefOut(aIDX) = aY
+				ShuffleArrays YcoefIn, YcoefOut, 0
 		End Select
-		if gametime > 100 then Report aChooseArray
-	End Sub 
-
-	Public Sub Report(aChooseArray)         'debug, reports all coords in tbPL.text
-		if not DebugOn then exit sub
-		dim a1, a2 : Select Case aChooseArray
-			case "Polarity" : a1 = PolarityIn : a2 = PolarityOut
-			Case "Velocity" : a1 = VelocityIn : a2 = VelocityOut
-			Case "Ycoef" : a1 = YcoefIn : a2 = YcoefOut 
-				case else :tbpl.text = "wrong string" : exit sub
-		End Select
-		dim str, x : for x = 0 to uBound(a1) : str = str & aChooseArray & " x: " & round(a1(x),4) & ", " & round(a2(x),4) & vbnewline : next
-		tbpl.text = str
 	End Sub
-
-	Public Sub AddBall(aBall) : dim x : for x = 0 to uBound(balls) : if IsEmpty(balls(x)) then set balls(x) = aBall : exit sub :end if : Next  : End Sub
-
-
-	Private Sub RemoveBall(aBall)
-		dim x : for x = 0 to uBound(balls)
-			if TypeName(balls(x) ) = "IBall" then 
-					if aBall.ID = Balls(x).ID Then
-							balls(x) = Empty
-							Balldata(x).Reset
-					End If
+	
+	Public Sub AddBall(aBall)
+		Dim x
+		For x = 0 To UBound(balls)
+			If IsEmpty(balls(x)) Then
+				Set balls(x) = aBall
+				Exit Sub
 			End If
 		Next
 	End Sub
-
-	Public Sub Fire() 
+	
+	Private Sub RemoveBall(aBall)
+		Dim x
+		For x = 0 To UBound(balls)
+			If TypeName(balls(x) ) = "IBall" Then
+				If aBall.ID = Balls(x).ID Then
+					balls(x) = Empty
+					Balldata(x).Reset
+				End If
+			End If
+		Next
+	End Sub
+	
+	Public Sub Fire()
 		Flipper.RotateToEnd
 		processballs
 	End Sub
-
+	
 	Public Property Get Pos 'returns % position a ball. For debug stuff.
-		dim x : for x = 0 to uBound(balls)
-			if not IsEmpty(balls(x) ) then
+		Dim x
+		For x = 0 To UBound(balls)
+			If Not IsEmpty(balls(x) ) Then
 				pos = pSlope(Balls(x).x, FlipperStart, 0, FlipperEnd, 1)
 			End If
-		Next                
+		Next
 	End Property
-
+	
 	Public Sub ProcessBalls() 'save data of balls in flipper range
 		FlipAt = GameTime
-		dim x : for x = 0 to uBound(balls)
-			if not IsEmpty(balls(x) ) then
+		Dim x
+		For x = 0 To UBound(balls)
+			If Not IsEmpty(balls(x) ) Then
 				balldata(x).Data = balls(x)
 			End If
 		Next
 		PartialFlipCoef = ((Flipper.StartAngle - Flipper.CurrentAngle) / (Flipper.StartAngle - Flipper.EndAngle))
 		PartialFlipCoef = abs(PartialFlipCoef-1)
 	End Sub
-	Private Function FlipperOn() : if gameTime < FlipAt+TimeDelay then FlipperOn = True : End If : End Function        'Timer shutoff for polaritycorrect
-
+	'Timer shutoff for polaritycorrect
+	Private Function FlipperOn()
+		If GameTime < FlipAt+TimeDelay Then
+			FlipperOn = True
+		End If
+	End Function
+	
 	Public Sub PolarityCorrect(aBall)
-		if FlipperOn() then 
-			dim tmp, BallPos, x, IDX, Ycoef : Ycoef = 1
-
+		If FlipperOn() Then
+			Dim tmp, BallPos, x, IDX, Ycoef
+			Ycoef = 1
+			
 			'y safety Exit
-			if aBall.VelY > -8 then 'ball going down
+			If aBall.VelY > -8 Then 'ball going down
 				RemoveBall aBall
-				exit Sub
-			end if
-
+				Exit Sub
+			End If
+			
 			'Find balldata. BallPos = % on Flipper
-			for x = 0 to uBound(Balls)
-				if aBall.id = BallData(x).id AND not isempty(BallData(x).id) then 
+			For x = 0 To UBound(Balls)
+				If aBall.id = BallData(x).id And Not IsEmpty(BallData(x).id) Then
 					idx = x
 					BallPos = PSlope(BallData(x).x, FlipperStart, 0, FlipperEnd, 1)
-					if ballpos > 0.65 then  Ycoef = LinearEnvelope(BallData(x).Y, YcoefIn, YcoefOut)                                'find safety coefficient 'ycoef' data
-				end if
+					If ballpos > 0.65 Then  Ycoef = LinearEnvelope(BallData(x).Y, YcoefIn, YcoefOut)								'find safety coefficient 'ycoef' data
+				End If
 			Next
-
+			
 			If BallPos = 0 Then 'no ball data meaning the ball is entering and exiting pretty close to the same position, use current values.
 				BallPos = PSlope(aBall.x, FlipperStart, 0, FlipperEnd, 1)
-				if ballpos > 0.65 then  Ycoef = LinearEnvelope(aBall.Y, YcoefIn, YcoefOut)                                                'find safety coefficient 'ycoef' data
+				If ballpos > 0.65 Then  Ycoef = LinearEnvelope(aBall.Y, YcoefIn, YcoefOut)												'find safety coefficient 'ycoef' data
 			End If
-
+			
 			'Velocity correction
-			if not IsEmpty(VelocityIn(0) ) then
+			If Not IsEmpty(VelocityIn(0) ) Then
 				Dim VelCoef
-				:                         VelCoef = LinearEnvelope(BallPos, VelocityIn, VelocityOut)
-
-				if partialflipcoef < 1 then VelCoef = PSlope(partialflipcoef, 0, 1, 1, VelCoef)
-
-				if Enabled then aBall.Velx = aBall.Velx*VelCoef
-				if Enabled then aBall.Vely = aBall.Vely*VelCoef
+				VelCoef = LinearEnvelope(BallPos, VelocityIn, VelocityOut)
+				
+				If partialflipcoef < 1 Then VelCoef = PSlope(partialflipcoef, 0, 1, 1, VelCoef)
+				
+				If Enabled Then aBall.Velx = aBall.Velx*VelCoef
+				If Enabled Then aBall.Vely = aBall.Vely*VelCoef
 			End If
-
+			
 			'Polarity Correction (optional now)
-			if not IsEmpty(PolarityIn(0) ) then
-				If StartPoint > EndPoint then LR = -1        'Reverse polarity if left flipper
-				dim AddX : AddX = LinearEnvelope(BallPos, PolarityIn, PolarityOut) * LR
-
-				if Enabled then aBall.VelX = aBall.VelX + 1 * (AddX*ycoef*PartialFlipcoef)
-				'playsound "fx_knocker"
+			If Not IsEmpty(PolarityIn(0) ) Then
+				Dim AddX
+				AddX = LinearEnvelope(BallPos, PolarityIn, PolarityOut) * LR
+				
+				If Enabled Then aBall.VelX = aBall.VelX + 1 * (AddX*ycoef*PartialFlipcoef)
 			End If
+			If DebugOn Then debug.print "PolarityCorrect" & " " & Name & " @ " & GameTime & " " & Round(BallPos*100) & "%" & " AddX:" & Round(AddX,2) & " Vel%:" & Round(VelCoef*100)
 		End If
 		RemoveBall aBall
 	End Sub
 End Class
 
 '******************************************************
-'                FLIPPER POLARITY AND RUBBER DAMPENER
-'                        SUPPORTING FUNCTIONS 
+'  FLIPPER POLARITY AND RUBBER DAMPENER SUPPORTING FUNCTIONS
 '******************************************************
 
 ' Used for flipper correction and rubber dampeners
 Sub ShuffleArray(ByRef aArray, byVal offset) 'shuffle 1d array
-	dim x, aCount : aCount = 0
-	redim a(uBound(aArray) )
-	for x = 0 to uBound(aArray)        'Shuffle objects in a temp array
-		if not IsEmpty(aArray(x) ) Then
-			if IsObject(aArray(x)) then 
+	Dim x, aCount
+	aCount = 0
+	ReDim a(UBound(aArray) )
+	For x = 0 To UBound(aArray)		'Shuffle objects in a temp array
+		If Not IsEmpty(aArray(x) ) Then
+			If IsObject(aArray(x)) Then
 				Set a(aCount) = aArray(x)
 			Else
 				a(aCount) = aArray(x)
@@ -10689,10 +10776,10 @@ Sub ShuffleArray(ByRef aArray, byVal offset) 'shuffle 1d array
 			aCount = aCount + 1
 		End If
 	Next
-	if offset < 0 then offset = 0
-	redim aArray(aCount-1+offset)        'Resize original array
-	for x = 0 to aCount-1                'set objects back into original array
-		if IsObject(a(x)) then 
+	If offset < 0 Then offset = 0
+	ReDim aArray(aCount-1+offset)		'Resize original array
+	For x = 0 To aCount-1				'set objects back into original array
+		If IsObject(a(x)) Then
 			Set aArray(x) = a(x)
 		Else
 			aArray(x) = a(x)
@@ -10708,96 +10795,144 @@ End Sub
 
 ' Used for flipper correction, rubber dampeners, and drop targets
 Function BallSpeed(ball) 'Calculates the ball speed
-	BallSpeed = SQR(ball.VelX^2 + ball.VelY^2 + ball.VelZ^2)
+	BallSpeed = Sqr(ball.VelX^2 + ball.VelY^2 + ball.VelZ^2)
 End Function
 
 ' Used for flipper correction and rubber dampeners
-Function PSlope(Input, X1, Y1, X2, Y2)        'Set up line via two points, no clamping. Input X, output Y
-	dim x, y, b, m : x = input : m = (Y2 - Y1) / (X2 - X1) : b = Y2 - m*X2
+Function PSlope(Input, X1, Y1, X2, Y2)		'Set up line via two points, no clamping. Input X, output Y
+	Dim x, y, b, m
+	x = input
+	m = (Y2 - Y1) / (X2 - X1)
+	b = Y2 - m*X2
 	Y = M*x+b
 	PSlope = Y
 End Function
 
 ' Used for flipper correction
-Class spoofball 
-	Public X, Y, Z, VelX, VelY, VelZ, ID, Mass, Radius 
+Class spoofball
+	Public X, Y, Z, VelX, VelY, VelZ, ID, Mass, Radius
 	Public Property Let Data(aBall)
 		With aBall
-			x = .x : y = .y : z = .z : velx = .velx : vely = .vely : velz = .velz
-			id = .ID : mass = .mass : radius = .radius
-		end with
+			x = .x
+			y = .y
+			z = .z
+			velx = .velx
+			vely = .vely
+			velz = .velz
+			id = .ID
+			mass = .mass
+			radius = .radius
+		End With
 	End Property
 	Public Sub Reset()
-		x = Empty : y = Empty : z = Empty  : velx = Empty : vely = Empty : velz = Empty 
-		id = Empty : mass = Empty : radius = Empty
+		x = Empty
+		y = Empty
+		z = Empty
+		velx = Empty
+		vely = Empty
+		velz = Empty
+		id = Empty
+		mass = Empty
+		radius = Empty
 	End Sub
 End Class
 
 ' Used for flipper correction and rubber dampeners
 Function LinearEnvelope(xInput, xKeyFrame, yLvl)
-	dim y 'Y output
-	dim L 'Line
-	dim ii : for ii = 1 to uBound(xKeyFrame)        'find active line
-		if xInput <= xKeyFrame(ii) then L = ii : exit for : end if
+	Dim y 'Y output
+	Dim L 'Line
+	'find active line
+	Dim ii
+	For ii = 1 To UBound(xKeyFrame)
+		If xInput <= xKeyFrame(ii) Then
+			L = ii
+			Exit For
+		End If
 	Next
-	if xInput > xKeyFrame(uBound(xKeyFrame) ) then L = uBound(xKeyFrame)        'catch line overrun
+	If xInput > xKeyFrame(UBound(xKeyFrame) ) Then L = UBound(xKeyFrame)		'catch line overrun
 	Y = pSlope(xInput, xKeyFrame(L-1), yLvl(L-1), xKeyFrame(L), yLvl(L) )
-
-	if xInput <= xKeyFrame(lBound(xKeyFrame) ) then Y = yLvl(lBound(xKeyFrame) )         'Clamp lower
-	if xInput >= xKeyFrame(uBound(xKeyFrame) ) then Y = yLvl(uBound(xKeyFrame) )        'Clamp upper
-
+	
+	If xInput <= xKeyFrame(LBound(xKeyFrame) ) Then Y = yLvl(LBound(xKeyFrame) )		 'Clamp lower
+	If xInput >= xKeyFrame(UBound(xKeyFrame) ) Then Y = yLvl(UBound(xKeyFrame) )		'Clamp upper
+	
 	LinearEnvelope = Y
 End Function
 
 
 '******************************************************
-'                        FLIPPER TRICKS
+'  FLIPPER TRICKS
 '******************************************************
+' To add the flipper tricks you must
+'	 - Include a call to FlipperCradleCollision from within OnBallBallCollision subroutine
+'	 - Include a call the CheckLiveCatch from the LeftFlipper_Collide and RightFlipper_Collide subroutines
 
-RightFlipper.timerinterval=1
-Rightflipper.timerenabled=True
+RightFlipper.timerinterval = 1
+Rightflipper.timerenabled = True
 
-sub RightFlipper_timer()
+Sub RightFlipper_timer()
 	FlipperTricks LeftFlipper, LFPress, LFCount, LFEndAngle, LFState
 	FlipperTricks RightFlipper, RFPress, RFCount, RFEndAngle, RFState
 	FlipperNudge RightFlipper, RFEndAngle, RFEOSNudge, LeftFlipper, LFEndAngle
 	FlipperNudge LeftFlipper, LFEndAngle, LFEOSNudge,  RightFlipper, RFEndAngle
-end sub
+End Sub
 
 Dim LFEOSNudge, RFEOSNudge
 
 Sub FlipperNudge(Flipper1, Endangle1, EOSNudge1, Flipper2, EndAngle2)
-	Dim BOT, b
-
-	If Flipper1.currentangle = Endangle1 and EOSNudge1 <> 1 Then
+	Dim b
+	Dim BOT
+	BOT = GetBalls
+	
+	If Flipper1.currentangle = Endangle1 And EOSNudge1 <> 1 Then
 		EOSNudge1 = 1
-		'debug.print Flipper1.currentangle &" = "& Endangle1 &"--"& Flipper2.currentangle &" = "& EndAngle2
-		If Flipper2.currentangle = EndAngle2 Then 
-			BOT = GetBalls
-			For b = 0 to Ubound(BOT)
+		'   debug.print Flipper1.currentangle &" = "& Endangle1 &"--"& Flipper2.currentangle &" = "& EndAngle2
+		If Flipper2.currentangle = EndAngle2 Then
+			For b = 0 To UBound(BOT)
 				If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper1) Then
 					'Debug.Print "ball in flip1. exit"
-					exit Sub
-				end If
+					Exit Sub
+				End If
 			Next
-			For b = 0 to Ubound(BOT)
+			For b = 0 To UBound(BOT)
 				If FlipperTrigger(BOT(b).x, BOT(b).y, Flipper2) Then
-					BOT(b).velx = BOT(b).velx / 1.7
-					BOT(b).vely = BOT(b).vely - 1
-				end If
+					BOT(b).velx = BOT(b).velx / 1.3
+					BOT(b).vely = BOT(b).vely - 0.5
+				End If
 			Next
 		End If
-	Else 
-		If Flipper1.currentangle <> EndAngle1 then 
-			EOSNudge1 = 0
-		end if
+	Else
+		If Abs(Flipper1.currentangle) > Abs(EndAngle1) + 30 Then EOSNudge1 = 0
 	End If
 End Sub
+
+
+Dim FCCDamping: FCCDamping = 0.4
+
+Sub FlipperCradleCollision(ball1, ball2, velocity)
+	if velocity < 0.7 then exit sub		'filter out gentle collisions
+    Dim DoDamping, coef
+    DoDamping = false
+    'Check left flipper
+    If LeftFlipper.currentangle = LFEndAngle Then
+		If FlipperTrigger(ball1.x, ball1.y, LeftFlipper) OR FlipperTrigger(ball2.x, ball2.y, LeftFlipper) Then DoDamping = true
+    End If
+    'Check right flipper
+    If RightFlipper.currentangle = RFEndAngle Then
+		If FlipperTrigger(ball1.x, ball1.y, RightFlipper) OR FlipperTrigger(ball2.x, ball2.y, RightFlipper) Then DoDamping = true
+    End If
+    If DoDamping Then
+		coef = FCCDamping
+        ball1.velx = ball1.velx * coef: ball1.vely = ball1.vely * coef: ball1.velz = ball1.velz * coef
+        ball2.velx = ball2.velx * coef: ball2.vely = ball2.vely * coef: ball2.velz = ball2.velz * coef
+    End If
+End Sub
+	
+	
 
 '*****************
 ' Maths
 '*****************
-'Const PI = 3.1415927
+Dim PI: PI = 4*Atn(1)
 
 Function dSin(degrees)
 	dsin = sin(degrees * Pi/180)
@@ -10807,84 +10942,118 @@ Function dCos(degrees)
 	dcos = cos(degrees * Pi/180)
 End Function
 
+Function Atn2(dy, dx)
+	If dx > 0 Then
+		Atn2 = Atn(dy / dx)
+	ElseIf dx < 0 Then
+		If dy = 0 Then
+			Atn2 = pi
+		Else
+			Atn2 = Sgn(dy) * (pi - Atn(Abs(dy / dx)))
+		End If
+	ElseIf dx = 0 Then
+		If dy = 0 Then
+			Atn2 = 0
+		Else
+			Atn2 = Sgn(dy) * pi / 2
+		End If
+	End If
+End Function
+
+Function max(a,b)
+	If a > b Then
+		max = a
+	Else
+		max = b
+	End If
+End Function
+
+Function min(a,b)
+	If a > b Then
+		min = b
+	Else
+		min = a
+	End If
+End Function
+
+
 '*************************************************
 ' Check ball distance from Flipper for Rem
 '*************************************************
 
 Function Distance(ax,ay,bx,by)
-	Distance = SQR((ax - bx)^2 + (ay - by)^2)
+	Distance = Sqr((ax - bx) ^ 2 + (ay - by) ^ 2)
 End Function
 
-Function DistancePL(px,py,ax,ay,bx,by) ' Distance between a point and a line where point is px,py
-	DistancePL = ABS((by - ay)*px - (bx - ax) * py + bx*ay - by*ax)/Distance(ax,ay,bx,by)
+Function DistancePL(px,py,ax,ay,bx,by) 'Distance between a point and a line where point Is px,py
+	DistancePL = Abs((by - ay) * px - (bx - ax) * py + bx * ay - by * ax) / Distance(ax,ay,bx,by)
 End Function
 
 Function Radians(Degrees)
-	Radians = Degrees * PI /180
+	Radians = Degrees * PI / 180
 End Function
 
 Function AnglePP(ax,ay,bx,by)
-	AnglePP = Atn2((by - ay),(bx - ax))*180/PI
+	AnglePP = Atn2((by - ay),(bx - ax)) * 180 / PI
 End Function
 
 Function DistanceFromFlipper(ballx, bally, Flipper)
-	DistanceFromFlipper = DistancePL(ballx, bally, Flipper.x, Flipper.y, Cos(Radians(Flipper.currentangle+90))+Flipper.x, Sin(Radians(Flipper.currentangle+90))+Flipper.y)
+	DistanceFromFlipper = DistancePL(ballx, bally, Flipper.x, Flipper.y, Cos(Radians(Flipper.currentangle + 90)) + Flipper.x, Sin(Radians(Flipper.currentangle + 90)) + Flipper.y)
 End Function
 
 Function FlipperTrigger(ballx, bally, Flipper)
 	Dim DiffAngle
-	DiffAngle  = ABS(Flipper.currentangle - AnglePP(Flipper.x, Flipper.y, ballx, bally) - 90)
+	DiffAngle = Abs(Flipper.currentangle - AnglePP(Flipper.x, Flipper.y, ballx, bally) - 90)
 	If DiffAngle > 180 Then DiffAngle = DiffAngle - 360
-
-	If DistanceFromFlipper(ballx,bally,Flipper) < 48 and DiffAngle <= 90 and Distance(ballx,bally,Flipper.x,Flipper.y) < Flipper.Length Then
+	
+	If DistanceFromFlipper(ballx,bally,Flipper) < 48 And DiffAngle <= 90 And Distance(ballx,bally,Flipper.x,Flipper.y) < Flipper.Length Then
 		FlipperTrigger = True
 	Else
 		FlipperTrigger = False
-	End If        
-End Function
-
-' Used for drop targets and stand up targets
-Function Atn2(dy, dx)
-	If dx > 0 Then
-		Atn2 = Atn(dy / dx)
-	ElseIf dx < 0 Then
-		If dy = 0 Then 
-			Atn2 = pi
-		Else
-			Atn2 = Sgn(dy) * (pi - Atn(Abs(dy / dx)))
-		end if
-	ElseIf dx = 0 Then
-		if dy = 0 Then
-			Atn2 = 0
-		else
-			Atn2 = Sgn(dy) * pi / 2
-		end if
 	End If
 End Function
+
+
 
 '*************************************************
 ' End - Check ball distance from Flipper for Rem
 '*************************************************
 
-dim LFPress, RFPress, LFCount, RFCount
-dim LFState, RFState
-dim EOST, EOSA,Frampup, FElasticity,FReturn
-dim RFEndAngle, LFEndAngle
+Dim LFPress, RFPress, LFCount, RFCount
+Dim LFState, RFState
+Dim EOST, EOSA,Frampup, FElasticity,FReturn
+Dim RFEndAngle, LFEndAngle
 
+Const FlipperCoilRampupMode = 0 '0 = fast, 1 = medium, 2 = slow (tap passes should work)
+
+LFState = 1
+RFState = 1
 EOST = leftflipper.eostorque
 EOSA = leftflipper.eostorqueangle
 Frampup = LeftFlipper.rampup
 FElasticity = LeftFlipper.elasticity
 FReturn = LeftFlipper.return
-Const EOSTnew = 0.8 
+'Const EOSTnew = 1.5 'EM's to late 80's - new recommendation by rothbauerw (previously 1)
+Const EOSTnew = 1.2 '90's and later - new recommendation by rothbauerw (previously 0.8)
 Const EOSAnew = 1
 Const EOSRampup = 0
-Const SOSRampup = 2.5
+Dim SOSRampup
+Select Case FlipperCoilRampupMode
+	Case 0
+		SOSRampup = 2.5
+	Case 1
+		SOSRampup = 6
+	Case 2
+		SOSRampup = 8.5
+End Select
 
 Const LiveCatch = 16
 Const LiveElasticity = 0.45
 Const SOSEM = 0.815
-Const EOSReturn = 0.025
+'   Const EOSReturn = 0.055  'EM's
+'   Const EOSReturn = 0.045  'late 70's to mid 80's
+Const EOSReturn = 0.035  'mid 80's to early 90's
+'   Const EOSReturn = 0.025  'mid 90's and later
 
 LFEndAngle = Leftflipper.endangle
 RFEndAngle = RightFlipper.endangle
@@ -10892,87 +11061,128 @@ RFEndAngle = RightFlipper.endangle
 Sub FlipperActivate(Flipper, FlipperPress)
 	FlipperPress = 1
 	Flipper.Elasticity = FElasticity
-
-	Flipper.eostorque = EOST         
-	Flipper.eostorqueangle = EOSA         
+	
+	Flipper.eostorque = EOST
+	Flipper.eostorqueangle = EOSA
 End Sub
 
 Sub FlipperDeactivate(Flipper, FlipperPress)
 	FlipperPress = 0
 	Flipper.eostorqueangle = EOSA
-	Flipper.eostorque = EOST*EOSReturn/FReturn
-
-
+	Flipper.eostorque = EOST * EOSReturn / FReturn
+	
 	If Abs(Flipper.currentangle) <= Abs(Flipper.endangle) + 0.1 Then
-		Dim BOT, b
+		Dim b, BOT
 		BOT = GetBalls
-
-		For b = 0 to UBound(BOT)
+		
+		For b = 0 To UBound(BOT)
 			If Distance(BOT(b).x, BOT(b).y, Flipper.x, Flipper.y) < 55 Then 'check for cradle
-				If BOT(b).vely >= -0.4 Then BOT(b).vely = -0.4
+				If BOT(b).vely >= - 0.4 Then BOT(b).vely =  - 0.4
 			End If
 		Next
 	End If
 End Sub
 
-Sub FlipperTricks (Flipper, FlipperPress, FCount, FEndAngle, FState) 
+Sub FlipperTricks (Flipper, FlipperPress, FCount, FEndAngle, FState)
 	Dim Dir
-	Dir = Flipper.startangle/Abs(Flipper.startangle)        '-1 for Right Flipper
-
+	Dir = Flipper.startangle / Abs(Flipper.startangle) '-1 for Right Flipper
+	
 	If Abs(Flipper.currentangle) > Abs(Flipper.startangle) - 0.05 Then
 		If FState <> 1 Then
-			Flipper.rampup = SOSRampup 
-			Flipper.endangle = FEndAngle - 3*Dir
+			Flipper.rampup = SOSRampup
+			Flipper.endangle = FEndAngle - 3 * Dir
 			Flipper.Elasticity = FElasticity * SOSEM
-			FCount = 0 
+			FCount = 0
 			FState = 1
 		End If
-	ElseIf Abs(Flipper.currentangle) <= Abs(Flipper.endangle) and FlipperPress = 1 then
-		if FCount = 0 Then FCount = GameTime
-
+	ElseIf Abs(Flipper.currentangle) <= Abs(Flipper.endangle) And FlipperPress = 1 Then
+		If FCount = 0 Then FCount = GameTime
+		
 		If FState <> 2 Then
 			Flipper.eostorqueangle = EOSAnew
 			Flipper.eostorque = EOSTnew
-			Flipper.rampup = EOSRampup                        
+			Flipper.rampup = EOSRampup
 			Flipper.endangle = FEndAngle
 			FState = 2
 		End If
-	Elseif Abs(Flipper.currentangle) > Abs(Flipper.endangle) + 0.01 and FlipperPress = 1 Then 
+	ElseIf Abs(Flipper.currentangle) > Abs(Flipper.endangle) + 0.01 And FlipperPress = 1 Then
 		If FState <> 3 Then
-			Flipper.eostorque = EOST        
+			Flipper.eostorque = EOST
 			Flipper.eostorqueangle = EOSA
 			Flipper.rampup = Frampup
 			Flipper.Elasticity = FElasticity
 			FState = 3
 		End If
-
 	End If
 End Sub
 
-Const LiveDistanceMin = 30  'minimum distance in vp units from flipper base live catch dampening will occur
-Const LiveDistanceMax = 114  'maximum distance in vp units from flipper base live catch dampening will occur (tip protection)
+Const LiveDistanceMin = 30  'minimum distance In vp units from flipper base live catch dampening will occur
+Const LiveDistanceMax = 114 'maximum distance in vp units from flipper base live catch dampening will occur (tip protection)
 
 Sub CheckLiveCatch(ball, Flipper, FCount, parm) 'Experimental new live catch
-    Dim Dir
-    Dir = Flipper.startangle/Abs(Flipper.startangle)    '-1 for Right Flipper
-    Dim LiveCatchBounce                                                                                                                        'If live catch is not perfect, it won't freeze ball totally
-    Dim CatchTime : CatchTime = GameTime - FCount
+	Dim Dir
+	Dir = Flipper.startangle / Abs(Flipper.startangle)	'-1 for Right Flipper
+	Dim LiveCatchBounce																														'If live catch is not perfect, it won't freeze ball totally
+	Dim CatchTime
+	CatchTime = GameTime - FCount
+	
+	If CatchTime <= LiveCatch And parm > 6 And Abs(Flipper.x - ball.x) > LiveDistanceMin And Abs(Flipper.x - ball.x) < LiveDistanceMax Then
+		If CatchTime <= LiveCatch * 0.5 Then												'Perfect catch only when catch time happens in the beginning of the window
+			LiveCatchBounce = 0
+		Else
+			LiveCatchBounce = Abs((LiveCatch / 2) - CatchTime)		'Partial catch when catch happens a bit late
+		End If
+		
+		If LiveCatchBounce = 0 And ball.velx * Dir > 0 Then ball.velx = 0
+		ball.vely = LiveCatchBounce * (32 / LiveCatch) ' Multiplier for inaccuracy bounce
+		ball.angmomx = 0
+		ball.angmomy = 0
+		ball.angmomz = 0
+	Else
+		If Abs(Flipper.currentangle) <= Abs(Flipper.endangle) + 1 Then FlippersD.Dampenf ActiveBall, parm
+	End If
+End Sub
 
-    if CatchTime <= LiveCatch and parm > 6 and ABS(Flipper.x - ball.x) > LiveDistanceMin and ABS(Flipper.x - ball.x) < LiveDistanceMax Then
-            if CatchTime <= LiveCatch*0.5 Then                                                'Perfect catch only when catch time happens in the beginning of the window
-                    LiveCatchBounce = 0
-            else
-                    LiveCatchBounce = Abs((LiveCatch/2) - CatchTime)        'Partial catch when catch happens a bit late
-            end If
+'******************************************************
+'****  END FLIPPER CORRECTIONS
+'******************************************************
 
-            If LiveCatchBounce = 0 and ball.velx * Dir > 0 Then ball.velx = 0
-            ball.vely = LiveCatchBounce * (32 / LiveCatch) ' Multiplier for inaccuracy bounce
-            ball.angmomx= 0
-            ball.angmomy= 0
-            ball.angmomz= 0
-    Else
-        If Abs(Flipper.currentangle) <= Abs(Flipper.endangle) + 1 Then FlippersD.Dampenf Activeball, parm
-    End If
+
+
+
+'******************************************************
+' VPW TargetBouncer for targets and posts by Iaakki, Wrd1972, Apophis
+'******************************************************
+
+Const TargetBouncerEnabled = 1	  '0 = normal standup targets, 1 = bouncy targets
+Const TargetBouncerFactor = 0.7	 'Level of bounces. Recommmended value of 0.7
+
+Sub TargetBouncer(aBall,defvalue)
+	Dim zMultiplier, vel, vratio
+	If TargetBouncerEnabled = 1 And aball.z < 30 Then
+		'   debug.print "velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
+		vel = BallSpeed(aBall)
+		If aBall.velx = 0 Then vratio = 1 Else vratio = aBall.vely / aBall.velx
+		Select Case Int(Rnd * 6) + 1
+			Case 1
+				zMultiplier = 0.2 * defvalue
+			Case 2
+				zMultiplier = 0.25 * defvalue
+			Case 3
+				zMultiplier = 0.3 * defvalue
+			Case 4
+				zMultiplier = 0.4 * defvalue
+			Case 5
+				zMultiplier = 0.45 * defvalue
+			Case 6
+				zMultiplier = 0.5 * defvalue
+		End Select
+		aBall.velz = Abs(vel * zMultiplier * TargetBouncerFactor)
+		aBall.velx = Sgn(aBall.velx) * Sqr(Abs((vel ^ 2 - aBall.velz ^ 2) / (1 + vratio ^ 2)))
+		aBall.vely = aBall.velx * vratio
+		'   debug.print "---> velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
+		'   debug.print "conservation check: " & BallSpeed(aBall)/vel
+	End If
 End Sub
 
 
@@ -10980,141 +11190,119 @@ End Sub
 '****************************************************************************
 'PHYSICS DAMPENERS
 '****************************************************************************
-
 'These are data mined bounce curves, 
 'dialed in with the in-game elasticity as much as possible to prevent angle / spin issues.
 'Requires tracking ballspeed to calculate COR
 
-'******************************************************
-' VPW TargetBouncer for targets and posts by Iaakki, Wrd1972, Apophis
-'******************************************************
 
-Const TargetBouncerEnabled = 1 		'0 = normal standup targets, 1 = bouncy targets, 2 = orig TargetBouncer
-Const TargetBouncerFactor = 0.7 	'Level of bounces. Recommmended value of 0.7 when TargetBouncerEnabled=1, and 1.1 when TargetBouncerEnabled=2
-
-sub TargetBouncer(aBall,defvalue)
-    dim zMultiplier, vel, vratio
-    if TargetBouncerEnabled = 1 and aball.z < 30 then
-        'debug.print "velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
-        vel = BallSpeed(aBall)
-        if aBall.velx = 0 then vratio = 1 else vratio = aBall.vely/aBall.velx
-        Select Case Int(Rnd * 6) + 1
-            Case 1: zMultiplier = 0.2*defvalue
-			Case 2: zMultiplier = 0.25*defvalue
-            Case 3: zMultiplier = 0.3*defvalue
-			Case 4: zMultiplier = 0.4*defvalue
-            Case 5: zMultiplier = 0.45*defvalue
-            Case 6: zMultiplier = 0.5*defvalue
-        End Select
-        aBall.velz = abs(vel * zMultiplier * TargetBouncerFactor)
-        aBall.velx = sgn(aBall.velx) * sqr(abs((vel^2 - aBall.velz^2)/(1+vratio^2)))
-        aBall.vely = aBall.velx * vratio
-        'debug.print "---> velx: " & aball.velx & " vely: " & aball.vely & " velz: " & aball.velz
-        'debug.print "conservation check: " & BallSpeed(aBall)/vel
-    elseif TargetBouncerEnabled = 2 and aball.z < 30 then
-		'debug.print "velz: " & activeball.velz
-		if aball.vely > 3 then	'only hard hits
-			Select Case Int(Rnd * 4) + 1
-				Case 1: zMultiplier = defvalue+1.1
-				Case 2: zMultiplier = defvalue+1.05
-				Case 3: zMultiplier = defvalue+0.7
-				Case 4: zMultiplier = defvalue+0.3
-			End Select
-			aBall.velz = aBall.velz * zMultiplier * TargetBouncerFactor
-			'debug.print "----> velz: " & activeball.velz
-			'debug.print "conservation check: " & BallSpeed(aBall)/vel
-		End If
-	end if
-end sub
-
-Sub dPosts_Hit(idx) 
-	RubbersD.dampen Activeball
-	TargetBouncer activeball, 1
+Sub dPosts_Hit(idx)
+	RubbersD.dampen ActiveBall
+	TargetBouncer ActiveBall, 1
 End Sub
 
-Sub dSleeves_Hit(idx) 
-	SleevesD.Dampen Activeball
-	TargetBouncer activeball, 0.7
+Sub dSleeves_Hit(idx)
+	SleevesD.Dampen ActiveBall
+	TargetBouncer ActiveBall, 0.7
 End Sub
 
-
-dim RubbersD : Set RubbersD = new Dampener        'frubber
+Dim RubbersD				'frubber
+Set RubbersD = New Dampener
 RubbersD.name = "Rubbers"
-RubbersD.debugOn = False        'shows info in textbox "TBPout"
-RubbersD.Print = False        'debug, reports in debugger (in vel, out cor)
-'cor bounce curve (linear)
-'for best results, try to match in-game velocity as closely as possible to the desired curve
-'RubbersD.addpoint 0, 0, 0.935        'point# (keep sequential), ballspeed, CoR (elasticity)
-RubbersD.addpoint 0, 0, 0.96        'point# (keep sequential), ballspeed, CoR (elasticity)
-RubbersD.addpoint 1, 3.77, 0.96
-RubbersD.addpoint 2, 5.76, 0.967        'dont take this as gospel. if you can data mine rubber elasticitiy, please help!
-RubbersD.addpoint 3, 15.84, 0.874
-RubbersD.addpoint 4, 56, 0.64        'there's clamping so interpolate up to 56 at least
+RubbersD.debugOn = False	'shows info in textbox "TBPout"
+RubbersD.Print = False	  'debug, reports In debugger (In vel, out cor); cor bounce curve (linear)
 
-dim SleevesD : Set SleevesD = new Dampener        'this is just rubber but cut down to 85%...
+'for best results, try to match in-game velocity as closely as possible to the desired curve
+'   RubbersD.addpoint 0, 0, 0.935   'point# (keep sequential), ballspeed, CoR (elasticity)
+RubbersD.addpoint 0, 0, 1.1		 'point# (keep sequential), ballspeed, CoR (elasticity)
+RubbersD.addpoint 1, 3.77, 0.97
+RubbersD.addpoint 2, 5.76, 0.967	'dont take this as gospel. if you can data mine rubber elasticitiy, please help!
+RubbersD.addpoint 3, 15.84, 0.874
+RubbersD.addpoint 4, 56, 0.64	   'there's clamping so interpolate up to 56 at least
+
+Dim SleevesD	'this is just rubber but cut down to 85%...
+Set SleevesD = New Dampener
 SleevesD.name = "Sleeves"
-SleevesD.debugOn = False        'shows info in textbox "TBPout"
-SleevesD.Print = False        'debug, reports in debugger (in vel, out cor)
+SleevesD.debugOn = False	'shows info in textbox "TBPout"
+SleevesD.Print = False	  'debug, reports In debugger (In vel, out cor)
 SleevesD.CopyCoef RubbersD, 0.85
 
-dim FlippersD : Set FlippersD = new Dampener
+'######################### Add new FlippersD Profile
+'######################### Adjust these values to increase or lessen the elasticity
+
+Dim FlippersD
+Set FlippersD = New Dampener
 FlippersD.name = "Flippers"
 FlippersD.debugOn = False
-FlippersD.Print = False	
-FlippersD.addpoint 0, 0, 1.1	
+FlippersD.Print = False
+FlippersD.addpoint 0, 0, 1.1
 FlippersD.addpoint 1, 3.77, 0.99
 FlippersD.addpoint 2, 6, 0.99
 
 Class Dampener
-	Public Print, debugOn 'tbpOut.text
-	public name, Threshold 	'Minimum threshold. Useful for Flippers, which don't have a hit threshold.
+	Public Print, debugOn   'tbpOut.text
+	Public name, Threshold  'Minimum threshold. Useful for Flippers, which don't have a hit threshold.
 	Public ModIn, ModOut
-	Private Sub Class_Initialize : redim ModIn(0) : redim Modout(0): End Sub 
-
-	Public Sub AddPoint(aIdx, aX, aY) 
-		ShuffleArrays ModIn, ModOut, 1 : ModIn(aIDX) = aX : ModOut(aIDX) = aY : ShuffleArrays ModIn, ModOut, 0
-		if gametime > 100 then Report
+	Private Sub Class_Initialize
+		ReDim ModIn(0)
+		ReDim Modout(0)
 	End Sub
-
-	public sub Dampen(aBall)
-		if threshold then if BallSpeed(aBall) < threshold then exit sub end if end if
-		dim RealCOR, DesiredCOR, str, coef
+	
+	Public Sub AddPoint(aIdx, aX, aY)
+		ShuffleArrays ModIn, ModOut, 1
+		ModIn(aIDX) = aX
+		ModOut(aIDX) = aY
+		ShuffleArrays ModIn, ModOut, 0
+		If GameTime > 100 Then Report
+	End Sub
+	
+	Public Sub Dampen(aBall)
+		If threshold Then
+			If BallSpeed(aBall) < threshold Then Exit Sub
+		End If
+		Dim RealCOR, DesiredCOR, str, coef
 		DesiredCor = LinearEnvelope(cor.ballvel(aBall.id), ModIn, ModOut )
-		RealCOR = BallSpeed(aBall) / cor.ballvel(aBall.id)
-		coef = desiredcor / realcor 
-		if debugOn then str = name & " in vel:" & round(cor.ballvel(aBall.id),2 ) & vbnewline & "desired cor: " & round(desiredcor,4) & vbnewline & _
-		"actual cor: " & round(realCOR,4) & vbnewline & "ballspeed coef: " & round(coef, 3) & vbnewline 
-		if Print then debug.print Round(cor.ballvel(aBall.id),2) & ", " & round(desiredcor,3)
+		RealCOR = BallSpeed(aBall) / (cor.ballvel(aBall.id) + 0.0001)
+		coef = desiredcor / realcor
+		If debugOn Then str = name & " In vel:" & Round(cor.ballvel(aBall.id),2 ) & vbNewLine & "desired cor: " & Round(desiredcor,4) & vbNewLine & _
+		"actual cor: " & Round(realCOR,4) & vbNewLine & "ballspeed coef: " & Round(coef, 3) & vbNewLine
+		If Print Then Debug.print Round(cor.ballvel(aBall.id),2) & ", " & Round(desiredcor,3)
 		
-		aBall.velx = aBall.velx * coef : aBall.vely = aBall.vely * coef
-		if debugOn then TBPout.text = str
+		aBall.velx = aBall.velx * coef
+		aBall.vely = aBall.vely * coef
+		If debugOn Then TBPout.text = str
 	End Sub
-
-	public sub Dampenf(aBall, parm) 'Rubberizer is handle here
-		dim RealCOR, DesiredCOR, str, coef
+	
+	Public Sub Dampenf(aBall, parm) 'Rubberizer is handle here
+		Dim RealCOR, DesiredCOR, str, coef
 		DesiredCor = LinearEnvelope(cor.ballvel(aBall.id), ModIn, ModOut )
-		RealCOR = BallSpeed(aBall) / (cor.ballvel(aBall.id)+0.0001)
-		coef = desiredcor / realcor 
-		If abs(aball.velx) < 2 and aball.vely < 0 and aball.vely > -3.75 then 
-			aBall.velx = aBall.velx * coef : aBall.vely = aBall.vely * coef
+		RealCOR = BallSpeed(aBall) / (cor.ballvel(aBall.id) + 0.0001)
+		coef = desiredcor / realcor
+		If Abs(aball.velx) < 2 And aball.vely < 0 And aball.vely >  - 3.75 Then
+			aBall.velx = aBall.velx * coef
+			aBall.vely = aBall.vely * coef
 		End If
 	End Sub
-
+	
 	Public Sub CopyCoef(aObj, aCoef) 'alternative addpoints, copy with coef
-		dim x : for x = 0 to uBound(aObj.ModIn)
-			addpoint x, aObj.ModIn(x), aObj.ModOut(x)*aCoef
+		Dim x
+		For x = 0 To UBound(aObj.ModIn)
+			addpoint x, aObj.ModIn(x), aObj.ModOut(x) * aCoef
 		Next
 	End Sub
-
-
-	Public Sub Report() 	'debug, reports all coords in tbPL.text
-		if not debugOn then exit sub
-		dim a1, a2 : a1 = ModIn : a2 = ModOut
-		dim str, x : for x = 0 to uBound(a1) : str = str & x & ": " & round(a1(x),4) & ", " & round(a2(x),4) & vbnewline : next
+	
+	Public Sub Report() 'debug, reports all coords in tbPL.text
+		If Not debugOn Then Exit Sub
+		Dim a1, a2
+		a1 = ModIn
+		a2 = ModOut
+		Dim str, x
+		For x = 0 To UBound(a1)
+			str = str & x & ": " & Round(a1(x),4) & ", " & Round(a2(x),4) & vbNewLine
+		Next
 		TBPout.text = str
 	End Sub
-
 End Class
+
 
 
 '******************************************************
@@ -11122,59 +11310,47 @@ End Class
 '                 FOR RUBBER DAMPENER AND DROP TARGETS
 '******************************************************
 
-dim cor : set cor = New CoRTracker
+Dim cor
+Set cor = New CoRTracker
 
 Class CoRTracker
-    public ballvel, ballvelx, ballvely, ballvelz, ballangmomx, ballangmomy, ballangmomz
-
-    Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : redim ballvelz(0) : redim ballangmomx(0) : redim ballangmomy(0): redim ballangmomz(0): End Sub 
-
-    Public Sub Update()    'tracks in-ball-velocity
-        dim str, b, AllBalls, highestID : allBalls = getballs
-
-        for each b in allballs
-            if b.id >= HighestID then highestID = b.id
-        Next
-
-        if uBound(ballvel) < highestID then redim ballvel(highestID)    'set bounds
-        if uBound(ballvelx) < highestID then redim ballvelx(highestID)    'set bounds
-        if uBound(ballvely) < highestID then redim ballvely(highestID)    'set bounds
-        if uBound(ballvelz) < highestID then redim ballvelz(highestID)    'set bounds
-        if uBound(ballangmomx) < highestID then redim ballangmomx(highestID)    'set bounds
-        if uBound(ballangmomy) < highestID then redim ballangmomy(highestID)    'set bounds
-        if uBound(ballangmomz) < highestID then redim ballangmomz(highestID)    'set bounds
-
-        for each b in allballs
-            ballvel(b.id) = BallSpeed(b)
-            ballvelx(b.id) = b.velx
-            ballvely(b.id) = b.vely
-            ballvelz(b.id) = b.velz
-            ballangmomx(b.id) = b.angmomx
-            ballangmomy(b.id) = b.angmomy
-            ballangmomz(b.id) = b.angmomz
-        Next
-    End Sub
+	Public ballvel, ballvelx, ballvely
+	
+	Private Sub Class_Initialize
+		ReDim ballvel(0)
+		ReDim ballvelx(0)
+		ReDim ballvely(0)
+	End Sub
+	
+	Public Sub Update()	'tracks in-ball-velocity
+		Dim str, b, AllBalls, highestID
+		allBalls = GetBalls
+		
+		For Each b In allballs
+			If b.id >= HighestID Then highestID = b.id
+		Next
+		
+		If UBound(ballvel) < highestID Then ReDim ballvel(highestID)	'set bounds
+		If UBound(ballvelx) < highestID Then ReDim ballvelx(highestID)	'set bounds
+		If UBound(ballvely) < highestID Then ReDim ballvely(highestID)	'set bounds
+		
+		For Each b In allballs
+			ballvel(b.id) = BallSpeed(b)
+			ballvelx(b.id) = b.velx
+			ballvely(b.id) = b.vely
+		Next
+	End Sub
 End Class
-
-'*** Determines if a Points (px,py) is inside a 4 point polygon A-D in Clockwise/CCW order
-Function InRect(px,py,ax,ay,bx,by,cx,cy,dx,dy)
-	Dim AB, BC, CD, DA
-	AB = (bx*py) - (by*px) - (ax*py) + (ay*px) + (ax*by) - (ay*bx)
-	BC = (cx*py) - (cy*px) - (bx*py) + (by*px) + (bx*cy) - (by*cx)
-	CD = (dx*py) - (dy*px) - (cx*py) + (cy*px) + (cx*dy) - (cy*dx)
-	DA = (ax*py) - (ay*px) - (dx*py) + (dy*px) + (dx*ay) - (dy*ax)
-
-	If (AB <= 0 AND BC <=0 AND CD <= 0 AND DA <= 0) Or (AB >= 0 AND BC >=0 AND CD >= 0 AND DA >= 0) Then
-		InRect = True
-	Else
-		InRect = False       
-	End If
-End Function
 
 Sub RDampen_Timer()
 	Cor.Update
+	DoSTAnim
+	DoDTAnim
 	RollingUpdate					'update rolling sounds
 End Sub
+
+
+
 
 
 '***** Fleep Start
@@ -11263,39 +11439,39 @@ ArchSoundFactor = 0.025/5													'volume multiplier; must not be zero
 ' PlaySound full syntax - PlaySound(string, int loopcount, float volume, float pan, float randompitch, int pitch, bool useexisting, bool restart, float front_rear_fade)
 ' Note - These functions will not work (currently) for walls/slingshots as these do not feature a simple, single X,Y position
 Sub PlaySoundAtLevelStatic(playsoundparams, aVol, tableobj)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(tableobj), 0, 0, 0, 0, AudioFade(tableobj)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(tableobj), 0, 0, 0, 0, AudioFade(tableobj)
 End Sub
 
 Sub PlaySoundAtLevelExistingStatic(playsoundparams, aVol, tableobj)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(tableobj), 0, 0, 1, 0, AudioFade(tableobj)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(tableobj), 0, 0, 1, 0, AudioFade(tableobj)
 End Sub
 
 Sub PlaySoundAtLevelStaticLoop(playsoundparams, aVol, tableobj)
-	PlaySound playsoundparams, -1, aVol * VolumeDial, AudioPan(tableobj), 0, 0, 0, 0, AudioFade(tableobj)
+	PlaySound playsoundparams, -1, min(aVol,1) * VolumeDial, AudioPan(tableobj), 0, 0, 0, 0, AudioFade(tableobj)
 End Sub
 
 Sub PlaySoundAtLevelStaticRandomPitch(playsoundparams, aVol, randomPitch, tableobj)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(tableobj), randomPitch, 0, 0, 0, AudioFade(tableobj)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(tableobj), randomPitch, 0, 0, 0, AudioFade(tableobj)
 End Sub
 
 Sub PlaySoundAtLevelActiveBall(playsoundparams, aVol)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ActiveBall), 0, 0, 0, 0, AudioFade(ActiveBall)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(ActiveBall), 0, 0, 0, 0, AudioFade(ActiveBall)
 End Sub
 
 Sub PlaySoundAtLevelExistingActiveBall(playsoundparams, aVol)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ActiveBall), 0, 0, 1, 0, AudioFade(ActiveBall)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(ActiveBall), 0, 0, 1, 0, AudioFade(ActiveBall)
 End Sub
 
 Sub PlaySoundAtLeveTimerActiveBall(playsoundparams, aVol, ballvariable)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ballvariable), 0, 0, 0, 0, AudioFade(ballvariable)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(ballvariable), 0, 0, 0, 0, AudioFade(ballvariable)
 End Sub
 
 Sub PlaySoundAtLevelTimerExistingActiveBall(playsoundparams, aVol, ballvariable)
-	PlaySound playsoundparams, 0, aVol * VolumeDial, AudioPan(ballvariable), 0, 0, 1, 0, AudioFade(ballvariable)
+	PlaySound playsoundparams, 0, min(aVol,1) * VolumeDial, AudioPan(ballvariable), 0, 0, 1, 0, AudioFade(ballvariable)
 End Sub
 
 Sub PlaySoundAtLevelRoll(playsoundparams, aVol, pitch)
-	PlaySound playsoundparams, -1, aVol * VolumeDial, AudioPan(tableobj), randomPitch, 0, 0, 0, AudioFade(tableobj)
+	PlaySound playsoundparams, -1, min(aVol,1) * VolumeDial, AudioPan(tableobj), randomPitch, 0, 0, 0, AudioFade(tableobj)
 End Sub
 
 ' Previous Positional Sound Subs
@@ -11305,7 +11481,7 @@ Sub PlaySoundAt(soundname, tableobj)
 End Sub
 
 Sub PlaySoundAtVol(soundname, tableobj, aVol)
-	PlaySound soundname, 1, aVol * VolumeDial, AudioPan(tableobj), 0,0,0, 1, AudioFade(tableobj)
+	PlaySound soundname, 1, min(aVol,1) * VolumeDial, AudioPan(tableobj), 0,0,0, 1, AudioFade(tableobj)
 End Sub
 
 Sub PlaySoundAtBall(soundname)
@@ -11313,11 +11489,11 @@ Sub PlaySoundAtBall(soundname)
 End Sub
 
 Sub PlaySoundAtBallVol (Soundname, aVol)
-	Playsound soundname, 1,aVol * VolumeDial, AudioPan(ActiveBall), 0,0,0, 1, AudioFade(ActiveBall)
+	Playsound soundname, 1,min(aVol,1) * VolumeDial, AudioPan(ActiveBall), 0,0,0, 1, AudioFade(ActiveBall)
 End Sub
 
 Sub PlaySoundAtBallVolM (Soundname, aVol)
-	Playsound soundname, 1,aVol * VolumeDial, AudioPan(ActiveBall), 0,0,0, 0, AudioFade(ActiveBall)
+	Playsound soundname, 1,min(aVol,1) * VolumeDial, AudioPan(ActiveBall), 0,0,0, 0, AudioFade(ActiveBall)
 End Sub
 
 Sub PlaySoundAtVolLoops(sound, tableobj, Vol, Loops)
@@ -11803,6 +11979,13 @@ End Sub
 
 '/////////////////////////////  BALL COLLISION SOUND  ////////////////////////////
 Sub OnBallBallCollision(ball1, ball2, velocity)
+
+	FlipperCradleCollision ball1, ball2, velocity
+
+	If inRect(Ball1.x, Ball1.y, 303, 360, 362,327, 432, 449, 373, 477) Then
+		Exit Sub
+    End If
+
 	Dim snd
 	Select Case Int(Rnd*7)+1
 		Case 1 : snd = "Ball_Collide_1"
@@ -12236,10 +12419,10 @@ Sub UpdateLights
 				Next
 
 				Select case i
-					case 0 : sidewalls.image = "cabinsidegoonies_off" : backwall.image  = "cabinsidegoonies_off"
-					case 2 : sidewalls.image = "cabinsidegoonies3"    : backwall.image  = "cabinsidegoonies3"
-					case 4 : sidewalls.image = "cabinsidegoonies2"    : backwall.image  = "cabinsidegoonies2"
-					case 6 : sidewalls.image = "cabinsidegoonies"     : backwall.image  = "cabinsidegoonies"
+					case 0 : sidewalls.image = "cabinsidegoonies_off" : backwall.image  = "cabinsidegoonies_off" : PinCab_Blades.image  = "Blades_cabinsidegoonies_off" : PinCab_backwall.image  = "cabinsidegoonies_off"
+					case 2 : sidewalls.image = "cabinsidegoonies3"    : backwall.image  = "cabinsidegoonies3"	 : PinCab_Blades.image  = "Blades_cabinsidegoonies3"	: PinCab_backwall.image  = "cabinsidegoonies_off"
+					case 4 : sidewalls.image = "cabinsidegoonies2"    : backwall.image  = "cabinsidegoonies2"	 : PinCab_Blades.image  = "Blades_cabinsidegoonies2"	: PinCab_backwall.image  = "cabinsidegoonies_off"
+					case 6 : sidewalls.image = "cabinsidegoonies"     : backwall.image  = "cabinsidegoonies"	 : PinCab_Blades.image  = "Blades_cabinsidegoonies"		: PinCab_backwall.image  = "cabinsidegoonies_off"
 				End Select
 				ShadowsGI.opacity = i*11+16
 				Flasher005.color = RGB(123+i*22,123+i*22,123+i*22)
@@ -12277,9 +12460,9 @@ Sub UpdateLights
 	FadeL 139 : p011.blenddisablelighting=i*tmpboost2+0.3 : SetL L010,1.5 
 	FadeL 140 : p012.blenddisablelighting=i*tmpboost2+0.3 : SetL L011,1.5 
 
-	FadeL 150 : Flasher007.opacity=i*22
-	FadeL 151 : Flasher008.opacity=i*22
-	FadeL 152 : SetL gi002,0.2 * (2-NewsignLights)  : Flasher006.opacity=i*40 * (2-NewsignLights) 
+	FadeL 150 : Flasher007.opacity=i*11
+	FadeL 151 : Flasher008.opacity=i*11
+	FadeL 152 : SetL gi002,0.2 * (2-NewsignLights)  : Flasher006.opacity=i*20 * (2-NewsignLights) 
 				If i>4 Then
 					i=rnd(1)/2 * (2-NewsignLights) + 0.4
 					organpart1.blenddisablelighting=i
@@ -13130,37 +13313,6 @@ Function DistanceFast(x, y)
 	End if
 end Function
 
-Function max(a,b)
-	if a > b then 
-		max = a
-	Else
-		max = b
-	end if
-end Function
-
-Dim PI: PI = 4*Atn(1)
-
-'Function Atn2(dy, dx)
-'	If dx > 0 Then
-'		Atn2 = Atn(dy / dx)
-'	ElseIf dx < 0 Then
-'		If dy = 0 Then 
-'			Atn2 = pi
-'		Else
-'			Atn2 = Sgn(dy) * (pi - Atn(Abs(dy / dx)))
-'		end if
-'	ElseIf dx = 0 Then
-'		if dy = 0 Then
-'			Atn2 = 0
-'		else
-'			Atn2 = Sgn(dy) * pi / 2
-'		end if
-'	End If
-'End Function
-'
-'Function AnglePP(ax,ay,bx,by)
-'	AnglePP = Atn2((by - ay),(bx - ax))*180/PI
-'End Function
 
 '****** End Part B:  Code and Functions ******
 
@@ -13689,22 +13841,7 @@ Sub PlayerStats_Load
 	fratHideNever = SavePlayer(30,CurrentPlayer)
 
 	organhitsleft = 7
-    target10.Isdropped = 0
-    target11.Isdropped = 0
-    target12.Isdropped = 0
-    target13.Isdropped = 0
-    target14.Isdropped = 0
-    target15.Isdropped = 0
-    target16.Isdropped = 0
-	shadowT10.visible = True
-	shadowT11.visible = True
-	shadowT12.visible = True
-	shadowT13.visible = True
-	shadowT14.visible = True
-	shadowT15.visible = True
-	shadowT16.visible = True
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target16
-	PlaySoundAt SoundFXDOF("DTReset", 120, DOFPulse, DOFDropTargets), Target10
+	bone_organ_dt_reset
 	modename = ""
 	SLS(43,1)=0
 	Kicker7Fake.enabled = 1 ' Fluffhead35
@@ -14086,13 +14223,6 @@ End Sub
 '	dcos = cos(degrees * Pi/180)
 'End Function
 '
-Function RotPoint(x,y,angle)
-    dim rx, ry
-    rx = x*dCos(angle) - y*dSin(angle)
-    ry = x*dSin(angle) + y*dCos(angle)
-    RotPoint = Array(rx,ry)
-End Function
-
 Class SlingshotCorrection
 	Public DebugOn, Enabled
 	private Slingshot, SlingX1, SlingX2, SlingY1, SlingY2
@@ -14153,3 +14283,619 @@ Class SlingshotCorrection
 	End Sub
 
 End Class
+
+'******************************************************
+' 	ZRDT:  DROP TARGETS by Rothbauerw
+'******************************************************
+' This solution improves the physics for drop targets to create more realistic behavior. It allows the ball
+' to move through the target enabling the ability to score more than one target with a well placed shot.
+' It also handles full drop target animation, including deflection on hit and a slight lift when the drop
+' targets raise, switch handling, bricking, and popping the ball up if it's over the drop target when it raises.
+'
+'Add a Timer named DTAnim to editor to handle drop & standup target animations, or run them off an always-on 10ms timer (GameTimer)
+'DTAnim.interval = 10
+'DTAnim.enabled = True
+
+'Sub DTAnim_Timer
+'	DoDTAnim
+'	DoSTAnim
+'End Sub
+
+' For each drop target, we'll use two wall objects for physics calculations and one primitive for visuals and
+' animation. We will not use target objects.  Place your drop target primitive the same as you would a VP drop target.
+' The primitive should have it's pivot point centered on the x and y axis and at or just below the playfield
+' level on the z axis. Orientation needs to be set using Rotz and bending deflection using Rotx. You'll find a hooded
+' target mesh in this table's example. It uses the same texture map as the VP drop targets.
+
+'******************************************************
+'  DROP TARGETS INITIALIZATION
+'******************************************************
+
+Class DropTarget
+  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
+
+  Public Property Get Primary(): Set Primary = m_primary: End Property
+  Public Property Let Primary(input): Set m_primary = input: End Property
+
+  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
+  Public Property Let Secondary(input): Set m_secondary = input: End Property
+
+  Public Property Get Prim(): Set Prim = m_prim: End Property
+  Public Property Let Prim(input): Set m_prim = input: End Property
+
+  Public Property Get Sw(): Sw = m_sw: End Property
+  Public Property Let Sw(input): m_sw = input: End Property
+
+  Public Property Get Animate(): Animate = m_animate: End Property
+  Public Property Let Animate(input): m_animate = input: End Property
+
+  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
+  Public Property Let IsDropped(input): m_isDropped = input: End Property
+
+  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
+    Set m_primary = primary
+    Set m_secondary = secondary
+    Set m_prim = prim
+    m_sw = sw
+    m_animate = animate
+    m_isDropped = isDropped
+
+    Set Init = Me
+  End Function
+End Class
+
+'Define a variable for each drop target
+Dim DT10, DT11, DT12, DT13, DT14, DT15, DT16
+
+'Set array with drop target objects
+'
+'DropTargetvar = Array(primary, secondary, prim, swtich, animate)
+'   primary:	primary target wall to determine drop
+'   secondary:  wall used to simulate the ball striking a bent or offset target after the initial Hit
+'   prim:	   primitive target used for visuals and animation
+'				   IMPORTANT!!!
+'				   rotz must be used for orientation
+'				   rotx to bend the target back
+'				   transz to move it up and down
+'				   the pivot point should be in the center of the target on the x, y and at or below the playfield (0) on z
+'   switch:	 ROM switch number
+'   animate:	Array slot for handling the animation instrucitons, set to 0
+'				   Values for animate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target
+'   isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
+'					Use the function DTDropped(switchid) to check a target's drop status.
+
+Set DT10 = (new DropTarget)(Target10, Target10a, Target10p, 10, 0, False)
+Set DT11 = (new DropTarget)(Target11, Target11a, Target11p, 11, 0, False)
+Set DT12 = (new DropTarget)(Target12, Target12a, Target12p, 12, 0, False)
+Set DT13 = (new DropTarget)(Target13, Target13a, Target13p, 13, 0, False)
+Set DT14 = (new DropTarget)(Target14, Target14a, Target14p, 14, 0, False)
+Set DT15 = (new DropTarget)(Target15, Target15a, Target15p, 15, 0, False)
+Set DT16 = (new DropTarget)(Target16, Target16a, Target16p, 16, 0, False)
+'Set DT2 = (new DropTarget)(sw2, sw2a, sw2p, 2, 0, False)
+'Set DT3 = (new DropTarget)(sw3, sw3a, sw3p, 3, 0, False)
+
+Dim DTArray
+DTArray = Array(DT10, DT11, DT12, DT13, DT14, DT15, DT16)
+
+'Configure the behavior of Drop Targets.
+Const DTDropSpeed = 110 'in milliseconds
+Const DTDropUpSpeed = 40 'in milliseconds
+Const DTDropUnits = 44 'VP units primitive drops so top of at or below the playfield
+Const DTDropUpUnits = 10 'VP units primitive raises above the up position on drops up
+Const DTMaxBend = 8 'max degrees primitive rotates when hit
+Const DTDropDelay = 20 'time in milliseconds before target drops (due to friction/impact of the ball)
+Const DTRaiseDelay = 40 'time in milliseconds before target drops back to normal up position after the solenoid fires to raise the target
+Const DTBrickVel = 30 'velocity at which the target will brick, set to '0' to disable brick
+Const DTEnableBrick = 0 'Set to 0 to disable bricking, 1 to enable bricking
+Const DTMass = 0.2 'Mass of the Drop Target (between 0 and 1), higher values provide more resistance
+
+'******************************************************
+'  DROP TARGETS FUNCTIONS
+'******************************************************
+
+Sub DTHit(switch)
+	Dim i
+	i = DTArrayID(switch)
+	
+	PlayTargetSound
+	DTArray(i).animate = DTCheckBrick(ActiveBall,DTArray(i).prim)
+	If DTArray(i).animate = 1 Or DTArray(i).animate = 3 Or DTArray(i).animate = 4 Then
+		DTBallPhysics ActiveBall, DTArray(i).prim.rotz, DTMass
+	End If
+	DoDTAnim
+End Sub
+
+Sub DTRaise(switch)
+	Dim i
+	i = DTArrayID(switch)
+	
+	DTArray(i).animate =  - 1
+	DoDTAnim
+End Sub
+
+Sub DTDrop(switch)
+	Dim i
+	i = DTArrayID(switch)
+	
+	DTArray(i).animate = 1
+	DoDTAnim
+End Sub
+
+Function DTArrayID(switch)
+	Dim i
+	For i = 0 To UBound(DTArray)
+		If DTArray(i).sw = switch Then
+			DTArrayID = i
+			Exit Function
+		End If
+	Next
+End Function
+
+Sub DTBallPhysics(aBall, angle, mass)
+	Dim rangle,bangle,calc1, calc2, calc3
+	rangle = (angle - 90) * 3.1416 / 180
+	bangle = atn2(cor.ballvely(aball.id),cor.ballvelx(aball.id))
+	
+	calc1 = cor.BallVel(aball.id) * Cos(bangle - rangle) * (aball.mass - mass) / (aball.mass + mass)
+	calc2 = cor.BallVel(aball.id) * Sin(bangle - rangle) * Cos(rangle + 4 * Atn(1) / 2)
+	calc3 = cor.BallVel(aball.id) * Sin(bangle - rangle) * Sin(rangle + 4 * Atn(1) / 2)
+	
+	aBall.velx = calc1 * Cos(rangle) + calc2
+	aBall.vely = calc1 * Sin(rangle) + calc3
+End Sub
+
+'Check if target is hit on it's face or sides and whether a 'brick' occurred
+Function DTCheckBrick(aBall, dtprim)
+	Dim bangle, bangleafter, rangle, rangle2, Xintersect, Yintersect, cdist, perpvel, perpvelafter, paravel, paravelafter
+	rangle = (dtprim.rotz - 90) * 3.1416 / 180
+	rangle2 = dtprim.rotz * 3.1416 / 180
+	bangle = atn2(cor.ballvely(aball.id),cor.ballvelx(aball.id))
+	bangleafter = Atn2(aBall.vely,aball.velx)
+	
+	Xintersect = (aBall.y - dtprim.y - Tan(bangle) * aball.x + Tan(rangle2) * dtprim.x) / (Tan(rangle2) - Tan(bangle))
+	Yintersect = Tan(rangle2) * Xintersect + (dtprim.y - Tan(rangle2) * dtprim.x)
+	
+	cdist = Distance(dtprim.x, dtprim.y, Xintersect, Yintersect)
+	
+	perpvel = cor.BallVel(aball.id) * Cos(bangle - rangle)
+	paravel = cor.BallVel(aball.id) * Sin(bangle - rangle)
+	
+	perpvelafter = BallSpeed(aBall) * Cos(bangleafter - rangle)
+	paravelafter = BallSpeed(aBall) * Sin(bangleafter - rangle)
+	
+	If perpvel > 0 And  perpvelafter <= 0 Then
+		If DTEnableBrick = 1 And  perpvel > DTBrickVel And DTBrickVel <> 0 And cdist < 8 Then
+			DTCheckBrick = 3
+		Else
+			DTCheckBrick = 1
+		End If
+	ElseIf perpvel > 0 And ((paravel > 0 And paravelafter > 0) Or (paravel < 0 And paravelafter < 0)) Then
+		DTCheckBrick = 4
+	Else
+		DTCheckBrick = 0
+	End If
+End Function
+
+Sub DoDTAnim()
+	Dim i
+	For i = 0 To UBound(DTArray)
+		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+	Next
+End Sub
+
+Function DTAnimate(primary, secondary, prim, switch, animate)
+	Dim transz, switchid
+	Dim animtime, rangle
+	
+	switchid = switch
+	
+	Dim ind
+	ind = DTArrayID(switchid)
+	
+	rangle = prim.rotz * PI / 180
+	
+	DTAnimate = animate
+	
+	If animate = 0 Then
+		primary.uservalue = 0
+		DTAnimate = 0
+		Exit Function
+	ElseIf primary.uservalue = 0 Then
+		primary.uservalue = GameTime
+	End If
+	
+	animtime = GameTime - primary.uservalue
+	
+	If (animate = 1 Or animate = 4) And animtime < DTDropDelay Then
+		primary.collidable = 0
+		If animate = 1 Then secondary.collidable = 1 Else secondary.collidable = 0
+		prim.rotx = DTMaxBend * Cos(rangle)
+		prim.roty = DTMaxBend * Sin(rangle)
+		DTAnimate = animate
+		Exit Function
+	ElseIf (animate = 1 Or animate = 4) And animtime > DTDropDelay Then
+		primary.collidable = 0
+		If animate = 1 Then secondary.collidable = 1 Else secondary.collidable = 1 'If animate = 1 Then secondary.collidable = 1 Else secondary.collidable = 0 'updated by rothbauerw to account for edge case
+		prim.rotx = DTMaxBend * Cos(rangle)
+		prim.roty = DTMaxBend * Sin(rangle)
+		animate = 2
+		SoundDropTargetDrop prim
+	End If
+	
+	If animate = 2 Then
+		transz = (animtime - DTDropDelay) / DTDropSpeed * DTDropUnits *  - 1
+		If prim.transz >  - DTDropUnits  Then
+			prim.transz = transz
+		End If
+		
+		prim.rotx = DTMaxBend * Cos(rangle) / 2
+		prim.roty = DTMaxBend * Sin(rangle) / 2
+		
+		If prim.transz <= - DTDropUnits Then
+			prim.transz =  - DTDropUnits
+			secondary.collidable = 0
+			DTArray(ind).isDropped = True 'Mark target as dropped
+			If UsingROM Then
+				controller.Switch(Switchid) = 1
+			Else
+				DTAction switchid
+			End If
+			primary.uservalue = 0
+			DTAnimate = 0
+			Exit Function
+		Else
+			DTAnimate = 2
+			Exit Function
+		End If
+	End If
+	
+	If animate = 3 And animtime < DTDropDelay Then
+		primary.collidable = 0
+		secondary.collidable = 1
+		prim.rotx = DTMaxBend * Cos(rangle)
+		prim.roty = DTMaxBend * Sin(rangle)
+	ElseIf animate = 3 And animtime > DTDropDelay Then
+		primary.collidable = 1
+		secondary.collidable = 0
+		prim.rotx = 0
+		prim.roty = 0
+		primary.uservalue = 0
+		DTAnimate = 0
+		Exit Function
+	End If
+	
+	If animate =  - 1 Then
+		transz = (1 - (animtime) / DTDropUpSpeed) * DTDropUnits *  - 1
+		
+		If prim.transz =  - DTDropUnits Then
+			Dim b
+			Dim BOT
+			BOT = GetBalls
+			
+			For b = 0 To UBound(BOT)
+				If InRotRect(BOT(b).x,BOT(b).y,prim.x, prim.y, prim.rotz, - 25, - 10,25, - 10,25,25, - 25,25) And BOT(b).z < prim.z + DTDropUnits + 25 Then
+					BOT(b).velz = 20
+				End If
+			Next
+		End If
+		
+		If prim.transz < 0 Then
+			prim.transz = transz
+		ElseIf transz > 0 Then
+			prim.transz = transz
+		End If
+		
+		If prim.transz > DTDropUpUnits Then
+			DTAnimate =  - 2
+			prim.transz = DTDropUpUnits
+			prim.rotx = 0
+			prim.roty = 0
+			primary.uservalue = GameTime
+		End If
+		primary.collidable = 0
+		secondary.collidable = 1
+		DTArray(ind).isDropped = False 'Mark target as not dropped
+		If UsingROM Then controller.Switch(Switchid) = 0
+	End If
+	
+	If animate =  - 2 And animtime > DTRaiseDelay Then
+		prim.transz = (animtime - DTRaiseDelay) / DTDropSpeed * DTDropUnits *  - 1 + DTDropUpUnits
+		If prim.transz < 0 Then
+			prim.transz = 0
+			primary.uservalue = 0
+			DTAnimate = 0
+			
+			primary.collidable = 1
+			secondary.collidable = 0
+		End If
+	End If
+End Function
+
+Function DTDropped(switchid)
+	Dim ind
+	ind = DTArrayID(switchid)
+	
+	DTDropped = DTArray(ind).isDropped
+End Function
+
+Sub DTAction(switchid)
+	Select Case switchid
+		Case 10
+			target10_code
+			Target10_Dropped			
+		Case 11
+			target11_code
+			Target11_Dropped			
+		Case 12
+			target12_code
+			Target12_Dropped			
+		Case 13
+			target13_code
+			Target13_Dropped			
+		Case 14
+			target14_code
+			Target14_Dropped			
+		Case 15
+			target15_code
+			Target15_Dropped			
+		Case 16
+			target16_code
+			Target16_Dropped			
+	End Select
+End Sub
+
+'******************************************************
+'  DROP TARGET
+'  SUPPORTING FUNCTIONS
+'******************************************************
+
+' Used for drop targets
+Function InRect(px,py,ax,ay,bx,by,cx,cy,dx,dy) 'Determines if a Points (px,py) is inside a 4 point polygon A-D in Clockwise/CCW order
+	Dim AB, BC, CD, DA
+	AB = (bx * py) - (by * px) - (ax * py) + (ay * px) + (ax * by) - (ay * bx)
+	BC = (cx * py) - (cy * px) - (bx * py) + (by * px) + (bx * cy) - (by * cx)
+	CD = (dx * py) - (dy * px) - (cx * py) + (cy * px) + (cx * dy) - (cy * dx)
+	DA = (ax * py) - (ay * px) - (dx * py) + (dy * px) + (dx * ay) - (dy * ax)
+	
+	If (AB <= 0 And BC <= 0 And CD <= 0 And DA <= 0) Or (AB >= 0 And BC >= 0 And CD >= 0 And DA >= 0) Then
+		InRect = True
+	Else
+		InRect = False
+	End If
+End Function
+
+Function InRotRect(ballx,bally,px,py,angle,ax,ay,bx,by,cx,cy,dx,dy)
+	Dim rax,ray,rbx,rby,rcx,rcy,rdx,rdy
+	Dim rotxy
+	rotxy = RotPoint(ax,ay,angle)
+	rax = rotxy(0) + px
+	ray = rotxy(1) + py
+	rotxy = RotPoint(bx,by,angle)
+	rbx = rotxy(0) + px
+	rby = rotxy(1) + py
+	rotxy = RotPoint(cx,cy,angle)
+	rcx = rotxy(0) + px
+	rcy = rotxy(1) + py
+	rotxy = RotPoint(dx,dy,angle)
+	rdx = rotxy(0) + px
+	rdy = rotxy(1) + py
+	
+	InRotRect = InRect(ballx,bally,rax,ray,rbx,rby,rcx,rcy,rdx,rdy)
+End Function
+
+Function RotPoint(x,y,angle)
+	Dim rx, ry
+	rx = x * dCos(angle) - y * dSin(angle)
+	ry = x * dSin(angle) + y * dCos(angle)
+	RotPoint = Array(rx,ry)
+End Function
+
+'******************************************************
+'****  END DROP TARGETS
+'******************************************************
+
+
+
+
+'******************************************************
+'	ZRST: STAND-UP TARGETS by Rothbauerw
+'******************************************************
+
+Class StandupTarget
+  Private m_primary, m_prim, m_sw, m_animate
+
+  Public Property Get Primary(): Set Primary = m_primary: End Property
+  Public Property Let Primary(input): Set m_primary = input: End Property
+
+  Public Property Get Prim(): Set Prim = m_prim: End Property
+  Public Property Let Prim(input): Set m_prim = input: End Property
+
+  Public Property Get Sw(): Sw = m_sw: End Property
+  Public Property Let Sw(input): m_sw = input: End Property
+
+  Public Property Get Animate(): Animate = m_animate: End Property
+  Public Property Let Animate(input): m_animate = input: End Property
+
+  Public default Function init(primary, prim, sw, animate)
+    Set m_primary = primary
+    Set m_prim = prim
+    m_sw = sw
+    m_animate = animate
+
+    Set Init = Me
+  End Function
+End Class
+
+'Define a variable for each stand-up target
+Dim ST1, ST2, ST3, ST4, ST5, ST6, ST7, ST8, ST9, ST17, ST18, ST19, ST20
+
+'Set array with stand-up target objects
+'
+'StandupTargetvar = Array(primary, prim, swtich)
+'   primary:	vp target to determine target hit
+'   prim:	   primitive target used for visuals and animation
+'				   IMPORTANT!!!
+'				   transy must be used to offset the target animation
+'   switch:	 ROM switch number
+'   animate:	Arrary slot for handling the animation instrucitons, set to 0
+'
+'You will also need to add a secondary hit object for each stand up (name sw11o, sw12o, and sw13o on the example Table1)
+'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
+
+Set ST1 = (new StandupTarget)(Target1, pTarget1, 1, 0)
+Set ST2 = (new StandupTarget)(Target2, pTarget2, 2, 0)
+Set ST3 = (new StandupTarget)(Target3, pTarget3, 3, 0)
+Set ST4 = (new StandupTarget)(Target4, pTarget4, 4, 0)
+Set ST5 = (new StandupTarget)(Target5, pTarget5, 5, 0)
+Set ST6 = (new StandupTarget)(Target6, pTarget6, 6, 0)
+Set ST7 = (new StandupTarget)(Target7, pTarget7, 7, 0)
+Set ST8 = (new StandupTarget)(Target8, pTarget8, 8, 0)
+Set ST9 = (new StandupTarget)(Target9, pTarget9, 9, 0)
+Set ST17 = (new StandupTarget)(Target17, pTarget17, 20, 0)
+Set ST18 = (new StandupTarget)(Target18, pTarget18, 20, 0)
+Set ST19 = (new StandupTarget)(Target19, pTarget19, 20, 0)
+Set ST20 = (new StandupTarget)(Target20, pTarget20, 20, 0)
+
+'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
+'   STAnimationArray = Array(ST1, ST2, ....)
+Dim STArray
+'STArray = Array(ST11, ST12, ST13)
+STArray = Array(ST1, ST2, ST3, ST4, ST5, ST6, ST7, ST8, ST9, ST17, ST18, ST19, ST20)
+
+'Configure the behavior of Stand-up Targets
+Const STAnimStep = 1.5  'vpunits per animation step (control return to Start)
+Const STMaxOffset = 9   'max vp units target moves when hit
+
+Const STMass = 0.2	  'Mass of the Stand-up Target (between 0 and 1), higher values provide more resistance
+
+'******************************************************
+'				STAND-UP TARGETS FUNCTIONS
+'******************************************************
+
+Sub STHit(switch)
+	Dim i
+	i = STArrayID(switch)
+	
+	PlayTargetSound
+	STArray(i).animate = STCheckHit(ActiveBall,STArray(i).primary)
+	
+	If STArray(i).animate <> 0 Then
+		DTBallPhysics ActiveBall, STArray(i).primary.orientation, STMass
+	End If
+	DoDTAnim
+	DoSTAnim
+End Sub
+
+Function STArrayID(switch)
+	Dim i
+	For i = 0 To UBound(STArray)
+		If STArray(i).sw = switch Then
+			STArrayID = i
+			Exit Function
+		End If
+	Next
+End Function
+
+Function STCheckHit(aBall, target) 'Check if target is hit on it's face
+	Dim bangle, bangleafter, rangle, rangle2, perpvel, perpvelafter, paravel, paravelafter
+	rangle = (target.orientation - 90) * 3.1416 / 180
+	bangle = atn2(cor.ballvely(aball.id),cor.ballvelx(aball.id))
+	bangleafter = Atn2(aBall.vely,aball.velx)
+	
+	perpvel = cor.BallVel(aball.id) * Cos(bangle - rangle)
+	paravel = cor.BallVel(aball.id) * Sin(bangle - rangle)
+	
+	perpvelafter = BallSpeed(aBall) * Cos(bangleafter - rangle)
+	paravelafter = BallSpeed(aBall) * Sin(bangleafter - rangle)
+	
+	If perpvel > 0 And  perpvelafter <= 0 Then
+		STCheckHit = 1
+	ElseIf perpvel > 0 And ((paravel > 0 And paravelafter > 0) Or (paravel < 0 And paravelafter < 0)) Then
+		STCheckHit = 1
+	Else
+		STCheckHit = 0
+	End If
+End Function
+
+Sub DoSTAnim()
+	Dim i
+	For i = 0 To UBound(STArray)
+		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+	Next
+End Sub
+
+Function STAnimate(primary, prim, switch,  animate)
+	Dim animtime
+	
+	STAnimate = animate
+	
+	If animate = 0  Then
+		primary.uservalue = 0
+		STAnimate = 0
+		Exit Function
+	ElseIf primary.uservalue = 0 Then
+		primary.uservalue = GameTime
+	End If
+	
+	animtime = GameTime - primary.uservalue
+	
+	If animate = 1 Then
+		primary.collidable = 0
+		prim.transy =  - STMaxOffset
+		If UsingROM Then
+			vpmTimer.PulseSw switch
+		Else
+			STAction switch
+		End If
+		STAnimate = 2
+		Exit Function
+	ElseIf animate = 2 Then
+		prim.transy = prim.transy + STAnimStep
+		If prim.transy >= 0 Then
+			prim.transy = 0
+			primary.collidable = 1
+			STAnimate = 0
+			Exit Function
+		Else
+			STAnimate = 2
+		End If
+	End If
+End Function
+
+
+Sub STAction(Switch)
+	Select Case Switch
+		Case 1
+			target1_code	
+		Case 2
+			target2_code	
+		Case 3
+			target3_code	
+		Case 4
+			target4_code	
+		Case 5
+			target5_code	
+		Case 6
+			target6_code
+		Case 7
+			target7_code
+		Case 8
+			target8_code
+		Case 9
+			target9_code
+		Case 17
+			target17_code
+		Case 18
+			target18_code
+		Case 19
+			target19_code
+		Case 20
+			target20_code
+	End Select
+End Sub
+
+'******************************************************
+'****   END STAND-UP TARGETS
+'******************************************************
+
+

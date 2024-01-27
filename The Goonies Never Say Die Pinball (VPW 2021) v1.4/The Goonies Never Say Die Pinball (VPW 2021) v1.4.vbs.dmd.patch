@@ -1,11 +1,9 @@
---- ./The Goonies Never Say Die Pinball (VPW 2021)v1.3/The Goonies Never Say Die Pinball (VPW 2021)v1.3.vbs	2023-11-28 07:36:21
-+++ ./The Goonies Never Say Die Pinball (VPW 2021)v1.3/The Goonies Never Say Die Pinball (VPW 2021)v1.3.vbs.dmd	2023-11-28 07:36:21
-@@ -90,7 +90,33 @@
+--- "./The Goonies Never Say Die Pinball (VPW 2021) v1.4.vbs.original"	2024-01-27 10:15:50.658349790 +0100
++++ "./The Goonies Never Say Die Pinball (VPW 2021) v1.4.vbs"	2024-01-27 10:13:22.198402827 +0100
+@@ -104,6 +104,27 @@
+ '1.3.13 - fluffhead35 - Fixed drop targets when they are being immediately raised again.  Race condition found by apophis
+ 'Release v1.4
  
- '1.2.1 - Wylte	- Shadow update, rolling sounds broken out (sub call added to rdampen timer), narnia check added to ballrolling, diverter timer saved from shadows
- '1.2.2 - fluffhead35 - updated physics and ballroll sounds and wireramp sounds and logic.  Added GIOn Sound. Added apophis slingshot corrections.
-+
-+
 +'///////////////////////-----Hack to display FlexDMD on Vpx-standalone-----///////////////////////
 +Sub ImplicitDMD_Init
 +   Me.x = 30
@@ -28,9 +26,12 @@
 +End Sub
 +'///////////////////////-----End of Hack to display FlexDMD on Vpx-standalone-----///////////////////////
  
-+
-+
-+
- Const BallSize = 50
- Const BallMass = 1
+ Const UsingROM = False
  
+@@ -131,7 +152,7 @@
+ Const myVersion = "1.4"
+ Const MaxPlayers = 4      ' from 1 to 4
+ Const BallSaverTime = 10  ' in seconds
+ 
+ '///////////////////////-----General Sound Options-----///////////////////////
+ '// VolumeDial:
