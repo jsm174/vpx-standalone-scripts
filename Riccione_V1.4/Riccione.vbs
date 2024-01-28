@@ -53,10 +53,10 @@ End Sub
 Const Tiempo = 27 '30 seconds, 20 seconds o 10 seconds
 
 ' Constant values
-' for DOF users: make a new line in VPMAlias.txt "T1D_123_riccione,T1D_123" to use existing DOF values from 1-2-3
+' for DOF users: make a new line in VPMAlias.txt "TLD_123_riccione,TLD_123" to use existing DOF values from 1-2-3
 
 Const TableName = "Riccione" ' used to load and record highscore and credits
-Const cGameName = "T1D_123_riccione" ' for B2S
+Const cGameName = "TLD_123_riccione" ' for B2S
 Const MaxPlayers = 1        
 Const MaxMultiplier = 5     
 Const BallsPerGame = 5      
