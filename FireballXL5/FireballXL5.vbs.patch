@@ -1,0 +1,20 @@
+--- FireballXL5.vbs.original	2024-01-29 09:47:49.760623063 +0100
++++ FireballXL5.vbs	2024-01-29 09:45:09.796170530 +0100
+@@ -2404,7 +2404,7 @@
+ 				FlexDMD.Stage.GetImage("Video").Visible = 1	
+ 			ElseIf DMD_VideoCounter < 121 Then
+ 				DMD_Video2.Interval = 20
+-				FlexDMD.Stage.GetImage("Game").SetSize (DMD_VideoCounter - 64)*2, (DMD_VideoCounter - 64)/2
++				FlexDMD.Stage.GetImage("Game").SetSize 2*(DMD_VideoCounter - 64), (DMD_VideoCounter - 64)/2
+ 				FlexDMD.Stage.GetImage("Game").SetPosition 64 - (DMD_VideoCounter - 64), 16 - (DMD_VideoCounter - 64)/4
+ 				FlexDMD.Stage.GetImage("Game").Visible = 1	
+ 			Else
+@@ -3081,7 +3081,7 @@
+ 				FlexDMD.Stage.GetImage("Video").SetPosition 64 - DMD_VideoCounter, 16 - DMD_VideoCounter/4
+ 				FlexDMD.Stage.GetImage("Video").Visible = 1	
+ 			ElseIf DMD_VideoCounter < 121 Then
+-				FlexDMD.Stage.GetImage("Game").SetSize (DMD_VideoCounter - 64)*2, (DMD_VideoCounter - 64)/2
++				FlexDMD.Stage.GetImage("Game").SetSize 2*(DMD_VideoCounter - 64), (DMD_VideoCounter - 64)/2
+ 				FlexDMD.Stage.GetImage("Game").SetPosition 64 - (DMD_VideoCounter - 64), 16 - (DMD_VideoCounter - 64)/4
+ 				FlexDMD.Stage.GetImage("Game").Visible = 1	
+ 			Else
