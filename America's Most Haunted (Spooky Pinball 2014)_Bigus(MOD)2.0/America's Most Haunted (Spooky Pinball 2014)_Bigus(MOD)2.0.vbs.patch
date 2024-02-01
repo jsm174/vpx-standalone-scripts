@@ -1,0 +1,182 @@
+--- "America's Most Haunted (Spooky Pinball 2014)_Bigus(MOD)2.0.vbs.original"	2024-02-01 16:06:08.345725992 +0100
++++ "America's Most Haunted (Spooky Pinball 2014)_Bigus(MOD)2.0.vbs"	2024-02-01 16:04:42.739350146 +0100
+@@ -434,7 +434,7 @@
+ Sub DMDSceneEOB (background, toptext, topbright, bottomtext, bottombright, animatein, pause, animateout, prio)		'Special DMD call at the EoB
+ 	If Not UltraDMD is Nothing Then
+ 		UltraDMD.CancelRendering
+-		UltraDMD.DisplayScene00 "eba.gif", "", 0, "", 0, 14, 1, 14
++		UltraDMD.DisplayScene00 "EBA.gif", "", 0, "", 0, 14, 1, 14
+ 		UltraDMD.DisplayScene00ExWithID "EoB", False, background, toptext, topbright, -1, bottomtext, bottombright, -1, animatein, pause*PauseAdjuster, animateout
+ 		TiEoB.Enabled = 1
+ 	End If
+@@ -499,6 +499,16 @@
+ End If
+ LoadUltraDMD()
+ 
++Function LoadValueLng(section, key)
++	Dim strValue
++	strValue = LoadValue(section, key)
++	If IsNumeric(strValue) Then
++		LoadValueLng = CLng(strValue)
++	Else
++		LoadValueLng = 0
++	End If
++end Function
++
+ Sub Table1_Init()
+ 	Dim X, Y
+ 	For X = 1 to 4
+@@ -516,7 +526,7 @@
+ 	TiDMDScore.Enabled = 0
+ 	Wall26.TimerInterval = 150
+ '******** Table Option Stuff***********
+-	If Not IsNumeric(LoadValue("AMH", "Solenoids")) Then
++	If Not IsNumeric(LoadValueLng("AMH", "Solenoids")) Then
+ 		SaveValue "AMH", "Solenoids", AMHOptionsSol
+ 		SaveValue "AMH", "Options 1", AMHOptions1
+ 		SaveValue "AMH", "Options 2", AMHOptions2
+@@ -524,7 +534,7 @@
+ 	Else
+ 		DoOptions()
+ 	End If
+-	If Not IsNumeric(LoadValue("AMH", "HSPoints0")) Then
++	If Not IsNumeric(LoadValueLng("AMH", "HSPoints0")) Then
+ 		SetDefaultScores()
+ 	Else
+ 		LoadHighScores()
+@@ -539,37 +549,37 @@
+ Sub DoOptions()
+ 	Dim FlipPower, SlingPower, PopPower, LeftVUKPower, RightVUKPower, LaunchPower, X
+ 	'Solenoids
+-	FlipPower = (LoadValue("AMH", "Solenoids") AND option1) * 515
++	FlipPower = (LoadValueLng("AMH", "Solenoids") AND option1) * 515
+ '**	LeftFlipper.PowerLaw = FlipPower													'EP- Set the right and left flippers to 0.4 of whatever the player chose
+ 	LeftFlipper.strength = FlipPower
+ '**	RightFlipper.PowerLaw = FlipPower
+ 	RightFlipper.strength = FlipPower
+-	PopPower = ((LoadValue("AMH", "Solenoids") AND Option3)/256) * 0.5
++	PopPower = ((LoadValueLng("AMH", "Solenoids") AND Option3)/256) * 0.5
+ 	For Each X in Bumpers
+ 		X.Force = PopPower																'EP- Set all the Pop Bumpers to 1.6 the value of whatever the player chose
+ 	Next
+-	LeftVUKPower = ((LoadValue("AMH", "Solenoids") AND Option4)/4096) * 5
++	LeftVUKPower = ((LoadValueLng("AMH", "Solenoids") AND Option4)/4096) * 5
+ 	VUKPower = LeftVUKPower																'EP- Set the door VUK power to be 5 times whatever the player chose
+-	RightVUKPower = ((LoadValue("AMH", "Solenoids") AND Option5)/65536) * 6
++	RightVUKPower = ((LoadValueLng("AMH", "Solenoids") AND Option5)/65536) * 6
+ 	ScoopPower = RightVUKPower															'EP- Set the scoop to be 3 times whatever the player chose
+-	LaunchPower = ((LoadValue("AMH", "Solenoids") AND Option6)/1048576) * 10
++	LaunchPower = ((LoadValueLng("AMH", "Solenoids") AND Option6)/1048576) * 10
+ 	PlungerStrength = LaunchPower
+ 	AutoPlunger.Strength = PlungerStrength												'EP- Set the AutoPlunger strength to be 10 times what the player chose
+ 	'Options 1
+-	FreePlay = (LoadValue("AMH", "Options 1") AND Option1)								'EP- Free Play N/Y 0, 1
+-	CoinsPerCredit = ((LoadValue("AMH", "Options 1") AND Option2)/16)					'EP- Coins per credit 1-9
+-	BallsPerGame = ((LoadValue("AMH", "Options 1") AND Option3)/256) + 1				'EP- Balls per game 1-9
+-	AllowExtraBalls = ((LoadValue("AMH", "Options 1") AND Option8)/268435456)			'EP- Are extra balls allowed; Y/N/100k/500k/1 million, 1-5
++	FreePlay = (LoadValueLng("AMH", "Options 1") AND Option1)								'EP- Free Play N/Y 0, 1
++	CoinsPerCredit = ((LoadValueLng("AMH", "Options 1") AND Option2)/16)					'EP- Coins per credit 1-9
++	BallsPerGame = ((LoadValueLng("AMH", "Options 1") AND Option3)/256) + 1				'EP- Balls per game 1-9
++	AllowExtraBalls = ((LoadValueLng("AMH", "Options 1") AND Option8)/268435456)			'EP- Are extra balls allowed; Y/N/100k/500k/1 million, 1-5
+ 	'Options 2
+-	SpotProgress = (LoadValue("AMH", "Options 2") AND Option1)							'EP- How many pops are spotted at the start of the game (to make it easier to light the mode) 0, 3, 6, 9, 12
+-	AllowReplay = ((LoadValue("AMH", "Options 2") AND Option2)/16)						'EP- Are replays allowed N/Y 0, 1
+-	AllowMatch = ((LoadValue("AMH", "Options 2") AND Option3)/256)						'EP- Are matches allowed N/Y 0, 1
+-	Tournament = ((LoadValue("AMH", "Options 2") AND Option4)/4096)						'EP- Is tournament mode on N/Y 0, 1
+-	EVP_EBSetting = ((LoadValue("AMH", "Options 2") AND Option5)/65536) * 5				'EP- How many EVPs needed to collect extra ball
+-	ComboTimerStart = ((LoadValue("AMH", "Options 2") AND Option6)/1048576) * 2400		'EP- How long a player has to make a combo shot
+-	ZeroPointBall = ((LoadValue("AMH", "Options 2") AND Option8)/268435456)				'EP- If a ball scores nothing, save it Y/N
++	SpotProgress = (LoadValueLng("AMH", "Options 2") AND Option1)							'EP- How many pops are spotted at the start of the game (to make it easier to light the mode) 0, 3, 6, 9, 12
++	AllowReplay = ((LoadValueLng("AMH", "Options 2") AND Option2)/16)						'EP- Are replays allowed N/Y 0, 1
++	AllowMatch = ((LoadValueLng("AMH", "Options 2") AND Option3)/256)						'EP- Are matches allowed N/Y 0, 1
++	Tournament = ((LoadValueLng("AMH", "Options 2") AND Option4)/4096)						'EP- Is tournament mode on N/Y 0, 1
++	EVP_EBSetting = ((LoadValueLng("AMH", "Options 2") AND Option5)/65536) * 5				'EP- How many EVPs needed to collect extra ball
++	ComboTimerStart = ((LoadValueLng("AMH", "Options 2") AND Option6)/1048576) * 2400		'EP- How long a player has to make a combo shot
++	ZeroPointBall = ((LoadValueLng("AMH", "Options 2") AND Option8)/268435456)				'EP- If a ball scores nothing, save it Y/N
+ 	'Options 3
+-	ScoopSaveStart = (LoadValue("AMH", "Options 3") AND Option1) * 15					'EP- How long the Ball Saver is on after shooting out of the scoop
++	ScoopSaveStart = (LoadValueLng("AMH", "Options 3") AND Option1) * 15					'EP- How long the Ball Saver is on after shooting out of the scoop
+ End Sub
+ 
+ Const Option1 = 15				'bits 1-4, 2^0
+@@ -738,7 +748,7 @@
+ Dim CurAttract:CurAttract = 1
+ Sub Wall26_Timer()
+ 	Dim AttractSpacer, Z, Y
+-	Debug.Print "timer running"
++	'Debug.Print "timer running"
+ 	If DMDAttract = 0 Then DMDAttract = 1
+ 	If Not UltraDMD.IsRendering then
+ 		Debug.Print "Not rendering"
+@@ -841,7 +851,10 @@
+ 		Wall26.TimerEnabled = 0
+ 		DMDAttract = 0
+ 		StartGame()
+-		Timer.Enabled = 1
++		' print the type of Timer
++		' Debug.Print "GameTimer = " & GameTimer
++		Debug.Print "Timer = " & TypeName(GameTimer)
++		GameTimer.Enabled = 1
+ 		Me.Enabled = 0
+ 	End If
+ End Sub
+@@ -857,7 +870,7 @@
+ '	RholdTime = 0								'Disable hold timer
+ '	digitalWrite(RFlipHigh, 0) 					'Turn off high power
+ '	digitalWrite(RFlipLow, 0)  					'Switch off hold current			
+-	Timer.Enabled = 0
++	GameTimer.Enabled = 0
+ 	if (menuAbortFlag = 0) Then					'Game ended normally? (we didn't abort by entering the menu?)
+ 		GameOver()								'Do normal game over stuff	
+ 		gamesPlayed = gamesPlayed + numPlayers	'Increment games played
+@@ -870,7 +883,7 @@
+ 	NoGame1()
+ End Sub
+ 
+-Sub Timer_Timer()								'The Main Loop of the Game. We always keep this at the top
++Sub GameTimer_Timer()								'The Main Loop of the Game. We always keep this at the top
+ 	houseKeeping()								'Do lights, switch debounce, get cab switches and control solenoids
+ '	flippers()									'EP- Disabling as this is an event driven game
+ 	Timers()									'Event timers
+@@ -10102,11 +10115,13 @@
+ 	animLength = progressBar
+ 	If (vidAttributes AND loopVideo) = 128 Then animLength = 999999
+ 	If IsNumeric(v3) Then									'EP- Many calls pass in the ansii number for the letter
++		v3 = CInt(v3)
+ 		If v3 > 30 Then										'EP- But some clips actually are just a number 0-9
+ 			v3 = Chr(v3)
+ 		End If
+ 	End If
+ 	If IsNumeric(v2) Then
++		v2 = CInt(v2)
+ 		If v2 > 30 Then										'EP- But some clips actually are just a number 0-9
+ 			v2 = Chr(v2)
+ 		End If
+@@ -10120,11 +10135,13 @@
+ 	animLength = progressBar
+ 	If (vidAttributes AND loopVideo) = 128 Then animLength = 999999
+ 	If IsNumeric(v3) Then									'EP- Many calls pass in the ansii number for the letter
++		v3 = CInt(v3)
+ 		If v3 > 30 Then										'EP- But some clips actually are just a number 0-9
+ 			v3 = Chr(v3)
+ 		End If
+ 	End If
+ 	If IsNumeric(v2) Then
++		v2 = CInt(v2)
+ 		If v2 > 30 Then										'EP- But some clips actually are just a number 0-9
+ 			v2 = Chr(v2)
+ 		End If
+@@ -10151,11 +10168,13 @@
+ 	animLength = progressBar
+ 	If (vidAttributes AND loopVideo) = 128 Then animLength = 999999
+ 	If IsNumeric(v3) Then									'EP- Many calls pass in the ansii number for the letter
++		v3 = CInt(v3)
+ 		If v3 > 30 Then										'EP- But some clips actually are just a number 0-9
+ 			v3 = Chr(v3)
+ 		End If
+ 	End If
+ 	If IsNumeric(v2) Then
++		v2 = CInt(v2)
+ 		If v2 > 30 Then										'EP- But some clips actually are just a number 0-9
+ 			v2 = Chr(v2)
+ 		End If
