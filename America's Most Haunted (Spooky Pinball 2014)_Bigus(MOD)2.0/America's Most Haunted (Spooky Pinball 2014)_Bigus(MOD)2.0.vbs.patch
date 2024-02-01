@@ -1,5 +1,5 @@
---- "America's Most Haunted (Spooky Pinball 2014)_Bigus(MOD)2.0.vbs.original"	2024-02-01 16:06:08.345725992 +0100
-+++ "America's Most Haunted (Spooky Pinball 2014)_Bigus(MOD)2.0.vbs"	2024-02-01 16:04:42.739350146 +0100
+--- "America's Most Haunted (Spooky Pinball 2014)_Bigus(MOD)2.0.vbs.original"	2024-02-01 16:20:15.821951149 +0100
++++ "America's Most Haunted (Spooky Pinball 2014)_Bigus(MOD)2.0.vbs"	2024-02-01 16:19:26.576781008 +0100
 @@ -434,7 +434,7 @@
  Sub DMDSceneEOB (background, toptext, topbright, bottomtext, bottombright, animatein, pause, animateout, prio)		'Special DMD call at the EoB
  	If Not UltraDMD is Nothing Then
@@ -108,19 +108,16 @@
  	If DMDAttract = 0 Then DMDAttract = 1
  	If Not UltraDMD.IsRendering then
  		Debug.Print "Not rendering"
-@@ -841,7 +851,10 @@
+@@ -841,7 +851,7 @@
  		Wall26.TimerEnabled = 0
  		DMDAttract = 0
  		StartGame()
 -		Timer.Enabled = 1
-+		' print the type of Timer
-+		' Debug.Print "GameTimer = " & GameTimer
-+		Debug.Print "Timer = " & TypeName(GameTimer)
 +		GameTimer.Enabled = 1
  		Me.Enabled = 0
  	End If
  End Sub
-@@ -857,7 +870,7 @@
+@@ -857,7 +867,7 @@
  '	RholdTime = 0								'Disable hold timer
  '	digitalWrite(RFlipHigh, 0) 					'Turn off high power
  '	digitalWrite(RFlipLow, 0)  					'Switch off hold current			
@@ -129,7 +126,7 @@
  	if (menuAbortFlag = 0) Then					'Game ended normally? (we didn't abort by entering the menu?)
  		GameOver()								'Do normal game over stuff	
  		gamesPlayed = gamesPlayed + numPlayers	'Increment games played
-@@ -870,7 +883,7 @@
+@@ -870,7 +880,7 @@
  	NoGame1()
  End Sub
  
@@ -138,7 +135,7 @@
  	houseKeeping()								'Do lights, switch debounce, get cab switches and control solenoids
  '	flippers()									'EP- Disabling as this is an event driven game
  	Timers()									'Event timers
-@@ -10102,11 +10115,13 @@
+@@ -10102,11 +10112,13 @@
  	animLength = progressBar
  	If (vidAttributes AND loopVideo) = 128 Then animLength = 999999
  	If IsNumeric(v3) Then									'EP- Many calls pass in the ansii number for the letter
@@ -152,7 +149,7 @@
  		If v2 > 30 Then										'EP- But some clips actually are just a number 0-9
  			v2 = Chr(v2)
  		End If
-@@ -10120,11 +10135,13 @@
+@@ -10120,11 +10132,13 @@
  	animLength = progressBar
  	If (vidAttributes AND loopVideo) = 128 Then animLength = 999999
  	If IsNumeric(v3) Then									'EP- Many calls pass in the ansii number for the letter
@@ -166,7 +163,7 @@
  		If v2 > 30 Then										'EP- But some clips actually are just a number 0-9
  			v2 = Chr(v2)
  		End If
-@@ -10151,11 +10168,13 @@
+@@ -10151,11 +10165,13 @@
  	animLength = progressBar
  	If (vidAttributes AND loopVideo) = 128 Then animLength = 999999
  	If IsNumeric(v3) Then									'EP- Many calls pass in the ansii number for the letter
