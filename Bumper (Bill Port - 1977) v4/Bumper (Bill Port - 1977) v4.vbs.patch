@@ -1,0 +1,11 @@
+--- "Bumper (Bill Port - 1977) v4.vbs.original"	2024-02-01 10:22:42.730971731 +0100
++++ "Bumper (Bill Port - 1977) v4.vbs"	2024-02-01 10:21:37.841217748 +0100
+@@ -973,7 +973,7 @@
+ End Sub
+ 
+ Sub Display_Match()
+-    MatchReel.SetValue(Match \ 10) + 1
++    MatchReel.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100
