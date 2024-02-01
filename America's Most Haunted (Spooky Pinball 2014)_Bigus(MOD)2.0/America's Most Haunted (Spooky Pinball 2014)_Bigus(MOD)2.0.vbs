@@ -851,9 +851,6 @@ Sub TiZero_Timer()
 		Wall26.TimerEnabled = 0
 		DMDAttract = 0
 		StartGame()
-		' print the type of Timer
-		' Debug.Print "GameTimer = " & GameTimer
-		Debug.Print "Timer = " & TypeName(GameTimer)
 		GameTimer.Enabled = 1
 		Me.Enabled = 0
 	End If
