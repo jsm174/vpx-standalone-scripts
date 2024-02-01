@@ -2223,7 +2223,7 @@ sub DemonLock3()
 	If x = 2 Then Y = 223
 	killQ()									'Disable any Enqueued videos		
 '	playMusic "D", "E"						'Until we get final music ready
-	musicplayer "bgout_de.mp3"
+	musicplayer "bgout_DE.mp3"
 	playSFX 0, "D", "C", 65 + x, 255		'Demon start dialog
 	video "D", "C", 65 + x, allowSmall, Y, 255
 	customScore "D", "D", 76 + random(1), allowSmall OR loopVideo, 120		'Ghost & Swing Set prompt loop
@@ -2417,7 +2417,7 @@ sub DemonWin()
 	volumeSFX 3, musicVolume(0), musicVolume(1)
 	setCabModeFade defaultR, defaultG, defaultB, 2000			'Reset to default color	
 '	playMusic "T", "E"											'Until we get final music ready	
-	musicplayer "bgout_te.mp3"
+	musicplayer "bgout_TE.mp3"
 	TargetSet(TargetUp)											'Trap ball using targets
 	deProgress(player) = 50										'Flag that mode is won!
 	animatePF 179, 10, 1										'Center explode!	
@@ -3453,7 +3453,7 @@ Sub GameOver0()
 			if (cDbl(playerScore(HSCheck)) >= cDbl(highScores(y))) Then						'Did player beat this high score?	Equalling it will also bump it down a place
 				Debug.Print "Score higher than " & y
 '				playMusic "N", "E"												'Only play the music if a player got a high score
-				musicplayer "bgout_ne.mp3"
+				musicplayer "bgout_NE.mp3"
 				for z=4 To y+1 Step -1											'Shift scores down one space below new high score
 					highScores(z) = highScores(z - 1)							
 					topPlayers((z * 3) + 0) = topPlayers(((z - 1) * 3) + 0)
@@ -3521,11 +3521,11 @@ Sub GameOver2()
 		if (matchFlag) Then										'Does one of the player's scores match?
 			credits  = credits  +  matchFlag								'Award a credit for each match!
 '			playMusic "Z", "1"								'WIN music
-			musicplayer "bgout_z1.mp3"
+			musicplayer "bgout_Z1.mp3"
 		Else
 			Debug.Print "failed"
 '			playMusic "Z", "0"								'LOSE music
-			musicplayer "bgout_z0.mp3"
+			musicplayer "bgout_Z0.mp3"
 		End If
 	Else
 		video "N", "9", "9", 0, 45, 255					'Game Over Screen!
