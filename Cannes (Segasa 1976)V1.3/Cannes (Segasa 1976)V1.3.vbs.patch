@@ -1,0 +1,11 @@
+--- "Cannes (Segasa 1976)V1.3.vbs.original"	2024-02-02 15:23:16.533703618 +0100
++++ "Cannes (Segasa 1976)V1.3.vbs"	2024-02-02 15:22:00.511654968 +0100
+@@ -1113,7 +1113,7 @@
+ End Sub
+ 
+ Sub Display_Match()
+-	If (Match \ 10) < 5 Then  MatchReel1.SetValue(Match \ 10) + 1  Else  MatchReel2.SetValue(Match \ 10) + 1
++	If (Match \ 10) < 5 Then  MatchReel1.SetValue 1 + (Match \ 10)  Else  MatchReel2.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100
