@@ -1,5 +1,5 @@
 ' ******************************************************************
-'       VPX - version by Klodo81 2023, Rancho version 1.3
+'       VPX - version by Klodo81 2023, Rancho version 1.4
 '
 '                 VISUAL PINBALL X EM Script Based on
 '               JPSalas Basic EM script up to 4 players		          
@@ -20,6 +20,12 @@
 'V1.3 mod table
 '- Mod Rev3 Physics from JPSalas
 '- Added 3D Playfield Mesh + new kickers
+'- Some others things
+'
+'V1.4 mod table
+'- New LUT from JPSalas
+'- Mod Playfield Mesh
+'- Added "Same player shoots again" on Backglass DT
 '- Some others things
 ' ******************************************************************
 
@@ -60,6 +66,7 @@ End Sub
 Const BallsPerGame = 5  ' to play with 3 or 5 balls
 Const Conservative = 1  ' 0 for Liberal
 Const AttractMode = 1   ' 0 = no attract mode
+Const FreePlay = False     ' Free play or coins
  
 '*************************************************************
 
@@ -135,10 +142,8 @@ Sub Table1_Init()
     End If
     UpdateCredits
 
-    ' Free play or Coins
-    bFreePlay = False
-
     ' init all the global variables
+    bFreePlay = Freeplay
     bAttractMode = False
     bOnTheFirstBall = False
     bGameInPlay = False
@@ -201,10 +206,8 @@ Sub Table1_KeyDown(ByVal Keycode)
         Exit Sub
     End If
 
-    If keycode = LeftMagnaSave Then bLutActive = True: Lutbox.text = "level of darkness " & LUTImage + 1
-    If keycode = RightMagnaSave Then
-        If bLutActive Then NextLUT:End If
-    End If
+    If keycode = LeftMagnaSave Then bLutActive = True:SetLUTLine "Color LUT image " & table1.ColorGradeImage
+    If keycode = RightMagnaSave AND bLutActive Then NextLUT:End If
 
     ' add coins
     If Keycode = AddCreditKey Then
@@ -280,7 +283,7 @@ Sub Table1_KeyUp(ByVal keycode)
         Exit Sub
     End If
 
-    If keycode = LeftMagnaSave Then bLutActive = False: LutBox.text = ""
+    If keycode = LeftMagnaSave Then bLutActive = False:HideLUT
 
     If bGameInPlay AND NOT Tilted Then
 
@@ -313,16 +316,18 @@ Sub table1_Exit
 	'Controller.Stop
 End Sub
 
-'***************************
-'   LUT - Darkness control 
-'***************************
+'************************************
+'       LUT - Darkness control
+' 10 normal level & 10 warmer levels
+'************************************
 
 Dim bLutActive, LUTImage
 
 Sub LoadLUT
+    Dim x
     bLutActive = False
     x = LoadValue(cGameName, "LUTImage")
-    If(x <> "")Then LUTImage = x Else LUTImage = 0
+    If(x <> "") Then LUTImage = x Else LUTImage = 0
     UpdateLUT
 End Sub
 
@@ -330,37 +335,60 @@ Sub SaveLUT
     SaveValue cGameName, "LUTImage", LUTImage
 End Sub
 
-Sub NextLUT:LUTImage = (LUTImage + 1)MOD 15:UpdateLUT:SaveLUT:Lutbox.text = "level of darkness " & LUTImage + 1:End Sub
+Sub NextLUT:LUTImage = (LUTImage + 1) MOD 22:UpdateLUT:SaveLUT:SetLUTLine "Color LUT image " & table1.ColorGradeImage:End Sub
 
 Sub UpdateLUT
     Select Case LutImage
-        Case 0:table1.ColorGradeImage = "LUT0":GiIntensity = 1:ChangeGIIntensity 1
-        Case 1:table1.ColorGradeImage = "LUT1":GiIntensity = 1.05:ChangeGIIntensity 1
-        Case 2:table1.ColorGradeImage = "LUT2":GiIntensity = 1.1:ChangeGIIntensity 1
-        Case 3:table1.ColorGradeImage = "LUT3":GiIntensity = 1.15:ChangeGIIntensity 1
-        Case 4:table1.ColorGradeImage = "LUT4":GiIntensity = 1.2:ChangeGIIntensity 1
-        Case 5:table1.ColorGradeImage = "LUT5":GiIntensity = 1.25:ChangeGIIntensity 1
-        Case 6:table1.ColorGradeImage = "LUT6":GiIntensity = 1.3:ChangeGIIntensity 1
-        Case 7:table1.ColorGradeImage = "LUT7":GiIntensity = 1.35:ChangeGIIntensity 1
-        Case 8:table1.ColorGradeImage = "LUT8":GiIntensity = 1.4:ChangeGIIntensity 1
-        Case 9:table1.ColorGradeImage = "LUT9":GiIntensity = 1.45:ChangeGIIntensity 1
-        Case 10:table1.ColorGradeImage = "LUT10":GiIntensity = 1.5:ChangeGIIntensity 1
-        Case 11:table1.ColorGradeImage = "LUT11":GiIntensity = 1.55:ChangeGIIntensity 1
-        Case 12:table1.ColorGradeImage = "LUT12":GiIntensity = 1.6:ChangeGIIntensity 1
-        Case 13:table1.ColorGradeImage = "LUT13":GiIntensity = 1.65:ChangeGIIntensity 1
-        Case 14:table1.ColorGradeImage = "LUT14":GiIntensity = 1.7:ChangeGIIntensity 1
+        Case 0:table1.ColorGradeImage = "LUT0"
+        Case 1:table1.ColorGradeImage = "LUT1"
+        Case 2:table1.ColorGradeImage = "LUT2"
+        Case 3:table1.ColorGradeImage = "LUT3"
+        Case 4:table1.ColorGradeImage = "LUT4"
+        Case 5:table1.ColorGradeImage = "LUT5"
+        Case 6:table1.ColorGradeImage = "LUT6"
+        Case 7:table1.ColorGradeImage = "LUT7"
+        Case 8:table1.ColorGradeImage = "LUT8"
+        Case 9:table1.ColorGradeImage = "LUT9"
+        Case 10:table1.ColorGradeImage = "LUT10"
+        Case 11:table1.ColorGradeImage = "LUT Warm 0"
+        Case 12:table1.ColorGradeImage = "LUT Warm 1"
+        Case 13:table1.ColorGradeImage = "LUT Warm 2"
+        Case 14:table1.ColorGradeImage = "LUT Warm 3"
+        Case 15:table1.ColorGradeImage = "LUT Warm 4"
+        Case 16:table1.ColorGradeImage = "LUT Warm 5"
+        Case 17:table1.ColorGradeImage = "LUT Warm 6"
+        Case 18:table1.ColorGradeImage = "LUT Warm 7"
+        Case 19:table1.ColorGradeImage = "LUT Warm 8"
+        Case 20:table1.ColorGradeImage = "LUT Warm 9"
+        Case 21:table1.ColorGradeImage = "LUT Warm 10"
     End Select
 End Sub
 
-Dim GiIntensity
-GiIntensity = 1   'used by the LUT changing to increase the GI lights when the table is darker
-
-Sub ChangeGiIntensity(factor) 'changes the intensity scale
-    Dim bulb
-    For each bulb in aGiLights
-        bulb.IntensityScale = GiIntensity * factor
+' New LUT postit
+Sub SetLUTLine(String)
+    Dim Index
+    Dim xFor
+    Index = 1
+    LUBack.imagea = "PostItNote"
+    String = CL2(String)
+    For xFor = 1 to 40
+        Eval("LU" &xFor).imageA = GetHSChar(String, Index)
+        Index = Index + 1
     Next
 End Sub
+
+Sub HideLUT
+    SetLUTLine ""
+    LUBack.imagea = "PostitBL"
+End Sub
+
+Function CL2(NumString) 'center line
+    Dim Temp, TempStr
+    If Len(NumString)> 40 Then NumString = Left(NumString, 40)
+    Temp = (40 - Len(NumString) ) \ 2
+    TempStr = Space(Temp) & NumString & Space(Temp)
+    CL2 = TempStr
+End Function
 
 '**********************************************
 '    Flipper adjustments - enable tricks
@@ -624,7 +652,7 @@ End Function
 
 Const tnob = 19   'total number of balls
 Const lob = 0     'number of locked balls
-Const maxvel = 28 'max ball velocity
+Const maxvel = 26 'max ball velocity
 ReDim rolling(tnob)
 InitRolling
 
@@ -715,16 +743,6 @@ Sub aRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
 Sub aPlastics_Hit(idx):PlaySoundAtBall "fx_PlasticHit":End Sub
 Sub aGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub
 Sub aWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
-
-'added Mustang1961
-
-Sub GR_hit()
-	Playsound "fx_gate"
-End Sub
-
-Sub Gates_Hit (idx)
-	PlaySound "Middle_GateTouch"
-End Sub
 
 '***************************************************************************************************
 ' Only for VPX 10.2 and higher.
@@ -912,6 +930,7 @@ Sub EndOfBall2
         ' turn off light if no more extra balls
         If(ExtraBallsAwards(CurrentPlayer) = 0) Then
 			LightShootAgain.State = 0
+			ShootAgainR.SetValue 0
 			If B2SOn then
 				Controller.B2SSetShootAgain 0
 			End If
@@ -1057,7 +1076,7 @@ Sub Clear_Match()
 End Sub
 
 Sub Display_Match()
-	If (Match \ 10) < 5 Then  MatchReel1.SetValue ((Match \ 10) + 1)  Else  MatchReel2.SetValue ((Match \ 10) + 1)
+	If (Match \ 10) < 5 Then  MatchReel1.SetValue 1 + (Match \ 10)  Else  MatchReel2.SetValue 1 + (Match \ 10)
     If B2SOn then
         If Match = 0 then
             Controller.B2SSetMatch 100
@@ -1236,33 +1255,20 @@ Sub UpdateScore(playerpoints)
     Select Case CurrentPlayer
         Case 1:ScoreReel1.Addvalue playerpoints
 		Case 2:ScoreReel2.Addvalue playerpoints
-		'Case 3:ScoreReel3.Addvalue playerpoints
-		'Case 4:ScoreReel4.Addvalue playerpoints
     End Select
     If B2SOn then
         Controller.B2SSetScorePlayer CurrentPlayer, Score(CurrentPlayer)
-        If Score(CurrentPlayer) >= 1000000 then
-            Controller.B2SSetScoreRollover 24 + CurrentPlayer, 1
-        end if
     end if
 End Sub
 
 Sub ResetScores
     ScoreReel1.ResetToZero
     ScoreReel2.ResetToZero
-    'ScoreReel3.ResetToZero
-    'ScoreReel4.ResetToZero
     If B2SOn then
         Controller.B2SSetScorePlayer1 0
-        Controller.B2SSetScoreRolloverPlayer1 0
         Controller.B2SSetScorePlayer2 0
-        Controller.B2SSetScoreRolloverPlayer2 0
 		Controller.B2SSetData 81,0
 		Controller.B2SSetData 82,0
-        'Controller.B2SSetScorePlayer3 0
-        'Controller.B2SSetScoreRolloverPlayer3 0
-        'Controller.B2SSetScorePlayer4 0
-        'Controller.B2SSetScoreRolloverPlayer4 0
     end if
 End Sub
 
@@ -1337,6 +1343,7 @@ Sub AwardExtraBall()
         ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
         bExtraBallWonThisBall = True
 		LightShootAgain.State = 1
+		ShootAgainR.SetValue 1
         If B2SOn Then
             Controller.B2SSetShootAgain 1
         End If		
@@ -1366,12 +1373,14 @@ Sub StartAttractMode()
         Controller.B2SSetBallInPlay 0
 		Controller.B2SSetPlayerUp 0
         Controller.B2SSetCanPlay 1
+		Controller.B2SSetShootAgain 0
 		Controller.B2SSetTilt 0
 		Controller.B2SSetData 81,1
 		Controller.B2SSetData 82,1
     end if
     GameOverR.SetValue 1
     BallInPlayR.SetValue 0
+	ShootAgainR.SetValue 0
 	pl1.State = 0:pl2.State = 0
     cp1.State = 1 : cp2.State = 0
 	TiltReel.SetValue 0	
@@ -2075,11 +2084,11 @@ Dim HSScore(5)     ' High Scores read in from config file
 Dim HSName(5)      ' High Score Initials read in from config file
 
 ' default high scores, remove this when the scores are available from the config file
-HSScore(1) = 150000
-HSScore(2) = 140000
-HSScore(3) = 130000
-HSScore(4) = 120000
-HSScore(5) = 110000
+HSScore(1) = 270000
+HSScore(2) = 240000
+HSScore(3) = 210000
+HSScore(4) = 180000
+HSScore(5) = 150000
 
 HSName(1) = "AAA"
 HSName(2) = "ZZZ"
@@ -2167,7 +2176,7 @@ Sub NewHighScore(NewScore, PlayNum)
         SetHSLine 2, "ENTER NAME"
         SetHSLine 3, MID(AlphaString, AlphaStringPos, 1)
         HSNewHigh = NewScore
-        AwardSpecial
+        PlaySound "sfx_Enter"
     End If
     ScoreChecker = ScoreChecker-1
     If ScoreChecker = 0 then

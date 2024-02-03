@@ -1,25 +1,27 @@
 ' ******************************************************************
-'       VPX - version by Klodo81 2023, Rancho version 1.3
+'       VPX - version by Klodo81 2023, Cannes version 1.3
 '
 '                 VISUAL PINBALL X EM Script Based on
 '               JPSalas Basic EM script up to 4 players		          
-'                      JPSalas Physics 4.3.0	
+'                     JPSalas Physics 4.3.0
+'    	
 '
-'          Rancho / IPD No.1918 / December 06, 1976 / 2 Players  
+'          Cannes / IPD No.428 / June ,1976 / 4 Players  
 '
-'V1.1 Mod table only
-' - Activated the double bonus which did not work
-' - Now tilt is only for the ball in play, not disqualify player
-'
-'V1.2 Mod table and Backglass 
+'V1.1 Mod table and Backglass
 '- B2S Mod (download the backglass)
 '- Mod Song more realistic with 3 chimes
-'- Added typical sounds and wall targets proposed by Mustang1961
-'- Add option no attract mode in script
+'- Mod some lights and script for Backglass proposed by Mustang1961
 '
-'V1.3 mod table
+'V1.2 mod table
 '- Mod Rev3 Physics from JPSalas
 '- Added 3D Playfield Mesh + new kickers
+'- Some others things
+'
+'V1.3 mod table
+'- New LUT from JPSalas
+'- Mod Playfield Mesh
+'- Added "Same player shoots again" on Backglass DT
 '- Some others things
 ' ******************************************************************
 
@@ -29,12 +31,11 @@ Randomize
 ' DOF config
 '
 ' Flippers L/R - 101/102
-' Slingshot L/R - 103/104
-' Bumpers L/R - 105/106
-' Targets C/R - 111/112
-' Targets Round - 201
-' Kickers L/R- 131/132/133
-' Triggers - 205 to 209
+' Slingshots L/R - 103/104
+' Bumpers L to R - 105/106
+' Kickers - 131/132/133/250/104
+' Targets Round - 201 to 203
+' Triggers - 204 to 210
 ' Knocker - 110
 ' Chimes - 301/302/303
 ' Drain - 250
@@ -57,21 +58,21 @@ End Sub
 
 '****************** Options you can change *******************
 
-Const BallsPerGame = 5  ' to play with 3 or 5 balls
-Const Conservative = 1  ' 0 for Liberal
-Const AttractMode = 1   ' 0 = no attract mode
+Const BallsPerGame = 3     ' to play with 3 or 5 balls (Segasa said : 3 Ball is a must on this Game)
+Const AttractMode = 1      ' 0 = no attract mode
+Const FreePlay = False     ' Free play or coins
  
 '*************************************************************
 
 ' Constants
-Const TableName = "Rancho_76VPX"   ' file name to save highscores and other variables
-Const cGameName = "Rancho1976"   ' B2S name
-Const MaxPlayers = 2        ' 1 to 2 can play
-Const Special1 = 390000      ' 3 Balls award credit
-Const Special2 = 600000      ' 3 Balls award credit
-Const Special3 = 740000      ' 3 Balls award credit
-Const Special4 = 570000      ' 5 Balls award credit
-Const Special5 = 780000      ' 5 Balls award credit
+Const TableName = "Cannes_76VPX"   ' file name to save highscores and other variables
+Const cGameName = "Cannes1976"   ' B2S name
+Const MaxPlayers = 4        ' 1 to 4 can play
+Const Special1 = 370000      ' 3 Balls award credit
+Const Special2 = 460000      ' 3 Balls award credit
+Const Special3 = 550000      ' 3 Balls award credit
+Const Special4 = 530000      ' 5 Balls award credit
+Const Special5 = 710000      ' 5 Balls award credit
 
 ' Global variables
 Dim PlayersPlayingGame
@@ -96,10 +97,14 @@ Dim Add10
 Dim Add100
 Dim Add1000
 Dim Add10000
-Dim Ran
-Dim Rancho
 Dim CBonus
 Dim x
+Dim SpinCounter
+Dim KickerTBonus
+Dim CenterBonusCounter
+Dim SpecialCenter
+Dim MoveTarget
+Dim MoveDirection
 
 ' Control variables
 Dim BallsOnPlayfield
@@ -135,10 +140,8 @@ Sub Table1_Init()
     End If
     UpdateCredits
 
-    ' Free play or Coins
-    bFreePlay = False
-
     ' init all the global variables
+    bFreePlay = Freeplay
     bAttractMode = False
     bOnTheFirstBall = False
     bGameInPlay = False
@@ -153,8 +156,6 @@ Sub Table1_Init()
     Add100 = 0
     Add1000 = 0
 	Add10000 = 0
-	Rancho = 0
-	Ran = 0
 
 	' select Card instruction on Apron
 	If BallsPerGame = 3 Then
@@ -166,7 +167,7 @@ Sub Table1_Init()
 	End If
 
 	'Test position Match on desktop screen
-	'Match = 90  '(00 to 90)
+	'Match = 50 '(00 to 90)
 	'Display_Match
 
     ' setup table in game over mode
@@ -186,6 +187,19 @@ Sub Table1_Init()
         Next
     End If
 
+	' Moving Target Init
+	for MoveTarget = 0 to 49
+		Collection2(MoveTarget).Visible = 0
+		Collection2(MoveTarget).collidable = False
+		Collection2(MoveTarget).hashitevent = False
+	Next
+	CenterT50.Collidable = True
+	CenterT50.HasHitEvent = True
+	MoveTarget=49
+	MoveDirection=0
+	MovingTargetTimer.enabled = true
+	PtargetC.objroty=((MoveTarget*.8)-20.5)
+
     ' LUT - Darkness control
     LoadLUT
 End Sub
@@ -201,10 +215,8 @@ Sub Table1_KeyDown(ByVal Keycode)
         Exit Sub
     End If
 
-    If keycode = LeftMagnaSave Then bLutActive = True: Lutbox.text = "level of darkness " & LUTImage + 1
-    If keycode = RightMagnaSave Then
-        If bLutActive Then NextLUT:End If
-    End If
+    If keycode = LeftMagnaSave Then bLutActive = True:SetLUTLine "Color LUT image " & table1.ColorGradeImage
+    If keycode = RightMagnaSave AND bLutActive Then NextLUT:End If
 
     ' add coins
     If Keycode = AddCreditKey Then
@@ -266,7 +278,7 @@ Sub Table1_KeyDown(ByVal Keycode)
                             UpdateCredits
                             ResetScores
                             ResetForNewGame()
-							Playsound"BallyStartButtonPlayer1+3dB"
+						Playsound"BallyStartButtonPlayer1+3dB"
                         End If
                     End If
                 End If
@@ -280,7 +292,7 @@ Sub Table1_KeyUp(ByVal keycode)
         Exit Sub
     End If
 
-    If keycode = LeftMagnaSave Then bLutActive = False: LutBox.text = ""
+    If keycode = LeftMagnaSave Then bLutActive = False:HideLUT
 
     If bGameInPlay AND NOT Tilted Then
 
@@ -313,16 +325,18 @@ Sub table1_Exit
 	'Controller.Stop
 End Sub
 
-'***************************
-'   LUT - Darkness control 
-'***************************
+'************************************
+'       LUT - Darkness control
+' 10 normal level & 10 warmer levels
+'************************************
 
 Dim bLutActive, LUTImage
 
 Sub LoadLUT
+    Dim x
     bLutActive = False
     x = LoadValue(cGameName, "LUTImage")
-    If(x <> "")Then LUTImage = x Else LUTImage = 0
+    If(x <> "") Then LUTImage = x Else LUTImage = 0
     UpdateLUT
 End Sub
 
@@ -330,37 +344,60 @@ Sub SaveLUT
     SaveValue cGameName, "LUTImage", LUTImage
 End Sub
 
-Sub NextLUT:LUTImage = (LUTImage + 1)MOD 15:UpdateLUT:SaveLUT:Lutbox.text = "level of darkness " & LUTImage + 1:End Sub
+Sub NextLUT:LUTImage = (LUTImage + 1) MOD 22:UpdateLUT:SaveLUT:SetLUTLine "Color LUT image " & table1.ColorGradeImage:End Sub
 
 Sub UpdateLUT
     Select Case LutImage
-        Case 0:table1.ColorGradeImage = "LUT0":GiIntensity = 1:ChangeGIIntensity 1
-        Case 1:table1.ColorGradeImage = "LUT1":GiIntensity = 1.05:ChangeGIIntensity 1
-        Case 2:table1.ColorGradeImage = "LUT2":GiIntensity = 1.1:ChangeGIIntensity 1
-        Case 3:table1.ColorGradeImage = "LUT3":GiIntensity = 1.15:ChangeGIIntensity 1
-        Case 4:table1.ColorGradeImage = "LUT4":GiIntensity = 1.2:ChangeGIIntensity 1
-        Case 5:table1.ColorGradeImage = "LUT5":GiIntensity = 1.25:ChangeGIIntensity 1
-        Case 6:table1.ColorGradeImage = "LUT6":GiIntensity = 1.3:ChangeGIIntensity 1
-        Case 7:table1.ColorGradeImage = "LUT7":GiIntensity = 1.35:ChangeGIIntensity 1
-        Case 8:table1.ColorGradeImage = "LUT8":GiIntensity = 1.4:ChangeGIIntensity 1
-        Case 9:table1.ColorGradeImage = "LUT9":GiIntensity = 1.45:ChangeGIIntensity 1
-        Case 10:table1.ColorGradeImage = "LUT10":GiIntensity = 1.5:ChangeGIIntensity 1
-        Case 11:table1.ColorGradeImage = "LUT11":GiIntensity = 1.55:ChangeGIIntensity 1
-        Case 12:table1.ColorGradeImage = "LUT12":GiIntensity = 1.6:ChangeGIIntensity 1
-        Case 13:table1.ColorGradeImage = "LUT13":GiIntensity = 1.65:ChangeGIIntensity 1
-        Case 14:table1.ColorGradeImage = "LUT14":GiIntensity = 1.7:ChangeGIIntensity 1
+        Case 0:table1.ColorGradeImage = "LUT0"
+        Case 1:table1.ColorGradeImage = "LUT1"
+        Case 2:table1.ColorGradeImage = "LUT2"
+        Case 3:table1.ColorGradeImage = "LUT3"
+        Case 4:table1.ColorGradeImage = "LUT4"
+        Case 5:table1.ColorGradeImage = "LUT5"
+        Case 6:table1.ColorGradeImage = "LUT6"
+        Case 7:table1.ColorGradeImage = "LUT7"
+        Case 8:table1.ColorGradeImage = "LUT8"
+        Case 9:table1.ColorGradeImage = "LUT9"
+        Case 10:table1.ColorGradeImage = "LUT10"
+        Case 11:table1.ColorGradeImage = "LUT Warm 0"
+        Case 12:table1.ColorGradeImage = "LUT Warm 1"
+        Case 13:table1.ColorGradeImage = "LUT Warm 2"
+        Case 14:table1.ColorGradeImage = "LUT Warm 3"
+        Case 15:table1.ColorGradeImage = "LUT Warm 4"
+        Case 16:table1.ColorGradeImage = "LUT Warm 5"
+        Case 17:table1.ColorGradeImage = "LUT Warm 6"
+        Case 18:table1.ColorGradeImage = "LUT Warm 7"
+        Case 19:table1.ColorGradeImage = "LUT Warm 8"
+        Case 20:table1.ColorGradeImage = "LUT Warm 9"
+        Case 21:table1.ColorGradeImage = "LUT Warm 10"
     End Select
 End Sub
 
-Dim GiIntensity
-GiIntensity = 1   'used by the LUT changing to increase the GI lights when the table is darker
-
-Sub ChangeGiIntensity(factor) 'changes the intensity scale
-    Dim bulb
-    For each bulb in aGiLights
-        bulb.IntensityScale = GiIntensity * factor
+' New LUT postit
+Sub SetLUTLine(String)
+    Dim Index
+    Dim xFor
+    Index = 1
+    LUBack.imagea = "PostItNote"
+    String = CL2(String)
+    For xFor = 1 to 40
+        Eval("LU" &xFor).imageA = GetHSChar(String, Index)
+        Index = Index + 1
     Next
 End Sub
+
+Sub HideLUT
+    SetLUTLine ""
+    LUBack.imagea = "PostitBL"
+End Sub
+
+Function CL2(NumString) 'center line
+    Dim Temp, TempStr
+    If Len(NumString)> 40 Then NumString = Left(NumString, 40)
+    Temp = (40 - Len(NumString) ) \ 2
+    TempStr = Space(Temp) & NumString & Space(Temp)
+    CL2 = TempStr
+End Function
 
 '**********************************************
 '    Flipper adjustments - enable tricks
@@ -442,6 +479,7 @@ Sub LeftFlipper_Timer 'flipper's tricks timer
 	End If
 
 End Sub
+
 
 '*******************
 '  Flipper Subs
@@ -539,7 +577,6 @@ Sub DisableTable(Enabled)
         Bumper002.Threshold = 100
         LeftSlingshot.Disabled = 1
         RightSlingshot.Disabled = 1
-		KickBall
         DOF 101, DOFOff
         DOF 102, DOFOff
     Else
@@ -713,18 +750,8 @@ Sub aRubber_Bands_Hit(idx):PlaySoundAtBall "fx_rubber_band":End Sub
 Sub aRubber_Posts_Hit(idx):PlaySoundAtBall "fx_rubber_post":End Sub
 Sub aRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
 Sub aPlastics_Hit(idx):PlaySoundAtBall "fx_PlasticHit":End Sub
-Sub aGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub
+Sub aGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub   
 Sub aWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
-
-'added Mustang1961
-
-Sub GR_hit()
-	Playsound "fx_gate"
-End Sub
-
-Sub Gates_Hit (idx)
-	PlaySound "Middle_GateTouch"
-End Sub
 
 '***************************************************************************************************
 ' Only for VPX 10.2 and higher.
@@ -784,7 +811,6 @@ Sub ResetForNewGame()
         BallsRemaining(i) = BallsPerGame
     Next
     BonusMultiplier = 1
-    Bonus = 0
     UpdateBallInPlay
 	UpdatePlayers
     Clear_Match
@@ -821,6 +847,7 @@ Sub ResetForNewPlayerBall()
     bExtraBallWonThisBall = False
     ResetNewBallVariables
     ResetNewBallLights
+
 End Sub
 
 ' Create new ball
@@ -841,54 +868,82 @@ Sub EndOfBall
     bOnTheFirstBall = False
 	
 	' Bonus Count
-	'BonusMultiplier = 2 'test
     If NOT Tilted Then
+		'BonusMultiplier = 2 'for test x2
         Select Case BonusMultiplier
-            Case 1:BonusCountTimer.Interval = 150
-			Case 2:BonusCountTimer.Interval = 400
-		End Select	
+            Case 1:BonusCountTimer.Interval = 300
+			Case 2:BonusCountTimer.Interval = 800
+		End Select
 		CBonus = 0
+		KickerTBonus = 0
         BonusCountTimer.Enabled = 1
     Else 
     vpmtimer.addtimer 250, "EndOfBall2 '"
 	Playsound"MotorLeer2"
 	End If
+
 End Sub
 
 Sub BonusCountTimer_Timer 'The bonus are count when the ball is lost
     'debug.print "BonusCount_Timer"
     If Bonus> 0 Then
-		If BonusMultiplier = 1 Then
+		If BonusMultiplier = 1 or KickerTBonus = 1 Then
 			CBonus = CBonus + 1
-			If CBonus = 5 Then	BonusCountTimer.Interval = BonusCountTimer.Interval + 100
-			If CBonus = 6 Then BonusCountTimer.Interval = BonusCountTimer.Interval - 100
+			If CBonus = 5 Then BonusCountTimer.Interval = BonusCountTimer.Interval + 200
+			If CBonus = 6 Then 
+				BonusCountTimer.Interval = BonusCountTimer.Interval - 200
+				CBonus = 0
+			End If
 		End If
-        AddScore 10000 * BonusMultiplier
-		If BonusMultiplier = 2 Then PlaySoundAt "fx_bonus", Target1
-        Bonus = Bonus -1
+        If KickerTBonus = 0 Then AddScore 2000 * BonusMultiplier Else AddScore 2000
+        Bonus = Bonus - 1
         UpdateBonusLights
     Else 
         BonusCountTimer.Enabled = 0
-        vpmtimer.addtimer 250, "EndOfBall2 '"
-		Playsound"MotorLeer2"
+        If KickerTBonus = 0 Then
+			vpmtimer.addtimer 250, "EndOfBall2 '" 
+			Playsound"MotorLeer2"
+		Else 
+			KickerTBonus = 0
+			Addbonus				
+			vpmtimer.addtimer 300, "PlaySoundAt SoundFXDOF (""fx_kicker"", 133, DOFPulse, DOFContactors), kickerT : kickerT.kick 135, 14 + RndNbr(3) '"
+		End If
     End If
 End Sub
 
 Sub UpdateBonusLights
     Select Case Bonus
-        Case 0:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 1:BL10K.State = 1:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 2:BL10K.State = 0:BL20K.State = 1:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 3:BL10K.State = 0:BL20K.State = 0:BL30K.State = 1:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 4:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 1:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 5:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 1:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 6:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 1:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 7:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 1:BL80K.State = 0:BL90K.State = 0:BL100K.State = 0
-        Case 8:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 1:BL90K.State = 0:BL100K.State = 0
-        Case 9:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 1:BL100K.State = 0
-        Case 10:BL10K.State = 0:BL20K.State = 0:BL30K.State = 0:BL40K.State = 0:BL50K.State = 0:BL60K.State = 0:BL70K.State = 0:BL80K.State = 0:BL90K.State = 0:BL100K.State = 1
+        Case 0:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 1:BL2K.State = 1:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 2:BL2K.State = 0:BL4K.State = 1:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 3:BL2K.State = 0:BL4K.State = 0:BL6K.State = 1:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 4:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 1:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 5:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 1:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 6:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 1:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 7:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 1:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 8:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 1:BL18K.State = 0:BL20K.State = 0:BL40K.State = 0
+        Case 9:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 1:BL20K.State = 0:BL40K.State = 0
+        Case 10:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 11:BL2K.State = 1:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 12:BL2K.State = 0:BL4K.State = 1:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 13:BL2K.State = 0:BL4K.State = 0:BL6K.State = 1:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 14:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 1:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 15:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 1:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 16:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 1:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 17:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 1:BL16K.State = 0:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 18:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 1:BL18K.State = 0:BL20K.State = 1:BL40K.State = 0
+        Case 19:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 1:BL20K.State = 1:BL40K.State = 0
+        Case 20:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+		Case 21:BL2K.State = 1:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 22:BL2K.State = 0:BL4K.State = 1:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 23:BL2K.State = 0:BL4K.State = 0:BL6K.State = 1:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 24:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 1:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 25:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 1:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 26:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 1:BL14K.State = 0:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 27:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 1:BL16K.State = 0:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 28:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 1:BL18K.State = 0:BL20K.State = 0:BL40K.State = 1
+        Case 29:BL2K.State = 0:BL4K.State = 0:BL6K.State = 0:BL8K.State = 0:BL10K.State = 0:BL12K.State = 0:BL14K.State = 0:BL16K.State = 0:BL18K.State = 1:BL20K.State = 0:BL40K.State = 1
     End Select
-	If BL100K.State = 1 And LMRGreen.State = 1 And LMRYellow.State = 1 Then Light10000.State = 1
 End Sub
 
 Sub EndOfBall2
@@ -912,6 +967,7 @@ Sub EndOfBall2
         ' turn off light if no more extra balls
         If(ExtraBallsAwards(CurrentPlayer) = 0) Then
 			LightShootAgain.State = 0
+			ShootAgainR.SetValue 0
 			If B2SOn then
 				Controller.B2SSetShootAgain 0
 			End If
@@ -1040,7 +1096,7 @@ End Sub
 '******************
 
 Sub Verification_Match()
-    PlaySound "MotorLeer2"
+	Playsound"MotorLeer2"
     Match = INT(RND(1) * 10) * 10 ' random between 00 and 90
     Display_Match
     If(Score(CurrentPlayer) MOD 100) = Match Then
@@ -1057,7 +1113,7 @@ Sub Clear_Match()
 End Sub
 
 Sub Display_Match()
-	If (Match \ 10) < 5 Then  MatchReel1.SetValue(Match \ 10) + 1  Else  MatchReel2.SetValue(Match \ 10) + 1
+	If (Match \ 10) < 5 Then  MatchReel1.SetValue 1 + (Match \ 10)  Else  MatchReel2.SetValue 1 + (Match \ 10)
     If B2SOn then
         If Match = 0 then
             Controller.B2SSetMatch 100
@@ -1112,31 +1168,27 @@ End Sub
 ' ***************************************
 
 Sub AddScore(Points)
-    If Tilted Then Exit Sub    
+    If Tilted Then Exit Sub
     Select Case Points
         Case 10, 100, 1000, 10000
             Score(CurrentPlayer) = Score(CurrentPlayer) + points
             UpdateScore points
-        ' sounds       
-			If Points = 100 AND(Score(CurrentPlayer) MOD 1000) \ 100 = 0 Then             ' new reel 1000
-                PlaySound SoundFXDOF ("fx_williamschime1000", 303, DOFPulse, DOFChimes)
-            ElseIf Points = 10 AND(Score(CurrentPlayer) MOD 100) \ 10 = 0 Then            ' new reel 100
-                PlaySound SoundFXDOF ("fx_williamschime100", 302, DOFPulse, DOFChimes)
-			ElseIf Points = 10000 Then
-                PlaySound SoundFXDOF ("fx_williamschime1000", 303, DOFPulse, DOFChimes)  
+        ' sounds
+			If Points = 10000 Then
+                PlaySound SoundFXDOF ("fx_segasachimelow", 303, DOFPulse, DOFChimes)  
 			ElseIf Points = 1000 Then
-                PlaySound SoundFXDOF ("fx_williamschime1000", 303, DOFPulse, DOFChimes)
+                PlaySound SoundFXDOF ("fx_segasachimehigh", 301, DOFPulse, DOFChimes)
 			ElseIf Points = 100 Then
-                PlaySound SoundFXDOF ("fx_williamschime100", 302, DOFPulse, DOFChimes)          
-			Else
-                PlaySound SoundFXDOF ("fx_williamschime10", 301, DOFPulse, DOFChimes)
-            End If   
+                PlaySound SoundFXDOF ("fx_segasachimehigh", 301, DOFPulse, DOFChimes)          
+			Else '10
+                PlaySound SoundFXDOF ("fx_segasachimemid", 302, DOFPulse, DOFChimes)
+            End If 
 		Case 20, 30, 40, 50
             Add10 = Add10 + Points \ 10
-            AddScore10Timer.Enabled = TRUE 
+            AddScore10Timer.Enabled = TRUE         
         Case 200, 300, 400, 500
             Add100 = Add100 + Points \ 100
-            AddScore100Timer.Enabled = TRUE 
+            AddScore100Timer.Enabled = TRUE   
         Case 2000, 3000, 4000, 5000
             Add1000 = Add1000 + Points \ 1000
             AddScore1000Timer.Enabled = TRUE
@@ -1220,9 +1272,9 @@ End Sub
 
 Sub AddBonus
     If Tilted Then Exit Sub
-	If Bonus < 10 Then
+	If Bonus < 29 Then
 		Bonus = Bonus + 1
-		DOF 210, DOFPulse
+		If Bonus = 20 Then LightSpinner.State = 1 Else LightSpinner.State = 0
 		vpmtimer.addtimer 200, "UpdateBonusLights '"
     End If
 End Sub
@@ -1236,33 +1288,28 @@ Sub UpdateScore(playerpoints)
     Select Case CurrentPlayer
         Case 1:ScoreReel1.Addvalue playerpoints
 		Case 2:ScoreReel2.Addvalue playerpoints
-		'Case 3:ScoreReel3.Addvalue playerpoints
-		'Case 4:ScoreReel4.Addvalue playerpoints
+		Case 3:ScoreReel3.Addvalue playerpoints
+		Case 4:ScoreReel4.Addvalue playerpoints
     End Select
     If B2SOn then
         Controller.B2SSetScorePlayer CurrentPlayer, Score(CurrentPlayer)
-        If Score(CurrentPlayer) >= 1000000 then
-            Controller.B2SSetScoreRollover 24 + CurrentPlayer, 1
-        end if
     end if
 End Sub
 
 Sub ResetScores
     ScoreReel1.ResetToZero
     ScoreReel2.ResetToZero
-    'ScoreReel3.ResetToZero
-    'ScoreReel4.ResetToZero
+    ScoreReel3.ResetToZero
+    ScoreReel4.ResetToZero
     If B2SOn then
         Controller.B2SSetScorePlayer1 0
-        Controller.B2SSetScoreRolloverPlayer1 0
         Controller.B2SSetScorePlayer2 0
-        Controller.B2SSetScoreRolloverPlayer2 0
+        Controller.B2SSetScorePlayer3 0
+        Controller.B2SSetScorePlayer4 0
 		Controller.B2SSetData 81,0
 		Controller.B2SSetData 82,0
-        'Controller.B2SSetScorePlayer3 0
-        'Controller.B2SSetScoreRolloverPlayer3 0
-        'Controller.B2SSetScorePlayer4 0
-        'Controller.B2SSetScoreRolloverPlayer4 0
+		Controller.B2SSetData 83,0
+		Controller.B2SSetData 84,0
     end if
 End Sub
 
@@ -1281,7 +1328,7 @@ Sub UpdateCredits
     End If
     PlaySound "fx_relay"
     CreditsReel.SetValue credits
-    If B2SOn Then
+   If B2SOn Then
 		If Credits < 10 Then Controller.B2SSetCredits Credits 'limited to 9 for backglass
 		If Credits = 0 then
             Controller.B2SSetdata 20,0
@@ -1302,25 +1349,30 @@ Sub UpdateBallInPlay
     If B2SOn Then
         Controller.B2SSetBallInPlay Balls
     End If
-
 End Sub
 
 Sub UpdatePlayers
     Select case CurrentPlayer
-        Case 0:pl1.State = 0:pl2.State = 0
-        Case 1:pl1.State = 1:pl2.State = 0
-        Case 2:pl1.State = 0:pl2.State = 1
+        Case 0:pl1.State = 0:pl2.State = 0:pl3.State = 0:pl4.State = 0
+        Case 1:pl1.State = 1:pl2.State = 0:pl3.State = 0:pl4.State = 0
+        Case 2:pl1.State = 0:pl2.State = 1:pl3.State = 0:pl4.State = 0
+        Case 3:pl1.State = 0:pl2.State = 0:pl3.State = 1:pl4.State = 0
+        Case 4:pl1.State = 0:pl2.State = 0:pl3.State = 0:pl4.State = 1
     End Select
     If B2SOn Then	
 		Controller.B2SSetPlayerUp CurrentPlayer
 		Controller.B2SSetData 81,0
 		Controller.B2SSetData 82,0
+		Controller.B2SSetData 83,0
+		Controller.B2SSetData 84,0
 		Controller.B2SSetData 80 + CurrentPlayer,1
     End If
     Select Case PlayersPlayingGame
-        Case 0:cp1.State = 0:cp2.State = 0
-        Case 1:cp1.State = 1:cp2.State = 0
-        Case 2:cp1.State = 0:cp2.State = 1
+        Case 0:cp1.State = 0:cp2.State = 0:cp3.State = 0:cp4.State = 0
+        Case 1:cp1.State = 1:cp2.State = 0:cp3.State = 0:cp4.State = 0
+        Case 2:cp1.State = 0:cp2.State = 1:cp3.State = 0:cp4.State = 0
+        Case 3:cp1.State = 0:cp2.State = 0:cp3.State = 1:cp4.State = 0
+        Case 4:cp1.State = 0:cp2.State = 0:cp3.State = 0:cp4.State = 1
     End Select
     If B2SOn Then
         Controller.B2SSetCanPlay PlayersPlayingGame
@@ -1337,6 +1389,7 @@ Sub AwardExtraBall()
         ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
         bExtraBallWonThisBall = True
 		LightShootAgain.State = 1
+		ShootAgainR.SetValue 1
         If B2SOn Then
             Controller.B2SSetShootAgain 1
         End If		
@@ -1354,7 +1407,7 @@ End Sub
 ' use the"Blink Pattern" of each light
 
 Sub StartAttractMode()
-    Dim x
+	Dim x
 	If AttractMode = 1 Then
 		bAttractMode = True
 		For each x in aLights
@@ -1366,14 +1419,18 @@ Sub StartAttractMode()
         Controller.B2SSetBallInPlay 0
 		Controller.B2SSetPlayerUp 0
         Controller.B2SSetCanPlay 1
-		Controller.B2SSetTilt 0
+		Controller.B2SSetShootAgain 0
+        Controller.B2SSetTilt 0
 		Controller.B2SSetData 81,1
 		Controller.B2SSetData 82,1
+		Controller.B2SSetData 83,1
+		Controller.B2SSetData 84,1
     end if
     GameOverR.SetValue 1
     BallInPlayR.SetValue 0
-	pl1.State = 0:pl2.State = 0
-    cp1.State = 1 : cp2.State = 0
+	ShootAgainR.SetValue 0
+	pl1.State = 0:pl2.State = 0:pl3.State = 0:pl4.State = 0
+    cp1.State = 1 : cp2.State = 0 : cp3.State = 0 : cp4.State = 0
 	TiltReel.SetValue 0	
 End Sub
 
@@ -1516,6 +1573,7 @@ Sub GameTimer_Timer
     LeftFlipperTop.RotZ = LeftFlipper.CurrentAngle
     RightFlipperTop.RotZ = RightFlipper.CurrentAngle
     Pgate1.rotx = Gate1.currentangle*.6
+    Pgate2.rotx = Gate2.currentangle*.6
 
 	Dim SpinnerRadius: SpinnerRadius=7
 	SpinnerRod.TransZ = (cos((leftspinner.CurrentAngle + 180) * (PI/180))+1) * SpinnerRadius
@@ -1537,6 +1595,11 @@ End Sub
 Sub Game_Init() 'called at the start of a new game
     'Start music?
     'Init variables?
+	KickerTBonus = 0
+	SpecialCenter = 0
+	SpinCounter = 1
+	CenterBonusCounter = 1
+	Bonus = 1
     'Start or init timers
     'Init lights?
     TurnOffPlayfieldLights()
@@ -1547,16 +1610,19 @@ Sub StopEndOfBallMode() 'called when the last ball is drained
 End Sub
 
 Sub ResetNewBallVariables() 'init variables new ball/player	
-	vpmtimer.addtimer 500,"ResetTarget '"
-	Ran = 0
-	Rancho = 0
+	'SpinCounter = 1	
+	'CenterBonusCounter = 1
+	KickerTBonus = 0
+	SpecialCenter = 0
 	Bonus = 1
 End Sub
 
 Sub ResetNewBallLights()    'init lights for new ball/player
 	TurnOffPlayfieldLights()
-	UpdateBonusLights()
 	TurnOnNewBallLights()
+	UpdateBonusLights()
+	UpdateCenterBonusLights
+	UpdateSpinnerLight
 End Sub
 
 Sub TurnOnNewBallLights()
@@ -1600,7 +1666,6 @@ Sub LeftSlingShot_Slingshot   'left slingshot
     ' add points
     AddScore 10
     ' some effect
-	Alternate
 End Sub
 
 Sub LeftSlingShot_Timer    
@@ -1622,7 +1687,6 @@ Sub RightSlingShot_Slingshot    'right slingshot
     ' add points
     AddScore 10
     ' some effect
-	Alternate
 End Sub
 
 Sub RightSlingShot_Timer
@@ -1638,98 +1702,124 @@ End Sub
 '       Rubbers
 '***********************
 
-Dim Rub1, Rub2, Rub3, Rub4, Rub5, Rub6
+Dim Rub1, Rub2, Rub3, Rub4, Rub5, Rub6, Rub7
 
-Sub RubberBand006_Hit  'Low left
+Sub RubberBand001_Hit   'center / Counter
     If Tilted then Exit Sub
-	AddScore 10
-	Alternate
+	AddCenterBonus
+	Select case CenterBonusCounter
+		case 3:
+			LightKickerLeft.State = 0
+			LightKickerRight.State = 0
+		case 6:
+			SpecialCenter = 0
+			LightSpecialLeft.State = 0
+			LightSpecialRight. State = 0
+		case 9 :
+			LightExtraBallFeature.State = 0
+	end select
+    Rub7 = 1:RubberBand001_Timer
+End Sub
+
+Sub RubberBand001_Timer
+    Select Case Rub7
+        Case 1:r013.Visible = 0:r035.Visible = 1:RubberBand001.TimerEnabled = 1
+        Case 2:r035.Visible = 0:r036.Visible = 1
+        Case 3:r036.Visible = 0:r013.Visible = 1:RubberBand001.TimerEnabled = 0
+    End Select
+    Rub7 = Rub7 + 1
+End Sub
+
+Sub RubberBand005_Hit   'left
+    If Tilted then Exit Sub
+    AddScore 10
+    Rub4 = 1:RubberBand005_Timer
+End Sub
+
+Sub RubberBand005_Timer
+    Select Case Rub4
+        Case 1:r011.Visible = 0:r029.Visible = 1:RubberBand005.TimerEnabled = 1
+        Case 2:r029.Visible = 0:r030.Visible = 1
+        Case 3:r030.Visible = 0:r011.Visible = 1:RubberBand005.TimerEnabled = 0
+    End Select
+    Rub4 = Rub4 + 1
+End Sub
+
+Sub RubberBand006_Hit  '
+    If Tilted then Exit Sub
+    AddScore 10
     Rub1 = 1:RubberBand006_Timer
 End Sub
 
 Sub RubberBand006_Timer
     Select Case Rub1
-        Case 1:r009.Visible = 0:r019.Visible = 1:RubberBand006.TimerEnabled = 1
-        Case 2:r019.Visible = 0:r020.Visible = 1
-        Case 3:r020.Visible = 0:r009.Visible = 1:RubberBand006.TimerEnabled = 0
+        Case 1:r009.Visible = 0:r020.Visible = 1:RubberBand006.TimerEnabled = 1
+        Case 2:r020.Visible = 0:r019.Visible = 1
+        Case 3:r019.Visible = 0:r009.Visible = 1:RubberBand006.TimerEnabled = 0
     End Select
     Rub1 = Rub1 + 1
 End Sub
 
-Sub RubberBand008_Hit   'Low right
+Sub RubberBand007_Hit  '
     If Tilted then Exit Sub
-	AddScore 10
-	Alternate
+    AddScore 10
+    Rub6 = 1:RubberBand007_Timer
+End Sub
+
+Sub RubberBand007_Timer
+    Select Case Rub6
+        Case 1:r016.Visible = 0:r031.Visible = 1:RubberBand007.TimerEnabled = 1
+        Case 2:r020.Visible = 0:r028.Visible = 1
+        Case 3:r031.Visible = 0:r016.Visible = 1:RubberBand007.TimerEnabled = 0
+    End Select
+    Rub6 = Rub6 + 1
+End Sub
+
+Sub RubberBand008_Hit   '
+    If Tilted then Exit Sub
+    AddScore 10
     Rub2 = 1:RubberBand008_Timer
 End Sub
 
 Sub RubberBand008_Timer
     Select Case Rub2
-        Case 1:r010.Visible = 0:r021.Visible = 1:RubberBand008.TimerEnabled = 1
-        Case 2:r021.Visible = 0:r022.Visible = 1
-        Case 3:r022.Visible = 0:r010.Visible = 1:RubberBand008.TimerEnabled = 0
+        Case 1:r010.Visible = 0:r022.Visible = 1:RubberBand008.TimerEnabled = 1
+        Case 2:r022.Visible = 0:r021.Visible = 1
+        Case 3:r021.Visible = 0:r010.Visible = 1:RubberBand008.TimerEnabled = 0
     End Select
     Rub2 = Rub2 + 1
 End Sub
 
-Sub RubberBand009_Hit   'Center right
+Sub RubberBand009_Hit   'right
     If Tilted then Exit Sub
-	AddScore 10
-    Rub3 = 1:RubberBand009_Timer
+    AddScore 10
+    Rub5 = 1:RubberBand009_Timer
 End Sub
 
 Sub RubberBand009_Timer
-    Select Case Rub3
-        Case 1:r005.Visible = 0:r008.Visible = 1:RubberBand009.TimerEnabled = 1
-        Case 2:r008.Visible = 0:r013.Visible = 1
-        Case 3:r013.Visible = 0:r005.Visible = 1:RubberBand009.TimerEnabled = 0
-    End Select
-    Rub3 = Rub3 + 1
-End Sub
-
-Sub RubberBand013_Hit   'Top left
-    If Tilted then Exit Sub
-	AddScore 10
-    Rub4 = 1:RubberBand013_Timer
-End Sub
-
-Sub RubberBand013_Timer
-    Select Case Rub4
-        Case 1:r023.Visible = 0:r024.Visible = 1:RubberBand013.TimerEnabled = 1
-        Case 2:r024.Visible = 0:r025.Visible = 1
-        Case 3:r025.Visible = 0:r023.Visible = 1:RubberBand013.TimerEnabled = 0
-    End Select
-    Rub4 = Rub4 + 1
-End Sub
-
-Sub RubberBand024_Hit   'Top right
-    If Tilted then Exit Sub
-	AddScore 10
-    Rub5 = 1:RubberBand024_Timer
-End Sub
-
-Sub RubberBand024_Timer
     Select Case Rub5
-        Case 1:r015.Visible = 0:r016.Visible = 1:RubberBand024.TimerEnabled = 1
-        Case 2:r016.Visible = 0:r018.Visible = 1
-        Case 3:r018.Visible = 0:r015.Visible = 1:RubberBand024.TimerEnabled = 0
+        Case 1:r025.Visible = 0:r027.Visible = 1:RubberBand009.TimerEnabled = 1
+        Case 2:r027.Visible = 0:r026.Visible = 1
+        Case 3:r026.Visible = 0:r025.Visible = 1:RubberBand009.TimerEnabled = 0
     End Select
     Rub5 = Rub5 + 1
 End Sub
 
-Sub RubberBand005_Hit  'Center left no Addscore
+Sub RubberBand010_Hit   '
     If Tilted then Exit Sub
-    Rub6 = 1:RubberBand005_Timer
+    AddScore 10
+    Rub3 = 1:RubberBand010_Timer
 End Sub
 
-Sub RubberBand005_Timer
-    Select Case Rub6
-        Case 1:r006.Visible = 0:r030.Visible = 1:RubberBand005.TimerEnabled = 1
-        Case 2:r030.Visible = 0:r029.Visible = 1
-        Case 3:r029.Visible = 0:r006.Visible = 1:RubberBand005.TimerEnabled = 0
+Sub RubberBand010_Timer
+    Select Case Rub3
+        Case 1:r014.Visible = 0:r024.Visible = 1:RubberBand010.TimerEnabled = 1
+        Case 2:r024.Visible = 0:r023.Visible = 1
+        Case 3:r023.Visible = 0:r014.Visible = 1:RubberBand010.TimerEnabled = 0
     End Select
-    Rub6 = Rub6 + 1
+    Rub3 = Rub3 + 1
 End Sub
+
 
 '*********
 ' Bumpers
@@ -1738,233 +1828,244 @@ End Sub
 Sub Bumper001_Hit 'left
     If Tilted Then Exit Sub
     PlaySoundAt SoundFXDOF ("fx_Bumper",105,DOFPulse,DOFContactors), bumper001
-    If BallsPerGame = 3 Then AddScore 1000
-    If BallsPerGame = 5 Then AddScore 100
+    AddScore 100
 End Sub
 
 Sub Bumper002_Hit ' right
     If Tilted Then Exit Sub
     PlaySoundAt SoundFXDOF ("fx_Bumper",106,DOFPulse,DOFContactors), bumper002
-    If BallsPerGame = 3 Then AddScore 1000
-    If BallsPerGame = 5 Then AddScore 100
+    AddScore 100
 End Sub
 
 '*****************
-'     Rollover
+'     Triggers
 '*****************
 
-' out lanes rollover
+' out lanes
 
 Sub Trigger001_Hit  'Left
     PlaySoundAt "fx_sensor", Trigger001
-	DOF 205, DOFPulse
+	DOF 204, DOFPulse
     If Tilted Then Exit Sub
-	If LightSpecial1.State = 1 Then
-		AwardSpecial
-	Else
-		Addscore 10000
-		AddBonus
-	End If
+	Addscore 10000
+	AddBonus
+	If LightSpecialLeft.State = 1 Then AwardSpecial
 End Sub
 
-
-Sub Trigger002_Hit  'Right
+Sub Trigger002_Hit 'Left/Right
     PlaySoundAt "fx_sensor", Trigger002
-	DOF 206, DOFPulse
-    If Tilted Then Exit Sub
-	If LightSpecial2.State = 1 Then
-		AwardSpecial
-	Else
-		Addscore 10000
-		AddBonus
-	End If
-End Sub
-
-' top lanes rollover
-
-Sub Trigger003_Hit 'Left
-    PlaySoundAt "fx_sensor", Trigger003
-	DOF 207, DOFPulse
+	DOF 205, DOFPulse
     If Tilted Then Exit Sub	
-	Addscore 1000
-	If LTLeft.State = 1 Then vpmtimer.addtimer 200, "AddBonus '"
-End Sub
-
-Sub Trigger004_Hit  'Center
-    PlaySoundAt "fx_sensor", Trigger004
-	DOF 208, DOFPulse
-    If Tilted Then Exit Sub
-	If Light10000.State = 1 Then Addscore 10000 Else Addscore 1000
-	If LTGreen.State = 1 Then LMLGreen.State = 1 : LMRGreen.State = 1
-	If LTYellow.State = 1 Then LMLYellow.State = 1 : LMRYellow.State = 1
-	If BL100K.State = 1 And LMRGreen.State = 1 And LMRYellow.State = 1 Then Light10000.State = 1
-End Sub
-
-Sub Trigger005_Hit  'Right
-    PlaySoundAt "fx_sensor", Trigger005
-	DOF 209, DOFPulse
-    If Tilted Then Exit Sub
-	Addscore 1000
-	If LTRight.State = 1 Then vpmtimer.addtimer 200, "AddBonus '"
-End Sub
-
-'**********************************
-'         Rollover Button
-'**********************************
-
-Sub sw001_Hit  'Center Button
-    PlaySoundAt "fx_sensor", sw001
-    If Tilted Then Exit Sub
- 	If LightSW001.State = 1 Then
-		Addscore 1000
-		AddBonus
-	End If
-End Sub
-
-Sub sw002_Hit  'Top Button
-    PlaySoundAt "fx_sensor", sw002
-    If Tilted Then Exit Sub   
-	Addscore 10
+	Addscore 5000
 	Alternate
 End Sub
 
-'************************
-'       Kickers
-'************************
-
-'Top Left
-
-Sub KickerTL_Hit
-	Dim Delay
-    delay = 250
-    PlaySoundAt "fx_kicker_enter", kickerTL
-	Playsound"MotorLeer2"
-	If Tilted Then
-		vpmtimer.addtimer delay, "KickBall '"
-        Exit Sub
-    End If
-	If LMLGreen.State = 0 And Conservative = 1 Then AddScore 3000 : delay = 1000
-	If LMLGreen.State = 1 And Conservative = 1 Then AddScore 30000 : delay = 1500
-	If LMLGreen.State = 0 And Conservative = 0 Then AddScore 5000 : delay = 1000
-	If LMLGreen.State = 1 And Conservative = 0 Then AddScore 50000 : delay = 1500
-	vpmtimer.addtimer delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 132, DOFPulse, DOFContactors), kickerTL : kickerTL.kick 205, 11 + RndNbr(3) '"
+Sub Trigger003_Hit 'Right/Left
+    PlaySoundAt "fx_sensor", Trigger003
+	DOF 206, DOFPulse
+    If Tilted Then Exit Sub
+	Addscore 5000
+	Alternate
 End Sub
 
-
-'Middle Left
-
-Sub KickerML_Hit
-	Dim Delay
-    delay = 250
-    PlaySoundAt "fx_kicker_enter", kickerML
-	Playsound"MotorLeer2"
-	If Tilted Then
-		vpmtimer.addtimer Delay, "KickBall '"
-        Exit Sub
-    End If
-	If LMLYellow.State = 0 Then AddScore 3000 : Delay = 500
-	If LMLYellow.State = 1 Then AddScore 30000 : Delay = 1000
-	If LightExtraBallFeature.State = 1 Then LightExtraBallFeature.State = 0 : AwardExtraBall() : Delay = 2000
-	vpmtimer.addtimer Delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 131, DOFPulse, DOFContactors), kickerML : kickerML.kick 125, 14 + RndNbr(3) '"
+Sub Trigger004_Hit  'Right
+    PlaySoundAt "fx_sensor", Trigger004
+	DOF 207, DOFPulse
+    If Tilted Then Exit Sub
+	Addscore 10000
+	AddBonus
+	If LightSpecialRight.State =1 Then AwardSpecial
 End Sub
 
-'Right Shooter
+' top lanes
 
-Sub KickerR_Hit
-	Dim Delay
-    delay = 250
-    PlaySoundAt "fx_kicker_enter", kickerR
-	Playsound"MotorLeer2"
-	If Tilted Then
-		vpmtimer.addtimer delay, "KickBall '"
-        Exit Sub
-    End If
-	Addscore 1000
-	Vpmtimer.Addtimer delay, "AddBonus '"
-	If LMRGreen.State = 1 Then
-		Addscore 1000
-		delay = delay + 250
-		Vpmtimer.Addtimer delay, "AddBonus '"
+Sub Trigger006_Hit 'Left
+    PlaySoundAt "fx_sensor", Trigger006
+	DOF 208, DOFPulse
+    If Tilted Then Exit Sub	
+	Addscore 5000
+	If LightTopLeft.State = 1  Then
+		AddBonus
+		vpmtimer.addtimer 250, "AddBonus '"
+		vpmtimer.addtimer 250, "AddBonus '"
 	End If
-	If LMRYellow.State = 1 Then
-		Addscore 1000
-		delay = delay + 250
-		Vpmtimer.Addtimer delay, "AddBonus '"
+	Alternate
+End Sub
+
+Sub Trigger007_Hit  'Center
+    PlaySoundAt "fx_sensor", Trigger007
+	DOF 209, DOFPulse
+    If Tilted Then Exit Sub
+	Addscore 10000	
+	If LightExtraBallFeature.State = 1 Then
+		AwardExtraBall
+		LightExtraBallFeature.State =0
 	End If
-	KickarmRTimer.uservalue = 1
-	KickarmRTimer.enabled = 1	
+	AddBonus
+	Alternate
 End Sub
 
-Sub KickarmRTimer_Timer
-	Select Case KickarmRTimer.uservalue
-		Case 4:
-			PlaySoundAt SoundFXDOF ("fx_kicker", 133, DOFPulse, DOFContactors), kickerR
-			kickerR.kick 0, 21 + RndNbr(3)
-			PkickarmR.rotx=20			
-		Case 6:
-			PkickarmR.rotx=0
-			KickarmRTimer.enabled = 0
-	End Select
-	KickarmRTimer.uservalue = KickarmRTimer.uservalue + 1
-End Sub
-
-'Kick all ball
-
-Sub KickBall
-	vpmtimer.addtimer 500, "PlaySoundAt SoundFXDOF (""fx_kicker"", 111, DOFPulse, DOFContactors), kickerML : kickerML.kick 125, 10 : kickerTL.kick 205, 10 : kickerR.kick 0, 20 '"
+Sub Trigger008_Hit  'Right
+    PlaySoundAt "fx_sensor", Trigger008
+	DOF 210, DOFPulse
+    If Tilted Then Exit Sub
+	Addscore 5000
+	If LightTopRight.State = 1 Then
+		AddBonus
+		vpmtimer.addtimer 250, "AddBonus '"
+		vpmtimer.addtimer 250, "AddBonus '"
+	End If
+	Alternate
 End Sub
 
 '************************
 '       Targets
 '************************
 
-' Target Round
+' Target Rectangle
 
-Sub TargetRound_hit 'Top Left
+Sub Target1_hit 'left
     PlaySoundAtBall "fx_target"
-	DOF 201, DOFPulse
+	DOF 202, DOFPulse
     If Tilted Then Exit Sub
 	Addscore 1000
-	AddBonus
+	If LightTargetLeft.State = 1 Then AddBonus
+	Alternate
 End Sub
 
-
-' Targets
-
-Sub Target1_hit
-    PlaySoundAt SoundFXDOF ("fx_droptarget", 111, DOFPulse, DOFContactors), Target1
+Sub Target2_hit 'right
+    PlaySoundAtBall "fx_target"
+	DOF 203, DOFPulse
     If Tilted Then Exit Sub
-	If LightR.State = 0 and Ran = 0 Then LightR.State = 1
-	If LightC.State = 0 and Ran = 1 Then LightC.State = 1
-    Addscore 1000
-	Check()
+	Addscore 1000
+	If LightTargetRight.State = 1 Then AddBonus
+	Alternate
 End Sub
 
-Sub Target2_hit
-    PlaySoundAt SoundFXDOF ("fx_droptarget", 111, DOFPulse, DOFContactors), Target2
+'***********************
+'     Moving Target
+'***********************
+
+sub MovingTargetTimer_timer
+	if MoveDirection=1 Then	
+		Collection2(MoveTarget).visible=0
+		Collection2(MoveTarget).collidable=False
+		Collection2(MoveTarget).hashitevent=False
+		MoveTarget=MoveTarget+1
+'		Collection2(movetarget).visible=1 '(Set to Debug)
+		Collection2(MoveTarget).collidable=True
+		Collection2(MoveTarget).hashitevent=True
+
+		if MoveTarget>48 then 
+			MoveDirection=0
+		end If
+		PtargetC.objroty=((MoveTarget*.8)-20.5)
+		exit sub
+	Else
+		Collection2(MoveTarget).Visible=0
+		Collection2(MoveTarget).collidable=False
+		Collection2(MoveTarget).hashitevent=False		
+		MoveTarget=MoveTarget-1
+'		Collection2(movetarget).visible=1 '(Set to Debug)
+		Collection2(MoveTarget).collidable=True
+		Collection2(MoveTarget).hashitevent=True
+
+		if MoveTarget<1 then 
+			MoveDirection=1
+		end If
+	end If
+	PtargetC.objroty=((MoveTarget*.8)-20.5)
+end sub 
+
+Sub Collection2_Hit(idx)
+    PlaySoundAt "fx_target",PtargetC
+	DOF 201, DOFPulse
     If Tilted Then Exit Sub
-	If LightA.State = 0 and Ran = 0 Then LightA.State = 1
-	If LightH.State = 0 and Ran = 1 Then LightH.State = 1
-    Addscore 1000
-	Check()
+	Select case CenterBonusCounter
+		case 1,3,4,6,7,9:
+			AddScore 5000
+		case 2:
+			AddScore 1000
+			If LightDoubleBonus.State = 0 Then
+				LightKickerLeft.State = 1
+				LightKickerRight.State = 1
+			End If		
+		case 5:
+			AddScore 1000
+			SpecialCenter = 1
+			LightSpecialLeft.State = 1
+			LightSpecialRight.State = 0
+		case 8:
+			AddScore 1000
+			If LightShootAgain.State = 0 Then LightExtraBallFeature.State = 1
+	end select
+	Alternate
+end sub
+
+'************************
+'       Kickers
+'************************
+
+'Left
+
+Sub KickerL_Hit
+    PlaySoundAt "fx_kicker_enter", kickerL
+	Playsound"MotorLeer2"
+	If Tilted Then
+		vpmtimer.addtimer 250, "KickBall '"
+        Exit Sub
+    End If
+	AddScore 5000
+	If LightKickerLeft.State = 1 Then
+		LightDoubleBonus.State = 1
+		BonusMultiplier = 2
+		LightKickerLeft.State = 0
+		LightKickerRight.State = 0		
+	End If
+	Alternate
+	vpmtimer.addtimer 500, "PlaySoundAt SoundFXDOF (""fx_kicker"", 131, DOFPulse, DOFContactors), kickerL : kickerL.kick 125, 14 + RndNbr(3) '"
 End Sub
 
-Sub Target3_hit
-    PlaySoundAt SoundFXDOF ("fx_droptarget", 112, DOFPulse, DOFContactors), Target3
-    If Tilted Then Exit Sub
-	If LightN.State = 0 and Ran = 0 Then LightN.State = 1
-	If LightO.State = 0 and Ran = 1 Then LightO.State = 1
-    Addscore 1000
-	Check()
+'Right
+
+Sub KickerR_Hit
+    PlaySoundAt "fx_kicker_enter", kickerR
+	Playsound"MotorLeer2"
+	If Tilted Then
+		vpmtimer.addtimer 250, "KickBall '"
+        Exit Sub
+    End If
+	AddScore 5000
+	If LightKickerRight.State = 1 Then
+		LightDoubleBonus.State = 1
+		BonusMultiplier = 2
+		LightKickerLeft.State = 0
+		LightKickerRight.State = 0		
+	End If
+	Alternate
+	vpmtimer.addtimer 500, "PlaySoundAt SoundFXDOF (""fx_kicker"", 132, DOFPulse, DOFContactors), kickerR : kickerR.kick 235, 14 + RndNbr(3)'"
 End Sub
 
+'Top
 
-'Reset Targets
+Sub KickerT_Hit
+    PlaySoundAt "fx_kicker_enter", kickerT
+	Playsound"MotorLeer2"
+	If Tilted Then
+		vpmtimer.addtimer 250, "KickBall '"
+        Exit Sub
+    End If
+	KickerTBonus = 1
+	BonusCountTimer.Interval = 300
+	CBonus = 0
+    BonusCountTimer.Enabled = 1    
+	Alternate
+End Sub
 
-Sub ResetTarget
-    If Tilted Then Exit Sub
-	Target1.Isdropped= 0 : Target2.Isdropped= 0 : Target3.Isdropped= 0	
-	PlaySoundAt SoundFXDOF ("fx_resetdrop", 111, DOFPulse, DOFDropTargets), Bumper001
+'Kick all ball
+
+Sub KickBall
+	vpmtimer.addtimer 500, "PlaySoundAt SoundFXDOF (""fx_kicker"", 132, DOFPulse, DOFContactors), kickerT :  kickerL.kick 125, 10 : kickerR.kick 235, 10 : kickerT.kick 135, 10 '"
 End Sub
 
 '***********************************
@@ -1974,71 +2075,70 @@ End Sub
 Sub LeftSpinner_Spin
     If Tilted Then Exit Sub
 	If LightSpinner.state = 1 then 	AddScore 1000 Else 	AddScore 100
-end sub
+	If SpinCounter < 10 Then SpinCounter = SpinCounter + 1 Else SpinCounter = 1
+	UpdateSpinnerLight
+	Select Case SpinCounter 
+		Case 2 : AddBonus
+		Case 4 : AddBonus
+		Case 6 : AddBonus
+		Case 8 : AddBonus
+		Case 10 : AddBonus
+	End Select
+End Sub
 
 '******************************
 '      Extra routines
 '******************************
 
-Sub Check()
-	If LightR.State = 1 And LightA.State = 1 And LightN.State = 1 And Ran = 0 Then
-		LightDoubleBonus.State = 1 : BonusMultiplier = 2
-		LightSpinner.State = 1
-		vpmtimer.addtimer 200, "ResetTarget '"
-		Ran = 1
-	End If
-	If LightC.State = 1 And LightH.State = 1 And LightO.State = 1 And Rancho = 0 And Ran = 1 Then
-		LightExtraBallFeature.State = 1
-		LightSpecial1.State = 1 : LightSpecial2.State = 0
-		Rancho = 1		
-	End If
-	If Rancho = 1 And Target1.Isdropped= 1 And Target2.Isdropped= 1 And Target3.Isdropped= 1 Then
-		vpmtimer.addtimer 200, "ResetTarget '"	
-	End If
+Sub AddCenterBonus()
+	If CenterBonusCounter < 9 Then CenterBonusCounter = CenterBonusCounter + 1 Else CenterBonusCounter = 1
+	UpdateCenterBonusLights
+End Sub
+
+Sub UpdateCenterBonusLights
+	Select Case CenterBonusCounter
+	Case 1 : BL01.State = 1 : BL02.State = 0 : BL03.State = 0 : BL04.State = 0 : BL05.State = 0 : BL06.State = 0 : BL07.State = 0 : BL08.State = 0 : BL09.State = 0
+	Case 2 : BL01.State = 0 : BL02.State = 1 : BL03.State = 0 : BL04.State = 0 : BL05.State = 0 : BL06.State = 0 : BL07.State = 0 : BL08.State = 0 : BL09.State = 0
+	Case 3 : BL01.State = 0 : BL02.State = 0 : BL03.State = 1 : BL04.State = 0 : BL05.State = 0 : BL06.State = 0 : BL07.State = 0 : BL08.State = 0 : BL09.State = 0
+	Case 4 : BL01.State = 0 : BL02.State = 0 : BL03.State = 0 : BL04.State = 1 : BL05.State = 0 : BL06.State = 0 : BL07.State = 0 : BL08.State = 0 : BL09.State = 0
+	Case 5 : BL01.State = 0 : BL02.State = 0 : BL03.State = 0 : BL04.State = 0 : BL05.State = 1 : BL06.State = 0 : BL07.State = 0 : BL08.State = 0 : BL09.State = 0
+	Case 6 : BL01.State = 0 : BL02.State = 0 : BL03.State = 0 : BL04.State = 0 : BL05.State = 0 : BL06.State = 1 : BL07.State = 0 : BL08.State = 0 : BL09.State = 0
+	Case 7 : BL01.State = 0 : BL02.State = 0 : BL03.State = 0 : BL04.State = 0 : BL05.State = 0 : BL06.State = 0 : BL07.State = 1 : BL08.State = 0 : BL09.State = 0
+	Case 8 : BL01.State = 0 : BL02.State = 0 : BL03.State = 0 : BL04.State = 0 : BL05.State = 0 : BL06.State = 0 : BL07.State = 0 : BL08.State = 1 : BL09.State = 0
+	Case 9 : BL01.State = 0 : BL02.State = 0 : BL03.State = 0 : BL04.State = 0 : BL05.State = 0 : BL06.State = 0 : BL07.State = 0 : BL08.State = 0 : BL09.State = 1
+	End Select
+End Sub
+
+Sub UpdateSpinnerLight
+	Select Case SpinCounter
+	Case 1 : LS01.State = 1 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 2 : LS01.State = 0 : LS02.State = 1 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 3 : LS01.State = 0 : LS02.State = 0 : LS03.State = 1 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 4 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 1 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 5 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 1 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 6 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 1 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 7 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 1 : LS08.State = 0 : LS09.State = 0 : LS10.State = 0
+	Case 8 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 1 : LS09.State = 0 : LS10.State = 0
+	Case 9 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 1 : LS10.State = 0
+	Case 10 : LS01.State = 0 : LS02.State = 0 : LS03.State = 0 : LS04.State = 0 : LS05.State = 0 : LS06.State = 0 : LS07.State = 0 : LS08.State = 0 : LS09.State = 0 : LS10.State = 1
+	End Select
 End Sub
 
 Sub Alternate()
-	If LTGreen.State = 1 Then 
-		LTLeft.State = 0 : LTGreen.State = 0 : LTRight.State = 1 : LTYellow.State = 1
+	If LightTopLeft.State = 1 Then
+		LightTopLeft.State = 0 : LightTopRight.State = 1
+		LightTargetLeft.State = 1 : LightTargetRight.State = 0	
 	Else
-		LTLeft.State = 1 : LTGreen.State = 1 : LTRight.State = 0 : LTYellow.State = 0
+		LightTopLeft.State = 1 : LightTopRight.State = 0
+		LightTargetLeft.State = 0 : LightTargetRight.State = 1
 	End If
-	If Conservative = 1 Then 
-		If LightSW001.State = 1 Then LightSW001.State = 0 Else LightSW001.State = 1
-	End If
-	If Rancho = 1 Then
-		If LightSpecial1.State = 1 Then
-			LightSpecial1.State = 0 : LightSpecial2.State = 1
+	If SpecialCenter = 1 Then
+		If LightSpecialLeft.State = 1 Then
+			LightSpecialLeft.State = 0 : LightSpecialRight.State = 1
 		Else
-			LightSpecial1.State = 1 : LightSpecial2.State = 0
+			LightSpecialLeft.State = 1 : LightSpecialRight.State = 0
 		End If
 	End If
-End Sub
-
-'Added Mustang1961
-
-Sub CT_timer() 'Targets Side Walls
-	If Target1.IsDropped=false Then
-		Target1a.IsDropped=false
-		Target1b.IsDropped=false
-		else
-		Target1a.IsDropped=true
-		Target1b.IsDropped=true
-	end If
-	If Target2.IsDropped=false Then
-		Target2a.IsDropped=false
-		Target2b.IsDropped=false
-		else
-		Target2a.IsDropped=true
-		Target2b.IsDropped=true
-	end If
-	If Target3.IsDropped=false Then
-		Target3a.IsDropped=false
-		Target3b.IsDropped=false
-		else
-		Target3a.IsDropped=true
-		Target3b.IsDropped=true
-	end If
 End Sub
 
 ' ============================================================================================
@@ -2075,11 +2175,11 @@ Dim HSScore(5)     ' High Scores read in from config file
 Dim HSName(5)      ' High Score Initials read in from config file
 
 ' default high scores, remove this when the scores are available from the config file
-HSScore(1) = 150000
-HSScore(2) = 140000
-HSScore(3) = 130000
-HSScore(4) = 120000
-HSScore(5) = 110000
+HSScore(1) = 230000
+HSScore(2) = 210000
+HSScore(3) = 190000
+HSScore(4) = 170000
+HSScore(5) = 150000
 
 HSName(1) = "AAA"
 HSName(2) = "ZZZ"
@@ -2167,7 +2267,7 @@ Sub NewHighScore(NewScore, PlayNum)
         SetHSLine 2, "ENTER NAME"
         SetHSLine 3, MID(AlphaString, AlphaStringPos, 1)
         HSNewHigh = NewScore
-        AwardSpecial
+        PlaySound "sfx_Enter"
     End If
     ScoreChecker = ScoreChecker-1
     If ScoreChecker = 0 then
