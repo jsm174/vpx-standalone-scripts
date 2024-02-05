@@ -1,0 +1,18 @@
+--- "./X-Files (Sega 1997) v1.29.vbs.original"	2024-01-30 06:08:57.028507989 +0100
++++ "./X-Files (Sega 1997) v1.29.vbs"	2024-01-30 06:09:16.205095949 +0100
+@@ -21,6 +21,15 @@
+ 
+ Dim UseVPMDMD
+ UseVPMDMD = True
++Sub ImplicitDMD_Init
++   Me.x = 60
++   Me.y = 30
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++   Me.fontColor = RGB(255, 255, 255)
++   Me.intensityScale = 1.5
++End Sub
+ 
+ LoadVPM "01560000", "SEGA.VBS", 3.26
+ 
