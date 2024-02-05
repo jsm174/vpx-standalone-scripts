@@ -30,6 +30,10 @@ Option Explicit
 
 
 
+' HauntFreaks for the GI
+' MauiPunter for DOF script & config
+
+
 
 ' Table Babies: Adopted a kitten halfway through build, named her Venus :)
 
@@ -62,12 +66,13 @@ On Error Goto 0
 'If using Visual PinMAME (VPM), place the ROM/game name in the constant below,
 'both for VPM, and DOF to load the right DOF config from the Configtool, whether it's a VPM or an Original table
 
+Dim Controller	' B2S
 Const cGameName = "FireballXL5"
 
-
-Set B2SController = CreateObject("B2S.Server")
-B2SController.B2sName = "Fireball XL5"
-B2SController.run
+'Set B2SController = CreateObject("B2S.Server")
+'B2SController.B2sName = "Fireball XL5"
+'B2SController.run
+LoadEM
 
 '############################## User Preferences for Desktop/FlexDMD
 
@@ -395,6 +400,21 @@ MeteorHSName = "J90"
 Sub Plunger_Init()
 	Dim i
 	Tilted = True
+	HSScore(1) = 50000000
+	HSScore(2) = 25000000
+	HSScore(3) = 10000000
+	HSScore(4) = 5000000
+	HSScore(5) = 1000000
+
+	HSName(1) = "XL5"
+	HSName(2) = "STV"
+	HSName(3) = "VNS"
+	HSName(4) = "MAT"
+	HSName(5) = "ROB"
+
+	MeteorHS = 10
+	MeteorHSName = "J90"
+
 	LoadData		'Load credits & highscores OR create default savefile if none exists (first game)
 	Game_init
 	AttractModeActive = True
@@ -2404,7 +2424,7 @@ Sub DMD_Video2_Timer
 				FlexDMD.Stage.GetImage("Video").Visible = 1	
 			ElseIf DMD_VideoCounter < 121 Then
 				DMD_Video2.Interval = 20
-				FlexDMD.Stage.GetImage("Game").SetSize 2*(DMD_VideoCounter - 64), (DMD_VideoCounter - 64)/2
+				FlexDMD.Stage.GetImage("Game").SetSize 2 * (DMD_VideoCounter - 64), (DMD_VideoCounter - 64)/2
 				FlexDMD.Stage.GetImage("Game").SetPosition 64 - (DMD_VideoCounter - 64), 16 - (DMD_VideoCounter - 64)/4
 				FlexDMD.Stage.GetImage("Game").Visible = 1	
 			Else
@@ -3081,7 +3101,7 @@ Sub DMD_Video1_Timer
 				FlexDMD.Stage.GetImage("Video").SetPosition 64 - DMD_VideoCounter, 16 - DMD_VideoCounter/4
 				FlexDMD.Stage.GetImage("Video").Visible = 1	
 			ElseIf DMD_VideoCounter < 121 Then
-				FlexDMD.Stage.GetImage("Game").SetSize 2*(DMD_VideoCounter - 64), (DMD_VideoCounter - 64)/2
+				FlexDMD.Stage.GetImage("Game").SetSize 2 * (DMD_VideoCounter - 64), (DMD_VideoCounter - 64)/2
 				FlexDMD.Stage.GetImage("Game").SetPosition 64 - (DMD_VideoCounter - 64), 16 - (DMD_VideoCounter - 64)/4
 				FlexDMD.Stage.GetImage("Game").Visible = 1	
 			Else
@@ -5063,6 +5083,7 @@ Sub Game_init()
 	DMDShowSplash = False
 	DMDShowVideo = False
 	BumperScore = 25
+	DOF 104, DOFPulse
 
 
 	For i = 1 to 3
@@ -5184,8 +5205,9 @@ Sub Table1_exit()
 			FlexDMD = NULL
 		End If
 	End If
-	B2SController.Stop
+	'B2SController.Stop
 	SaveData
+	If B2SOn Then Controller.Stop
 End Sub
 
 
@@ -5194,12 +5216,13 @@ End Sub
 Sub PlungeBot_Hit()
 	PlungeBot.Kick 0, (50 + Int(Rnd*10)+1)
 	SoundPlungerReleaseBall
+	DOF 104, DOFPulse
 End Sub
 
 
 Sub KickBack_Hit()
 	KickBack.Kick 0, 55
-	PlaySound "XL5_DMD_Photons" 
+	PlaySound SoundFXDOF("XL5_DMD_Photons" ,103,DOFPulse,DOFContactors)
 	If ShowFlexDMD Then DMD_SwapFrames "Booster", "Booster2", 20, 50
 	FlashBooster(6)
 	If Not WizardActive Then
@@ -5218,7 +5241,7 @@ End Sub
 
 Sub KickBack2_Hit()
 	KickBack2.Kick 0, 55
-	PlaySound "XL5_DMD_Photons" 
+	PlaySound SoundFXDOF("XL5_DMD_Photons" ,104,DOFPulse,DOFContactors)
 	If ShowFlexDMD Then DMD_SwapFrames "Booster", "Booster2", 20, 50
 	FlashBooster(6)
 	If Not WizardActive Then
@@ -5239,6 +5262,7 @@ End Sub
 
 Sub BallRelease_Hit()
 	BallRelease.Kick 90, 10
+	DOF 109, DOFPulse
 End Sub
 
 
@@ -5309,6 +5333,7 @@ Sub Start_Game()
 	ScoreText003.Text = ""
 
 	SoundBallRelease
+	DOF 104, DOFPulse
 	BallRelease.CreateBall
 	BallRelease.Kick 90, 10
 	BIP = BIP + 1
@@ -9934,9 +9959,9 @@ Sub LoadData
 	If TextStr.AtEndOfStream Then Exit Sub
 
 	Credits = cdbl(textstr.readline)
-	If Credits > 0 Then DOF 126, DOFOn
+	If Credits > 0 Then DOF 125, DOFOn
 	For i = 1 to 5
-		HSScore(i) = Int(textstr.readline)
+		HSScore(i) = cdbl(textstr.readline)
 		HSName(i)  = textstr.readline
 	Next
 	If Not TextStr.AtEndOfStream Then MeteorHS = Int(textstr.readline)
@@ -10303,6 +10328,7 @@ Dim RStep, Lstep, UStep, URStep, MRStep, LRStep, MLStep
 Sub RightSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingR")
+		DOF 104, DOFPulse
 		RSling.Visible = 0
 		RSling1.Visible = 1
 		sling1.rotx = 16
@@ -10333,6 +10359,7 @@ End Sub
 Sub LeftSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingL")
+		DOF 103, DOFPulse
 		LSling.Visible = 0
 		LSling3.Visible = 1
 		sling2.rotx = 10
@@ -10395,6 +10422,7 @@ End Sub
 Sub LowRightSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingR")
+		DOF 116, DOFPulse
 		LRSling.Visible = 0
 		LRSling1.Visible = 1
 		LowRightSling.rotx = 16
@@ -10425,6 +10453,7 @@ End Sub
 Sub MidRightSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingR")
+		DOF 120, DOFPulse
 		MRSling2.Visible = 1
 		MRSLing.Visible = 0
 		MidRightSling.rotx = 10
@@ -10464,6 +10493,7 @@ End Sub
 Sub UpRightSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingR")
+		DOF 110, DOFPulse
 		URSling2.Visible = 1
 		URSLing.Visible = 0
 		UpRightSling.rotx = 10
@@ -10506,6 +10536,7 @@ End Sub
 Sub UpperSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingR")
+		DOF 107, DOFPulse
 		USling1.Visible = 1
 		USling.Visible = 0
 		UpperSling.rotx = 20
@@ -10536,6 +10567,7 @@ End Sub
 Sub MidLeftSlingShot_Slingshot
 	If Not Tilted Then
 		SoundSlingshotHit("SlingR")
+		DOF 115, DOFPulse
 		MLSling.Visible = 0
 		MLSling1.Visible = 3
 		MidLeftSling.rotx = 8
@@ -10964,9 +10996,14 @@ End Sub
 ' - Bumper sounds
 Sub SoundBumperHit(bumper)
 	Select Case bumper
-		Case "Top"   : PlaySound "Bumpers_Top_" 	 & Int(Rnd*5)+1 , (MaxSoundLevel * BumperSoundFactor)
-		Case "Middle": PlaySound "Bumpers_Middle_" & Int(Rnd*5)+1 , (MaxSoundLevel * BumperSoundFactor)
-		Case "Bottom": PlaySound "Bumpers_Bottom_" & Int(Rnd*5)+1 , (MaxSoundLevel * BumperSoundFactor)
+		Case "Top"   : 
+			PlaySound SoundFXDOF("Bumpers_Top_" 	 & Int(Rnd*5)+1,109,DOFPulse,DOFContactors), (MaxSoundLevel * BumperSoundFactor)
+		
+		Case "Middle": 
+			PlaySound SoundFXDOF("Bumpers_Middle_" & Int(Rnd*5)+1,107,DOFPulse,DOFContactors), (MaxSoundLevel * BumperSoundFactor)
+		
+		Case "Bottom": 
+			PlaySound SoundFXDOF("Bumpers_Bottom_" & Int(Rnd*5)+1,110,DOFPulse,DOFContactors), (MaxSoundLevel * BumperSoundFactor)
 	End Select
 End Sub
 
@@ -10981,10 +11018,17 @@ End Sub
 Sub SoundFlippers(state)
 	 SoundFactor = MaxSoundLevel * FlipperUpSoundFactor
 	 Select Case state
-		 Case "LfUp": 	 PlaySound "Flipper_L0" & Int(Rnd*9)+1 , SoundFactor
-		 Case "RfUp": 	 PlaySound "Flipper_R0" & Int(Rnd*9)+1 , SoundFactor
-		 Case "LfDown": PlaySound "Flipper_Left_Down_" & Int(Rnd*7)+1  , SoundFactor
-		 Case "RfDown": PlaySound "Flipper_Right_Down_" & Int(Rnd*8)+1 , SoundFactor
+		 Case "LfUp": 	 
+			PlaySound SoundFXDOF("Flipper_L0" & Int(Rnd*9)+1,101,DOFOn,DOFContactors), SoundFactor
+
+		 Case "RfUp": 	 
+			PlaySound SoundFXDOF("Flipper_R0" & Int(Rnd*9)+1,102,DOFOn,DOFContactors), SoundFactor
+
+		 Case "LfDown": 
+			PlaySound SoundFXDOF("Flipper_Left_Down_" & Int(Rnd*7)+1,101,DOFOff,DOFContactors), SoundFactor
+
+		 Case "RfDown": 
+			PlaySound SoundFXDOF("Flipper_Right_Down_" & Int(Rnd*8)+1,102,DOFOff,DOFContactors), SoundFactor
 	 End Select
 End Sub
 
@@ -11157,5 +11201,4 @@ End Sub
 Sub SoundWallHit()
 	 PlaySound ("Wall_Hit_" & Int(Rnd*9)+1), (MaxSoundLevel * WallImpactSoundFactor)
 End Sub
-
 
