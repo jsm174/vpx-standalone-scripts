@@ -567,8 +567,8 @@ End Sub
 ' SetLamp 1 is On
 ' fading for non opacity objects is 4 steps
 '***************************************************
-Dim LampState(400), FadingLevel(400)
-Dim FlashSpeedUp(400), FlashSpeedDown(400), FlashMin(400), FlashMax(400), FlashLevel(400)
+Dim LampState(610), FadingLevel(610)
+Dim FlashSpeedUp(610), FlashSpeedDown(610), FlashMin(610), FlashMax(610), FlashLevel(610)
 
 InitLamps()             ' turn off the lights and flashers and reset them to the default parameters
 LampTimer.Interval = 10 'lamp fading speed
@@ -581,8 +581,8 @@ Sub LampTimer_Timer()
     chgLamp = Controller.ChangedLamps
     If Not IsEmpty(chgLamp) Then
         For ii = 0 To UBound(chgLamp)
-            LampState(chgLamp(ii, 0) ) = chgLamp(ii, 1)       'keep the real state in an array
-            FadingLevel(chgLamp(ii, 0) ) = chgLamp(ii, 1) + 4 'actual fading step
+			LampState(chgLamp(ii, 0) ) = chgLamp(ii, 1)       'keep the real state in an array
+			FadingLevel(chgLamp(ii, 0) ) = chgLamp(ii, 1) + 4 'actual fading step	
         Next
     End If
 	UpdateLamps
