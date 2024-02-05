@@ -1,5 +1,5 @@
---- "Wheel of Fortune (Stern 2007) 1.0.vbs.original"	2024-02-05 22:28:20.809441940 +0100
-+++ "Wheel of Fortune (Stern 2007) 1.0.vbs"	2024-02-05 22:28:08.685065483 +0100
+--- "Wheel of Fortune (Stern 2007) 1.0.vbs.original"	2024-02-05 22:30:29.269398314 +0100
++++ "Wheel of Fortune (Stern 2007) 1.0.vbs"	2024-02-05 22:29:48.600151734 +0100
 @@ -10,6 +10,8 @@
  If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
  On Error Goto 0
