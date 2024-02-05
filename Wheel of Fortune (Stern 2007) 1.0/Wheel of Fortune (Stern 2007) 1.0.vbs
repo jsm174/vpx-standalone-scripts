@@ -581,8 +581,8 @@ Sub LampTimer_Timer()
     chgLamp = Controller.ChangedLamps
     If Not IsEmpty(chgLamp) Then
         For ii = 0 To UBound(chgLamp)
-			LampState(chgLamp(ii, 0) ) = chgLamp(ii, 1)       'keep the real state in an array
-			FadingLevel(chgLamp(ii, 0) ) = chgLamp(ii, 1) + 4 'actual fading step	
+            LampState(chgLamp(ii, 0) ) = chgLamp(ii, 1)       'keep the real state in an array
+            FadingLevel(chgLamp(ii, 0) ) = chgLamp(ii, 1) + 4 'actual fading step	
         Next
     End If
 	UpdateLamps
