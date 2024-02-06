@@ -1,5 +1,5 @@
---- "Granny and the Gators (Bally 1984) 1.1.vbs.original"	2024-02-06 18:41:29.540942897 +0100
-+++ "Granny and the Gators (Bally 1984) 1.1.vbs"	2024-02-06 18:41:25.424823924 +0100
+--- "Granny and the Gators (Bally 1984) 1.1.vbs.original"	2024-02-06 18:43:12.727897153 +0100
++++ "Granny and the Gators (Bally 1984) 1.1.vbs"	2024-02-06 18:43:03.291632266 +0100
 @@ -1,17 +1,60 @@
 -Option ExplicitLoadVPM "01530000","granny.vbs",3.1
 +Option Explicit
