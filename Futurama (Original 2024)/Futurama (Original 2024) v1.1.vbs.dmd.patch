@@ -1,0 +1,50 @@
+--- "./Futurama (Original 2024) v1.1.vbs.original"	2024-02-07 18:08:08.728936053 +0100
++++ "./Futurama (Original 2024) v1.1.vbs"	2024-01-17 08:50:31.287595688 +0100
+@@ -1,11 +1,36 @@
+ Option Explicit
+ Randomize
++
++'DMD Hack to include FlexDMD inside the table
++Sub ImplicitDMD_Init
++   Me.x = 30
++   Me.y = 30 
++   'Me.fontColor = RGB(255, 255, 255)
++   Me.intensityScale = 2
++   Me.width = 128 * 2
++   Me.height = 32 * 2
++   Me.visible = true
++   Me.timerenabled = true
++End Sub
++
++Sub ImplicitDMD_Timer
++   If Not FlexDMD Is Nothing Then
++      Dim DMDp: DMDp = FlexDMD.DmdColoredPixels
++      If Not IsEmpty(DMDp) Then
++         DMDWidth = FlexDMD.Width
++         DMDHeight = FlexDMD.Height
++         DMDColoredPixels = DMDp
++      End If
++   End If
++End Sub
++'End of DMD Hack to include FlexDMD inside the table
++
+ '*******************************************
+ '  User Options
+ '*******************************************
+ 
+ '----- DMD Options -----
+-Dim UseFlexDMD : UseFlexDMD = 0		'0 = no FlexDMD, 1 = enable FlexDMD. FlexDMD cannot be used with VR.
++Dim UseFlexDMD : UseFlexDMD = 1		'0 = no FlexDMD, 1 = enable FlexDMD. FlexDMD cannot be used with VR.
+ 
+ '----- Staged flippers options -----
+ Const stagedFlipperStyle = 0		' 0 = MagnaSaves, 1 = A and apostrophe
+@@ -240,9 +265,6 @@
+ 'E195 2 Bender jackpot
+ 'E196 2 Bender super jackpot
+ 
+-
+-
+-
+ On Error Resume Next
+ ExecuteGlobal GetTextFile("controller.vbs")
+ If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
