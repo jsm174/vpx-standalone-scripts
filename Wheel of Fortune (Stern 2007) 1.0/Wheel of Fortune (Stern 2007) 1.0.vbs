@@ -567,8 +567,8 @@ End Sub
 ' SetLamp 1 is On
 ' fading for non opacity objects is 4 steps
 '***************************************************
-Dim LampState(400), FadingLevel(400)
-Dim FlashSpeedUp(400), FlashSpeedDown(400), FlashMin(400), FlashMax(400), FlashLevel(400)
+Dim LampState(610), FadingLevel(610)
+Dim FlashSpeedUp(610), FlashSpeedDown(610), FlashMin(610), FlashMax(610), FlashLevel(610)
 
 InitLamps()             ' turn off the lights and flashers and reset them to the default parameters
 LampTimer.Interval = 10 'lamp fading speed

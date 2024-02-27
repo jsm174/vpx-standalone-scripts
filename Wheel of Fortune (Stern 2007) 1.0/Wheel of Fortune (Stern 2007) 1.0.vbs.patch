@@ -1,5 +1,5 @@
---- Wheel of Fortune (Stern 2007) 1.0.vbs.original	2023-08-28 08:59:36
-+++ Wheel of Fortune (Stern 2007) 1.0.vbs	2023-08-28 08:51:58
+--- "Wheel of Fortune (Stern 2007) 1.0.vbs.original"	2024-02-05 22:30:29.269398314 +0100
++++ "Wheel of Fortune (Stern 2007) 1.0.vbs"	2024-02-05 22:29:48.600151734 +0100
 @@ -10,6 +10,8 @@
  If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
  On Error Goto 0
@@ -9,15 +9,26 @@
  Const Ballsize = 52
  Const BallMass = 1.5
  
-@@ -42,8 +44,6 @@
- '************************************************************************
+@@ -43,8 +45,6 @@
  '						 INIT TABLE
  '************************************************************************
--
--Const cGameName = "wof_500"
  
+-Const cGameName = "wof_500"
+-
  Dim bsTrough, PlungerIM, DTBank
  
+ Sub Table1_Init
+@@ -567,8 +567,8 @@
+ ' SetLamp 1 is On
+ ' fading for non opacity objects is 4 steps
+ '***************************************************
+-Dim LampState(400), FadingLevel(400)
+-Dim FlashSpeedUp(400), FlashSpeedDown(400), FlashMin(400), FlashMax(400), FlashLevel(400)
++Dim LampState(610), FadingLevel(610)
++Dim FlashSpeedUp(610), FlashSpeedDown(610), FlashMin(610), FlashMax(610), FlashLevel(610)
+ 
+ InitLamps()             ' turn off the lights and flashers and reset them to the default parameters
+ LampTimer.Interval = 10 'lamp fading speed
 @@ -913,7 +913,7 @@
  
  Function Vol(ball) ' Calculates the Volume of the sound based on the ball speed
