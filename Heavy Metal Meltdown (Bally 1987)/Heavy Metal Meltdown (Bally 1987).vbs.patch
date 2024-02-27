@@ -1,0 +1,11 @@
+--- "Heavy Metal Meltdown (Bally 1987).vbs.original"	2024-02-07 16:29:56.338807900 +0100
++++ "Heavy Metal Meltdown (Bally 1987).vbs"	2024-02-07 16:26:03.431682974 +0100
+@@ -12,7 +12,7 @@
+ 
+ '******************* Options *********************
+ ' DMD/Backglass Controller Setting
+-Const cController = 1		'0=Use value defined in cController.txt, 1=VPinMAME, 2=UVP server, 3=B2S server
++Const cController = 3		'0=Use value defined in cController.txt, 1=VPinMAME, 2=UVP server, 3=B2S server
+ '*************************************************
+ 
+ '*************************************************************
