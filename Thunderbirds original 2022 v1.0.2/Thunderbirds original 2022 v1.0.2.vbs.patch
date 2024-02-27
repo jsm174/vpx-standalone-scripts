@@ -1,0 +1,118 @@
+--- "Thunderbirds original 2022 v1.0.2.vbs.original"	2024-02-06 10:01:06.699475940 +0100
++++ "Thunderbirds original 2022 v1.0.2.vbs"	2024-02-06 10:00:30.886455331 +0100
+@@ -115,6 +115,7 @@
+ 	VRroom = 0
+ 	B2Son = 1
+ 	form1_off = 0
++	FlexONPlayfield = false
+ '	table1.showDT = false
+ 	table1.BackglassMode = 1
+ 	videomission = 0
+@@ -1821,13 +1822,13 @@
+ 	if multiballon = 0 then
+ 	if l6.state <> 1 and multiballon = 0 then
+ 		if l7.state <>1 and l8.state<>1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text1", "TB4text T.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text1", "TB4text T.png", 88, 110, 2900
+ 		elseif l7.state <>1 and l8.state=1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text4", "TB4text T4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text4", "TB4text T4.png", 88, 110, 2900
+ 		Elseif l7.state =1 and l8.state<>1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text5", "TB4text TB.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text5", "TB4text TB.png", 88, 110, 2900
+ 		else
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text7", "TB4text TB4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text7", "TB4text TB4.png", 88, 110, 2900
+ 		end if
+ 	end if
+ 
+@@ -1847,13 +1848,13 @@
+ 	if multiballon = 0 then
+ 	if l7.state <> 1 and multiballon = 0 then 
+ 		if l6.state <>1 and l8.state<>1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text2", "TB4text B.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text2", "TB4text B.png", 88, 110, 2900
+ 		elseif l6.state <>1 and l8.state=1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text6", "TB4text B4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text6", "TB4text B4.png", 88, 110, 2900
+ 		Elseif l6.state =1 and l8.state<>1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text5", "TB4text TB.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text5", "TB4text TB.png", 88, 110, 2900
+ 		else
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text7", "TB4text TB4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text7", "TB4text TB4.png", 88, 110, 2900
+ 		end if
+ 	end if
+ 
+@@ -1873,13 +1874,13 @@
+ 	if multiballon = 0 then
+ 	if l8.state <> 1 and multiballon = 0 then 
+ 		if l6.state <>1 and l7.state<>1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text3", "TB4text 4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text3", "TB4text 4.png", 88, 110, 2900
+ 		elseif l6.state <>1 and l7.state=1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text6", "TB4text B4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text6", "TB4text B4.png", 88, 110, 2900
+ 		Elseif l6.state =1 and l7.state<>1 then
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text4", "TB4text T4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text4", "TB4text T4.png", 88, 110, 2900
+ 		else
+-			createsplash "TB4", "TB4VID", "tb4.gif", "TB4text7", "TB4text TB4.png", 88, 110, 2900
++			createsplash "TB4", "TB4VID", "TB4.gif", "TB4text7", "TB4text TB4.png", 88, 110, 2900
+ 		end if
+ 	end if
+ 
+@@ -2126,13 +2127,13 @@
+ 	if multiballon = 0 then
+ 	if l24.state <> 1 then
+ 		if l25.state <>1 and l26.state<>1 then
+-			createsplash "TB2", "TB2VID1", "tb2 launch 2.gif", "TB2text1", "TB2 - T.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID1", "TB2 launch 2.gif", "TB2text1", "TB2 - T.png", 100, 140, 3000
+ 		elseif l25.state <>1 and l26.state=1 then
+-			createsplash "TB2", "TB2VID2", "tb2 launch 3.gif", "TB2text4", "TB2 - T2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID2", "TB2 launch 3.gif", "TB2text4", "TB2 - T2.png", 100, 140, 3000
+ 		Elseif l25.state =1 and l26.state<>1 then
+-			createsplash "TB2", "TB2VID2", "tb2 launch 3.gif", "TB2text5", "TB2 - TB.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID2", "TB2 launch 3.gif", "TB2text5", "TB2 - TB.png", 100, 140, 3000
+ 		else
+-			createsplash "TB2", "TB2VID3", "tb2 launch 4.gif", "TB2text7", "TB2 - TB2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID3", "TB2 launch 4.gif", "TB2text7", "TB2 - TB2.png", 100, 140, 3000
+ 		end if
+ 	end if
+ 	l24.state = 1: checktb2complete
+@@ -2148,13 +2149,13 @@
+ 	if multiballon = 0 then	
+ 	if l25.state <> 1 and multiballon = 0 then
+ 		if l24.state <>1 and l26.state<>1 then
+-			createsplash "TB2", "TB2VID1", "tb2 launch 2.gif", "TB2text2", "TB2 - B.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID1", "TB2 launch 2.gif", "TB2text2", "TB2 - B.png", 100, 140, 3000
+ 		elseif l24.state <>1 and l26.state=1 then
+-			createsplash "TB2", "TB2VID2", "tb2 launch 3.gif", "TB2text6", "TB2 - B2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID2", "TB2 launch 3.gif", "TB2text6", "TB2 - B2.png", 100, 140, 3000
+ 		Elseif l24.state =1 and l26.state<>1 then
+-			createsplash "TB2", "TB2VID2", "tb2 launch 3.gif", "TB2text5", "TB2 - TB.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID2", "TB2 launch 3.gif", "TB2text5", "TB2 - TB.png", 100, 140, 3000
+ 		else
+-			createsplash "TB2", "TB2VID3", "tb2 launch 4.gif", "TB2text7", "TB2 - TB2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID3", "TB2 launch 4.gif", "TB2text7", "TB2 - TB2.png", 100, 140, 3000
+ 		end if
+ 	end if
+ 	l25.state = 1: checktb2complete	
+@@ -2169,13 +2170,13 @@
+ 	if multiballon = 0 then
+ 	if l26.state <> 1 and multiballon = 0 then
+ 		if l24.state <>1 and l25.state<>1 then
+-			createsplash "TB2", "TB2VID1", "tb2 launch 2.gif", "TB2text3", "TB2 - 2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID1", "TB2 launch 2.gif", "TB2text3", "TB2 - 2.png", 100, 140, 3000
+ 		elseif l24.state <>1 and l25.state=1 then
+-			createsplash "TB2", "TB2VID2", "tb2 launch 3.gif", "TB2text6", "TB2 - B2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID2", "TB2 launch 3.gif", "TB2text6", "TB2 - B2.png", 100, 140, 3000
+ 		Elseif l24.state =1 and l25.state<>1 then
+-			createsplash "TB2", "TB2VID2", "tb2 launch 3.gif", "TB2text4", "TB2 - T2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID2", "TB2 launch 3.gif", "TB2text4", "TB2 - T2.png", 100, 140, 3000
+ 		else
+-			createsplash "TB2", "TB2VID3", "tb2 launch 4.gif", "TB2text7", "TB2 - TB2.png", 100, 140, 3000
++			createsplash "TB2", "TB2VID3", "TB2 launch 4.gif", "TB2text7", "TB2 - TB2.png", 100, 140, 3000
+ 		end if
+ 	end if
+ 	l26.state = 1: checktb2complete		
