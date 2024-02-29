@@ -1,0 +1,58 @@
+--- UT99CTF_GE_2.3.vbs.original	2024-02-29 21:23:36.561713544 +0100
++++ UT99CTF_GE_2.3.vbs	2024-02-29 21:20:08.323808133 +0100
+@@ -1203,10 +1203,10 @@
+ 	scene.AddActor FlexDMD.NewLabel("Timer2", FontScoreInactive,"60")
+ 	scene.GetLabel("Timer2").SetAlignedPosition 131, 0, FlexDMD_Align_TopRight
+ 
+-	scene.AddActor FlexDMD.NewImage("Arrow0", FlexPath & "SNA/Arrowup.png" )
+-	scene.AddActor FlexDMD.NewImage("Arrow1", FlexPath & "SNA/Arrowright.png" )
+-	scene.AddActor FlexDMD.NewImage("Arrow2", FlexPath & "SNA/Arrowdown.png" )
+-	scene.AddActor FlexDMD.NewImage("Arrow3", FlexPath & "SNA/Arrowleft.png" )
++	scene.AddActor FlexDMD.NewImage("Arrow0", FlexPath & "SNA/arrowup.png" )
++	scene.AddActor FlexDMD.NewImage("Arrow1", FlexPath & "SNA/arrowright.png" )
++	scene.AddActor FlexDMD.NewImage("Arrow2", FlexPath & "SNA/arrowdown.png" )
++	scene.AddActor FlexDMD.NewImage("Arrow3", FlexPath & "SNA/arrowleft.png" )
+ 	scene.GetImage("Arrow0").visible=False
+ 	scene.GetImage("Arrow1").visible=False
+ 	scene.GetImage("Arrow2").visible=False
+@@ -1547,11 +1547,11 @@
+ 	If SC(4,27)>2 Then playchamp=1
+ 	If playchamp=1 Then
+ 		endmusic
+-		Playmusic "Unrealtournament/UT-Champions.mp3"
++		Playmusic "UnrealTournament/UT-Champions.mp3"
+ 		MusicVolume=Music_Volume
+ 	Else
+ 		EndMusic
+-		Playmusic "Unrealtournament/UT-Menu.mp3"
++		Playmusic "UnrealTournament/UT-Menu.mp3"
+ 		MusicVolume=Music_Volume
+ 
+ 	End If
+@@ -11818,7 +11818,7 @@
+ 	If initialmusic=0 or playchamp=1 Then
+ 		playchamp=2
+ 		initialmusic=1
+-		Playmusic "Unrealtournament/UT-Menu.mp3"
++		Playmusic "UnrealTournament/UT-Menu.mp3"
+ 		MusicVolume=Music_Volume
+ 	Else
+ 		MusicOn
+@@ -11828,7 +11828,7 @@
+ Sub MusicON
+ 	EndMusic
+ 	StopSound "AAOpeningVO" 
+-	PlayMusic "Unrealtournament/UT" & int(rnd(1)*13)+1 & ".mp3"
++	PlayMusic "UnrealTournament/UT" & int(rnd(1)*13)+1 & ".mp3"
+ 	MusicVolume=Music_Volume*0.6
+ End	Sub
+ Dim voiceoveronce
+@@ -12449,7 +12449,7 @@
+ 		Case 1 : 
+ 
+ 
+-			If Frame = 330 Then	Playmusic "Unrealtournament/UT-Title.mp3" :	MusicVolume = Music_Volume
++			If Frame = 330 Then	Playmusic "UnrealTournament/UT-Title.mp3" :	MusicVolume = Music_Volume
+ 
+  			If Frame >475 Then 
+ 				CreateIntroVideo2
