@@ -1,5 +1,5 @@
---- UT99CTF_GE_2.3.vbs.original	2024-02-29 21:23:36.561713544 +0100
-+++ UT99CTF_GE_2.3.vbs	2024-02-29 21:20:08.323808133 +0100
+--- UT99CTF_GE_2.3.vbs.original	2024-02-29 21:37:15.316812174 +0100
++++ UT99CTF_GE_2.3.vbs	2024-02-29 21:32:31.348813898 +0100
 @@ -1203,10 +1203,10 @@
  	scene.AddActor FlexDMD.NewLabel("Timer2", FontScoreInactive,"60")
  	scene.GetLabel("Timer2").SetAlignedPosition 131, 0, FlexDMD_Align_TopRight
@@ -15,6 +15,33 @@
  	scene.GetImage("Arrow0").visible=False
  	scene.GetImage("Arrow1").visible=False
  	scene.GetImage("Arrow2").visible=False
+@@ -1224,7 +1224,7 @@
+ 	scene.GetLabel("Splash3").SetAlignedPosition 64,31, FlexDMD_Align_Center
+ 
+ 
+-'	scene.AddActor FlexDMD.NewImage("Gameover", FlexPath & "SNA/gameover.png" )
++'	scene.AddActor FlexDMD.NewImage("Gameover", FlexPath & "SNA/Gameover.png" )
+ '	scene.AddActor FlexDMD.NewImage("Highscore", FlexPath & "SNA/highscore.png" )
+ '	scene.GetImage("Gameover").visible=False
+ '	scene.GetImage("Highscore").visible=False
+@@ -1234,7 +1234,7 @@
+ 
+ 	If Snakeover=1 Then
+ 		Snakeover=2
+-			Set title = FlexDMD.NewImage("Gameover", flexpath & "SNA/gameover.png" )
++			Set title = FlexDMD.NewImage("Gameover", flexpath & "SNA/Gameover.png" )
+ 			title.Visible = False
+ 			Set af = title.ActionFactory
+ 			Set list = af.Sequence()
+@@ -1270,7 +1270,7 @@
+ 
+ 	If snakelength=snakehigh  Then
+ 			playsound "a38"
+-			Set title = FlexDMD.NewImage("Highscore", flexpath & "SNA/highscore.png" )
++			Set title = FlexDMD.NewImage("Highscore", flexpath & "SNA/Highscore.png" )
+ 			title.Visible = False
+ 			Set af = title.ActionFactory
+ 			Set list = af.Sequence()
 @@ -1547,11 +1547,11 @@
  	If SC(4,27)>2 Then playchamp=1
  	If playchamp=1 Then
