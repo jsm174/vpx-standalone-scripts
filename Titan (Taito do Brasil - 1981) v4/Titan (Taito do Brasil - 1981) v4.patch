@@ -1,0 +1,32 @@
+--- Titan (Taito do Brasil - 1981) v4.vbs.original	2024-03-07 23:17:38
++++ Titan (Taito do Brasil - 1981) v4.vbs	2024-03-07 23:33:45
+@@ -57,7 +57,7 @@
+ '************
+ 
+ Sub table1_Init
+-NVramPatchLoad
++' NVramPatchLoad
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -128,7 +128,10 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
+-Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
++Sub table1_exit
++    'NVramPatchExit
++    Controller.stop
++End Sub
+ 
+ '**********
+ ' Keys
+@@ -470,7 +473,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
+-    NVramPatchKeyCheck
++    'NVramPatchKeyCheck
+ End Sub
+ 
+ Sub UpdateLamps()
