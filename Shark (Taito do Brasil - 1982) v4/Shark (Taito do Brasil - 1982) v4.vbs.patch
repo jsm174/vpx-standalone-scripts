@@ -1,0 +1,35 @@
+--- Shark (Taito do Brasil - 1982) v4.vbs.original	2024-03-08 00:06:48
++++ Shark (Taito do Brasil - 1982) v4.vbs	2024-03-03 04:32:12
+@@ -57,7 +57,7 @@
+ '************
+ 
+ Sub table1_Init
+-	NVramPatchLoad
++	' NVramPatchLoad
+ 	vpmInit me
+     With Controller
+         .GameName = cGameName
+\ No newline at end of file
+@@ -130,7 +130,10 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
+-Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
++Sub table1_exit
++    'NVramPatchExit
++    Controller.stop
++End Sub
+ 
+ '**********
+ ' Keys
+\ No newline at end of file
+@@ -509,7 +512,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
+-    NVramPatchKeyCheck
++    'NVramPatchKeyCheck
+ End Sub
+ 
+ 
+\ No newline at end of file
