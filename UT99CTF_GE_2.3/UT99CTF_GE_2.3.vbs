@@ -1224,7 +1224,7 @@ Sub CreateSnakeDMD
 	scene.GetLabel("Splash3").SetAlignedPosition 64,31, FlexDMD_Align_Center
 
 
-'	scene.AddActor FlexDMD.NewImage("Gameover", FlexPath & "SNA/gameover.png" )
+'	scene.AddActor FlexDMD.NewImage("Gameover", FlexPath & "SNA/Gameover.png" )
 '	scene.AddActor FlexDMD.NewImage("Highscore", FlexPath & "SNA/highscore.png" )
 '	scene.GetImage("Gameover").visible=False
 '	scene.GetImage("Highscore").visible=False
@@ -1234,7 +1234,7 @@ Sub CreateSnakeDMD
 
 	If Snakeover=1 Then
 		Snakeover=2
-			Set title = FlexDMD.NewImage("Gameover", flexpath & "SNA/gameover.png" )
+			Set title = FlexDMD.NewImage("Gameover", flexpath & "SNA/Gameover.png" )
 			title.Visible = False
 			Set af = title.ActionFactory
 			Set list = af.Sequence()
@@ -1270,7 +1270,7 @@ Sub CreateSnakeDMD
 
 	If snakelength=snakehigh  Then
 			playsound "a38"
-			Set title = FlexDMD.NewImage("Highscore", flexpath & "SNA/highscore.png" )
+			Set title = FlexDMD.NewImage("Highscore", flexpath & "SNA/Highscore.png" )
 			title.Visible = False
 			Set af = title.ActionFactory
 			Set list = af.Sequence()
