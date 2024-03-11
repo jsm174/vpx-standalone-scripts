@@ -1,0 +1,166 @@
+--- DarkPrincess1.3.1.vbs.original	2024-03-11 11:56:41.122095564 +0100
++++ DarkPrincess1.3.1.vbs	2024-03-11 11:53:35.820629601 +0100
+@@ -161,7 +161,7 @@
+ Dim IntroMusicIP : IntroMusicIP=False
+ '*************************************
+ Sub DPPlay_MusicDone
+-Playmusic "DPPlay.Mp3",Mlevel
++Playmusic "DPPlay.mp3",Mlevel
+ playTime.Enabled=True
+ End Sub
+ 
+@@ -276,7 +276,7 @@
+ End Sub
+ '**************************************
+ Sub DPElsa_MusicDone
+-Playmusic "DPELSA.Mp3",Mlevel
++Playmusic "DPELSA.mp3",Mlevel
+ WizzTime.Enabled=True
+ End Sub
+ 
+@@ -321,7 +321,7 @@
+ Case 6 :
+ juketime.interval=242000
+ Juketime.Enabled=True
+-Playmusic "DPELSA.Mp3",Mlevel
++Playmusic "DPELSA.mp3",Mlevel
+ Case 7 :
+ juketime.interval=141000
+ Juketime.Enabled=True
+@@ -329,7 +329,7 @@
+ Case 8 :
+ juketime.interval=377000
+ Juketime.Enabled=True
+-Playmusic "DPPlay.Mp3",Mlevel
++Playmusic "DPPlay.mp3",Mlevel
+ NextSong=0
+ 
+ End Select
+@@ -1100,7 +1100,7 @@
+ Sub DMD2(background, toptext, bottomtext, duration, animation, DmdSound)
+ 
+ 	if DMDon=1then
+-		if background ="" or len(background) <3 then background="Blank.png"
++		if background ="" or len(background) <3 then background="blank.png"
+ 		if DmdSound <> "" and len(dmdsound) > 2 Then
+ 			PlaySound DmdSound , 1, nTableSpeechVolume
+ 		end if
+@@ -1145,7 +1145,7 @@
+ 			Controller.B2SSetData 301, 0     ' DOF MX Ball Save Start
+ 			Ballinpf=Ballinpf +1
+ 			BallsaveLight.State=0
+-        UltraDMD.DisplayScene00 "ballsave.gif", "", 0, "", 0, 14, GifTime1, 14
++        UltraDMD.DisplayScene00 "Ballsave.gif", "", 0, "", 0, 14, GifTime1, 14
+ 			LightSeqAttract.StopPlay
+ 			Flashevent3
+ 		End If
+@@ -1312,12 +1312,12 @@
+ 		StartTimer1.Enabled=True
+ 		ChooseMod=False
+ 		UltraDMD.CancelRendering
+-		DMD2 "Blank.png",  "","FUN  Select"  , 500 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "",""  , 50 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "","Fun  Select"  , 500 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "",""  , 50 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "","FUN  Select"  , 500 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "",""  , 50 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "","FUN  Select"  , 500 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "",""  , 50 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "","Fun  Select"  , 500 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "",""  , 50 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "","FUN  Select"  , 500 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "",""  , 50 , UltraDmd_eNone , ""
+ 		End If
+ 
+ 		if Inprogress=true Then
+@@ -1343,12 +1343,12 @@
+ 		StartTimer1.Enabled=True
+ 		ChooseMod=False
+ 		UltraDMD.CancelRendering
+-		DMD2 "Blank.png",  "","Pro  Select"  , 500 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "",""  , 50 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "","Pro  Select"  , 500 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "",""  , 50 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "","Pro  Select"  , 500 , UltraDmd_eNone , ""
+-		DMD2 "Blank.png",  "",""  , 50 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "","Pro  Select"  , 500 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "",""  , 50 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "","Pro  Select"  , 500 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "",""  , 50 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "","Pro  Select"  , 500 , UltraDmd_eNone , ""
++		DMD2 "blank.png",  "",""  , 50 , UltraDmd_eNone , ""
+ 		End If
+ 	if Inprogress=true Then	
+ 		Controller.B2SSetData 102, 1
+@@ -1378,10 +1378,10 @@
+ 	End If
+ 	if keycode = 65 then Call ResetHS 'F7 reset High Scores
+     If KeyCode = RightMagnaSave Then 
+-	DMD2 "Blank.png",  "1 - " + HighScoreName(0),HighScore(0)  , 3000 , UltraDmd_eNone , ""
+-	DMD2 "Blank.png",  "2 - " + HighScoreName(1),HighScore(1)  , 3000 , UltraDmd_eNone , ""
+-	DMD2 "Blank.png",  "3 - " + HighScoreName(2),HighScore(2)  , 3000 , UltraDmd_eNone , ""
+-	DMD2 "Blank.png",  "4 - " + HighScoreName(3),HighScore(3)  , 3000 , UltraDmd_eNone , ""	
++	DMD2 "blank.png",  "1 - " + HighScoreName(0),HighScore(0)  , 3000 , UltraDmd_eNone , ""
++	DMD2 "blank.png",  "2 - " + HighScoreName(1),HighScore(1)  , 3000 , UltraDmd_eNone , ""
++	DMD2 "blank.png",  "3 - " + HighScoreName(2),HighScore(2)  , 3000 , UltraDmd_eNone , ""
++	DMD2 "blank.png",  "4 - " + HighScoreName(3),HighScore(3)  , 3000 , UltraDmd_eNone , ""	
+ 	End If
+ 	    If KeyCode = LeftMagnaSave Then 
+ 		UltraDMD.DisplayScene00 "test5.gif", "", 0, "", 0, 14, 1500, 14
+@@ -1400,8 +1400,8 @@
+     UltraDMD.CancelRendering 
+ 	ChooseMod=True
+ 	UltraDMD.DisplayScene00ExWithId "0", FALSE, "blank.png", " FUN   Mod   PRO ", 15, -1, "<  Select  >", 15, -1, 14, 2000, 14
+-    DMD2 "Blank.png",  "Select FUN For","Ramdom Missions"  , 3000 , UltraDmd_eNone , ""
+-	DMD2 "Blank.png",  "Select PRO For","Progress Missions"  , 3000 , UltraDmd_eNone , ""
++    DMD2 "blank.png",  "Select FUN For","Ramdom Missions"  , 3000 , UltraDmd_eNone , ""
++	DMD2 "blank.png",  "Select PRO For","Progress Missions"  , 3000 , UltraDmd_eNone , ""
+ 	UltraDMD.DisplayScene00ExWithId "0", FALSE, "blank.png", " FUN   Mod   PRO ", 15, -1, "<  Select  >", 15, -1, 14, 0, 14
+ 	Endmusic
+ 	Jukebox=0
+@@ -1769,21 +1769,21 @@
+ 
+ 'Note open Ultradmd and right click on window to get the various sizes in decimal 
+ 
+-GetDMDColor
+-Sub GetDMDColor
+-Dim WshShell,filecheck,directory
+-Set WshShell = CreateObject("WScript.Shell")
+-If DMDSize then
+-WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
+-WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
+-End if
+-If DMDPosition then
+-WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
+-WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
+-End if
+-WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
+-WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
+-End Sub
++' GetDMDColor
++' Sub GetDMDColor
++' Dim WshShell,filecheck,directory
++' Set WshShell = CreateObject("WScript.Shell")
++' If DMDSize then
++' WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
++' WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
++' End if
++' If DMDPosition then
++' WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
++' WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
++' End if
++' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
++' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
++' End Sub
+ '---------------------------------------------------
+ 
+ 
+@@ -1835,7 +1835,7 @@
+ 			DMD2 "blank.png",  "1 - " + HighScoreName(0),HighScore(0)  , 3000 ,UltraDmd_eNone , ""
+ 			DMD2 "blank.png",  "2 - " + HighScoreName(1),HighScore(1)  , 3000 ,UltraDmd_eNone , ""
+ 			DMD2 "blank.png",  "3 - " + HighScoreName(2),HighScore(2)  , 3000 ,UltraDmd_eNone , ""
+-			DMD2 "Blank.png",  "4 - " + HighScoreName(3),HighScore(3)  , 3000 , UltraDmd_eNone , ""	
++			DMD2 "blank.png",  "4 - " + HighScoreName(3),HighScore(3)  , 3000 , UltraDmd_eNone , ""	
+ 
+ 			DMD2 "reset.png", "" , "" , 2500 , UltraDmd_eNone , ""
+ 			DMD2 "blank.png", "PRESS" , "START" , 500 , UltraDmd_eNone , ""
