@@ -1,9 +1,10 @@
---- "fireball II VPX.vbs.original"	2023-12-14 16:13:05.990404168 +0100
-+++ "fireball II VPX.vbs"	2023-12-14 16:10:13.605981479 +0100
-@@ -563,6 +563,39 @@
+--- ./fireball II VPX/fireball II VPX.vbs.original	2024-03-07 22:48:20
++++ ./fireball II VPX/fireball II VPX.vbs	2024-03-07 22:48:20
+@@ -562,7 +562,40 @@
+ '******************************************************
  '		DROP TARGETS INITIALIZATION
  '******************************************************
- 
++
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -24,7 +25,7 @@
 +
 +  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
 +  Public Property Let IsDropped(input): m_isDropped = input: End Property
-+
+ 
 +  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
 +    Set m_primary = primary
 +    Set m_secondary = secondary
@@ -48,24 +49,22 @@
 -DT31 = Array(sw31, sw0031, psw31, 31, 0)
 -DT30 = Array(sw30, sw0030, psw30, 30, 0)
 -DT29 = Array(sw29, sw0029, psw29, 29, 0)
--
--DT33 = Array(sw33, sw0033, psw33, 33, 0)
--DT34 = Array(sw34, sw0034, psw34, 34, 0)
--DT35 = Array(sw35, sw0035, psw35, 35, 0)
--
--DT21 = Array(sw21, sw0021, psw21, 21, 0)
--DT22 = Array(sw22, sw0022, psw22, 22, 0)
--DT23 = Array(sw23, sw0023, psw23, 23, 0)
--DT24 = Array(sw24, sw0024, psw24, 24, 0)
 +Set DT32 = (new DropTarget)(sw32, sw0032, psw32, 32, 0, false)
 +Set DT31 = (new DropTarget)(sw31, sw0031, psw31, 31, 0, false)
 +Set DT30 = (new DropTarget)(sw30, sw0030, psw30, 30, 0, false)
 +Set DT29 = (new DropTarget)(sw29, sw0029, psw29, 29, 0, false)
-+
+ 
+-DT33 = Array(sw33, sw0033, psw33, 33, 0)
+-DT34 = Array(sw34, sw0034, psw34, 34, 0)
+-DT35 = Array(sw35, sw0035, psw35, 35, 0)
 +Set DT33 = (new DropTarget)(sw33, sw0033, psw33, 33, 0, false)
 +Set DT34 = (new DropTarget)(sw34, sw0034, psw34, 34, 0, false)
 +Set DT35 = (new DropTarget)(sw35, sw0035, psw35, 35, 0, false)
-+
+ 
+-DT21 = Array(sw21, sw0021, psw21, 21, 0)
+-DT22 = Array(sw22, sw0022, psw22, 22, 0)
+-DT23 = Array(sw23, sw0023, psw23, 23, 0)
+-DT24 = Array(sw24, sw0024, psw24, 24, 0)
 +Set DT21 = (new DropTarget)(sw21, sw0021, psw21, 21, 0, false)
 +Set DT22 = (new DropTarget)(sw22, sw0022, psw22, 22, 0, false)
 +Set DT23 = (new DropTarget)(sw23, sw0023, psw23, 23, 0, false)
