@@ -305,11 +305,11 @@ SolCallback(3) = "dtbank2.SolDropUp"
 SolCallback(4) = "dtbank3.SolDropUp"
 SolCallback(5) = "dtbank1.SolDropUp"
 'SolCallback(6) = ""
-SolCallback(7) = "dtbank1..SolHit 1,"
-SolCallback(8) = "dtbank1..SolHit 2,"
-SolCallback(9) = "dtbank1..SolHit 3,"
-SolCallback(10) = "dtbank1..SolHit 4,"
-SolCallback(11) = "dtbank1..SolHit 5,"
+SolCallback(7) = "dtbank1.SolHit 1,"
+SolCallback(8) = "dtbank1.SolHit 2,"
+SolCallback(9) = "dtbank1.SolHit 3,"
+SolCallback(10) = "dtbank1.SolHit 4,"
+SolCallback(11) = "dtbank1.SolHit 5,"
 
 SolCallback(12) = "SolLeftGi"  'left flash effect
 SolCallback(13) = "SolRightGi" 'right flash effect
