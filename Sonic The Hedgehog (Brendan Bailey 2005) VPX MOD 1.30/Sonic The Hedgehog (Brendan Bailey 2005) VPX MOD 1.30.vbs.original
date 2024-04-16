@@ -13,8 +13,9 @@
 ' ** V1.10        Added UDMD Implementation in 2019 by:              **
 ' **                     Derek Crosby                                **
 ' *********************************************************************
-' ** V1.20        Fix Sound Timing & some bugs in 2023 by:           **
+' ** V1.22        Fix Sound Timing & some bugs in 2023 by:           **
 ' **                     Panasony                                    **
+' **                     DaRdog (VR　ROOM)                            **
 ' *********************************************************************
 
 Option Explicit				' Force explicit variable declaration
@@ -23,7 +24,7 @@ Randomize
 Dim UltraDMD
 
 Const Ballsize = 50
-Const BallMass = 1.1
+Const BallMass = 1.5
 
 Const UltraDMD_VideoMode_Stretch = 0
 Const UltraDMD_VideoMode_Top = 1
@@ -37,9 +38,15 @@ Dim SonicFall
 Dim Rings
 Dim DualRings
 Dim turnonultradmd
+Dim VR_ROOM
 
 ' *********************************************************************
-'//////////// This is to turn on/off Ultra DMD (0 = Off, 1 = On) \\\\\\\\\
+'  VR_ROOM = 1:Minimal  2:MR (Chromakey color is blue 0:0:255) 
+' *********************************************************************
+VR_ROOM = 1
+
+' *********************************************************************
+'  This is to turn on/off Ultra DMD (0 = Off, 1 = On) 
 ' *********************************************************************
 turnonultradmd = 1
 
@@ -80,15 +87,24 @@ Const myVersion = "1.01"
 
 Dim bAttractMode
 Dim ShowDT
+Dim VR_Obj
 
-if Table1.ShowDT Then
-   D1.visible =1
-   D2.visible = 1
- Else
-   D1.visible = 0
-   D2.visible = 0
-End If
 
+D1.visible = 0
+D2.visible = 0
+DMD.visible = 0
+for each VR_Obj in vr_room1 : VR_Obj.visible = 0 : next  
+for each VR_Obj in vr_room2 : VR_Obj.visible = 0 : next  
+
+if RenderingMode = 2 Then
+	DMD.visible = 1
+	If VR_ROOM = 1 then for each VR_Obj in vr_room1 : VR_Obj.visible = 1 : next
+	If VR_ROOM = 2 then for each VR_Obj in vr_room2 : VR_Obj.visible = 1 : next
+	Else if Table1.ShowDT Then
+		D1.visible = 1
+		D2.visible = 1
+	End If
+end If
 
 Dim b2sstep
 b2sstep = 0
@@ -131,9 +147,15 @@ Sub b2sflash_timer
 End Sub
 
 'UDMD Initialization
-Sub LoadUltraDMD 
 
-			If turnonultradmd = 0 then exit sub
+Sub LoadUltraDMD 
+	If turnonultradmd = 0 then exit sub
+
+			Dim WshShell
+			Set WshShell = CreateObject("WScript.Shell")
+			WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor","True","REG_SZ"
+			WshShell.RegWrite "HKCU\Software\UltraDMD\color","White","REG_SZ"
+
 			Set UltraDMD = CreateObject("UltraDMD.DMDObject")
 			If UltraDMD is Nothing Then
 				MsgBox "No UltraDMD found.  This table will NOT run without it."
@@ -523,7 +545,8 @@ Sub CreateNewBall()
 	PlaySoundAt "BallRelease", PlungerKicker
     PlaySound SoundFXDOF("BallRelease",122,DOFPulse,DOFContactors), 0, 1, 0.1, 0.1
 	'UltraDMD.DisplayScene00ExWithId "NewBall", FALSE, "black.png", "New Ball", 15, -1, "", -1, -1, 14, 500, 14
-	If turnonultradmd > 0 then 
+	If turnonultradmd > 0 then
+		UltraDMD.CancelRendering
 		UltraDMD.DisplayScene00ExWithId "Anim", FALSE, SonicLaunch, "" , 15, -1, "" , -1, -1, 14, 1200, 14
 	end if
 
@@ -949,15 +972,15 @@ Sub AddScore(points)
 		'player3reel.text = ""
 		if ballsremaining(currentplayer) = 3 then
 			D2.text = "ball 1" 
-			DisplayB2SText score(currentplayer) &" " & "              BALL 1 "
+			DisplayB2SText (score(currentplayer)) &" " & "              BALL 1 "
 		end if
 		if ballsremaining(currentplayer) = 2 then
 			D2.text = "ball 2" 
-			DisplayB2SText score(currentplayer) &" " & "              BALL 2 "
+			DisplayB2SText (score(currentplayer)) &" " & "              BALL 2 "
 		end if
 		if ballsremaining(currentplayer) = 1 then
 			D2.text = "ball 3"
-			DisplayB2SText score(currentplayer) &" " & "              BALL 3 "
+			DisplayB2SText (score(currentplayer)) &" " & "              BALL 3 "
 		end if
       end if
 	  ' update the score displays
@@ -2808,7 +2831,6 @@ sub scoreextraball()
 end sub
 
 sub startattractmode()
-
     bAttractMode = true
     PFattract = PFattract - PFattract
     BGattract = BGattract - BGattract
@@ -3059,7 +3081,7 @@ sub messagetimer_Timer()
    ' player4reel.text = ""
     DisplayB2SText2 "   CREDITS 0    " & "   INSERT COIN  "
 	If turnonultradmd > 0 then 
-		UltraDMD.DisplayScene00ExWithId "Credits0", FALSE, "black.png", "CRREDITS "&Credits, 15, -1, "INSERT COIN", 15, -1, 7, 2000, 5
+		UltraDMD.DisplayScene00ExWithId "Credits0", FALSE, "black.png", "CREDITS "&Credits, 15, -1, "INSERT COIN", 15, -1, 7, 2000, 5
 	End if
     Else
     D1.text = "Credits: "&Credits
@@ -3068,7 +3090,7 @@ sub messagetimer_Timer()
    ' player4reel.text = "Start"
     DisplayB2SText2 "   CREDITS "&(Credits) &"     " & " PRESS START  "  
 	If turnonultradmd > 0 then 
-		UltraDMD.ScrollingCredits "blank.png", "Sonic Pinball Table||Created By:|BRENDAN BAILEY||MOD By:|Javier1515||UDMD||Created By:|Derek Crosby", 6, 10, 1000, 14  
+		UltraDMD.ScrollingCredits "blank.png", "Sonic Pinball Table||Created By:|BRENDAN BAILEY||Modification By:|Javier1515||UltraDMD Created By:|Derek Crosby||VR ROOM Created By:|DaRdog||Modification By:|PANASONY", 6, 10, 10000, 14  
 	End If
     End If
     end if
@@ -3157,7 +3179,7 @@ sub messagetimer_Timer()
    ' player4reel.text = ""
     DisplayB2SText2 "   CREDITS 0    " & "   INSERT COIN  "
 	If turnonultradmd > 0 then 
-		UltraDMD.DisplayScene00ExWithId "Credits0", FALSE, "black.png", "CRREDITS 0", 15, -1, "INSERT COIN", 15, -1, 7, 2000, 5
+		UltraDMD.ScrollingCredits "blank.png", "Sonic Pinball Table||Created By:|BRENDAN BAILEY||Modification By:|Javier1515||UltraDMD Created By:|Derek Crosby||VR ROOM Created By:|DaRdog||Modification By:|PANASONY", 6, 10, 10000, 14  
 	End if
     Else
     D1.text = "Credits: "&Credits
@@ -3165,6 +3187,9 @@ sub messagetimer_Timer()
     D2.text = "Press Start"
    ' player4reel.text = "Start"
     DisplayB2SText2 "   CREDITS "&(Credits) &"     " & " PRESS START  "  
+	If turnonultradmd > 0 then 
+		UltraDMD.DisplayScene00ExWithId "Credits "&Credits, FALSE, "black.png", "CREDITS "&Credits, 15, -1, "PRESS START", 15, -1, 7, 2000, 5
+	End if
     End If
     End If
 
@@ -3589,13 +3614,15 @@ End Sub
 Sub table1_Exit
     Savehs
     If B2SOn Then Controller.Stop
+
+    If turnonultradmd = 1 Then
+        If UltraDMD.IsRendering Then
+            UltraDMD.CancelRendering
+        End If
+        UltraDMD.Uninit
+        UltraDMD = NULL
+    End If
 End Sub
-
-
-
-
-
-
 
 '********************
 '     Flippers
@@ -3799,6 +3826,7 @@ Sub GiOn
     Table1.ColorGradeImage = "ColorGradeLUT256x16_ConSatDark"
     GiGameInPlay.state = 0
  End If
+
 End Sub
 
 Sub GiOff
@@ -4299,8 +4327,7 @@ Sub CheckHighscore()
    End If
 End Sub
 
-
-
+'Pana
 Sub HighScoreEntryInit()
     hsbModeActive = True
     PlaySound "mu_jychighscore"
@@ -4359,6 +4386,8 @@ Sub EnterHighScoreKey(keycode)
         end if
     end if
 End Sub
+
+
 
 Sub HighScoreDisplayName()
     DMDUpdate.enabled = 0
