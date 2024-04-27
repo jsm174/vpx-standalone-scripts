@@ -1,0 +1,36 @@
+--- "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.30.vbs.original"	2024-04-16 11:36:15.342037978 +0200
++++ "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.30.vbs"	2024-04-16 11:33:35.470293961 +0200
+@@ -151,10 +151,10 @@
+ Sub LoadUltraDMD 
+ 	If turnonultradmd = 0 then exit sub
+ 
+-			Dim WshShell
+-			Set WshShell = CreateObject("WScript.Shell")
+-			WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor","True","REG_SZ"
+-			WshShell.RegWrite "HKCU\Software\UltraDMD\color","White","REG_SZ"
++			' Dim WshShell
++			' Set WshShell = CreateObject("WScript.Shell")
++			' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor","True","REG_SZ"
++			' WshShell.RegWrite "HKCU\Software\UltraDMD\color","White","REG_SZ"
+ 
+ 			Set UltraDMD = CreateObject("UltraDMD.DMDObject")
+ 			If UltraDMD is Nothing Then
+@@ -972,15 +972,15 @@
+ 		'player3reel.text = ""
+ 		if ballsremaining(currentplayer) = 3 then
+ 			D2.text = "ball 1" 
+-			DisplayB2SText (score(currentplayer)) &" " & "              BALL 1 "
++			DisplayB2SText score(currentplayer) & " " & "              BALL 1 "
+ 		end if
+ 		if ballsremaining(currentplayer) = 2 then
+ 			D2.text = "ball 2" 
+-			DisplayB2SText (score(currentplayer)) &" " & "              BALL 2 "
++			DisplayB2SText score(currentplayer) &" " & "              BALL 2 "
+ 		end if
+ 		if ballsremaining(currentplayer) = 1 then
+ 			D2.text = "ball 3"
+-			DisplayB2SText (score(currentplayer)) &" " & "              BALL 3 "
++			DisplayB2SText score(currentplayer) &" " & "              BALL 3 "
+ 		end if
+       end if
+ 	  ' update the score displays
