@@ -257,8 +257,9 @@ DIM PupVideos
 '============================
 
 Dim osbid:      osbid="MMadness"                             ' your orbital scoreboard login name or use the default MMadness code
-Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scoreboard api key or use the default Munster Table code
-
+'Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scoreboard api key or use the default Munster Table code
+' Orbital score board is dead
+Dim osbkey: osbkey=""
 
 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
