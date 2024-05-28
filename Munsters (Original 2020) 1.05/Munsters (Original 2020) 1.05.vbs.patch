@@ -1,5 +1,5 @@
---- "Munsters (Original 2020) 1.05.vbs.original"	2024-05-27 09:32:45.072013072 +0200
-+++ "Munsters (Original 2020) 1.05.vbs"	2024-05-27 09:29:52.441701017 +0200
+--- "Munsters (Original 2020) 1.05.vbs.original"	2024-05-28 11:23:05.140074323 +0200
++++ "Munsters (Original 2020) 1.05.vbs"	2024-05-28 11:22:57.031831882 +0200
 @@ -257,8 +257,9 @@
  '============================
  
@@ -12,6 +12,15 @@
  
  
  'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+@@ -915,7 +916,7 @@
+ 	if not IsObject(PuPlayer) then HasPuP = False
+ 	end If
+ 
+-    PupVideos=PuPlayer.getroot
++    PupVideos="./pupvideos"' PuPlayer.getroot on standalone returns the root folder of the table instead of the pupvideos folder
+     Folder=PupVideos & "\" &  cGameName & "\"
+ 	
+ 	PuPlayer.LabelInit pBackglass
 @@ -6014,7 +6015,7 @@
  				PuPlayer.playstop pAudio
  				PuPlayer.playlistplayex pAudio,"audionoise","Sound-0x018A.mp3",90,90
