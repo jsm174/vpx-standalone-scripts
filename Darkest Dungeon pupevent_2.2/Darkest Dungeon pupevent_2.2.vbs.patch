@@ -1,0 +1,37 @@
+--- "Darkest Dungeon pupevent_2.2.vbs.original"	2024-05-29 16:53:55.640460735 +0200
++++ "Darkest Dungeon pupevent_2.2.vbs"	2024-05-29 16:49:22.777271256 +0200
+@@ -98,11 +98,11 @@
+ '	Table1_exit
+ 'End If
+ 
+-Dim pupPackScreenFile: pupPackScreenFile = PuPlayer.GetRoot & "DarkestDungeon\ScreenType.txt"
+-Dim ObjFso: Set ObjFso = CreateObject("Scripting.FileSystemObject")
+-Dim ObjFile: Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
+-Dim DMDType: DMDType = ObjFile.ReadLine
+-'Dim DMDType: DMDType = 2
++'Dim pupPackScreenFile: pupPackScreenFile = PuPlayer.GetRoot & "DarkestDungeon\ScreenType.txt"
++'Dim ObjFso: Set ObjFso = CreateObject("Scripting.FileSystemObject")
++'Dim ObjFile: Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
++'Dim DMDType: DMDType = ObjFile.ReadLine
++Dim DMDType: DMDType = 2
+ 
+ if DMDType = 2 Then
+ 	PupScreen1 = 0 ' Do not use apron pupscreens
+@@ -23044,7 +23044,7 @@
+ 			End If
+ 			If qItems.Exists(key) Then 'Overwrite existing item in the queue if it exists
+ 				DebugLog key & " (Add) - Already exists In the queue. Updating the item With the new parameters passed In Add."
+-				Set qItems.Item(key) = newClass
++				qItems.Item(key) = newClass
+ 			Else
+ 				DebugLog key & " (Add) - Added To the queue."
+ 				qItems.Add key, newClass
+@@ -23053,7 +23053,7 @@
+ 		Else
+ 			If preQItems.Exists(key) Then 'Overwrite existing item in the preQueue if it exists
+ 				DebugLog key & " (Add) - Already exists In the preQueue. Updating the item With the new parameters passed In Add."
+-				Set preQItems.Item(key) = newClass
++				preQItems.Item(key) = newClass
+ 			Else
+ 				DebugLog key & " (Add) - Added To the preQueue."
+ 				preQItems.Add key, newClass
