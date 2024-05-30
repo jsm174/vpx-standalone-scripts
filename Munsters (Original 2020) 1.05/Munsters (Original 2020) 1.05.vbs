@@ -916,7 +916,7 @@ End Function
 	if not IsObject(PuPlayer) then HasPuP = False
 	end If
 
-    PupVideos="./pupvideos"' PuPlayer.getroot on standalone returns the root folder of the table instead of the pupvideos folder
+    PupVideos=PuPlayer.getroot
     Folder=PupVideos & "\" &  cGameName & "\"
 	
 	PuPlayer.LabelInit pBackglass
