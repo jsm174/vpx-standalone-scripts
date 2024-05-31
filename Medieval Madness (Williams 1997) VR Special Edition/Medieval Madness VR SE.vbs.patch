@@ -1,0 +1,16 @@
+--- "Medieval Madness VR SE.vbs.original"	2024-05-31 08:07:06.399173019 -0700
++++ "Medieval Madness VR SE.vbs"	2024-05-31 08:07:23.839287944 -0700
+@@ -2185,7 +2185,12 @@
+ Sub InitLamps
+ On Error Resume Next
+ Dim i
+-For i=0 To 127: Execute "Set Lights(" & i & ")  = L" & i: Next
++' For i=0 To 127: Execute "Set Lights(" & i & ")  = L" & i: Next
++For i=0 To 127
++    If IsObject(eval("L" & i)) Then
++        Execute "Set Lights(" & i & ")  = L" & i
++    End If
++Next
+ Lights(14)=Array(L14,L14a)
+ Lights(64)=Array(L64,L64a)
+ Lights(78)=Array(L78,L78a)
