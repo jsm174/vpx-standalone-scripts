@@ -22,5 +22,7 @@ jobs:
       - name: Check for changes on a fresh checkout
         run: |
           if [[ -n $(git status --porcelain) ]]; then
+              git status
               echo "Found changes in a fresh checkout, probably files have been checked in with invalid line endings. See https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings#refreshing-a-repository-after-changing-line-endings"
+              exit 1
           fi
