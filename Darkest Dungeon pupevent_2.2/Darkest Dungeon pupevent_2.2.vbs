@@ -23044,7 +23044,7 @@ Class vpwQueueManager
 			End If
 			If qItems.Exists(key) Then 'Overwrite existing item in the queue if it exists
 				DebugLog key & " (Add) - Already exists In the queue. Updating the item With the new parameters passed In Add."
-				qItems.Item(key) = newClass
+				Set qItems.Item(key) = newClass
 			Else
 				DebugLog key & " (Add) - Added To the queue."
 				qItems.Add key, newClass
@@ -23053,7 +23053,7 @@ Class vpwQueueManager
 		Else
 			If preQItems.Exists(key) Then 'Overwrite existing item in the preQueue if it exists
 				DebugLog key & " (Add) - Already exists In the preQueue. Updating the item With the new parameters passed In Add."
-				preQItems.Item(key) = newClass
+				Set preQItems.Item(key) = newClass
 			Else
 				DebugLog key & " (Add) - Added To the preQueue."
 				preQItems.Add key, newClass
