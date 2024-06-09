@@ -1,0 +1,38 @@
+--- "Elvira and the Party Monsters (Bally 1989)_Bigus(MOD)2.2.vbs.original"	2024-06-09 22:12:25.439861915 +0200
++++ "Elvira and the Party Monsters (Bally 1989)_Bigus(MOD)2.2.vbs"	2024-06-09 22:10:34.980402750 +0200
+@@ -1103,7 +1103,7 @@
+ 			
+ 			.AddActor FlexDMD.NewFrame("BackColour")
+ 			.GetFrame("BackColour").Visible = True
+-			If vpmColourised Then			
++			If vpmColourised = 0 Then			
+ 				'RGB R & B colours seem reversed when darwing frames in flex
+ 				'.GetFrame("BackColour").FillColor = RGB(Controller.Games(cGameName).Settings.Value("dmd_red0"),Controller.Games(cGameName).Settings.Value("dmd_green0"),Controller.Games(cGameName).Settings.Value("dmd_blue0"))
+ 				.GetFrame("BackColour").FillColor = RGB(Controller.Games(cGameName).Settings.Value("dmd_blue0"),Controller.Games(cGameName).Settings.Value("dmd_green0"),Controller.Games(cGameName).Settings.Value("dmd_red0"))
+@@ -1119,7 +1119,7 @@
+ 			Dim FlexDMDFont
+ 			
+ 			'main 32 segment display
+-			If vpmColourised Then
++			If vpmColourised = 0 Then
+ 				Set FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.teeny_tiny_pixls-5.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red66"),Controller.Games(cGameName).Settings.Value("dmd_green66"),Controller.Games(cGameName).Settings.Value("dmd_blue66")), vbRed, 0)
+ 			Else
+ 				Set FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.teeny_tiny_pixls-5.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red") * vpm66Percent,Controller.Games(cGameName).Settings.Value("dmd_green") * vpm66Percent,Controller.Games(cGameName).Settings.Value("dmd_blue") * vpm66Percent), vbRed, 0)
+@@ -1128,7 +1128,7 @@
+ 			.GetLabel("SegmentDisplay").SetAlignedPosition 0, 26, 0
+ 
+ 			'main score display for nvram data
+-			If vpmColourised Then
++			If vpmColourised = 0Then
+ 				FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.udmd-f7by13.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red"),Controller.Games(cGameName).Settings.Value("dmd_green"),Controller.Games(cGameName).Settings.Value("dmd_blue")), vbRed, 0)
+ 			Else
+ 				FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.udmd-f7by13.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red"),Controller.Games(cGameName).Settings.Value("dmd_green") ,Controller.Games(cGameName).Settings.Value("dmd_blue")), vbRed, 0)
+@@ -1137,7 +1137,7 @@
+ 			.GetLabel("MainDisplay").SetAlignedPosition 1, 10, 0
+ 
+ 			'lable for main score nvram data
+-			If vpmColourised Then
++			If vpmColourised = 0 Then
+ 				FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.teeny_tiny_pixls-5.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red33"),Controller.Games(cGameName).Settings.Value("dmd_green33"),Controller.Games(cGameName).Settings.Value("dmd_blue33")), vbRed, 0)		
+ 			Else
+ 				FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.teeny_tiny_pixls-5.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red") * vpm33Percent,Controller.Games(cGameName).Settings.Value("dmd_green") * vpm33Percent,Controller.Games(cGameName).Settings.Value("dmd_blue") * vpm33Percent), vbRed, 0)
