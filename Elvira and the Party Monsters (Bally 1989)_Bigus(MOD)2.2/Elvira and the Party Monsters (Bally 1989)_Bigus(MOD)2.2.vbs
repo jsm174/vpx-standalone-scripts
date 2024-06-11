@@ -1128,7 +1128,7 @@ Sub FlexDMD_Init() 'default/startup values
 			.GetLabel("SegmentDisplay").SetAlignedPosition 0, 26, 0
 
 			'main score display for nvram data
-			If vpmColourised = 0Then
+			If vpmColourised = 0 Then
 				FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.udmd-f7by13.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red"),Controller.Games(cGameName).Settings.Value("dmd_green"),Controller.Games(cGameName).Settings.Value("dmd_blue")), vbRed, 0)
 			Else
 				FlexDMDFont = FlexDMD.NewFont("FlexDMD.Resources.udmd-f7by13.fnt", RGB(Controller.Games(cGameName).Settings.Value("dmd_red"),Controller.Games(cGameName).Settings.Value("dmd_green") ,Controller.Games(cGameName).Settings.Value("dmd_blue")), vbRed, 0)
