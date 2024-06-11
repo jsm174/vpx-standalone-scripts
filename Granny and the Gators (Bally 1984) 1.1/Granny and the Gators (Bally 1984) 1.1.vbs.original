@@ -1,17 +1,54 @@
-Option ExplicitLoadVPM "01530000","granny.vbs",3.1
+Option Explicit
+LoadVPM "01530000","granny.vbs",3.1
 
-Sub LoadVPM(VPMver,VBSfile,VBSver)	On Error Resume Next		If ScriptEngineMajorVersion<5 Then MsgBox"VB Script Engine 5.0 or higher required"		ExecuteGlobal GetTextFile(VBSfile)		If Err Then MsgBox"Unable to open "&VBSfile&". Ensure that it is in the same folder as this table."&vbNewLine&Err.Description:Err.Clear
 
-'**************************************************************************************************'********************************ACTIVATE BACKGLASS************************************************
+Sub LoadVPM(VPMver,VBSfile,VBSver)
+	On Error Resume Next
+		If ScriptEngineMajorVersion<5 Then MsgBox"VB Script Engine 5.0 or higher required"
+		ExecuteGlobal GetTextFile(VBSfile)
+		If Err Then MsgBox"Unable to open "&VBSfile&". Ensure that it is in the same folder as this table."&vbNewLine&Err.Description:Err.Clear
+
+'**************************************************************************************************
+'********************************ACTIVATE BACKGLASS************************************************
 If ShowDT=true then
 		Set Controller=CreateObject("VPinMAME.Controller")
 	else
 		Set Controller=CreateObject("B2S.server") 
 End if
 '**************************************************************************************************
-		If Err Then MsgBox"Can't Load VPinMAME."&vbNewLine&Err.Description		If VPMver>"" Then If Controller.Version<VPMver Or Err Then MsgBox"VPinMAME ver "&VPMver&" required.":Err.Clear		If VPinMAMEDriverVer<VBSver Or Err Then MsgBox VBSFile&" ver "&VBSver&" or higher required."	On Error Goto 0End Sub
 
-Const UseSolenoids=1,UseLamps=1,UseSync=1,SSolenoidOn="SolOn",SSolenoidOff="SolOff",SFlipperOn="FlipperUp",SFlipperOff="FlipperDown",SCoin="Coin3"SolCallback(1)="bsTrough.SolOut"SolCallback(2)="dtDrop.SolDropUp"SolCallback(3)="bsSaucer2.SolOut"SolCallback(4)="bsSaucer.SolOut"SolCallback(8)="Flippers"Sub Flippers(Enabled)	If Enabled Then		FlipperOn=1	Else		FlipperOn=0		If LS=1 Then LeftFlipper.RotateToStart		If RS=1 Then RightFlipper.RotateToStart		If LS=1 Or RS=1 Then			PlaySound"FlipperDown"			LS=0			RS=0		End If	End IfEnd SubSub SetDisplayToElement(Element)
+		If Err Then MsgBox"Can't Load VPinMAME."&vbNewLine&Err.Description
+		If VPMver>"" Then If Controller.Version<VPMver Or Err Then MsgBox"VPinMAME ver "&VPMver&" required.":Err.Clear
+		If VPinMAMEDriverVer<VBSver Or Err Then MsgBox VBSFile&" ver "&VBSver&" or higher required."
+	On Error Goto 0
+End Sub
+
+
+
+Const UseSolenoids=1,UseLamps=1,UseSync=1,SSolenoidOn="SolOn",SSolenoidOff="SolOff",SFlipperOn="FlipperUp",SFlipperOff="FlipperDown",SCoin="Coin3"
+
+SolCallback(1)="bsTrough.SolOut"
+SolCallback(2)="dtDrop.SolDropUp"
+SolCallback(3)="bsSaucer2.SolOut"
+SolCallback(4)="bsSaucer.SolOut"
+SolCallback(8)="Flippers"
+
+Sub Flippers(Enabled)
+	If Enabled Then
+		FlipperOn=1
+	Else
+		FlipperOn=0
+		If LS=1 Then LeftFlipper.RotateToStart
+		If RS=1 Then RightFlipper.RotateToStart
+		If LS=1 Or RS=1 Then
+			PlaySound"FlipperDown"
+			LS=0
+			RS=0
+		End If
+	End If
+End Sub
+
+Sub SetDisplayToElement(Element)
  		Exit Sub
   	Dim playerRect
  	playerRect=Controller.GetClientRect(GetPlayerHwnd)
@@ -25,12 +62,20 @@ End if
  	y=Element.y*playerHeight/750.0-1
  	Game.Settings.SetDisplayPosition x,y,GetPlayerHwnd
  	Set Game=nothing
-End SubSub Table1_Paused:Controller.Pause=True:End SubSub Table1_unPaused:Controller.Pause=False:End SubDim bsTrough,bsSaucer,bsSaucer2,dtDrop,FlipperOn,LS,RSFlipperOn=0:LS=0:RS=0
+End Sub
+
+Sub Table1_Paused:Controller.Pause=True:End Sub
+Sub Table1_unPaused:Controller.Pause=False:End Sub
+
+Dim bsTrough,bsSaucer,bsSaucer2,dtDrop,FlipperOn,LS,RS
+FlipperOn=0:LS=0:RS=0
 
 Sub Table1_Exit			' STAT add
 	Controller.Stop
 End Sub
-Sub Table1_Init
+
+
+Sub Table1_Init
 	On Error Resume Next
 		Controller.GameName="granny":If Err Then MsgBox"Can't start Game"&cGameName&vbNewLine&Err.Description:Exit Sub
 		Controller.SplashInfoLine="Granny And The Gators"
@@ -74,10 +119,63 @@ End If
 	vpmCreateEvents AllSwitches
 	vpmMapLights AllLights
 End Sub
-Sub Drain_Hit:bsTrough.AddBall 0:LPad.state=1:End SubSub Kicker1_Hit:bsSaucer.AddBall 0:End SubSub Kicker2_Hit:bsSaucer2.AddBall 0:End SubExtraKeyHelp=KeyName(StartGameKey)&vbTab&"1 Player Start+Fire"&vbNewLine&_KeyName(KeyFront)&vbTab&"2 Player Start+Fire"&vbNewLine&_KeyName(KeyJoyLeft)&vbTab&"Left Paddle"&vbNewLine&_KeyName(KeyJoyRight)&vbTab&"Right Paddle"&vbNewLine&_KeyName(KeyJoyUp)&vbTab&"Power Paddle"&vbNewLine&_KeyName(KeyJoyDown)&vbTab&"Fire"
+
+Sub Drain_Hit:bsTrough.AddBall 0:LPad.state=1:End Sub
+Sub Kicker1_Hit:bsSaucer.AddBall 0:End Sub
+Sub Kicker2_Hit:bsSaucer2.AddBall 0:End Sub
+
+ExtraKeyHelp=KeyName(StartGameKey)&vbTab&"1 Player Start+Fire"&vbNewLine&_
+KeyName(KeyFront)&vbTab&"2 Player Start+Fire"&vbNewLine&_
+KeyName(KeyJoyLeft)&vbTab&"Left Paddle"&vbNewLine&_
+KeyName(KeyJoyRight)&vbTab&"Right Paddle"&vbNewLine&_
+KeyName(KeyJoyUp)&vbTab&"Power Paddle"&vbNewLine&_
+KeyName(KeyJoyDown)&vbTab&"Fire"
 
 
-Sub Table1_KeyDown(ByVal KeyCode)	If KeyCode=StartGameKey Then Controller.Switch(-1)=1	If KeyCode=KeyFront Then Controller.Switch(0)=1	If KeyCode=KeyJoyLeft Then Controller.Switch(-2)=1	If KeyCode=KeyJoyRight Then Controller.Switch(-3)=1	If KeyCode=KeyJoyUp Then Controller.Switch(41)=1	If KeyCode=KeyJoyDown Then Controller.Switch(-1)=1	If KeyCode=LeftFlipperKey Then		If FlipperOn=1 And LS=0 Then			LeftFlipper.RotateToEnd			PlaySound"FlipperUp"			LS=1		End If	End If	If KeyCode=RightFlipperKey Then		If FlipperOn=1 And RS=0 Then			RightFlipper.RotateToEnd			PlaySound"FlipperUp"			RS=1		End If	End If	If vpmKeyDown(KeyCode) Then Exit SubEnd SubSub Table1_KeyUp(ByVal KeyCode)	If KeyCode=StartGameKey Then Controller.Switch(-1)=0	If KeyCode=KeyFront Then Controller.Switch(0)=0	If KeyCode=KeyJoyLeft Then Controller.Switch(-2)=0	If KeyCode=KeyJoyRight Then Controller.Switch(-3)=0	If KeyCode=KeyJoyUp Then Controller.Switch(41)=0	If KeyCode=KeyJoyDown Then Controller.Switch(-1)=0	If KeyCode=LeftFlipperKey And LS=1 Then		LeftFlipper.RotateToStart		PlaySound"FlipperDown"		LS=0	End If	If KeyCode=RightFlipperKey And RS=1 Then		RightFlipper.RotateToStart		PlaySound"FlipperDown"		RS=0	End If	If vpmKeyUp(KeyCode) Then Exit SubEnd Sub
+
+Sub Table1_KeyDown(ByVal KeyCode)
+	If KeyCode=StartGameKey Then Controller.Switch(-1)=1
+	If KeyCode=KeyFront Then Controller.Switch(0)=1
+	If KeyCode=KeyJoyLeft Then Controller.Switch(-2)=1
+	If KeyCode=KeyJoyRight Then Controller.Switch(-3)=1
+	If KeyCode=KeyJoyUp Then Controller.Switch(41)=1
+	If KeyCode=KeyJoyDown Then Controller.Switch(-1)=1
+	If KeyCode=LeftFlipperKey Then
+		If FlipperOn=1 And LS=0 Then
+			LeftFlipper.RotateToEnd
+			PlaySound"FlipperUp"
+			LS=1
+		End If
+	End If
+	If KeyCode=RightFlipperKey Then
+		If FlipperOn=1 And RS=0 Then
+			RightFlipper.RotateToEnd
+			PlaySound"FlipperUp"
+			RS=1
+		End If
+	End If
+	If vpmKeyDown(KeyCode) Then Exit Sub
+End Sub
+
+Sub Table1_KeyUp(ByVal KeyCode)
+	If KeyCode=StartGameKey Then Controller.Switch(-1)=0
+	If KeyCode=KeyFront Then Controller.Switch(0)=0
+	If KeyCode=KeyJoyLeft Then Controller.Switch(-2)=0
+	If KeyCode=KeyJoyRight Then Controller.Switch(-3)=0
+	If KeyCode=KeyJoyUp Then Controller.Switch(41)=0
+	If KeyCode=KeyJoyDown Then Controller.Switch(-1)=0
+	If KeyCode=LeftFlipperKey And LS=1 Then
+		LeftFlipper.RotateToStart
+		PlaySound"FlipperDown"
+		LS=0
+	End If
+	If KeyCode=RightFlipperKey And RS=1 Then
+		RightFlipper.RotateToStart
+		PlaySound"FlipperDown"
+		RS=0
+	End If
+	If vpmKeyUp(KeyCode) Then Exit Sub
+End Sub
 sub S29_hit
 Playsound "Wallhit"
 vpmTimer.PulseSw 29
