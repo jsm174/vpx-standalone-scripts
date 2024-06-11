@@ -38,6 +38,18 @@ Dim BallMass ,BallSize
 Ballsize = 49
 Ballmass = 1
 
+Dim UseVPMDMD : UseVPMDMD = true 
+' Dim UseVPMColoredDMD : UseVPMColoredDMD = true
+
+Sub ImplicitDMD_Init
+   Me.x = 30
+   Me.y = 30
+   Me.width = 128 * 2
+   Me.height = 32 * 2
+   Me.fontColor = RGB(255, 0, 0)
+   Me.visible = true
+   Me.intensityScale = 1.5
+End Sub
 
 On Error Resume Next
 ExecuteGlobal GetTextFile("controller.vbs")

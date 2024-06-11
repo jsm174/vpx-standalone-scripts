@@ -1,5 +1,4 @@
-' Vortex - Taito 1981
-' IPD No. 4576 / 1981 / 4 Players
+' Taito's Space Shuttle / IPD No. 4583 / 4 Players
 ' VPX - version by JPSalas 2020, version 4.0.0
 
 Option Explicit
@@ -15,9 +14,9 @@ On Error Goto 0
 
 LoadVPM "01550000", "Taito.vbs", 3.26
 
-Dim bsTrough, dtbank1, dtbank2, dtbank3, bsRightSaucer, x
+Dim bsTrough, dtCbank, dtRbank, bsLeftSaucer, bsRightSaucer, x
 
-Const cGameName = "Vortex"
+Const cGameName = "sshuttle"
 
 Const UseSolenoids = 2
 Const UseLamps = 0
@@ -37,22 +36,35 @@ else
 end if
 
 ' Standard Sounds
-Const SSolenoidOn = "fx_Solenoid"
-Const SSolenoidOff = ""
+Const SSolenoidOn = "fx_SolenoidOn"
+Const SSolenoidOff = "fx_SolenoidOff"
 Const SCoin = "fx_Coin"
+
+'******************
+' Realtime Updates
+'******************
+
+Sub RealTime_Timer
+    GIUpdate
+    RollingUpdate
+    LeftFlipperTop.RotZ = LeftFlipper.CurrentAngle
+    RightFlipperTop.RotZ = RightFlipper.CurrentAngle
+    Diverter.RotZ = DiverterFlipper.CurrentAngle
+	Popup.Z = PostFlipper.CurrentAngle
+End Sub
 
 '************
 ' Table init.
 '************
 
 Sub table1_Init
-    'NVramPatchLoad
+NVramPatchLoad
     vpmInit me
     With Controller
         .GameName = cGameName
-		.Games(cGameName).Settings.Value("sound") = 1 'enable the rom sound
         If Err Then MsgBox "Can't start Game" & cGameName & vbNewLine & Err.Description:Exit Sub
-        .SplashInfoLine = "Vortex - Taito 1981" & vbNewLine & "VPX table by JPSalas v4.0.0"
+        .SplashInfoLine = "Space Shuttle - Taito 1984" & vbNewLine & "VPX table by JPSalas v4.0.0"
+	   .Games(cGameName).Settings.Value("sound") = 1
         .HandleKeyboard = 0
         .ShowTitle = 0
         .ShowDMDOnly = 1
@@ -76,33 +88,34 @@ Sub table1_Init
     ' Trough
     Set bsTrough = New cvpmBallStack
     With bsTrough
-        .InitSw 0, 1, 0, 0, 0, 0, 0, 0
+        .InitSw 0, 1, 11, 21, 0, 0, 0, 0
         .InitKick BallRelease, 90, 4
         .InitExitSnd SoundFX("fx_ballrel", DOFContactors), SoundFX("fx_Solenoid", DOFContactors)
-        .Balls = 1
+        .Balls = 3
     End With
 
     ' Saucers
     Set bsRightSaucer = New cvpmBallStack
-    bsRightSaucer.InitSaucer sw2, 2, 220, 15
+    bsRightSaucer.InitSaucer sw3, 3, 180, 8
     bsRightSaucer.InitExitSnd SoundFX("fx_kicker", DOFContactors), SoundFX("fx_Solenoid", DOFContactors)
-    bsRightSaucer.KickForceVar = 6
+    bsRightSaucer.KickForceVar = 3
+
+    Set bsLeftSaucer = New cvpmBallStack
+    bsLeftSaucer.InitSaucer sw2, 2, 180, 8
+    bsLeftSaucer.InitExitSnd SoundFX("fx_kicker", DOFContactors), SoundFX("fx_Solenoid", DOFContactors)
+    bsLeftSaucer.KickForceVar = 3
 
     ' Drop targets
-    set dtbank1 = new cvpmdroptarget
-    dtbank1.InitDrop Array(sw35, sw45, sw55, sw65, sw75), Array(35, 45, 55, 65, 75)
-    dtbank1.initsnd SoundFX("fx_droptarget", DOFDropTargets), SoundFX("fx_resetdrop", DOFContactors)
-    dtbank1.CreateEvents "dtBank1"
 
-    set dtbank2 = new cvpmdroptarget
-    dtbank2.InitDrop Array(sw41, sw51, sw61), Array(41, 51, 61)
-    dtbank2.initsnd SoundFX("fx_droptarget", DOFDropTargets), SoundFX("fx_resetdrop", DOFContactors)
-    dtbank2.CreateEvents "dtBank2"
+    set dtCbank = new cvpmdroptarget
+    dtCbank.InitDrop sw43, 43
+    dtCbank.initsnd SoundFX("fx_droptarget", DOFDropTargets), SoundFX("fx_resetdrop", DOFContactors)
+    dtCbank.CreateEvents "dtCbank"
 
-    set dtbank3 = new cvpmdroptarget
-    dtbank3.InitDrop Array(sw11, sw21, sw31), Array(11, 21, 31)
-    dtbank3.initsnd SoundFX("fx_droptarget", DOFDropTargets), SoundFX("fx_resetdrop", DOFContactors)
-    dtbank3.CreateEvents "dtBank3"
+    set dtRbank = new cvpmdroptarget
+    dtRbank.InitDrop Array(sw4, sw14, sw24), Array(4, 14, 24)
+    dtRbank.initsnd SoundFX("fx_droptarget", DOFDropTargets), SoundFX("fx_resetdrop", DOFContactors)
+    dtRbank.CreateEvents "dtRbank"
 
     ' Main Timer init
     PinMAMETimer.Interval = PinMAMEInterval
@@ -113,25 +126,12 @@ Sub table1_Init
     vpmtimer.addtimer 1500, "GiOn '"
 
     LoadLUT
+    solpost 0
 End Sub
 
 Sub table1_Paused:Controller.Pause = 1:End Sub
 Sub table1_unPaused:Controller.Pause = 0:End Sub
-Sub table1_exit
-    'NVramPatchExit
-    Controller.stop
-End Sub
-
-'******************
-' Realtime Updates
-'******************
-
-Sub RealTime_Timer
-    GIUpdate
-    RollingUpdate
-    LeftFlipperTop.RotZ = LeftFlipper.CurrentAngle
-    RightFlipperTop.RotZ = RightFlipper.CurrentAngle
-End Sub
+Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
 
 '**********
 ' Keys
@@ -141,18 +141,18 @@ Sub table1_KeyDown(ByVal Keycode)
     If keycode = LeftTiltKey Then Nudge 90, 5:PlaySound SoundFX("fx_nudge", 0), 0, 1, -0.1, 0.25
     If keycode = RightTiltKey Then Nudge 270, 5:PlaySound SoundFX("fx_nudge", 0), 0, 1, 0.1, 0.25
     If keycode = CenterTiltKey Then Nudge 0, 6:PlaySound SoundFX("fx_nudge", 0), 0, 1, 0, 0.25
-    if keycode = rightflipperkey then controller.switch(74) = 1
+    If keycode = RightFlipperKey Then Controller.Switch(31) = 1
     If keycode = LeftMagnaSave Then bLutActive = True: Lutbox.text = "level of darkness " & LUTImage + 1
     If keycode = RightMagnaSave Then
         If bLutActive Then NextLUT:End If
     End If
     If vpmKeyDown(keycode)Then Exit Sub
-    If keycode = PlungerKey Then PlaySoundat "fx_PlungerPull", Plunger:Plunger.Pullback
+    If keycode = PlungerKey Then PlaySoundAt "fx_PlungerPull", Plunger:Plunger.Pullback
 End Sub
 
 Sub table1_KeyUp(ByVal Keycode)
     If keycode = LeftMagnaSave Then bLutActive = False: LutBox.text = ""
-    if keycode = rightflipperkey then controller.switch(74) = 0
+    If keycode = RightFlipperKey Then Controller.Switch(31) = 0
     If vpmKeyUp(keycode)Then Exit Sub
     If keycode = PlungerKey Then PlaySoundAt "fx_plunger", Plunger:Plunger.Fire
 End Sub
@@ -219,7 +219,7 @@ Sub LeftSlingShot_Slingshot
     LeftSling4.Visible = 1
     Lemk.RotX = 26
     LStep = 0
-    vpmTimer.PulseSw 71
+    vpmTimer.PulseSw 42
     LeftSlingShot.TimerEnabled = 1
 End Sub
 
@@ -238,7 +238,7 @@ Sub RightSlingShot_Slingshot
     RightSling4.Visible = 1
     Remk.RotX = 26
     RStep = 0
-    vpmTimer.PulseSw 64
+    vpmTimer.PulseSw 41
     RightSlingShot.TimerEnabled = 1
 End Sub
 
@@ -251,59 +251,22 @@ Sub RightSlingShot_Timer
     RStep = RStep + 1
 End Sub
 
-' Scoring rubbers
-Sub sw44_Hit:vpmTimer.PulseSw 44:PlaySoundAtBall SoundFX("fx_rubber_band", DOFDropTargets):End Sub
-
-Sub sw54_Hit:vpmTimer.PulseSw 54:PlaySoundAtBall SoundFX("fx_rubber_band", DOFDropTargets):End Sub
-
-' Rubber animations
-Dim Rub1, Rub2
-
-Sub rlband003_Hit:Rub1 = 1:rlband003_Timer:End Sub
-
-Sub rlband003_Timer
-    Select Case Rub1
-        Case 1:r2.Visible = 0:r7.Visible = 1:rlband003.TimerEnabled = 1
-        Case 2:r7.Visible = 0:r8.Visible = 1
-        Case 3:r8.Visible = 0:r2.Visible = 1:rlband003.TimerEnabled = 0
-    End Select
-    Rub1 = Rub1 + 1
-End Sub
-
-Sub rlband008_Hit:Rub2 = 1:rlband008_Timer:End Sub
-Sub rlband008_Timer
-    Select Case Rub2
-        Case 1:r6.Visible = 0:r9.Visible = 1:rlband008.TimerEnabled = 1
-        Case 2:r9.Visible = 0:r10.Visible = 1
-        Case 3:r10.Visible = 0:r6.Visible = 1:rlband008.TimerEnabled = 0
-    End Select
-    Rub2 = Rub2 + 1
-End Sub
-
 ' Bumpers
-Sub Bumper1_Hit:vpmTimer.PulseSw 3:PlaySoundAt SoundFX("fx_bumper", DOFContactors), Bumper1:End Sub
-Sub Bumper2_Hit:vpmTimer.PulseSw 13:PlaySoundAt SoundFX("fx_bumper", DOFContactors), Bumper2:End Sub
-Sub Bumper3_Hit:vpmTimer.PulseSw 23:PlaySoundAt SoundFX("fx_bumper", DOFContactors), Bumper3:End Sub
+Sub Bumper1_Hit:vpmTimer.PulseSw 35:PlaySoundAt SoundFX("fx_bumper", DOFContactors), Bumper1:End Sub
+Sub Bumper2_Hit:vpmTimer.PulseSw 55:PlaySoundAt SoundFX("fx_bumper", DOFContactors), Bumper2:End Sub
+Sub Bumper3_Hit:vpmTimer.PulseSw 45:PlaySoundAt SoundFX("fx_bumper", DOFContactors), Bumper3:End Sub
 
 ' Drain & Saucers
 Sub Drain_Hit:PlaysoundAt "fx_drain", Drain:bsTrough.AddBall Me:End Sub
-Sub sw2_Hit::PlaysoundAt "fx_kicker_enter", sw2:bsRightSaucer.AddBall 0:End Sub
+Sub sw3_Hit:PlaysoundAt "fx_kicker_enter", sw3:bsRightSaucer.AddBall 0:End Sub
+Sub sw2_Hit:PlaysoundAt "fx_kicker_enter", sw2:bsLeftSaucer.AddBall 0:End Sub
 
 ' Rollovers
-Sub sw4_Hit:Controller.Switch(4) = 1:PlaySoundAt "fx_sensor", sw4:End Sub
-Sub sw4_UnHit:Controller.Switch(4) = 0:End Sub
+Sub sw51_Hit:Controller.Switch(51) = 1:PlaySoundAt "fx_sensor", sw51:End Sub
+Sub sw51_UnHit:Controller.Switch(51) = 0:End Sub
 
-Sub sw14_Hit:Controller.Switch(14) = 1:PlaySoundAt "fx_sensor", sw14:End Sub
-Sub sw14_UnHit:Controller.Switch(14) = 0:End Sub
-
-Sub sw24_Hit:Controller.Switch(24) = 1:PlaySoundAt "fx_sensor", sw24:End Sub
-Sub sw24_UnHit:Controller.Switch(24) = 0:End Sub
-
-Sub sw34_Hit:Controller.Switch(34) = 1:PlaySoundAt "fx_sensor", sw34:End Sub
-Sub sw34_UnHit:Controller.Switch(34) = 0:End Sub
-
-Sub sw42_Hit:Controller.Switch(42) = 1:PlaySoundAt "fx_sensor", sw42:End Sub
-Sub sw42_UnHit:Controller.Switch(42) = 0:End Sub
+Sub sw61_Hit:Controller.Switch(61) = 1:PlaySoundAt "fx_sensor", sw61:End Sub
+Sub sw61_UnHit:Controller.Switch(61) = 0:End Sub
 
 Sub sw52_Hit:Controller.Switch(52) = 1:PlaySoundAt "fx_sensor", sw52:End Sub
 Sub sw52_UnHit:Controller.Switch(52) = 0:End Sub
@@ -311,39 +274,76 @@ Sub sw52_UnHit:Controller.Switch(52) = 0:End Sub
 Sub sw62_Hit:Controller.Switch(62) = 1:PlaySoundAt "fx_sensor", sw62:End Sub
 Sub sw62_UnHit:Controller.Switch(62) = 0:End Sub
 
-' Spinners
-Sub Spinner1_Spin:vpmTimer.PulseSw 22:PlaySoundAt "fx_spinner", Spinner1:End Sub
-Sub Spinner2_Spin:vpmTimer.PulseSw 12:PlaySoundAt "fx_spinner", Spinner2:End Sub
-Sub Spinner3_Spin:vpmTimer.PulseSw 32:PlaySoundAt "fx_spinner", Spinner3:End Sub
+Sub sw5_Hit:Controller.Switch(5) = 1:PlaySoundAt "fx_sensor", sw5:End Sub
+Sub sw5_UnHit:Controller.Switch(5) = 0:End Sub
 
-'Targets
+Sub sw15_Hit:Controller.Switch(15) = 1:PlaySoundAt "fx_sensor", sw15:End Sub
+Sub sw15_UnHit:Controller.Switch(15) = 0:End Sub
+
+Sub sw25_Hit:Controller.Switch(25) = 1:PlaySoundAt "fx_sensor", sw25:End Sub
+Sub sw25_UnHit:Controller.Switch(25) = 0:End Sub
+
+Sub sw44_Hit:Controller.Switch(44) = 1:PlaySoundAt "fx_sensor", sw44:End Sub
+Sub sw44_UnHit:Controller.Switch(44) = 0:End Sub
+
+Sub sw64_Hit:Controller.Switch(64) = 1:PlaySoundAt "fx_sensor", sw64:End Sub
+Sub sw64_UnHit:Controller.Switch(64) = 0:End Sub
+
+' Right Ramp Exit
+Sub sw65_Hit:vpmTimer.PulseSw 65:End Sub
+
+' Spinners
+Sub Spinner1_Spin:vpmTimer.PulseSw 71:PlaySoundAt "fx_spinner", Spinner1:End Sub
+
+' Targets
+Sub sw13_Hit:vpmTimer.PulseSw 13:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
+Sub sw23_Hit:vpmTimer.PulseSw 23:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
 Sub sw33_Hit:vpmTimer.PulseSw 33:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
-Sub sw43_Hit:vpmTimer.PulseSw 43:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
 Sub sw53_Hit:vpmTimer.PulseSw 53:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
 Sub sw63_Hit:vpmTimer.PulseSw 63:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
 Sub sw73_Hit:vpmTimer.PulseSw 73:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
-Sub sw72_Hit:vpmTimer.PulseSw 72:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
+Sub sw34_Hit:vpmTimer.PulseSw 34:PlaySoundAtBall SoundFX("fx_target", DOFDropTargets):End Sub
+
+'Rubber animations
+Dim Rub1, Rub2
+
+Sub sw22_Hit: vpmTimer.PulseSw 22:Rub1 = 1:sw22_Timer:End Sub
+Sub sw22_Timer
+    Select Case Rub1
+        Case 1:r12.Visible = 1:sw22.TimerEnabled = 1
+        Case 2:r12.Visible = 0:r13.Visible = 1
+        Case 3:r13.Visible = 0:sw22.TimerEnabled = 0
+    End Select
+    Rub1 = Rub1 + 1
+End Sub
+
+Sub sw72_Hit: vpmTimer.PulseSw 72:Rub2 = 1:sw72_Timer:End Sub
+Sub sw72_Timer
+    Select Case Rub2
+        Case 1:r10.Visible = 1:sw72.TimerEnabled = 1
+        Case 2:r10.Visible = 0:r11.Visible = 1
+        Case 3:r11.Visible = 0:sw72.TimerEnabled = 0
+    End Select
+    Rub2 = Rub2 + 1
+End Sub
+
+' Rubbers
+Sub sw12_Hit:vpmTimer.PulseSw 12:End Sub
+Sub sw32_Hit:vpmTimer.PulseSw 32:End Sub
+Sub sw54_Hit:vpmTimer.PulseSw 54:End Sub
 
 '*********
 'Solenoids
 '*********
-
 SolCallback(1) = "bsTrough.SolOut"
-SolCallback(2) = "bsRightSaucer.SolOut"
-SolCallback(3) = "dtbank2.SolDropUp"
-SolCallback(4) = "dtbank3.SolDropUp"
-SolCallback(5) = "dtbank1.SolDropUp"
-'SolCallback(6) = ""
-SolCallback(7) = "dtbank1.SolHit 1,"
-SolCallback(8) = "dtbank1.SolHit 2,"
-SolCallback(9) = "dtbank1.SolHit 3,"
-SolCallback(10) = "dtbank1.SolHit 4,"
-SolCallback(11) = "dtbank1.SolHit 5,"
-
-SolCallback(12) = "SolLeftGi"  'left flash effect
-SolCallback(13) = "SolRightGi" 'right flash effect
-
-SolCallback(17) = "SolGi"      '17=relay
+SolCallback(2) = "bsLeftSaucer.SolOut"
+SolCallback(3) = "bsRightSaucer.SolOut"
+SolCallback(4) = "SetLamp 104,"
+SolCallback(5) = "SolPost"
+SolCallback(6) = "SolGate"
+SolCallback(7) = "dtCbank.SolDropUp"
+SolCallback(8) = "dtRbank.SolDropUp"
+SolCallback(17) = "SolGi" '17=relay
 SolCallback(18) = "vpmNudge.SolGameOn"
 
 Sub SolGi(enabled)
@@ -354,27 +354,25 @@ Sub SolGi(enabled)
     End If
 End Sub
 
-Sub SolLeftGi(enabled)
-    If enabled Then
-        For each x in aGiLeftLights
-            x.State = 0
-        Next
+Sub SolPost(Enabled)
+    If Enabled Then
+        PostFlipper.RotateToStart
+		Popupwall.IsDropped = 0
+		PlaySound"fx_SolenoidOn"
     Else
-        For each x in aGiLeftLights
-            x.State = 1
-        Next
+        PostFlipper.RotateToEnd
+		Popupwall.IsDropped = 1
+		PlaySound"fx_SolenoidOff"
     End If
 End Sub
 
-Sub SolRightGi(enabled)
-    If enabled Then
-        For each x in aGiRightLights
-            x.State = 0
-        Next
+Sub SolGate(Enabled)
+    If Enabled Then
+		PlaySound"fx_SolenoidOn"
+        DiverterFlipper.RotateToEnd
     Else
-        For each x in aGiRightLights
-            x.State = 1
-        Next
+		PlaySound"fx_SolenoidOff"
+        DiverterFlipper.RotateToStart
     End If
 End Sub
 
@@ -478,27 +476,37 @@ Sub LampTimer_Timer()
     End If
     UpdateLeds
     UpdateLamps
-    'NVramPatchKeyCheck
+    NVramPatchKeyCheck
 End Sub
 
 Sub UpdateLamps()
-    Lamp 0, li0
-    Lamp 1, li1
+    Lampm 0, li0
+    Flash 0, li0a
+    Lampm 1, li1
+    Flash 1, li1a
     Lamp 10, li10
-    Lampm 100, li100
-    Flash 100, li100a
-    Lampm 101, li101
-    Flash 101, li101a
+    Lamp 100, li100
+    Lamp 101, li101
     Lamp 102, li102
     Lamp 103, li103
     Lamp 109, li109
     Lamp 11, li11
-    Lamp 110, LightBumper1
-    Lamp 111, LightBumper2
-    Lamp 112, LightBumper3
+    Lamp 110, li110
+    Lamp 111, li111
+    Lamp 112, li112
     Lamp 113, li113
+    Lamp 119, li119
     Lamp 12, li12
+    Lamp 120, li120
+    Lamp 121, li121
+    Lamp 122, li122
     Lamp 123, li123
+    Lamp 129, li129
+    Lamp 130, li130
+    Lampm 131, li131a
+    Lamp 131, li131
+    Lamp 132, li132
+    Lampm 133, li133a
     Lamp 133, li133
     Lamp 143, li143
     Lamp 153, li153
@@ -516,40 +524,39 @@ Sub UpdateLamps()
     Lamp 51, li51
     Lamp 52, li52
     Lamp 60, li60
-    Lampm 61, li61
-    Lampm 61, li61a
-    Flashm 61, li61b
-    Flash 61, li61c
+    Lamp 61, li61
     Lamp 62, li62
-    Lampm 70, li70
-    Flash 70, li70a
-    Lampm 71, li71
-    Flash 71, li71a
-    Lampm 72, li72
-    Flash 72, li72a
+    Lamp 70, li70
+    Lamp 71, li71
+    Lamp 72, li72
     Lamp 79, li79
     Lamp 80, li80
     Lamp 81, li81
-    Lampm 82, li82
-    Flash 82, li82a
-    Lamp 83, li83
+    Lamp 82, li82
+    Lampm 83, li83
+    Flash 83, li83a
     Lamp 89, li89
     Lamp 90, li90
     Lamp 91, li91
-    Lampm 92, li92
-    Flash 92, li92a
+    Lamp 92, li92
     Lamp 93, li93
-    Lampm 99, li99
-    Flash 99, li99a
+    Lamp 99, li99
     'backdrop lights
-    Lamp 139, li139
-    Lamp 140, li140
-    Lamp 141, li141
-    Lamp 142, li142
-    Lamp 149, li149
-    Lamp 150, li150
-    Lamp 151, li151
-    Lamp 152, li152
+        Lamp 139, li139
+        Lamp 140, li140
+        Lamp 141, li141
+        Lamp 142, li142
+        Lamp 149, li149
+        Lamp 150, li150
+        Lamp 151, li151
+        Lamp 152, li152
+    'Flasher
+    Lampm 104, f4
+    Lampm 104, f4a
+    Lampm 104, f4b
+    Lampm 104, f4c
+    Lampm 104, f4d
+    Lamp 104, f4e
 End Sub
 
 ' div lamp subs
@@ -626,6 +633,20 @@ Sub Reelm(nr, object)
         Case 3:object.SetValue 2
         Case 2:object.SetValue 3
         Case 1:object.SetValue 0
+    End Select
+End Sub
+
+Sub NFadeReel(nr, object)
+    Select Case FadingState(nr)
+        Case 4:object.SetValue 1:FadingState(nr) = 1
+        Case 3:object.SetValue 0:FadingState(nr) = 0
+    End Select
+End Sub
+
+Sub NFadeReelm(nr, object)
+    Select Case FadingState(nr)
+        Case 4:object.SetValue 1
+        Case 3:object.SetValue 0
     End Select
 End Sub
 
@@ -851,7 +872,7 @@ End Function
 
 Const tnob = 19   'total number of balls
 Const lob = 0     'number of locked balls
-Const maxvel = 30 'max ball velocity
+Const maxvel = 32 'max ball velocity
 ReDim rolling(tnob)
 InitRolling
 
@@ -928,91 +949,89 @@ Sub OnBallBallCollision(ball1, ball2, velocity)
     PlaySound("fx_collide"), 0, Csng(velocity) ^2 / 2000, Pan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
 End Sub
 
-' ' =============================================================================================================
-' '                 NVram patch for Taito do Brasil tables by Pmax65
-' '
-' ' NVramPatchExit	' Must be placed before the Controler.Stop statement into the Table1_Exit Sub
-' ' NVramPatchLoad	' Must be placed before the VPinMAME controller initialization
-' ' NVramPatchKeyCheck' Must be placed in the lamptimer timer
-' ' =============================================================================================================
+' =============================================================================================================
+'                 NVram patch for Taito do Brasil tables by Pmax65
+'
+' NVramPatchExit	' Must be placed before the Controler.Stop statement into the Table1_Exit Sub
+' NVramPatchLoad	' Must be placed before the VPinMAME controller initialization
+' NVramPatchKeyCheck' Must be placed in the lamptimer timer
+' =============================================================================================================
 
-' Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
+Const GameOverLampID = 149 ' set this constant to the ID number of the game-over lamp
 
-' Dim NVramPatchCoinCnt
+Dim NVramPatchCoinCnt
 
-' Function GetNVramPath()
-'     Dim WshShell
-'     Set WshShell = CreateObject("WScript.Shell")
-'     GetNVramPath = WshShell.RegRead("HKCU\Software\Freeware\Visual PinMame\globals\nvram_directory")
-' End function
+Function GetNVramPath()
+    GetNVramPath = "pinmame\nvram"
+End function
 
-' Function FileExists(FileName)
-'     DIM FSO
-'     FileExists = False
-'     Set FSO = CreateObject("Scripting.FileSystemObject")
-'     FileExists = FSO.FileExists(FileName)
-'     Set FSO = Nothing
-' End Function
+Function FileExists(FileName)
+    DIM FSO
+    FileExists = False
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    FileExists = FSO.FileExists(FileName)
+    Set FSO = Nothing
+End Function
 
-' Sub Kill(FileName)
-'     Dim ObjFile, FSO
-'     On Error Resume Next
-'     Set FSO = CreateObject("Scripting.FileSystemObject")
-'     Set ObjFile = FSO.GetFile(FileName)
-'     ObjFile.Delete
-'     On Error Goto 0
-'     Set FSO = Nothing
-' End Sub
+Sub Kill(FileName)
+    Dim ObjFile, FSO
+    On Error Resume Next
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    Set ObjFile = FSO.GetFile(FileName)
+    ObjFile.Delete
+    On Error Goto 0
+    Set FSO = Nothing
+End Sub
 
-' Sub Copy(SourceFileName, DestFileName)
-'     Dim FSO
-'     On Error Resume Next
-'     Set FSO = CreateObject("Scripting.FileSystemObject")
-'     FSO.CopyFile SourceFileName, DestFileName, True
-'     On Error Goto 0
-'     Set FSO = Nothing
-' End Sub
+Sub Copy(SourceFileName, DestFileName)
+    Dim FSO
+    On Error Resume Next
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    FSO.CopyFile SourceFileName, DestFileName, True
+    On Error Goto 0
+    Set FSO = Nothing
+End Sub
 
-' Sub NVramPatchLoad
-'     NVramPatchCoinCnt = 0
-'     If FileExists(GetNVramPath + "\" + cGameName + ".nvb")Then
-'         Copy GetNVramPath + "\" + cGameName + ".nvb", GetNVramPath + "\" + cGameName + ".nv"
-'     Else
-'         Copy GetNVramPath + "\" + cGameName + ".nv", GetNVramPath + "\" + cGameName + ".nvb"
-'     End If
-' End Sub
+Sub NVramPatchLoad
+    NVramPatchCoinCnt = 0
+    If FileExists(GetNVramPath + "\" + cGameName + ".nvb")Then
+        Copy GetNVramPath + "\" + cGameName + ".nvb", GetNVramPath + "\" + cGameName + ".nv"
+    Else
+        Copy GetNVramPath + "\" + cGameName + ".nv", GetNVramPath + "\" + cGameName + ".nvb"
+    End If
+End Sub
 
-' Sub NVramPatchExit
-'     If LampState(GameOverLampID)Then
-'         Kill GetNVramPath + "\" + cGameName + ".nvb"
-'         Do
-'             LampTimer_Timer          ' This loop is needed to avoid the NVram reset (losing the hi-score and credits)
-'         Loop Until LampState(20) = 1 ' when the game is over but the match procedure isn't still ended
-'     End If
-' End Sub
+Sub NVramPatchExit
+    If LampState(GameOverLampID)Then
+        Kill GetNVramPath + "\" + cGameName + ".nvb"
+        Do
+            LampTimer_Timer          ' This loop is needed to avoid the NVram reset (losing the hi-score and credits)
+        Loop Until LampState(20) = 1 ' when the game is over but the match procedure isn't still ended
+    End If
+End Sub
 
-' ' =============================================================================================================
-' ' To completely erase the NVram file keep the Start Game button pushed while inserting
-' ' two coins into the first coin slit (this resets the high scores too)
-' ' =============================================================================================================
+' =============================================================================================================
+' To completely erase the NVram file keep the Start Game button pushed while inserting
+' two coins into the first coin slit (this resets the high scores too)
+' =============================================================================================================
 
-' Sub NVramPatchKeyCheck
-'     If Controller.Switch(swStartButton)then
-'         If Controller.Switch(swCoin1)then
-'             If NVramPatchCoinCnt = 2 Then
-'                 Controller.Stop
-'                 Kill GetNVramPath + "\" + cGameName + ".nv"
-'                 Kill GetNVramPath + "\" + cGameName + ".nvb"
-'                 QuitPlayer 2
-'             Else
-'                 NVramPatchCoinCnt = 1
-'             End If
-'         Else
-'             If NVramPatchCoinCnt = 1 Then
-'                 NVramPatchCoinCnt = 2
-'             End If
-'         End If
-'     Else
-'         NVramPatchCoinCnt = 0
-'     End If
-' End Sub
+Sub NVramPatchKeyCheck
+    If Controller.Switch(swStartButton)then
+        If Controller.Switch(swCoin1)then
+            If NVramPatchCoinCnt = 2 Then
+                Controller.Stop
+                Kill GetNVramPath + "\" + cGameName + ".nv"
+                Kill GetNVramPath + "\" + cGameName + ".nvb"
+                QuitPlayer 2
+            Else
+                NVramPatchCoinCnt = 1
+            End If
+        Else
+            If NVramPatchCoinCnt = 1 Then
+                NVramPatchCoinCnt = 2
+            End If
+        End If
+    Else
+        NVramPatchCoinCnt = 0
+    End If
+End Sub

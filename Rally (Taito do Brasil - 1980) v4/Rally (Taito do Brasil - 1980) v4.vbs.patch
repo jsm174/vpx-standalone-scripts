@@ -1,0 +1,10 @@
+--- "Rally (Taito do Brasil - 1980) v4.vbs.original"	2024-02-28 10:35:08.030423815 +0100
++++ "Rally (Taito do Brasil - 1980) v4.vbs"	2024-02-28 10:34:54.640622484 +0100
+@@ -60,7 +60,6 @@
+ '************
+ 
+ Sub table1_Init
+-    NVramPatchLoad
+     vpmInit me
+     With Controller
+         .GameName = cGameName

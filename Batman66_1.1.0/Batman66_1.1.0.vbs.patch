@@ -1,0 +1,23 @@
+--- Batman66_1.1.0.vbs.original	2024-04-07 22:59:01.627712877 +0200
++++ Batman66_1.1.0.vbs	2024-04-07 22:57:12.480538088 +0200
+@@ -12991,7 +12991,8 @@
+ End Class 
+ Dim AnimateArray(10)
+ Dim aniDict
+-set aniDict = New cvpmDictionary
++'set aniDict = New cvpmDictionary ' this seems to hide errors
++set aniDict = CreateObject("Scripting.Dictionary")
+ Sub AnimateLabelCancel(LabelName)
+ 'debug.print "AnimateLabelCancel:" & LabelName
+ 	On error Resume next 
+@@ -13015,6 +13016,10 @@
+ 	thisAni.ani_count=0
+ 	thisAni.ani_Enabled=False 
+ 	thisAni.ani_Cancelled=False 
++	'Add fails if the key already exists according to below linked spec.
++	'I do wonder why this does not fail on windows, or maybe this is ignored somewhere?
++	'https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/add-method-dictionary#remarks
++	if aniDict.Exists(LabelName) then aniDict.Remove LabelName
+ 	aniDict.add LabelName, thisAni 
+ 	vpmTimer.AddTimer initialDelay, "aniDict.Item(""" & LabelName & """).ani_Enabled = True:tmrPupAnimation.Enabled = True '"
+ End Sub
