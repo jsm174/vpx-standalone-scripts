@@ -1,0 +1,11 @@
+--- "Fifteen (Inder 1974) v4.vbs.original"	2024-06-12 13:38:16.916317267 +0200
++++ "Fifteen (Inder 1974) v4.vbs"	2024-06-12 12:16:58.274386428 +0200
+@@ -899,7 +899,7 @@
+ End Sub
+ 
+ Sub Display_Match()
+-    MatchReel.SetValue(Match \ 10) + 1
++    MatchReel.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100
