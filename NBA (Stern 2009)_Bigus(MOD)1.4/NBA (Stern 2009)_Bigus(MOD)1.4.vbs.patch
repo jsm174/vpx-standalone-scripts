@@ -1,0 +1,22 @@
+--- "NBA (Stern 2009)_Bigus(MOD)1.4.vbs.original"	2024-06-25 09:01:50.970590559 +0200
++++ "NBA (Stern 2009)_Bigus(MOD)1.4.vbs"	2024-06-25 08:59:33.609189917 +0200
+@@ -279,16 +279,14 @@
+ '*********            solenoid fuctions                   **********************
+ '*******************************************************************************
+ 
+-:primitive1.RotAndTra5=-48
++primitive1.RotAndTra5=-48
+ Sub orbitblock(enabled)
+     if Enabled then
+-       
+-:stopper.IsDropped=0
++        stopper.IsDropped=0
+ orbitTimerUp.Enabled=1
+      else
+         orbitTimerDWN.Enabled=1
+-:stopper.IsDropped=1
+-
++        stopper.IsDropped=1
+      end if
+     End Sub
+ 
