@@ -1,0 +1,12 @@
+--- ./Junk Yard (Williams 1996) v1.83.vbs	2024-07-28 00:14:30
++++ ./Junk Yard (Williams 1996) v1.83.vbs.dmd	2024-07-28 17:52:06
+@@ -887,7 +887,7 @@
+ '-----------------------------------
+ Dim Wrecker,Wrecker2,bottomlimit,XBallX,YBallX,ScaleFactor,LowerBottomLimit,UpperBottomLimit,Wreckerballsize
+ Dim HoldCrane,WreckBallCenterX,WreckBallCenterY
+-LowerBottomLimit = 47
++LowerBottomLimit = 30 
+ UpperBottomLimit = 120
+ bottomlimit = LowerBottomLimit
+ HoldCrane = False
+\ No newline at end of file
