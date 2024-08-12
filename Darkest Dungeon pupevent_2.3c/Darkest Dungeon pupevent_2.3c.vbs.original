@@ -50,11 +50,11 @@
 
 
 
-'         DarkestDungeon v2.2 - PuP and PUPDMD
+'         DarkestDungeon v2.3 - PuP and PUPDMD
 ' ****************************************************************
-' December 2023
-' Table Version: 2.2
-' PuP and PUPDMD mod: V2.2
+' August 2024
+' Table Version: 2.3
+' PuP and PUPDMD mod: V2.2c
 
 ' CREDITS:
 
@@ -76,15 +76,92 @@
 ' PrimeTime5k					Staged Flipper Code
 ' RetroG33k                     PuPDMD Foundation
 ' Core Testers					pinballgramps, pinstratsdan, primetime5k,spatolar
-' Additional Testers			passion4pins, loadedweapon,pegula0420, 10mmsocket
+' Additional Testers			passion4pins, loadedweapon,pegula0420, 10mmsocket, GeradG
+
+
+
+'2.3
+' Fixed Cball Jackpot Glitch
+' Changed Scorbit to new Codes
+' Added Tweak Menu for Options
+' Added Scorbit Timeline
+' Tweaked VR plunger and VR magna save button positions
 
 '
 Option Explicit
 Randomize
 SetLocale 1033
 
+'         USER OPTIONS
+'//////////////////////////////////////////////////////////////////////
+Const ScorbitActive				= 0 	' Is Scorbit Active	, Turn on by changing this value to 1
+Const BallBright 				= 1		'0 - Normal, 1 - Bright
+Const EnableLUTSelector 		= 1		' 1 - on; 0 - off; if on then the magnasave button let's you rotate all LUT's
+Const FlipperBounce 			= 0.6		' Recommended values .5-.88 (.88 default nFozzy, .6 Default for this Table)
+'/////////////////////////////////////////////////////////////////////
+'*************************************************************
+' VR Room Auto-Detect
+'*************************************************************
+Dim VR_Obj, VRMode, VRRoomChoice
+
+	VRRoomChoice 				= 1			' 1 = Cathedral Room, 2 = Sphere Dungeon
+
+	If RenderingMode = 2 Then
+		VRMode = True
+		lrail.Visible = 0
+		rrail.Visible = 0
+		flasher1.Visible = 0
+		flasher2.Visible = 0
+		wall8.Visible = 0
+		wall8.SideVisible = 0
+		wall9.Visible = 0
+		wall9.SideVisible = 0
+		DarknessLayer2.Visible = 0
+		TimerVRPlunger2.enabled = True 
+		For Each VR_Obj in VRCabinet : VR_Obj.Visible = 1 : Next
+		If VRRoomChoice = 1 Then
+			For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 1 : Next
+		Else
+			For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 1 : Next
+		End If
+		PinCab_Backglass.BlendDisableLighting = 1.50
+	Else
+		For Each VR_Obj in VRCabinet : VR_Obj.Visible = 0 : Next
+		For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 0 : Next
+		For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 0 : Next
+		VRMode = False
+	End If
+
+' *********************************************************************
+Dim DefaultBall:DefaultBall			= 4 ' Determines which ball is loaded as the default ball
+									' 0 - Silver Glow
+									' 1 - Purple Glow
+									' 2 - Green Glow
+									' 3 - Blue Glow
+									' 4 - Silver NO Glow
+									' 5 - Blue Glow
+									' 6 - Flaming Glow
+									' 7 - Yellow Glow
+									' 8 - Gold Glow
+									' 9 - Pink Glow
+
+'============================================================
+'''' END OF USER OPTIONS 
+'============================================================
+
+
+
+
+
+
 Dim CurrTime,objIEDebugWindow
 CurrTime = Timer
+
+Const     ScorbitShowClaimQR	= 1 	' If Scorbit is active this will show a QR Code  on ball 1 that allows player to claim the active player from the app
+Const     ScorbitClaimSmall		= 1 	' Make Claim QR Code smaller for high res backglass 
+Const     ScorbitUploadLog		= 1 	' Store local log and upload after the game is over 
+Const     ScorbitAlternateUUID  = 0 	' Force Alternate UUID from Windows Machine and saves it in VPX Users directory (C:\Visual Pinball\User\ScorbitUUID.dat)
+Dim GameModeStrTmp
 
 ' Determine the screen setup based on the pupack setting (e.g. which ,bat file was run)
 
@@ -115,11 +192,10 @@ Debug "DMDTYPE = " & DMDType
 dim useRealDMDScale : useRealDMDScale=0    ' 0 or 1 for RealDMD scaling.  Choose which one you prefer.
 dim useDMDVideos    : useDMDVideos=true   ' true or false to use DMD splash videos.
 Dim pGameName       : pGameName="DarkestDungeon"  'pupvideos foldername, probably set to cGameName in realworld
-Const BallBright = 1				'0 - Normal, 1 - Bright
-Const VolumeDial = 0.8
-Const BallRollVolume = 0.5 			'Level of ball rolling volume. Value between 0 and 1
-Const RampRollVolume = 0.5 			'Level of ramp rolling volume. Value between 0 and 1
-Const GameVersion = "2.1"
+Dim VolumeDial' = 0.8
+Dim BallRollVolume' = 0.5 			'Level of ball rolling volume. Value between 0 and 1
+Dim RampRollVolume' = 0.5 			'Level of ramp rolling volume. Value between 0 and 1
+Const GameVersion = "2.3"
 Const AudioExpiry = 4000			' Duration of Queue Expiration  
 Const GenPuPExpiry = 6000
 Const ShortPuPExpiry = 5000
@@ -152,50 +228,134 @@ Dim tableheight: tableheight = Table1.height
 '//////////////////////////////////////////////////////////////////////
 ' Choice of ramp types 
 ' wood ramps have iron & wooden planks, other ramps are bronze metal 
-Const WoodRamps = True
+Dim WoodRamps':WoodRamps = True
 ' Radiant MODE - Adds 5 seconds to heartbeat timers, changes outlane posts position 
-Const Difficulty 				= 2    ' 1 - Radiant , 2 - Darkest , 3 - Stygian (easy,med,hard)
-Const VRRoomChoice 				= 1			' 1 = Cathedral Room, 2 = Sphere Dungeon
-Const StagedFlippers 			= 0         '0 = Normal  1 = Staged Flippers
-Const MaxDarkness 				= 95 ' determines how dark the playfield can get (higher number equals darker : 80-99 is recommended range, Default is 95
-Const DefaultDarkness			= 5  ' determines how dark the playfield is outside of dungeons/battles
+Dim Difficulty':Difficulty 				= 1    ' 1 - Radiant , 2 - Darkest , 3 - Stygian (easy,med,hard)
+Dim StagedFlippers':StagedFlippers 			= 0         '0 = Normal  1 = Staged Flippers
+Dim MaxDarkness':MaxDarkness 				= 95 ' determines how dark the playfield can get (higher number equals darker : 80-99 is recommended range, Default is 95
+Dim DefaultDarkness':DefaultDarkness			= 5  ' determines how dark the playfield is outside of dungeons/battles
 Dim DarknessSpeed
-DarknessSpeed				 	= 175 ' determines how quickly the table gets dark (lower number equals faster)
-Const EnableFlicker 			= True
-Const EnableLUTSelector 		= 1		' 1 - on; 0 - off; if on then the magnasave button let's you rotate all LUT's
-Const FlipperBounce 			= .6		' Recommended values .5-.88 (.88 default nFozzy)
-Const MagnetTime 				= 30			' Magnet stays on until right magna save key releases it, or timer runs out value is in seconds
+'DarknessSpeed				 	= 175 ' determines how quickly the table gets dark (lower number equals faster)
+Dim EnableFlicker':EnableFlicker 			= True
+Dim MagnetTime':MagnetTime				= 30			' Magnet stays on until right magna save key releases it, or timer runs out value is in seconds
 ' Magnet variables if you do not have magna save keys
-Const UseRflipper 				= False		' Control magnet - Turn on if you don't have magna save buttons
-Const AutoMagnetTime 			= 20		' Controls how many seconds the magnet is turned on for when right inlane is hit
-Const AutoMagnetOn 				= False		' Controls if right inline turns on magnet automatically
+Dim UseRflipper':UseRflipper 				= False		' Control magnet - Turn on if you don't have magna save buttons
+Dim AutoMagnetTime':AutoMagnetTime 			= 20		' Controls how many seconds the magnet is turned on for when right inlane is hit
+Dim AutoMagnetOn ':AutoMagnetOn 				= False		' Controls if right inline turns on magnet automatically
 '************************************************CHOOSE FPS***********************************************************************
-Const FPS 						= 1			' Slow PC Recommended "0" Fast PC Recommended 1
-Const ResetHighScore			= 0		'0 = Keep Scores.  1 = Reset all high scores.  START TABLE ONCE to reset high scores and then set this back to 0
-'//////////////////////////////////////////////////////////////////////
-dim ScorbitActive
-ScorbitActive					= 0 	' Is Scorbit Active	
-Const     ScorbitShowClaimQR	= 1 	' If Scorbit is active this will show a QR Code  on ball 1 that allows player to claim the active player from the app
-Const     ScorbitClaimSmall		= 1 	' Make Claim QR Code smaller for high res backglass 
-Const     ScorbitUploadLog		= 0 	' Store local log and upload after the game is over 
-Const     ScorbitAlternateUUID  = 0 	' Force Alternate UUID from Windows Machine and saves it in VPX Users directory (C:\Visual Pinball\User\ScorbitUUID.dat)
-'/////////////////////////////////////////////////////////////////////
-Const DefaultBall				= 4 ' Determines which ball is loaded as the default ball
+Dim FPS':FPS 						= 1			' Slow PC Recommended "0" Fast PC Recommended 1
+Dim ResetHighScore':ResetHighScore			= 0		'0 = Keep Scores.  1 = Reset all high scores.  START TABLE ONCE to reset high scores and then set this back to 0
+
+Const FlexDMDHighQuality = True  ' NOT USED IN Darkest Dungeon
+
+Dim FlipperTricksOpt ': FlipperTricksOpt = 1		'Easy (Keyboard & Gamepad) - 0, Standard (Optimal for leaf switches) - 1 (default)
+
+'==================================================================================================================================
+' Called when options are tweaked by the player. 
+' - 0: game has started, good time to load options and adjust accordingly
+' - 1: an option has changed
+' - 2: options have been reseted
+' - 3: player closed the tweak UI, good time to update staticly prerendered parts
+
+' Table1.Option arguments are: 
+' - option name, minimum value, maximum value, step between valid values, default value, unit (0=None, 1=Percent), an optional arry of literal strings
+
+Dim dspTriggered : dspTriggered = False
+Sub Table1_OptionEvent(ByVal eventId)
+	If eventId = 1 And Not dspTriggered Then dspTriggered = True : DisableStaticPreRendering = True : End If
+
+	'Difficulty
+	Difficulty = Table1.Option("Game Difficulty", 1, 3, 1, 1, 0, Array("Radiant-Easy (Default)", "Darkest-Medium", "Stygian-Hard"))
+	SetDifficulty Difficulty
+
+	' VR Room
+'	VRRoomChoice = Table1.Option("VR Room Choice", 1, 2, 1, 1, 0, Array("1 - Cathedral (Defualt)", "2 - Sphere Dungeon"))
+'	SetVRRoom VRRoomChoice
+
+	'FPS	
+	' Slow PC Recommended "0" Fast PC Recommended 1
+	FPS = Table1.Option("Frames Per Second Adj", 0, 1, 1, 0, 0, Array("0 - Fast CPU (Default)", "1 - Slow CPU "))
+
+	' Default ball
+ ' Determines which ball is loaded as the default ball
 									' 0 - Silver Glow
 									' 1 - Purple Glow
 									' 2 - Green Glow
 									' 3 - Blue Glow
-									' 4 - Silver NO Glow
+				'DEFAULT			' 4 - Silver NO Glow
 									' 5 - Blue Glow
 									' 6 - Flaming Glow
 									' 7 - Yellow Glow
 									' 8 - Gold Glow
 									' 9 - Pink Glow
+'	DefaultBall = Table1.Option("Default Ball", 0, 9, 1, 4, 0, Array("0-9"," 4 is Default"))
 
-'FlexDMD in high or normal quality
-'change it to True if you have an LCD screen, 256x64
-'or keep it False if you have a real DMD at 128x32 in size
-Const FlexDMDHighQuality = True  ' NOT USED IN Darkest Dungeon
+	'Scorbit
+'	ScorbitActiveOpt = Table1.Option("Scorbit Active", 0, 1, 1, 0, 0, Array("0 - Off", "1 - On"))
+'	SetScorbitActive ScorbitActiveOpt
+
+	'Staged Flipper
+	'0 = Normal  1 = Staged Flippers
+	StagedFlippers = Table1.Option("Staged Flippers", 0, 1, 1, 0, 0, Array("0 - Off", "1 - On"))
+	'SetStagedFlippers
+
+	'Max Dungeon Darkness
+	MaxDarkness = Table1.Option("Max Dungeon Darkness", 80, 99, 1, 95, 0, Array("80-99"," 95 (Default)"))
+
+	'Default Dungeon DarknessLayer
+	' determines how dark the playfield can get (higher number equals darker
+	DefaultDarkness = Table1.Option("Starting Dungeon Darkness", 0, 80, 1, 5, 0, Array("0-80"," 5 (Default)"))
+
+	'Balls Per Game
+	' Set How Many Balls Per Game
+	BallsPerGame = Table1.Option("Balls Per Game", 3, 5, 1, 3, 0, Array("3 (Default)","4", "5"))
+	SetBallsPerGame BallsPerGame
+
+
+	'Enable GI flicker
+	EnableFlicker = Table1.Option("Enable GI Flicker", 0, 1, 1, 1, 0, Array("0 - Off", "1 - On (Default)"))
+'	EnableFlicker = 1
+
+	'Magnet Time
+	' Magnet stays on until right magna save key releases it, or timer runs out value is in seconds
+	MagnetTime = Table1.Option("Magnet Duration", 0, 999, 1, 30, 0, Array("0-999"," 30 (Default)"))
+
+	'Auto Magnet Time
+	' Controls how many seconds the magnet is turned on for when right inlane is hit
+	AutoMagnetTime = Table1.Option("Auto Magnet Duration", 0, 99, 1, 20, 0, Array("0-99"," 20 (Default)"))
+
+	'AutoMagnet On
+	' Controls if right inline turns on magnet automatically
+	AutoMagnetOn = Table1.Option("Auto Magnet from Inlane", 0, 1, 1, 0, 0, Array("0 - Off (Default)", "1 - On "))
+
+	'Wood Ramps
+	WoodRamps = Table1.Option("Type of Ramps", 0, 1, 1, 1, 0, Array("0 - Bronze", "1 - Wood (Default) "))
+	SetWoodRamps WoodRamps
+
+	'Use R Flipper
+	' Control magnet - Turn on if you don't have magna save buttons
+	UseRFlipper = Table1.Option("Use Right Flipper For Magnet", 0, 1, 1, 0, 0, Array("0 - Off (Default)", "1 - On "))
+
+	FlipperTricksOpt = Table1.Option("Flipper Tricks Difficulty", 0, 1, 1, 1, 0, Array("Easy (Keyboard & Gamepad)", "Standard (Optimal for leaf switches)"))
+	SetFlipperTricks FlipperTricksOpt
+
+	'LUT Selector
+	' 1 - on; 0 - off; if on then the magnasave button let's you rotate all LUT's
+	'EnableLUTSelector = Table1.Option("Enable LUT Selection", 0, 1, 1, 1, 0, Array("False ", "True (Default)"))
+	'SetLUT EnableLUTSelector	
+
+	' Reset High Scores
+	'0 = Keep Scores.  1 = Reset all high scores.  START TABLE ONCE to reset high scores and then set this back to 0
+	ResetHighScore = Table1.Option("Reset High Scores", 0, 1, 1, 0, 0, Array("0 - Keep Scores", "1 - Reset Scores (Must Save & Quit) "))
+
+    ' Sound volumes
+    VolumeDial = Table1.Option("Mech Volume", 0, 1, 0.01, 0.8, 1)
+    BallRollVolume = Table1.Option("Ball Roll Volume", 0, 1, 0.01, 0.5, 1)
+	RampRollVolume = Table1.Option("Ramp Roll Volume", 0, 1, 0.01, 0.5, 1)
+  
+	If eventId = 3 And dspTriggered Then dspTriggered = False : DisableStaticPreRendering = False : End If
+End Sub
+'================================================================================================================================================================
 
 
 '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,19 +378,17 @@ End Sub
 
 ' Define any Constants
 Const cGameName = "DarkestDungeon"
-Const myVersion = "2.2"
+Const myVersion = "2.1"
 Const MaxPlayers = 4          ' from 1 to 4
 Const MaxMultiplier = 10      ' limit playfield multiplier
 Const MaxBonusMultiplier = 10 'limit Bonus multiplier
-Dim BallsPerGame:  BallsPerGame = 5      ' usually 3 or 5   RTP7
+Dim BallsPerGame     ' actually redefined in setballspergame routine 
 Const MaxMultiballs = 5       ' max number of balls during multiballs
 Const TorchReq = 20 ' number of totch hits required to complete phase 1 of InTheDark
 Const RampReq = 2 ' number of ramps hits required for each ramp to begin Gambler Mode
 Const SpinReq = 20 ' number of spins each side required to begin blacksmith mode
 Const BlacksmithTime = 40 ' Number of seconds for each blacksmith shot
 Const HeroHealth = 25 ' Base health for heros
-
-
 
 
 'Const AutoFlipper = 1 ' 1 - ON, 0 - OFF (automatically shoots locked magnet ball into upper playfield)
@@ -306,7 +464,6 @@ Dim TorchLevel(5) ' Torch Levels used to determine darkness of table
 Dim OldLUT,OldGI
 
 ' Define Game Flags
-Dim bDungeonsCleared
 Dim bBallDown
 Dim bInn,bVillage
 Dim bSupressDMD
@@ -351,36 +508,7 @@ Dim mMagnet
 Dim cbLeft    'captive ball at the magnet
 Dim Centerpoint : Centerpoint = 217.2829
 
-'*************************************************************
-' VR Room Auto-Detect
-'*************************************************************
-Dim VR_Obj, VRMode
 
-If RenderingMode = 2 Then
-	VRMode = True
-	lrail.Visible = 0
-	rrail.Visible = 0
-	flasher1.Visible = 0
-	flasher2.Visible = 0
-	wall8.Visible = 0
-	wall8.SideVisible = 0
-	wall9.Visible = 0
-	wall9.SideVisible = 0
-	DarknessLayer2.Visible = 0
-	For Each VR_Obj in VRCabinet : VR_Obj.Visible = 1 : Next
-	If VRRoomChoice = 1 Then
-		For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 1 : Next
-	Else
-		For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 1 : Next
-	End If
-	PinCab_Backglass.BlendDisableLighting = 1.50
-Else
-	For Each VR_Obj in VRCabinet : VR_Obj.Visible = 0 : Next
-	For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 0 : Next
-	For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 0 : Next
-	VRMode = False
-End If
-' *********************************************************************
 '                Visual Pinball Defined Script Events
 ' *********************************************************************
 
@@ -431,7 +559,7 @@ Exit Sub
 		objIEDebugWindow.ToolBar = False
 		objIEDebugWindow.Width = 900	
 		objIEDebugWindow.Height = 500
-		objIEDebugWindow.Left = 2100
+		objIEDebugWindow.Left = 4100
 		objIEDebugWindow.Top = 500
 		Do While objIEDebugWindow.Busy
 		Loop
@@ -547,20 +675,26 @@ DebugWall2.isDropped = 1
 DebugWall3.isDropped = 1
 End Sub
 '===============================================================================================
-Sub SetDifficulty
-	if Difficulty = 1 Then
-		HBMOD = 5 
-		HBMOD2 = 4 
-		zCol_Rubber_Peg001.y = 1512
-		primitive027.y = 1512
-	Elseif Difficulty = 2 Then
-		DarknessSpeed = 140
-		HBMOD = 3 
-		HBMOD2 = 3 
-	Elseif Difficulty = 3 Then
-		DarknessSpeed = 140
-		HBMOD = 0 
-		HBMOD2 = 0 
+Sub SetDifficulty(Opt)
+	Select Case Opt
+		Case 1
+			HBMOD = 5 
+			HBMOD2 = 4 
+			zCol_Rubber_Peg001.y = 1512
+			primitive027.y = 1512
+		Case 2
+			DarknessSpeed = 140
+			HBMOD = 3 
+			HBMOD2 = 3 
+		Case 3
+			DarknessSpeed = 140
+			HBMOD = 0 
+			HBMOD2 = 0 
+	End Select
+
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="D{red}:Difficulty: "&Opt
+		Scorbit.SetGameMode(GameModeStrTmp)
 	End If
 End Sub
 '===============================================================================================
@@ -698,22 +832,6 @@ Sub Table1_Init()
 
 ' Load the chosen ramp type
 
-
-	if WoodRamps = False Then
-		LeftRampRopesOFF	
-		RightRampRopesOFF
-		UPFRampStoneOff
-		newRightRampON
-		newLeftRampON
-		newUPFRAmpOn
-	Else
-		newRightRampOFF
-		newLeftRampOFF
-		newUPFRAmpOff
-		LeftRampRopesON	
-		RightRampRopesON
-		UPFRampStoneOn
-	End If
 
 'RTP8
 	RightFlipper.Elasticity = FlipperBounce
@@ -941,7 +1059,6 @@ End Sub
 
 Sub Table1_KeyDown(ByVal Keycode)
 
-
 'LUT controls
 If keycode = LeftMagnaSave Then bLutActive = True
     If keycode = RightMagnaSave Then
@@ -981,18 +1098,14 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 '	If Keycode = AddCreditKey And bDungeonSelectMode Then
 	If Keycode = LockbarKey And bDungeonSelectMode Then
 		HideHelper
-		if Mode(CurrentPlayer,DungeonVidIndex*2) < 2 Then 'make sure dungeon is not completed yet	
+		if Mode(CurrentPlayer,DungeonVidIndex*2) <> 3 Then 'make sure dungeon is not completed yet	
 			bDungeonSelectMode = False
 			bInDungeonSelection = False	
 			StartMode DungeonVidIndex*2
 		Else
 			' Display a message that dungeon is already closed
 			GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Dungeon Already Completed"" ",6,0,0,0,0,False
-			if DMDType = 0 Then
-				GeneralPupQueue.Add "DisplayDSHelper","DisplayDSHelper",5,100,0,0,0,False
-			Else
-				GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
-			End If
+			GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
 		End If
 	End If
 
@@ -1040,18 +1153,9 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 		DungeonVidIndex = DungeonVidIndex - 1
 		if DungeonVidIndex < 1 Then DungeonVidIndex = 4
 
-		If Mode(CurrentPlayer,DungeonVidIndex*2) < 2 Then 
-			GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Press Fire Key to Select Dungeon"" ",6,0,0,0,0,False
-		Else
-			GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Dungeon Already Completed"" ",6,0,0,0,0,False
-		End If
-
-		if DMDType = 0 Then
-			GeneralPupQueue.Add "DisplayDSHelper","DisplayDSHelper",5,100,0,0,0,False
-		Else
-			GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
-		End If
-	PlayDungeonSelection
+		GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Press Fire Key to Select Dungeon"" ",6,0,0,0,0,False
+		GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
+		PlayDungeonSelection
 	End If
 	
 	if keycode = rightflipperkey AND bDungeonSelectMode Then
@@ -1060,18 +1164,9 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 		DungeonVidIndex = DungeonVidIndex + 1
 		if DungeonVidIndex > 4 Then DungeonVidIndex = 1
 
-		If Mode(CurrentPlayer,DungeonVidIndex*2) < 2 Then 
-			GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Press Fire Key to Select Dungeon"" ",6,0,0,0,0,False
-		Else
-			GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Dungeon Already Completed"" ",6,0,0,0,0,False
-		End If
-
-		if DMDType = 0 Then
-			GeneralPupQueue.Add "DisplayDSHelper","DisplayDSHelper",5,100,0,0,0,False
-		Else
-			GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
-		End If
-	PlayDungeonSelection
+		GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Press Fire Key to Select Dungeon"" ",6,0,0,0,0,False
+		GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
+		PlayDungeonSelection
 	End If
 
 'RTP3
@@ -1085,8 +1180,8 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 			DisplayFinalScore
 			Debug "Post LeftFlipper TG: " & GoldSack(CurrentPlayer) 
 			if GoldSack(CurrentPlayer) = 0 Then
+				stopscorbit
 				triggerscript 3000, "HideFinalScore"
-				triggerscript 3000, "stopscorbit"
 				CheckHighScore()
 			Else
 				DisplayContinueMessage
@@ -1094,10 +1189,11 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 		Else
 			'DisplayFinalScore
 			if DMDType = 0 Then
+				stopscorbit
 				triggerscript 3000, "HideFinalScore:CheckHighScore()"
 			Else
 				triggerscript 3000, "HideFinalScore"
-				triggerscript 3000, "stopscorbit"
+				stopscorbit
 				CheckHighScore()
 			End If
 			'check high score
@@ -1111,10 +1207,11 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 			triggerscript 5800, "HideContinueMessage"
 
 			if DMDType = 0 Then
+				stopscorbit
 				triggerscript 3000, "HideFinalScore:CheckHighScore()"
 			Else
 				triggerscript 3000, "HideFinalScore"
-				triggerscript 3000, "stopscorbit"
+				stopscorbit
 				CheckHighScore()
 			End If
 '			ResetForNewGame()
@@ -1143,11 +1240,7 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 							BallHandlingQueue.Add "KickOut","KickBallOut",70,KickOutDelay,0,0,0,True
 							ClearGuideMessages
 							if DMDType = 2 Then InGuide = 0
-							if DMDType <> 0 Then 
-								UpdateAll
-							Else
-								UpdateBG
-							End If
+							UpdateAll
 							HideHelper
 							triggerscript 7000, "hidehelper "  ' call again to make sure it wasnt just skipped over
 							StartDungeonBattle
@@ -1159,11 +1252,7 @@ If keycode = CenterTiltKey Then Nudge 0, 3:SoundNudgeCenter()
 							BallHandlingQueue.Add "KickOut","KickBallOut",70,KickOutDelay,0,0,0,True
 							ClearGuideMessages
 							if DMDType = 2 Then InGuide = 0
-							if DMDType <> 0 Then 
-								UpdateAll
-							Else
-								UpdateBG
-							End If
+							UpdateAll
 							HideHelper
 							triggerscript 7000, "hidehelper "  ' call again to make sure it wasnt just skipped over
 							StartDungeonBattle
@@ -1284,16 +1373,12 @@ End If
 			ClearPupMessages ' RC15
 			FlipperActivate LeftFlipper, LFPress
 			SolLFlipper 1
-
+			SolMLFlipper 1
 				'InstantInfoTimer.Enabled = True
 				RotateLaneLights 1
-				If StagedFlippers = 0 Then
-					SolMLFlipper 1
-				End If
-
-				If StagedFlippers = 0 And bKillUPF = False Then
-					SolULFlipper 1
-				End If
+					If StagedFlippers = 0 And bKillUPF = False Then
+						SolULFlipper 1
+					End If
 		End If
         If keycode = RightFlipperKey Then
 			RFlipperUsed = 1
@@ -1313,13 +1398,12 @@ End If
 						if MagnetCheckTimer.Enabled = 0 then SolMRFlipper 1
 					End If
 		End If
-
-		If StagedFlippers <> 0 Then
-			If keycode = 30 Then ' Left Stage 2 
+		 If StagedFlippers <> 0 Then
+			If keycode = 30 Then
 				SolULFlipper 1
 				SolMLFlipper 1
 			End If
-			If keycode = 40 Then ' Right stage 2
+			If keycode = 40 Then
 				SolURFlipper 1
 				if MagnetCheckTimer.Enabled = 0 then SolMRFlipper 1
 			End If
@@ -2500,7 +2584,7 @@ Sub GiEffect(n)
 End Sub
 
 Sub LightEffect(n)
-	
+	if Mode(CurrentPlayer,0) = 6 then Exit Sub
     Select Case n
         Case 0 ' all off
             LightSeqInserts.Play SeqAlloff
@@ -2508,7 +2592,6 @@ Sub LightEffect(n)
             LightSeqInserts.UpdateInterval = 40
             LightSeqInserts.Play SeqBlinking, , 15, 25
         Case 2 'random
-			if Mode(CurrentPlayer,0) = 6 or Mode(CurrentPlayer,0) > 13 then Exit Sub
             LightSeqInserts.UpdateInterval = 25
             LightSeqInserts.Play SeqRandom, 50, , 1000
         Case 3 'all blink fast
@@ -2585,7 +2668,7 @@ Sub TurnOffRulecards
 	RuleCardScreen13.visible = False
 End Sub
 
-Sub SetBallsPerGame
+Sub SetBallsPerGameDiff
 	if Difficulty = 1 Then	
 		BallsPerGame = 5
 	elseif Difficulty = 2 Then
@@ -2628,13 +2711,12 @@ Debug "**********************************************"
 	ClearPlayerImages
 	Debug "Calling event 900 Resetfornewgame"
 	GeneralPupQueue.Add "Pup900","pupevent 900",95,0,0,0,0,True '130.9
-	GeneralPupQueue.Add "Pup400","pupevent 400",93,0,0,0,0,True '130.9
     TotalGamesPlayed = TotalGamesPlayed + 1
     CurrentPlayer = 1
 	'pDMDStartGame
     PlayersPlayingGame = 1
     bOnTheFirstBall = True
-	SetBallsPerGame
+	'SetBallsPerGame Opt
     For i = 1 To MaxPlayers
         Score(i) = 0
         'BonusPoints(i) = 0
@@ -2759,6 +2841,10 @@ End Sub
 ' Create a new ball on the Playfield
 
 Sub CreateNewBall()
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="B{red}:Ball: "&Balls
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
 
     ' create a ball in the plunger lane kicker.
 	if bBallinPlungerLane Then Exit Sub  ' added v 1.1
@@ -2901,7 +2987,7 @@ End Sub
 Sub SpinnerBonus
 	ClearBonusMessage
     AwardPoints = SpinnerHits * 500
-	MultipliedPoints = AwardPoints
+    TotalBonus = TotalBonus + MultipliedPoints
     TotalBonus = TotalBonus + AwardPoints
 	Debug "SPINNERS HIT " & SpinnerHits & " Score: " & FormatNumber(AwardPoints,0)
 	MessageTitle = "SPINNERS : " & SpinnerHits
@@ -2948,7 +3034,7 @@ Sub DC_Bonus
 	ClearBonusMessage
     AwardPoints = DungeonsCleared(CurrentPlayer) * 50000
 	MultipliedPoints = AwardPoints
-    TotalBonus = TotalBonus + AwardPoints
+    TotalBonus = TotalBonus + MultipliedPoints
 	Debug "DUNGEONS " & DungeonsCleared(CurrentPlayer) & " Score: " & FormatNumber(AwardPoints,0)
 	MessageTitle = "DUNGEONS : " & DungeonsCleared(CurrentPlayer)
 	BonusMessage1 =  FormatNumber(AwardPoints,0)
@@ -2962,7 +3048,7 @@ Sub BD_Bonus
 	ClearBonusMessage
     AwardPoints = GoldSack(CurrentPlayer) * 30000
 	MultipliedPoints = AwardPoints
-    TotalBonus = TotalBonus + AwardPoints
+    TotalBonus = TotalBonus + MultipliedPoints
 	Debug "BOSSES " & GoldSack(CurrentPlayer) & " Score: " & FormatNumber(AwardPoints,0)
 	MessageTitle = "BOSSES: " & GoldSack(CurrentPlayer)
 	BonusMessage1 =  FormatNumber(AwardPoints,0)
@@ -2982,22 +3068,6 @@ Sub Total_Bonus
 	EOBQueue.Add "DTM-TotB","DisplayTotalMessage",80,300,0,0,0,True
 	PuPlayer.LabelSet pBackglass,"BonusMessageTitle", MessageTitle ,1,""
 	PuPlayer.LabelSet pBackglass,"BonusMessage", BonusMessage1 ,1,""
-End Sub
-
-Sub FillParty
-	if PartySize(CurrentPlayer) < 4 Then AddPartyMember
-	if PartySize(CurrentPlayer) < 4 Then AddPartyMember
-	if PartySize(CurrentPlayer) < 4 Then AddPartyMember
-	if PartySize(CurrentPlayer) < 4 Then AddPartyMember
-
-	CheckItems
-	If ItemCount < 5 Then AddItem
-	If ItemCount < 5 Then AddItem
-	If ItemCount < 5 Then AddItem
-	If ItemCount < 5 Then AddItem
-	If ItemCount < 5 Then AddItem
-
-
 End Sub
 
 Sub EndOfBall
@@ -3022,20 +3092,14 @@ Sub EndOfBall
 	HeroCountDownTimer.enabled = 0
 	Pulse.enabled = 0
 
-'	if ActiveMode > 13 Then 
-'		Debug2 "Calling ModeFail"
-'		ModeFail "EOB"
-'	Else
-		Debug "SHOULD BE EOB BONUS SCREEN"
+	if ActiveMode > 13 Then 
+		Debug2 "Calling ModeFail"
+		ModeFail "EOB"
+	Else
 		EOBHide "EOB"
 		BallHandlingQueue.Add "Pup311","PuPEvent 311",80,0,0,0,0,True ' EOB BG screen
 		EOBQueue.Add "EOBReturn-EOB","EOBReturn ""EOBScreen"" ",77,12200,0,0,0,True
-
-		if DMDType = 0 Then
-			'bSupressBGMessages = True
-			EOBQueue.Add "HideBG2","HideBG2 12200",77,0,0,0,0,True
-		End If
-'	End If
+	End If
 
     Dim ii
     AwardPoints = 0
@@ -3055,7 +3119,7 @@ Sub EndOfBall
 		InBattle = 0  ' added 114.1 attempt to prevent attributes and ambush from occuring after lost ball
 	' Display all the bonus info
 		Debug2 "Starting Bonus Run"
-'		if ActiveMode < 14 Then 
+		if ActiveMode < 14 Then 
 			'HideDMDInfinite
 
 			bEOBSupress = True
@@ -3087,9 +3151,9 @@ Sub EndOfBall
 
 		Debug2 "EOB Balls Remain: "&BallsRemaining(CurrentPlayer)
 
-'		Else ' else of if activemode < 14
-'			EOBQueue.Add "Line12","EndOfBall2",40,500,0,0,0,False
-'		End If
+		Else ' else of if activemode < 14
+			EOBQueue.Add "Line12","EndOfBall2",40,500,0,0,0,False
+		End If
     Else 'if tilted then only add a short delay and move to the 2nd part of the end of the ball
         EOBQueue.Add "Line12","EndOfBall2",40,500,0,0,0,False
     End If
@@ -3131,13 +3195,7 @@ Debug2 "Starting EOB2"
 '		End If
 		Debug2 "EOB2 - Combo: " &AMCombo
         ' Create a new ball in the shooters lane
-		if ActiveMode < 15 Then
-			if bDungeonsCleared = True Then 
-				' we want to create a ball and go right back into wizard lock mode
-				ActiveMode = 9 ' change for case-else statement below
-				'EOBQueue.Add "FillParty","FillParty",20,10150,0,0,0,False
-			End If
-
+		if ActiveMode < 14 Then
 			if AMState = 2 Then
 				Debug2 "****************  AMState = 2"
 				Select Case ActiveMode
@@ -3153,8 +3211,6 @@ Debug2 "Starting EOB2"
 						Debug2 " Staying in Mode: " &ActiveMode
 						li038.state = 2  ' turn on quest light
 						CreateNewBall()	
-					Case 9:
-						EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10200,0,0,0,False
 					Case Else:
 						ContinueMode ActiveMode
 						Debug2 " Staying in Mode: ELSE-" &ActiveMode
@@ -3163,22 +3219,14 @@ Debug2 "Starting EOB2"
 				End Select
 			Elseif AMState <> 2 And PartySize(CurrentPlayer) > 0 Then
 				Debug2 "**************  ExtraBall A  "& PartySize(CurrentPlayer)  &"-" &  AMCombo
-				if bDungeonsCleared = True Then 
-					' we want to create a ball and go right back into wizard lock mode
-					EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
-				Else
-					DisplaySelection
-				End If
+'				triggerscript 300, "DisplaySelection"
+				DisplaySelection
 				' new ball is created once a selection is made
 			Elseif PartySize(CurrentPlayer) = 0 Then 
-				if bDungeonsCleared = True Then 
-					' we want to create a ball and go right back into wizard lock mode
-					EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
-				Else
-					BallHandlingQueue.Add "ResetModes","ResetModes",80,0,0,0,0,False 
-					BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,0,0,0,0,False
-					BallHandlingQueue.Add "CreateNewBall","CreateNewBall",60,0,0,0,0,False
-				End If	
+				BallHandlingQueue.Add "ResetModes","ResetModes",80,0,0,0,0,False 
+				BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,0,0,0,0,False
+				BallHandlingQueue.Add "CreateNewBall","CreateNewBall",60,0,0,0,0,False
+				Debug "WTFWTF"
 			Else ' AM state 0 or 1 and all party members still alive
 				Debug2 "**************  ExtraBall B  "& PartySize(CurrentPlayer)  &"-" &  AMCombo
 				' Determine where the player is headed to next  -- AMState = 1 or 3
@@ -3226,7 +3274,10 @@ Debug2 "Starting EOB2"
 						End If
 						CreateNewBall()
 					Case 9:
-						EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
+						Mode(CurrentPlayer,7) = 1
+						StartMode 7
+						CreateNewBall()
+						li047.state = 2 ' turn on Inn light
 					Case else:
 						Debug2 "Restarting Mode: ELSE-" &ActiveMode
 						MsgBox "Error: -1 Mode: " &ActiveMode
@@ -3234,13 +3285,10 @@ Debug2 "Starting EOB2"
 						CreateNewBall
 				End Select
 			End If '<AMSTATE = 2?>
-		Else ' else activemode < 15
-				' ActiveMode is 15 -- shouldnt we end the game ????
+		Else ' else activemode < 14
 			Debug "--------------- THIS SHOULD PRINT -----------"
-''			StartNextMode   ' 2.2J
-''			CreateNewBall()  ' 2.2J
-			EndOfGame()     ' 2.2J
-			Exit Sub	'2.2J
+			StartNextMode
+			CreateNewBall()
 		End If
 
 '		EOBQueue.Add "ResetForNewPlayerBall","ResetForNewPlayerBall()",20,12100,0,0,0,False
@@ -3266,7 +3314,6 @@ Debug2 "Starting EOB2"
 					AddMultiball 1
 					'EndOfBallComplete()
 				Else
-					Debug2 " SHOULD I BE HERE"
 					EndOfBallComplete()  ' This will come out once high scores routines are updated
 				End If
 	'****************************************************************************
@@ -3287,17 +3334,15 @@ End Sub
 ' move onto the next player (or the next ball of the same player)
 '
 Sub EndOfBallComplete()
-	TrapdoorDown  ' make sure trapdoor is down
-	'if DMDType = 0 Then 
-	'	bSupressBGMessages = True
-	'	EOBQueue.Add "bSupressBGMessages-F","bSupressBGMessages = False",20,8050,0,0,0,False
-	'End If
-	
 	HeroCountDownTimer.enabled = 0 ' make absoutely sure this stopped
 	Pulse.enabled = 0 
 	bBallSaverReady = True
 	'Debug5 "setting ball saver NOW"
 'ModeFail
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="B{red}:Lost Ball "&Balls
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
 
     Dim NextPlayer
 	Debug "End of Complete - Balls Remain: "&BallsRemaining(CurrentPlayer)
@@ -3336,13 +3381,7 @@ Sub EndOfBallComplete()
 
 
 	Debug "EOB Complete - Combo: " &AMCombo
-		if ActiveMode < 15 Then
-			if bDungeonsCleared = True Then 
-				' we want to create a ball and go right back into wizard lock mode
-				ActiveMode = 9 ' change for case-else statement below
-				'EOBQueue.Add "FillParty","FillParty",20,10150,0,0,0,False
-			End If
-
+		if ActiveMode < 14 Then
 			if AMState = 2 Then
 				Debug "****************  AMState = 2"
 				Select Case ActiveMode			
@@ -3358,8 +3397,6 @@ Sub EndOfBallComplete()
 						Debug " Staying in Mode: " &ActiveMode
 						li038.state = 2  ' turn on quest light
 						CreateNewBall()	
-					Case 9:
-						EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
 					Case Else:
 						'ContinueMode ActiveMode
 						Debug " Staying in Mode: ELSE-" &ActiveMode
@@ -3368,23 +3405,10 @@ Sub EndOfBallComplete()
 				End Select
 			Elseif AMState <> 2 And PartySize(CurrentPlayer) > 0 Then
 				Debug2 "&**************  ExtraBall A  "& PartySize(CurrentPlayer)  &"-" &  AMCombo
-				if bDungeonsCleared = True Then 
-					' we want to create a ball and go right back into wizard lock mode
-					EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
-				Else
-					DisplaySelection
-				End If
-
+'				triggerscript 300, "DisplaySelection"
+				DisplaySelection
 				' new ball is created once a selection is made
-			Elseif PartySize(CurrentPlayer) = 0 Then 
-				if bDungeonsCleared = True Then 
-					' we want to create a ball and go right back into wizard lock mode
-					EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
-				Else
-					BallHandlingQueue.Add "ResetModes","ResetModes",80,0,0,0,0,False 
-					BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,0,0,0,0,False
-					BallHandlingQueue.Add "CreateNewBall","CreateNewBall",60,0,0,0,0,False
-				End If		
+			Elseif PartySize(CurrentPlayer) = 0 Then ReturnToVillage:CreateNewBall:Debug "WTFWTF"
 			Else ' AM state 0 or 1 and all party members still alive
 				Debug "**************  ExtraBall B  "& PartySize(CurrentPlayer)  &"-" &  AMCombo
 				' Determine where the player is headed to next  -- AMState = 1 or 3
@@ -3432,7 +3456,10 @@ Sub EndOfBallComplete()
 
 						CreateNewBall()
 					Case 9:
-						EOBQueue.Add "WizardPrep","ReturnWizPrep",20,10800,0,0,0,False
+						Mode(CurrentPlayer,7) = 1
+						StartMode 7
+						CreateNewBall()
+						li047.state = 2 ' turn on Inn light
 					Case else:
 						Debug "Restarting Mode: ELSE-" &ActiveMode
 						MsgBox "EOB Error: -1 Mode: " &ActiveMode
@@ -3440,17 +3467,14 @@ Sub EndOfBallComplete()
 						CreateNewBall
 				End Select
 			End If '<AMSTATE = 2?>
-		Else ' else activemode < 15
-				' ActiveMode is 15 -- shouldnt we end the game ????
+		Else ' else activemode < 14
 			Debug "--------------- THIS SHOULD PRINT -----------"
-''			StartNextMode   ' 2.2J
-''			CreateNewBall()  ' 2.2J
-			EndOfGame()     ' 2.2J
-			Exit Sub	'2.2J
+			StartNextMode
+			CreateNewBall()
 		End If
 		EOBQueue.Add "ResetForNewPlayerBall","ResetForNewPlayerBall()",20,10100,0,0,0,False  ' delay so EOB sequence can complete
 		'ResetForNewPlayerBall()  ' has to go at the end
-    End If ' end if balls remaing <= 0
+    End If ' end if balls reaming <= 0
 
 'triggerscript 2000, "bDrain = 0" ' RTP10
 End Sub
@@ -3996,24 +4020,20 @@ Sub SetModeTitle
 GetAM
 	Select Case ActiveMode
 		Case 0: ModeTitle = "In The Village"
-		Case 1: ModeTitle = "At The Inn"
-'		Case 2: ModeTitle =  "Ruins Dungeon"
-		Case 2: ModeTitle =  "The Ruins"
-		Case 3: ModeTitle = "At The Inn"
-'		Case 4: ModeTitle = "Cove Dungeon"
-		Case 4: ModeTitle = "The Cove"
-		Case 5: ModeTitle = "At The Inn"
-'		Case 6: ModeTitle = "Weald Dungeon"
-		Case 6: ModeTitle = "The Weald"
-		Case 7: ModeTitle = "At The Inn"
-'		Case 8: ModeTitle = "Warrens Dungeon"
-		Case 8: ModeTitle = "The Warrens"
-		Case 9: ModeTitle = "At The Inn"
-		Case 10: ModeTitle = "Prophet"
+		Case 1: ModeTitle = "Assemble Party"
+		Case 2: ModeTitle =  "Ruins Dungeon"
+		Case 3: ModeTitle = "Assemble Party"
+		Case 4: ModeTitle = "Cove Dungeon"
+		Case 5: ModeTitle = "Assemble Party"
+		Case 6: ModeTitle = "Weald Dungeon"
+		Case 7: ModeTitle = "Assemble Party"
+		Case 8: ModeTitle = "Warrens Dungeon"
+		Case 9: ModeTitle = "Wizard Lock"
+		Case 10: ModeTitle = "Prophet Battle"
 		Case 11: ModeTitle = "Drowned Crew"
 		Case 12: ModeTitle = "Vvulf Battle"
 		Case 13: ModeTitle = "Swine Prince"
-		Case 14: ModeTitle = "Shambler"
+		Case 14: ModeTitle = "Shambler Battle"
 		Case 15: ModeTitle = "Wizard Mode"
 	End Select
 	UpdateModeLabels
@@ -4156,8 +4176,6 @@ End Sub
 
 Sub ClearPupMessages
 	ClearSideMissionPuPMessages
-	HideHelper
-	HideWizardModeMessage
 	ClearDungeonPup
 	ClearDungeonPup2 ' make sure message has cleared
 	ClearGuideMessages
@@ -4188,6 +4206,7 @@ Sub AssemblePartyRuins ' Mode 1
 
 	Mode(CurrentPlayer,0) = 1
 	Mode(CurrentPlayer,1) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	CheckParty
 
@@ -4197,10 +4216,18 @@ Sub AssemblePartyRuins ' Mode 1
 
 End Sub
 
+Sub HideScorbit
+	pbackglasslabelhide "ScorbitQRIcon1"  ' make sure Qr Claim is hidden
+	pbackglasslabelhide "ScorbitQR1" ' make sure Qr Claim is hidden
+	pbackglasslabelhide "ScorbitQRIcon2"  ' make sure Qr Claim is hidden
+	pbackglasslabelhide "ScorbitQR2" ' make sure Qr Claim is hidden
+End Sub
+
 Sub StopAssemblePartyRuins
 	Debug "StopAssemblePartyRuins"
 	Mode(CurrentPlayer,0) = 0
 	Mode(CurrentPlayer,1) = 0
+	ScorbitBuildGameModes
 	ResetLights		
 	SetModeTitle
 	ClearGuideMessages
@@ -4209,6 +4236,7 @@ End Sub
 Sub WinAssemblePartyRuins
 	'Debug "Win ASSEMBLE RUINS"
 	Mode(CurrentPlayer,1) = 2
+	ScorbitBuildGameModes
 	StopPartyLights
 	ResetLaneLights
 	li039.State = 2 'leave on until items maxed
@@ -4367,20 +4395,14 @@ GetAM
 				Case Else: msgbox "Error:-4 PickBG Should not get here"
 			End Select
 
-		Case 14: 
-			CurrentDungeonBG = "PuPevent 982"
+		Case 14: CurrentDungeonBG = "PuPevent 982"
 
-		Case 0,9,15: 
-			CurrentDungeonBG = "PuPevent 900"
+		Case 0,9,15: ' Do nothing
 
 		Case Else: msgbox "Error:-5 PickBG Outside of Dungeons: " &ActiveMode
 	End Select
 
 'Debug5 "DungeonBG: " &CurrentDungeonBG 
-End Sub
-
-Sub DisplayDSHelper
-	PuPlayer.LabelSet pBackglass,"Scoop2Helper",HelperMessage,1,"{'mt':2, 'ypos':30 }"
 End Sub
 '===============================================================================
 Sub PickDungeon
@@ -4418,11 +4440,7 @@ Sub PickDungeon
 	End If
 
 	GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Press Either Flipper to View Dungeons"" ",6,0,0,0,0,False
-	if DMDType = 0 Then
-		GeneralPupQueue.Add "DisplayDSHelper","DisplayDSHelper",5,100,0,0,0,False
-	Else
-		GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
-	End If
+	GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
 
 	PlayDungeonSelection
 	PickDungeonBG
@@ -5311,7 +5329,6 @@ End Sub
 Sub UpdateHelperMessage(msg)
 	HideHelper
 	HelperMessage = msg
-	PuPlayer.LabelSet pBackglass,"Scoop2Helper",HelperMessage,0,"{'mt':2, 'ypos':20 }"
 End Sub
 '================================================================================
 Sub BallGlow(color, aura, intensity)
@@ -5349,9 +5366,7 @@ Sub StartRuins
 	BallHandlingQueue.Add "bHoldBallDelay-T","bHoldBallDelay = True",54,0,0,0,0,True
 	BallHandlingQueue.Add "bHoldBallDelay-F","bHoldBallDelay = False",55,1500,0,0,0,True
 
-	if DMDType = 0 Then HideBG2 4800
 	GeneralPuPQueue.Add "ResetPlayerImages","ResetPlayerImages",42,0,0,0,0,True 
-	'GeneralPupQueue.Add "Pup400","pupevent 400",94,0,0,0,0,True
 	GeneralPuPQueue.Add "Pup880","PuPEvent 880",41,0,0,0,0,True ' enter ruins Video
 	GeneralPuPQueue.Add "RuinsDMD","RuinsDMD",35,4850,0,0,0,false ' Ruins BG setup
 
@@ -5380,6 +5395,7 @@ Sub StartRuins
 
 	Mode(CurrentPlayer,0) = 2
 	Mode(CurrentPlayer,2) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 
 	RuinsLightReset
@@ -5429,6 +5445,7 @@ Sub StopRuins
 	HeroCountDownTimer.enabled = 0
 	Pulse.Enabled = 0
 	Mode(CurrentPlayer,2) = 0
+	ScorbitBuildGameModes
 	'SetModeTitle
 	ClearGuideMessages
 	PlayVillageMusic 100
@@ -5441,12 +5458,6 @@ Sub StartDungeonTimers
 	Debug "Starting Dungeon Timers"
 	DungeonBonusTimer.Enabled = 1
 	DungeonBonusTimerExpired.Enabled = 1
-End Sub
-
-Sub CheckComplete
-	if Mode(Currentplayer,2) > 1 And Mode(Currentplayer,4) > 1 And Mode(Currentplayer,6) > 1 And Mode(Currentplayer,8) > 1 Then
-		bDungeonsCleared = True
-	End If
 End Sub
 
 Sub WinRuins
@@ -5482,7 +5493,6 @@ Sub WinRuins
 	li045.state=1 ' Ruins turned On
 	li047.state=0 ' Inn Off
 	ResetLaneLights
-	CheckComplete
 End Sub
 
 Sub WinProphet
@@ -5642,7 +5652,6 @@ Sub WinWulf
 End Sub
 
 Sub WinShambler	
-	Debug2 "In Win Shambler"
 	DOFModesOff
 	PlayVillageMusic 100
 	HeroCountDownReset
@@ -5733,6 +5742,7 @@ Sub AssemblePartyCove
 
 	Mode(CurrentPlayer,0) = 3
 	Mode(CurrentPlayer,3) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	CheckParty
 
@@ -5744,6 +5754,7 @@ End Sub
 Sub StopAssemblePartyCove
 	Mode(CurrentPlayer,0) = 0
 	Mode(CurrentPlayer,3) = 0
+	ScorbitBuildGameModes
 	ResetLights
 	SetModeTitle
 	ClearGuideMessages
@@ -5752,6 +5763,7 @@ End Sub
 Sub WinAssemblePartyCove
 
 	Mode(CurrentPlayer,3) = 2
+	ScorbitBuildGameModes
 	StopPartyLights
 	ResetLaneLights
 	SetModeTitle
@@ -5786,8 +5798,6 @@ Sub StartCove
 	BallHandlingQueue.Add "bHoldBallDelay-T","bHoldBallDelay = True",54,0,0,0,0,True
 	BallHandlingQueue.Add "bHoldBallDelay-F","bHoldBallDelay = False",55,1500,0,0,0,True
 
-	if DMDType = 0 Then HideBG2 4100
-
 	GeneralPuPQueue.Add "ResetPlayerImages","ResetPlayerImages",42,0,0,0,0,True 
 	GeneralPuPQueue.Add "Pup881","PuPEvent 881",41,0,0,0,0,True
 	GeneralPuPQueue.Add "CoveDMD","CoveDMD",35,4100,0,0,0,false ' Ruins BG setup
@@ -5816,6 +5826,7 @@ Sub StartCove
 	wall66up ' raise post to block orbit shots
 	Mode(CurrentPlayer,0) = 4
 	Mode(CurrentPlayer,4) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	LoadChest ' Add Bad items to the chest
 
@@ -5852,6 +5863,7 @@ Sub StopCove
 	HeroCountDownTimer.enabled = 0
 	Pulse.Enabled = 0
 	Mode(CurrentPlayer,4) = 0
+	ScorbitBuildGameModes
 	'SetModeTitle
 	ClearGuideMessages
 	PlayVillageMusic 100
@@ -5900,7 +5912,6 @@ Sub WinCove
 	InBattle = 0 ' prevent attribtutes from firing
 	MonstersCleared = 1
 	PuPHideBattle "wincove"
-	CheckComplete
 End Sub
 
 '-----------------------------------------------------------------------------------------
@@ -5924,6 +5935,7 @@ Debug "In Assemble Party Welad"
 
 	Mode(CurrentPlayer,0) = 5
 	Mode(CurrentPlayer,5) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	CheckParty
 
@@ -5934,6 +5946,7 @@ End Sub
 Sub StopAssemblePartyWeald
 	Mode(CurrentPlayer,0) = 0
 	Mode(CurrentPlayer,5) = 0
+	ScorbitBuildGameModes
 	ResetLights
 	SetModeTitle
 	ClearGuideMessages
@@ -5942,6 +5955,7 @@ End Sub
 Sub WinAssemblePartyWeald
 
 	Mode(CurrentPlayer,5) = 2
+	ScorbitBuildGameModes
 	StopPartyLights
 	ResetLaneLights
 	SetModeTitle
@@ -5976,7 +5990,6 @@ Debug "Start Weald"
 	BallHandlingQueue.Add "bHoldBallDelay-T","bHoldBallDelay = True",54,0,0,0,0,True
 	BallHandlingQueue.Add "bHoldBallDelay-F","bHoldBallDelay = False",55,1500,0,0,0,True
 
-	if DMDType = 0 Then HideBG2 4100
 	GeneralPuPQueue.Add "ResetPlayerImages","ResetPlayerImages",42,0,0,0,0,True 
 	GeneralPuPQueue.Add "Pup882","PuPEvent 882",40,0,0,0,0,True
 	GeneralPuPQueue.Add "WealdDMD","WealdDMD",35,4100,0,0,0,false ' Ruins BG setup
@@ -6003,6 +6016,7 @@ Debug "Start Weald"
 
 	Mode(CurrentPlayer,0) = 6
 	Mode(CurrentPlayer,6) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	LoadChest ' Add Bad items to the chest
 	li031.state=2 ' Turn on WEALD light
@@ -6015,7 +6029,6 @@ Debug "Start Weald"
 	li051.state=0	'orbits off
 	li060.state=0
 	li037.state=0
-	li039.state=0 ' inn arrow
 	DisableUPF
 	DisableBallLock
 		
@@ -6031,6 +6044,7 @@ Sub StopWeald
 	HeroCountDownTimer.enabled = 0
 	Pulse.Enabled = 0
 	Mode(CurrentPlayer,6) = 0
+	ScorbitBuildGameModes
 	'SetModeTitle
 	ClearGuideMessages
 	PlayVillageMusic 100
@@ -6074,7 +6088,6 @@ Sub WinWeald
 	li038.state=2 ' Quest On
 	li047.state=0 ' InnOff
 	PuPHideBattle "winweald"
-	CheckComplete
 End Sub
 
 Sub CheckWealdWin
@@ -6108,6 +6121,7 @@ Sub AssemblePartyWarrens
 
 	Mode(CurrentPlayer,0) = 7
 	Mode(CurrentPlayer,7) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	CheckParty
 
@@ -6118,6 +6132,7 @@ End Sub
 Sub StopAssemblePartyWarrens
 	Mode(CurrentPlayer,0) = 0
 	Mode(CurrentPlayer,7) = 0
+	ScorbitBuildGameModes
 	SetModeTitle
 	ClearGuideMessages
 End Sub
@@ -6126,6 +6141,7 @@ End Sub
 Sub WinAssemblePartyWarrens
 
 	Mode(CurrentPlayer,7) = 2
+	ScorbitBuildGameModes
 	SetModeTitle
 	StopPartyLights
 	ResetLaneLights
@@ -6261,7 +6277,6 @@ End Sub
 Sub StartWarrens
 	'Table1.ColorGradeImage = OldLUT
 	DisableInnLighting
-	'ResetUPF
 	'resetlights
 	OldGI = "orange"
 	ChangeGI orange
@@ -6277,7 +6292,6 @@ Sub StartWarrens
 	BallHandlingQueue.Add "bHoldBallDelay-T","bHoldBallDelay = True",54,0,0,0,0,True
 	BallHandlingQueue.Add "bHoldBallDelay-F","bHoldBallDelay = False",55,1500,0,0,0,True
 
-	if DMDType = 0 Then HideBG2 4100
 	GeneralPuPQueue.Add "ResetPlayerImages","ResetPlayerImages",42,0,0,0,0,True 
 	GeneralPuPQueue.Add "Pup883","PuPEvent 883",40,0,0,0,0,True
 	GeneralPuPQueue.Add "WarrensDMD","WarrensDMD",35,4100,0,0,0,false ' Ruins BG setup
@@ -6296,6 +6310,7 @@ Sub StartWarrens
 
 	Mode(CurrentPlayer,0) = 8
 	Mode(CurrentPlayer,8) = 1
+	ScorbitBuildGameModes
 	SetModeTitle
 	LoadChest ' Add Bad items to the chest
 	li026.state=2 ' Turn on WARRENS light
@@ -6309,7 +6324,7 @@ Sub StartWarrens
 	li060.state=0
 	li037.state=0
 	DisableBallLock
-	
+	ResetUPF
 	Debug "WARRENS - Monsters String: " &MonsterString
 
 End Sub
@@ -6319,6 +6334,7 @@ Sub StopWarrens
 	HeroCountDownTimer.enabled = 0
 	Pulse.Enabled = 0
 	Mode(CurrentPlayer,8) = 0
+	ScorbitBuildGameModes
 	'SetModeTitle
 	ClearGuideMessages
 	PlayVillageMusic 100
@@ -6364,7 +6380,6 @@ Sub WinWarrens
 	MonstersCleared = 1
 	'triggerscript 300, "PuPHideBattle ""winwarrens"" "
 	BallHandlingQueue.Add "PuPHideBattle-WW","PuPHideBattle ""winwarrens""",70,300,0,0,0,True
-	CheckComplete
 End Sub
 
 Sub CheckTorchWin
@@ -6492,7 +6507,7 @@ CheckItems
 	if ItemCount < 5 Then
 '		Select case RndNbr(5)
 		tmp2 = rndItem(ItemsRTP,CurrentPlayer)
-		Debug2 "ADDITEM -- " &tmp2
+		Debug "ADDITEM -- " &tmp2
 		Select case tmp2
 			Case -1:
 				MsgBox "Additem Error: -1 "
@@ -6508,6 +6523,10 @@ CheckItems
 						DisplayItems 0
 						checkItems
 						CreateItemString
+						if Scorbit.bSessionActive then
+							GameModeStrTmp="Item{Purple}:Medicine Added"
+							Scorbit.SetGameMode(GameModeStrTmp)
+						End If
 					End If
 			Case 1: ' Bandages
 					If ItemsRTP(CurrentPlayer,1) <> 0 Then
@@ -6521,6 +6540,10 @@ CheckItems
 						DisplayItems 1
 						Checkitems
 						CreateItemString
+						if Scorbit.bSessionActive then
+							GameModeStrTmp="Item{Purple}:Bandages Added"
+							Scorbit.SetGameMode(GameModeStrTmp)
+						End If
 					End If
 			Case 2: ' Key
 					If ItemsRTP(CurrentPlayer,2) <> 0 Then
@@ -6534,6 +6557,10 @@ CheckItems
 						DisplayItems 2
 						Checkitems
 						CreateItemString
+						if Scorbit.bSessionActive then
+							GameModeStrTmp="Item{Purple}:Key Added"
+							Scorbit.SetGameMode(GameModeStrTmp)
+						End If
 					End If
 			Case 3: ' Shovel
 					If ItemsRTP(CurrentPlayer,3) <> 0 Then
@@ -6547,6 +6574,10 @@ CheckItems
 						DisplayItems 3
 						Checkitems
 						CreateItemString
+						if Scorbit.bSessionActive then
+							GameModeStrTmp="Item{Purple}:Shovel Added"
+							Scorbit.SetGameMode(GameModeStrTmp)
+						End If
 					End If
 			Case 4: ' Potion
 					If ItemsRTP(CurrentPlayer,4) <> 0 Then
@@ -6560,6 +6591,10 @@ CheckItems
 						DisplayItems 4
 						Checkitems
 						CreateItemString
+						if Scorbit.bSessionActive then
+							GameModeStrTmp="Item{Purple}:Potion Added"
+							Scorbit.SetGameMode(GameModeStrTmp)
+						End If
 					End If
 			Case Else:
 				MsgBox "Additem Error: -2 "
@@ -6819,7 +6854,7 @@ Region = ActiveMode
 				GIF_MA(0,0,1) = 2
 				Monsters(CurrentPlayer,0) = 2
 				'triggerscript 3100, "KillPuPMonster ""0"" "
-				BattleQueue.Add "KillPuPMonster-0","KillPuPMonster ""0""",70,3100,0,0,0,True
+				BallHandlingQueue.Add "KillPuPMonster-0","KillPuPMonster ""0""",70,3100,0,0,0,True
 			Elseif RegionMonster(CurrentPlayer,4) > 20 Then
 				setlightcolor li024 , red, 1
 				AudioQueue.Add "Pup295","PuPEvent 295",30,0,0,0,AudioExpiry,False
@@ -6834,7 +6869,7 @@ Region = ActiveMode
 				GIF_MA(1,0,1) = 2
 				Monsters(CurrentPlayer,1) = 2
 				'triggerscript 3100, "KillPuPMonster ""1"" "
-				BattleQueue.Add "KillPuPMonster-1","KillPuPMonster ""1""",70,3100,0,0,0,True
+				BallHandlingQueue.Add "KillPuPMonster-1","KillPuPMonster ""1""",70,3100,0,0,0,True
 			Elseif RegionMonster(CurrentPlayer,4) > 14 Then
 				setlightcolor li025 , red, 1
 				AudioQueue.Add "Pup295","PuPEvent 295",30,0,0,0,AudioExpiry,False
@@ -6849,7 +6884,7 @@ Region = ActiveMode
 				GIF_MA(2,0,1) = 2
 				Monsters(CurrentPlayer,2) = 2
 				'triggerscript 3100, "KillPuPMonster ""2"" "
-				BattleQueue.Add "KillPuPMonster-2","KillPuPMonster ""2""",70,3100,0,0,0,True
+				BallHandlingQueue.Add "KillPuPMonster-2","KillPuPMonster ""2""",70,3100,0,0,0,True
 			Elseif RegionMonster(CurrentPlayer,4) > 8 Then
 				setlightcolor li008 , red, 1
 				AudioQueue.Add "Pup295","PuPEvent 295",30,0,0,0,AudioExpiry,False
@@ -6864,7 +6899,7 @@ Region = ActiveMode
 				GIF_MA(3,0,1) = 2
 				Monsters(CurrentPlayer,3) = 2
 				'triggerscript 3100, "KillPuPMonster ""3"" "
-				BattleQueue.Add "KillPuPMonster-3","KillPuPMonster ""3""",70,3100,0,0,0,True
+				BallHandlingQueue.Add "KillPuPMonster-3","KillPuPMonster ""3""",70,3100,0,0,0,True
 			Elseif RegionMonster(CurrentPlayer,4) > 2 Then
 				setlightcolor li006 , red, 1
 				AudioQueue.Add "Pup295","PuPEvent 295",30,0,0,0,AudioExpiry,False
@@ -7083,7 +7118,7 @@ Sub HurtMonster
 						PlayerAttack
 						GIF_MA(0,0,1) = 2
 						'triggerscript 3100,  "KillPuPMonster ""3"" "
-						BattleQueue.Add "KillPuPMonster-3","KillPuPMonster ""3""",70,3100,0,0,0,True
+						BallHandlingQueue.Add "KillPuPMonster-3","KillPuPMonster ""3""",70,3100,0,0,0,True
 					End If
 					CheckMonsters
 				End If	
@@ -7108,7 +7143,7 @@ Sub HurtMonster
 					if ActiveMode < 10 Then
 						PlayerAttack
 						GIF_MA(1,0,1) = 2
-						BattleQueue.Add "KillPuPMonster-2","KillPuPMonster ""2""",70,3100,0,0,0,True
+						BallHandlingQueue.Add "KillPuPMonster-2","KillPuPMonster ""2""",70,3100,0,0,0,True
 						'triggerscript 3100,  "KillPuPMonster ""2"" "
 					End If
 					CheckMonsters
@@ -7135,7 +7170,7 @@ Sub HurtMonster
 					if ActiveMode < 10 Then
 						PlayerAttack
 						GIF_MA(2,0,1) = 2
-						BattleQueue.Add "KillPuPMonster-0","KillPuPMonster ""0""",70,3100,0,0,0,True
+						BallHandlingQueue.Add "KillPuPMonster-0","KillPuPMonster ""0""",70,3100,0,0,0,True
 						'triggerscript 3100,  "KillPuPMonster ""0"" "
 					End If
 				End If	
@@ -7160,7 +7195,7 @@ Sub HurtMonster
 					if ActiveMode < 10 Then
 						PlayerAttack
 						GIF_MA(3,0,1) = 2
-						BattleQueue.Add "KillPuPMonster-1","KillPuPMonster ""1""",70,3100,0,0,0,True
+						BallHandlingQueue.Add "KillPuPMonster-1","KillPuPMonster ""1""",70,3100,0,0,0,True
 						'triggerscript 3100,  "KillPuPMonster ""1"" "
 					End If
 					CheckMonsters
@@ -7337,7 +7372,30 @@ Else
 	msgbox "Error in AddPartyMember:" &NextChar
 End If
 
-	Debug2 "Calling AddPartyMember:"&PartySize(CurrentPlayer) & ":" & NextChar
+	if Scorbit.bSessionActive then
+		Select Case tmpChar
+			Case 1
+				GameModeStrTmp="PM{Green}:Added GraveRobber"
+			Case 2
+				GameModeStrTmp="PM{Green}:Added Highwayman"
+			Case 3
+				GameModeStrTmp="PM{Green}:Added Jester"
+			Case 4
+				GameModeStrTmp="PM{Green}:Added Vestal"
+			Case 5
+				GameModeStrTmp="PM{Green}:Added PlagueDoctor"
+			Case 6
+				GameModeStrTmp="PM{Green}:Added Occultist"
+			Case 7
+				GameModeStrTmp="PM{Green}:Added Crusader"
+			Case 8
+				GameModeStrTmp="PM{Green}:Added HoundMaster"
+		End Select
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
+
+
+	Debug "Calling AddPartyMember:"&PartySize(CurrentPlayer) & ":" & NextChar
 	if PartySize(CurrentPlayer) < 4 Then
 		'Pick Party Member to Add
 		Select Case tmpChar
@@ -7347,8 +7405,7 @@ End If
 					li014.State = 1				
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup817","pupevent 817",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup817","pupevent 817",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addgrave"
 					SetPuPCharLocation "graveAni", "GraveDead"
 					DisplayCharIcons 0, "addparty"
@@ -7364,8 +7421,7 @@ End If
 					li010.State = 1				
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup810","pupevent 810",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup810","pupevent 810",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addhwy"
 					SetPuPCharLocation "highwaymanAni","HighwaymanDead"
 					DisplayCharIcons 1, "addparty"
@@ -7381,8 +7437,7 @@ End If
 					li011.State = 1			
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup811","pupevent 811",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup811","pupevent 811",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addjester"
 					SetPuPCharLocation "jesterAni","JesterDead"
 					DisplayCharIcons 2, "addparty"
@@ -7398,8 +7453,7 @@ End If
 					li012.State = 1			
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup812","pupevent 812",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup812","pupevent 812",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addvestal"
 					DisplayCharIcons 3, "addparty"
 					SetPuPCharLocation "vestalAni","VestalDead"		
@@ -7415,8 +7469,7 @@ End If
 					li007.State = 1				
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup813","pupevent 813",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup813","pupevent 813",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addplague"
 					DisplayCharIcons 4, "addparty"
 					SetPuPCharLocation "plagueAni","PlagueDead"						
@@ -7432,8 +7485,7 @@ End If
 					li009.State = 1				
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup814","pupevent 814",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup814","pupevent 814",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addoccultist"
 					DisplayCharIcons 5, "addparty"
 					SetPuPCharLocation "occultistAni","OccultistDead"					
@@ -7449,8 +7501,7 @@ End If
 					li013.State = 1				
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
-					GeneralPupQueue.Add "Pup815","pupevent 815",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup815","pupevent 815",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addcrusader"
 					DisplayCharIcons 6, "addparty"
 					SetPuPCharLocation "crusaderAni","CrusaderDead"					
@@ -7466,9 +7517,8 @@ End If
 					li023.State = 1				
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) + 1
 					CheckParty
-					'if DMDType = 0 Then HideBG2 5000
 '					Debug " Added Hound "&PartySize(CurrentPlayer)
-					GeneralPupQueue.Add "Pup816","pupevent 816",30,100,0,0,GenPuPExpiry,False
+					GeneralPupQueue.Add "Pup816","pupevent 816",30,0,0,0,GenPuPExpiry,False
 					ReturnOverlay "addhound"
 					DisplayCharIcons 7, "addparty"
 					SetPuPCharLocation "houndAni","HoundDead"				
@@ -7617,6 +7667,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Grave " & HeroCountDown
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:GraveRobber Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 0
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe0","PuPHideBattle ""Party Wipe0"" ",98,0,0,0,0,True
@@ -7629,10 +7683,8 @@ Debug "In Remove Party"
 						'PuPEvent 101
 					Else
 						GeneralPuPQueue.Add "Pup941","PupEvent 941",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "graveAni"
-						BattleQueue.Add "KillCharGIF-Grave","KillCharGIF ""graveAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-Grave","KillPupChar ""graveAni"", ""GraveDead"" ",70,3100,0,0,0,True
-						'KillPupChar "graveAni", "GraveDead" ' Only try to display this image if party is not wiped
+						KillCharGIF "graveAni"
+						KillPupChar "graveAni", "GraveDead" ' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7646,6 +7698,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed HwyMan " & HeroCountDown
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:HighwayMan Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 1
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe1","PuPHideBattle ""Party Wipe1"" ",98,0,0,0,0,True
@@ -7657,10 +7713,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup942","PupEvent 942",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "highwaymanAni"
-						'KillPupChar "highwaymanAni", "HighwaymanDead" ' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-hwy","KillCharGIF ""highwaymanAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-hwy","KillPupChar ""highwaymanAni"", ""HighwaymanDead"" ",70,3100,0,0,0,True
+						KillCharGIF "highwaymanAni"
+						KillPupChar "highwaymanAni", "HighwaymanDead" ' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7674,6 +7728,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Jester " & HeroCountDown 
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:Jester Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 2
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe2","PuPHideBattle ""Party Wipe2"" ",98,0,0,0,0,True
@@ -7685,10 +7743,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup943","PupEvent 943",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "jesterAni"
-						'KillPupChar "jesterAni", "JesterDead"' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-jester","KillCharGIF ""jesterAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-jester","KillPupChar ""jesterAni"", ""JesterDead"" ",70,3100,0,0,0,True
+						KillCharGIF "jesterAni"
+						KillPupChar "jesterAni", "JesterDead"' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7702,6 +7758,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Healer " & HeroCountDown 
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:Vestal Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 3
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe3","PuPHideBattle ""Party Wipe3"" ",98,0,0,0,0,True
@@ -7713,10 +7773,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup944","PupEvent 944",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "vestalAni"
-						'KillPupChar "vestalAni", "VestalDead"' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-vestal","KillCharGIF ""vestalAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-vestal","KillPupChar ""vestalAni"", ""VestalDead"" ",70,3100,0,0,0,True
+						KillCharGIF "vestalAni"
+						KillPupChar "vestalAni", "VestalDead"' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7730,6 +7788,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Plague DR " & HeroCountDown 
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:PlagueDoctor Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 4
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe4","PuPHideBattle ""Party Wipe4"" ",98,0,0,0,0,True
@@ -7741,10 +7803,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup945","PupEvent 945",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "plagueAni"
-						'KillPupChar "plagueAni", "PlagueDead"' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-plague","KillCharGIF ""plagueAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-plague","KillPupChar ""plagueAni"", ""PlagueDead"" ",70,3100,0,0,0,True
+						KillCharGIF "plagueAni"
+						KillPupChar "plagueAni", "PlagueDead"' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7758,6 +7818,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Occultist " & HeroCountDown 
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:Occultist Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 5
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe5","PuPHideBattle ""Party Wipe5"" ",98,0,0,0,0,True
@@ -7769,10 +7833,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup946","PupEvent 946",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "occultistAni"
-						'KillPupChar "occultistAni", "OccultistDead"' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-occ","KillCharGIF ""occultistAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-occ","KillPupChar ""occultistAni"", ""OccultistDead"" ",70,3100,0,0,0,True
+						KillCharGIF "occultistAni"
+						KillPupChar "occultistAni", "OccultistDead"' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7786,6 +7848,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Knight " & HeroCountDown 
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:Crusader Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 6
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe6","PuPHideBattle ""Party Wipe6"" ",98,0,0,0,0,True
@@ -7797,10 +7863,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup947","PupEvent 947",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "crusaderAni"
-						'KillPupChar "crusaderAni", "CrusaderDead"' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-crusader","KillCharGIF ""crusaderAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-crusader","KillPupChar ""crusaderAni"", ""CrusaderDead"" ",70,3100,0,0,0,True
+						KillCharGIF "crusaderAni"
+						KillPupChar "crusaderAni", "CrusaderDead"' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7814,6 +7878,10 @@ Debug "In Remove Party"
 					PartySize(CurrentPlayer) = PartySize(CurrentPlayer) - 1
 					CreatePartyString
 					Debug " Removed Hound " & HeroCountDown 
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="PM{red}:HoundMaster Died"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					HideCharIcons 7
 					If PartySize(CurrentPlayer) < 1 Then 
 						GeneralPupQueue.Add "PartyWipe7","PuPHideBattle ""Party Wipe7"" ",98,0,0,0,0,True
@@ -7825,10 +7893,8 @@ Debug "In Remove Party"
 						BallHandlingQueue.Add "ReturnToVillage","ReturnToVillage",70,200,0,0,0,False
 					Else
 						GeneralPuPQueue.Add "Pup948","PupEvent 948",23,0,0,0,GenPuPExpiry,False
-						'KillCharGIF "houndAni"
-						'KillPupChar "houndAni", "HoundDead"' Only try to display this image if party is not wiped
-						BattleQueue.Add "KillCharGIF-hound","KillCharGIF ""houndAni"" ",70,0,0,0,0,True
-						BattleQueue.Add "KillPupChar-hound","KillPupChar ""houndAni"", ""HoundDead"" ",70,3100,0,0,0,True
+						KillCharGIF "houndAni"
+						KillPupChar "houndAni", "HoundDead"' Only try to display this image if party is not wiped
 					End If
 					HeroCountDownReset
 				Else
@@ -7995,7 +8061,7 @@ Debug "PartySting on Exit: " &PartyString
     ' Exit Sub ' only for debugging - this way you can add balls from the debug window
 
     BallsOnPlayfield = BallsOnPlayfield - 1
-	Debug2 "Drain Hit- BoP: " & BallsOnPlayfield
+	Debug "Drain Hit- BoP: " & BallsOnPlayfield
 	Debug "Drain Hit2 " & AMCombo
     ' pretend to knock the ball into the ball storage mech
     RandomSoundDrain Drain
@@ -8027,15 +8093,13 @@ Debug "PartySting on Exit: " &PartyString
 				BallHandlingQueue.Add "UpdateDMD","UpdateDMD",30,6700,0,0,0,False 
 
 			Else
-				if Mode(CurrentPlayer,0) <> 15 Then
-					Debug "Ball Saved"
-					EOBHide "BallSave"
-					BallHandlingQueue.Add "EOBHide-BS","EOBHide ""BallSave"" ",60,0,0,0,0,True ' Ball Saved Video
-					GeneralPupQueue.Add "Pup300","pupevent 300",96,0,0,0,0,True
-					BallHandlingQueue.Add "Pup860","PuPEvent 860",50,0,0,0,0,False' Ball Saved Video
-					AudioQueue.Add "Pup348","PuPEvent 348",35,0,0,0,0,False
-					BallHandlingQueue.Add "EOBReturn-BallSave","EOBReturn ""BallSave"" ",50,6550,0,0,0,True ' Ball Saved Video
-				End If
+				Debug "Ball Saved"
+				EOBHide "BallSave"
+				BallHandlingQueue.Add "EOBHide-BS","EOBHide ""BallSave"" ",60,0,0,0,0,True ' Ball Saved Video
+				GeneralPupQueue.Add "Pup300","pupevent 300",96,0,0,0,0,True
+				BallHandlingQueue.Add "Pup860","PuPEvent 860",50,0,0,0,0,False' Ball Saved Video
+				AudioQueue.Add "Pup348","PuPEvent 348",35,0,0,0,0,False
+				BallHandlingQueue.Add "EOBReturn-BallSave","EOBReturn ""BallSave"" ",50,6550,0,0,0,True ' Ball Saved Video
 			End If
 
             AddMultiball 1
@@ -8050,7 +8114,7 @@ Debug "PartySting on Exit: " &PartyString
 		
             End If
         Else  ' Not in ball saver mode
-			Debug2 " No ball saver"
+			Debug " No ball saver"
             ' cancel any multiball if on last ball (ie. lost all other balls)
             If(BallsOnPlayfield = 1)Then
 				Debug "BOP 1"                ' AND in a multi-ball??
@@ -8088,9 +8152,9 @@ Debug "PartySting on Exit: " &PartyString
 
 				bDrain = 1
 				'if AMState <> 2 And ActiveMode < 14 And ActiveMode > 0 Then	Debug "Calling ModeFail": ModeFail "drainhit":ReturnToVillage ' Do not call modefail if completed 
-				if AMState < 3 And ActiveMode < 14 And ActiveMode > 0 Then	Debug2 "Calling ModeFail": ModeFail "drainhit"   ' Do not call modefail if completed   1.2b
+				if AMState < 3 And ActiveMode < 14 And ActiveMode > 0 Then	Debug "Calling ModeFail": ModeFail "drainhit"   ' Do not call modefail if completed   1.2b
 				Light010.state = 0
-				Debug2 "BOP 0"
+				Debug "BOP 0"
 				OldGI = "white"
                 ChangeGi white
                 ChangeGIIntensity 1
@@ -8116,19 +8180,16 @@ Debug "PartySting on Exit: " &PartyString
 
 				Select Case tmpy
 					Case 1:
-						Debug2 "EOB CASE 1"
 						BallHandlingQueue.Add "EOB-DH","EOBHide ""DrainHit"" ",73,0,0,0,0,True
 						BallHandlingQueue.Add "Pup842","PuPEvent 842",70,100,0,0,0,True
 						DOF 174, DOFPulse ' RED
 						BallHandlingQueue.Add "EndofBall","EndofBall",70,4300,0,0,0,True
 					Case 2:
-						Debug2 "EOB CASE 2"
 						BallHandlingQueue.Add "EOB-DH","EOBHide ""DrainHit"" ",73,0,0,0,0,True
 						BallHandlingQueue.Add "Pup843","PuPEvent 843",70,100,0,0,0,True
 						DOF 263, DOFPulse ' WHITE
 						BallHandlingQueue.Add "EndofBall","EndofBall",70,6200,0,0,0,True
 					Case 3:
-						Debug2 "EOB CASE 3"
 						BallHandlingQueue.Add "EOB-DH","EOBHide ""DrainHit"" ",73,0,0,0,0,True
 						BallHandlingQueue.Add "Pup844","PuPEvent 844",70,100,0,0,0,True
 						DOF 264, DOFPulse ' BLUE
@@ -8136,7 +8197,7 @@ Debug "PartySting on Exit: " &PartyString
 				End Select
 
 
-				Debug2 " Calling Lost Ball EOB " & AMCombo &":" &tmpy
+				Debug " Calling Lost Ball EOB " & AMCombo
 			End If
         End If
     End If
@@ -8230,13 +8291,12 @@ Sub swPlungerRest_UnHit()
     LightSeqAttract.StopPlay
     DOF 187, DOFOff
     DOF 113, DOFPulse
-	if bOnTheFirstBall Then StopAttractMode
-
 	bContinueGame = False ' turn off the continue game flag
 	bOnTheFirstBall = False
 	HideContinueMessage
+	HideScorbit
 
-
+	StopAttractMode
 	HideHighScores
 	HighScoreQueue.RemoveAll(True)
 
@@ -8395,6 +8455,10 @@ Sub AddJackpot(points)
 '		Jackpot = 6000000
 ' 	End if
 'End if
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="J{Blue}:Jackpot"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
 End Sub
 
 Sub AddSuperJackpot(points) 'not used in this table
@@ -8408,6 +8472,12 @@ Sub AddBonusMultiplier(n)
         ' then add and set the lights
         NewBonusLevel = BonusMultiplier(CurrentPlayer) + n
         SetBonusMultiplier(NewBonusLevel)
+
+		if Scorbit.bSessionActive then
+			GameModeStrTmp="BM{green}:Bonus Multiplier: " &NewBonusLevel
+			Scorbit.SetGameMode(GameModeStrTmp)
+		End If
+
  '       DMD "_", CL("BONUS X " &NewBonusLevel), "_", eNone, eBlink, eNone, 2000, True, ""
     Else
         AddScore2 500000
@@ -8434,6 +8504,11 @@ Sub AddPlayfieldMultiplier(n)
         SetPlayfieldMultiplier(NewPFLevel)
  '       DMD "_", CL("PLAYFIELD X " &NewPFLevel), "_", eNone, eBlink, eNone, 2000, True, "sfx_thunder" &RndNbr(7)
         LightEffect 4
+
+		if Scorbit.bSessionActive then
+			GameModeStrTmp="PM{Blue}:Increased PF Multiplier: " &NewPFLevel
+			Scorbit.SetGameMode(GameModeStrTmp)
+		End If
     ' Play a voice sound
     Else 'if the max is already lit
         AddScore2 500000
@@ -8455,6 +8530,12 @@ Sub DecreasePlayfieldMultiplier 'reduces by 1 the playfield multiplier
         ' then add and set the lights
         NewPFLevel = PlayfieldMultiplier(CurrentPlayer)- 1
         SetPlayfieldMultiplier(NewPFLevel)
+
+		if Scorbit.bSessionActive then
+			GameModeStrTmp="PM{red}:Decreased PF Multiplier: " &NewPFLevel
+			Scorbit.SetGameMode(GameModeStrTmp)
+		End If
+
     Else
         PFXTimer.Enabled = 0
     End if
@@ -8503,6 +8584,12 @@ Sub AwardExtraBall()
     GiEffect 1
     LightEffect 2
 	BallHandlingQueue.Add "Pup850","PuPEvent 850",45,0,0,0,0,True ' extraball video
+
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="EB{purple}:Extraball Awarded"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
+
 	'ScorbitBuildGameModes
 '    END If
 End Sub
@@ -8517,6 +8604,11 @@ Sub AwardSpecial()
     GiEffect 1
 	AddScore Score_Special
     Light010.State = 0 'turn off special light
+
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="D{purple}:Special Awarded"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
 	'ScorbitBuildGameModes
 End Sub
 
@@ -8558,6 +8650,11 @@ Sub AwardSkillshot()
     GiEffect 1
     LightEffect 2
 	AudioQueue.Add "Pup277","PuPEvent 277",35,0,0,0,AudioExpiry,False
+
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="SS{blue}:Skillshot"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
 End Sub
 
 Sub AwardSuperSkillshot()
@@ -8571,6 +8668,10 @@ Sub AwardSuperSkillshot()
     'do some light show
     GiEffect 1
     LightEffect 2
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="SS{Yellow}:Super Skillshot"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
 End Sub
 
 
@@ -9508,7 +9609,7 @@ dim Gamblescorex2
 Dim DungeonsCleared(4)
 
 ' MERLIN RTP CODE STUFFS
-Dim LOHIT,ROHIT,INHIT,ORBHIT
+Dim LOHIT,ROHIT,INHIT
 Dim PupScreen1
 Dim GlowMod, CharPosition, MonPosition
 Dim InVideo,GameReady,tmpMonster
@@ -9640,7 +9741,6 @@ debug "begin GAME INIT"
 	AF = 1
 	bInn = False
 	bVillage = True
-	bDungeonsCleared = False
 	bBallDown = False
 	bEndOfGame = False
 	bSupressDMD = False
@@ -9748,7 +9848,6 @@ debug "begin GAME INIT"
 	LOHIT  = 0
 	ROHIT = 0
 	INHIT = 0
-	ORBHIT = 0
 	Mode(CurrentPlayer,0) = 0
 	BleedActive = 0
 	TorchesEnabled = 0
@@ -9881,14 +9980,9 @@ debug2 "DONE INITIALISZING"
 	Light010.state = 2
 	CheckDungeonLights  ' Re-light dungeons on continue
 	PreviewNextChar  
-	SetDifficulty ' Make sure to call this at the end of game_init
+	'SetDifficulty ' Make sure to call this at the end of game_init
 	ScorbitBuildGameModes
 	ReturnToVillage
-	if DMDType = 0 Then
-		UpdateBG
-	Else
-		UpdateDMD
-	End If
 	'dev.enabled = 1:bDisplayDev = "True" 'RTP7
 '	TrapdoorUp ' RTP7
 '	WallsUp ' RTP7
@@ -9900,7 +9994,7 @@ Sub DisplayOverlayCounts
 	Elseif bSupressDMD = True Then
 		BallHandlingQueue.Add "DisplayOverlayCounts","DisplayOverlayCounts",70,1000,0,0,0,False
 	Else
-		Debug5 "in display overlay counts: " &bSupressBGMessages 
+		'Debug "in display overlay counts"
 		if DMDType = 0 And bSupressBGMessages = False Then
 			DisplayRampCounts
 			DisplaySpinCount
@@ -9920,7 +10014,7 @@ Sub DisplayOverlayCounts
 End Sub
 
 Sub DisplayOverlayIcons		
-	if DMDType = 0 And bSupressBGMessages = False Then
+	if DMDType = 0 And bSupressBGMEssages = False Then
 		if BSMode = 2 Then pBackglasslabelshow "BlacksmithOn"
 		if GMode = 2 Then pBackglasslabelshow "GambleOn"
 		if TMode = 2 Then pBackglasslabelshow "InTheDarkOn"
@@ -10014,8 +10108,7 @@ Sub EOBHide (caller)
 	'dev.enabled = 0:bDisplayDev = "False": hidedev     'RTP7
 
 Debug "EOBHide Called by: " &caller
-	'GeneralPupQueue.Add "bSupressBGMessages-T","bSupressBGMessages = True",97,0,0,0,0,True
-	bSupressBGMessages = True
+	GeneralPupQueue.Add "bSupressBGMessages-T","bSupressBGMessages = True",97,0,0,0,0,True
 	GeneralPupQueue.Add "Pup300","pupevent 300",96,0,0,0,0,True
 	GeneralPupQueue.Add "Pup300","pupevent 300",96,200,0,0,0,True  ' make sure overlay disappears
 	InVideo = 1   
@@ -10064,11 +10157,12 @@ if bSupressBGMessages = False Then
 End If
 
 'Debug "EOB Return - Called By: " &tmp4
+Debug2 "in EOB RETURN- bDrain: "& bDrain
 'Debug "in EOB RETURN- bEndOfGame: " &bEndOfGame
 	GeneralPupQueue.Add "bSupressBGMessages-F","bSupressBGMessages = False",97,0,0,0,0,True
 	if bDrain = 0 And bEndOfGame = False And bSupressBGMessages = False Then
 		if bInn = False Then GeneralPupQueue.Add "Pup900","pupevent 900",95,0,0,0,0,True
-		if bInn = False Then GeneralPupQueue.Add "Pup400","pupevent 400",95,0,0,0,0,False
+		ReturnOverlay "EOB Return"
 		GeneralPupQueue.Add "Pup400","pupevent 400",94,200,0,0,0,True 'make sure it comes back
 		InVideo = 0 
 
@@ -10355,7 +10449,6 @@ Sub ResetNewBallVariables()  'reset variables and lights for a new ball or playe
 	LOHIT = 0
 	ROHIT = 0
 	INHIT = 0
-	ORBHIT = 0
 	CFCount = 0
 	bExtraBallWonThisBall = 0
 	OrbitHits=0
@@ -10695,7 +10788,7 @@ Sub Bumper1_Hit
 	LBumper1a.State = 2
 	LightSeqQueue.add "LBump1","LBumper1a.State = 0",10,500,0,1500,0,False
 
-    'LastSwitchHit = "Bumper1"
+    LastSwitchHit = "Bumper1"
     'checkmodes this switch is part of
     CheckSkillshot
     CheckBumperHits
@@ -10723,7 +10816,7 @@ Sub Bumper2_Hit
 	LBumper2a.State = 2
 	LightSeqQueue.add "LBump2","LBumper2a.State = 0",10,500,0,1500,0,False
 
-    'LastSwitchHit = "Bumper2"
+    LastSwitchHit = "Bumper2"
     'checkmodes this switch is part of
     CheckSkillshot
     CheckBumperHits
@@ -10753,7 +10846,7 @@ Sub Bumper3_Hit
 	LBumper2a.State = 2
 	LightSeqQueue.add "LBump2","LBumper2a.State = 0",10,500,0,1500,0,False
 
-    'LastSwitchHit = "Bumper3"
+    LastSwitchHit = "Bumper3"
     'checkmodes this switch is part of
     CheckSkillshot
     CheckBumperHits
@@ -11205,12 +11298,13 @@ if BSMode = 1 or GMode = 1 or TMode = 1 Then Exit Sub
 			AudioQueue.Add "Pup274", "PuPEvent 274",32,0,0,0,AudioExpiry,False
 			CBHits(CurrentPlayer) = CBHits(CurrentPlayer) + 1
 			if BallsInLock(CurrentPlayer) < 3 Then
-				Triggerscript 1500, "PlaySound""vo_trapdoor"":TrapdoorUp "
+				Triggerscript 1500, "TrapdoorUp "
 			End If
 			LightEffect 5
 			Debug "CBALL HIT: " &CBHits(CurrentPlayer)
-			If CBHits(CurrentPlayer)MOD 10 = 0 Then 'ball breaker
+			If CBHits(CurrentPlayer)mod 10 = 0 Then 'ball breaker
 				'        DMD CL("BALL BREAKER"), CL(FormatScore(750000)), "_", eNone, eNone, eNone, 3000, True, "vo_ball_breaker"
+			Debug "CBALL HIT MOD: " &CBHits(CurrentPlayer) mod 10
 				if DMDType <> 2 Then 
 					pup2helper 3000
 				Else
@@ -11225,11 +11319,10 @@ if BSMode = 1 or GMode = 1 or TMode = 1 Then Exit Sub
 			if PartySize(CurrentPlayer) < 4 Then 
 				PreviewNextChar
 			Else
-				Triggerscript 500, "PlaySound""vo_trapdoor"":TrapdoorUp "
+				Triggerscript 500, "TrapdoorUp "
 				LightEffect 5
 			End If
 		Case 9:
-			ChangeCryptImages
 			AudioQueue.Add "Pup274", "PuPEvent 274",32,0,0,0,AudioExpiry,False
 			HideWizardModeMessage
 			CBHits(CurrentPlayer) = CBHits(CurrentPlayer) + 1
@@ -11238,18 +11331,15 @@ if BSMode = 1 or GMode = 1 or TMode = 1 Then Exit Sub
 				' add a pup increment to the sidemission counter
 			SetCryptLights
 			Debug "Trapdoor opened for wizard  mode"
-			Triggerscript 1500, "PLaySound""vo_trapdoor"":TrapdoorUp "
+			Triggerscript 1500, "TrapdoorUp "
 			Addscore Score_CBall
 			LightEffect 3
 
 
 			GeneralPupQueue.Add "EOBHide-WMP","EOBHide ""wizmodeprep"" ",41,0,0,0,0,True
 			BallHandlingQueue.Add "Pup853","PuPEvent 853",50,0,0,0,0,True
-			'GeneralPupQueue.Add "Pup900","pupevent 900",95,6100,0,0,0,True
-			GeneralPupQueue.Add "Pup400","pupevent 400",95,6100,0,0,0,False
-			GeneralPupQueue.Add "bSupressBGMessages-F","bSupressBGMessages = False",95,6100,0,0,0,False
-			GeneralPupQueue.Add "EOBReturn-9","EOBReturn ""Mode 9""",95,6150,0,0,0,False
-			'Triggerscript 6150, "EOBReturn ""Mode 9"" "
+			GeneralPupQueue.Add "Pup900","pupevent 900",95,6100,0,0,0,True
+			Triggerscript 6150, "EOBReturn ""Mode 9"" "
 
 		Case 2,4,6,8,10,11,12,13,14:
 			AudioQueue.Add "Pup265", "PuPEvent 265",32,0,0,0,AudioExpiry,False  ' Torchlight callout
@@ -11418,6 +11508,10 @@ Debug "**** In Destroy Ambush ****"
 '		PuPEvent 966   ' preventambush video?
 		If Party(CurrentPlayer,5) = 1 Then
 
+			if Scorbit.bSessionActive then
+				GameModeStrTmp="Item{Orange}:Occulist Ability Used - Ambush Destroyed"
+				Scorbit.SetGameMode(GameModeStrTmp)
+			End If
 			
 			Debug " Checking if Targets are up: " & DroppedDT(1)
 
@@ -11533,6 +11627,11 @@ Debug "ApplyGrave: " & InBattle &":" & BID
 				pup2helper 4000
 			End If
 
+			if Scorbit.bSessionActive then
+				GameModeStrTmp="Item{Orange}:GraveRobber Ability Used"
+				Scorbit.SetGameMode(GameModeStrTmp)
+			End If
+
 			GeneralPuPQueue.Add "Pup876","PuPEvent 876",38,0,0,0,GenPuPExpiry,False
 			hidedeadchar
 			AddPartyMember
@@ -11567,6 +11666,11 @@ Debug "ApplyHwy: " & InBattle &":" & OrigHwyBID
 				pup2helper 4000
 			End If
 
+			if Scorbit.bSessionActive then
+				GameModeStrTmp="Item{Orange}:Highwayman Ability Used"
+				Scorbit.SetGameMode(GameModeStrTmp)
+			End If
+
 			Select Case ActiveMode
 			Case 2,4,6,8,10,11,12,13:
 				GeneralPuPQueue.Add "Pup870","PuPEvent 870",38,0,0,0,GenPuPExpiry,False
@@ -11598,6 +11702,7 @@ Debug "ApplyJester: " & InBattle &":" & OrigJesBID
 			Else				
 				pup2helper 4000
 			End If
+
 			GeneralPuPQueue.Add "Pup871","PuPEvent 871",38,0,0,0,GenPuPExpiry,False
 			Dim jst
 			jst = RndNbr(10)
@@ -11607,7 +11712,15 @@ Debug "ApplyJester: " & InBattle &":" & OrigJesBID
 					Debug "Jester Good Bonus"
 					AddItem
 					AddItem
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Orange}:Jester Ability Used - Added 2 Items"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 				Case Else:
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Orange}:Jester Ability Used - Removed Trust Post"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 					Debug "Jester Removed Trust Post"
 					AudioQueue.Add "Pup261","PuPEvent 261",32,0,0,0,AudioExpiry,False
 					RemoveTrustPost ' remove trust post for set time
@@ -11634,6 +11747,12 @@ Debug "ApplyHealer: " & InBattle &":" & BID
 			Else				
 				pup2helper 4000
 			End If
+
+			if Scorbit.bSessionActive then
+				GameModeStrTmp="Item{Orange}:Vestal Ability Used"
+				Scorbit.SetGameMode(GameModeStrTmp)
+			End If
+
 			GeneralPuPQueue.Add "Pup872","PuPEvent 872",38,0,0,0,GenPuPExpiry,False
 			AudioQueue.Add "Pup253","PuPEvent 253",32,0,0,0,AudioExpiry,False
 			Debug " Healer Ball Saver"
@@ -11660,6 +11779,10 @@ Debug "ApplyPlague: " & InBattle &":" & BID
 		Debug "ApplyPlague: PASSED"
 			AudioQueue.Add "Pup254","PuPEvent 254",32,3000,0,0,AudioExpiry,False
 			ResetTorches
+			if Scorbit.bSessionActive then
+				GameModeStrTmp="Item{Orange}:Plague Doctor Ability Used"
+				Scorbit.SetGameMode(GameModeStrTmp)
+			End If
 		Else
 			PlagueTimer.Enabled = 0
 		End If
@@ -11692,6 +11815,12 @@ Debug "ApplyKnight: " & InBattle &":" & BID
 				Else					
 					pup2helper 4000
 				End If
+
+				if Scorbit.bSessionActive then
+					GameModeStrTmp="Item{Orange}:Crusader Ability Used"
+					Scorbit.SetGameMode(GameModeStrTmp)
+				End If
+
 				GeneralPuPQueue.Add "Pup875","PuPEvent 875",38,0,0,0,GenPuPExpiry,False
 				KickbackActive
 				Debug " Knight kickback enabled"
@@ -11982,7 +12111,6 @@ Debug " AFTER In RestoreMonsterImages"
 End Sub
 '*********************************************************************************************************
 Sub LoadShambler
-	bRetry = False
 	OldGI = "purple"
 	ChangeGI purple
 	setMonsterLightColorGreen
@@ -12010,7 +12138,7 @@ Sub LoadShambler
 	li040.state = 2
 	li051.state = 2
 	li060.state = 2
-	li037.state = 0 ' inside orbit
+	li037.state = 2
 	li047.state = 0 ' turn off the Inn light 
 	li032.state = 0
 	li021.state = 0
@@ -12060,7 +12188,6 @@ Sub LoadShambler2
 End Sub
 '*********************************************************************************************************
 Sub LoadProphet
-	bRetry = False
 	OldGI = "purple"
 	ChangeGI purple
 	'InBattle = 1
@@ -12137,7 +12264,6 @@ End Sub
 
 '##################################################################################
 Sub LoadDrownedCrew
-	bRetry = False
 	'InBattle = 1
 	OldGI = "blue"
 	ChangeGI blue
@@ -12216,7 +12342,6 @@ Sub LoadDrownedCrew2
 End Sub
 '*********************************************************************************************************
 Sub LoadWulf
-	bRetry = False
 	OldGI = "red"
 	ChangeGI red
 	setMonsterLightColorGreen
@@ -12295,7 +12420,6 @@ End Sub
 '*************************************************************************************************
 
 Sub LoadSwinePrince
-	bRetry = False
 	OldGI = "pink"
 	ChangeGI pink
 	setMonsterLightColorGreen
@@ -12743,9 +12867,9 @@ Sub RTP
 'TestRuins:triggerscript 2000, "StartRuins"
 '---------------------------
 ' Useful methods for testing specific dungeons
-'TestRuins
+TestRuins
 'TestCove
-wizardmode
+
 
 'AssemblePartyRuins
 'AddPartyMember
@@ -12775,20 +12899,14 @@ end sub
 
 
 Sub TestRuins
-Mode(currentplayer,4) = 2
-Mode(currentplayer,6) = 2
-Mode(currentplayer,8) = 2
-
 	AssemblePartyruins
 	addpartymember
 	addpartymember
 	addpartymember
 	'addpartymember
 	AddItem
-
-
 	'cheatWin 1
-	'GoldSack(CurrentPlayer) = 1
+	GoldSack(CurrentPlayer) = 1
 	'vpmtimer.addtimer 500, "scoop2_hit '"
 End Sub
 
@@ -12866,12 +12984,6 @@ Sub ShowOverlayIcons
 		if Missions(currentplayer,3) = 3 Then pDMDlabelshow "InTheDarkOn"
 		if GoldSack(CurrentPlayer) > 0 Then pDMDlabelshow "GoldSackOn"	
 		DisplayMagnetIcon
-		if DMDType = 0 Then
-			if Missions(currentplayer,1) = 9 Then pBackglasslabelshow "BlacksmithOn"
-			if Missions(currentplayer,2) = 2 Then pBackglasslabelshow "GambleOn"
-			if Missions(currentplayer,3) = 3 Then pBackglasslabelshow "InTheDarkOn"
-			if GoldSack(CurrentPlayer) > 0 Then pBackglasslabelshow "GoldSackOn"	
-		End If
 	Else
 		BallHandlingQueue.Add "ShowOverlayIcons","ShowOverlayIcons",20,1000,0,0,0,False
 	End If
@@ -12884,21 +12996,6 @@ Sub HideOverlayIcons
 	pDMDlabelhide "InTheDarkOn"
 	pDMDlabelhide "GoldSackOn"
 	HideMagnetMessages
-
-End Sub
-
-Sub HideBGOverlayIcons
-	pBackglasslabelhide "BlacksmithOn"
-	pBackglasslabelhide "GambleOn"
-	pBackglasslabelhide "InTheDarkOn"
-	pBackglasslabelhide "GoldSackOn"
-End Sub
-
-Sub HideBGOverlayCounts
-	PuPlayer.LabelSet pBackglass,"rampcounts","",0,""
-	PuPlayer.LabelSet pBackglass,"spinnercounts","",0,""
-	PuPlayer.LabelSet pBackglass,"torchcounts","",0,""
-	PuPlayer.LabelSet pBackglass,"GoldSackCount","",0,""
 End Sub
 
 Sub HideOverlayCounts
@@ -12994,8 +13091,7 @@ Sub scoop1_Hit 'INN scoop
 						BallHandlingQueue.Add "bHoldBallDelay-F","bHoldBallDelay = False",55,1500,0,0,0,True
 						BallHandlingQueue.Add "DisplayHelper2","DisplayHelper2",55,5500,0,0,0,True
 						GeneralPupQueue.Add "Pup400","pupevent 400",94,0,0,0,0,True
-						if DMDType = 0 Then HideBG2 6200
-						GeneralPuPQueue.Add "Pup819","PuPEvent 819",25,100,0,0,0,True					
+						GeneralPuPQueue.Add "Pup819","PuPEvent 819",25,0,0,0,0,True					
 					Else ' party is full
 						BallHandlingQueue.Add "InnKickOut","InnKickBallOut",70,KickOutDelay,0,0,0,True
 						li038.state = 0
@@ -13020,11 +13116,7 @@ Sub scoop1_Hit 'INN scoop
 					if AMState = 2 Then  ' Completed
 						Debug "Mode 1,3,5,7 -- AMState 2"
 						'Add Items until all filled then start to LOCK Balls
-						if Activemode = 9 Then
-							BallHandlingQueue.Add "InnKickOut","InnKickBallOut",70,KickOutDelay,0,0,0,True
-						Else
-							InnHelper
-						End If
+						InnHelper
 					End If
 					'BallHandlingQueue.Add "KickOut","KickBallOut",70,KickOutDelay,0,0,0,True
 				Case 2,4,6,8:
@@ -13236,7 +13328,7 @@ Sub TrapDoorK_Hit 'Multiball Trapdoor for locking balls
 				'BallsInLock(CurrentPlayer) = BallsInLock(CurrentPlayer) + 1
 				CheckDungeonMB
 				Debug "Balls Locked < 2: " &BallsInLock(CurrentPlayer)
-				Triggerscript 2300, "PlaySound""vo_trapdoor"":TrapdoorUp "
+				Triggerscript 2300, "TrapdoorUp "
 			End If
 		Case 9:
 			BallsInLock(CurrentPlayer) = BallsInLock(CurrentPlayer) + 1
@@ -13249,7 +13341,7 @@ Sub TrapDoorK_Hit 'Multiball Trapdoor for locking balls
 				'BallsInLock(CurrentPlayer) = BallsInLock(CurrentPlayer) + 1
 				CheckDungeonMB
 				Debug "Balls Locked < 2: " &BallsInLock(CurrentPlayer)
-				Triggerscript 2300, "PLaySound""vo_trapdoor"":TrapdoorUp "
+				Triggerscript 2300, "TrapdoorUp "
 			End If
 		Case Else:
 				' Do nothing
@@ -13266,7 +13358,7 @@ Sub TrapDoorK_Hit 'Multiball Trapdoor for locking balls
 
 
     'score a Jackpot
-    AwardJackpot
+    'AwardJackpot
      ' and close the trap door
 	BallHandlingQueue.Add "KickOut","TrapdoorDown",60,1000,0,0,0,False
     BallHandlingQueue.Add "KickOut","KickBallOut",70,2000,0,0,0,True
@@ -13335,8 +13427,6 @@ ClearPupMessages
 				Debug "PANDORA: in Dungeon but not state 1: " & AMState
 				BallHandlingQueue.Add "ChestKickBallOut","ChestKickBallOut",70,KickOutDelay,0,0,0,True
 			End If
-		Case 9:
-			BallHandlingQueue.Add "KickOut","KickBallOut",70,KickOutDelay,0,0,0,True
 		Case Else: ' If not in a battle just kick ball out
 			Debug "Else pandorak kick"
 			BallHandlingQueue.Add "ChestKickBallOut","ChestKickBallOut",70,KickOutDelay,0,0,0,True
@@ -13383,6 +13473,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 					ItemsRTP(CurrentPlayer,0) = 0
 					HeroTimerReset ' Reset the Hero timer if there is an item in the chest 
 					BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Blue}:Medicine Used"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 				Else				
 					if TotalItemCount > 1 Then
 						randomchest		
@@ -13416,6 +13510,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 					BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True 	
 				End If
 				BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Blue}:Bandages Used"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 			Else
 				randomchest
 			End If
@@ -13432,6 +13530,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 				ItemsRTP(CurrentPlayer,2) = 0	
 				BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True  
 				BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Blue}:Key Used"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 			Else
 				randomchest			
 			end if
@@ -13453,6 +13555,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 				ItemsRTP(CurrentPlayer,3) = 0
 				BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True 
 				BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Blue}:Shovel Used"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 			Else
 				randomchest
 			end if
@@ -13475,6 +13581,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 				BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True 
 				CreatePartyString  ' SEnd party string to debug logs
 				BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Blue}:Vial Used"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 			Else
 				if TotalItemCount > 1 Then
 					randomchest		
@@ -13493,6 +13603,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 	'			DMD CL("MYSTERY "), CL("1"), "_", eNone, eBlink, eNone, 2500, True, "vo_specialislit"
 				BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True   
 				BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Red}:Heart Attack"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 			Else
 				RandomChest ' Call something else 
 			End If
@@ -13507,6 +13621,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 					BallHandlingQueue.Add "MadnessTimer-1","MadnessTimer.Enabled = 1",75,6000,0,0,0,True 
 					BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True 
 					BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Red}:Madness"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 				Else
 					AudioQueue.Add "Pup254", "PuPEvent 254",32,3000,0,0,AudioExpiry,False ' madness prevention callout
 					BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
@@ -13532,6 +13650,10 @@ If TotalItemCount > 0 And AMState = 1 Then
 					HeroCountDownReset
 					BallHandlingQueue.Add "HeroTimerReset","HeroTimerReset",75,0,0,0,0,True 
 					BallHandlingQueue.Add "KickOut","KickBallOut",70,4600,0,0,0,True
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="Item{Red}:Bleed"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 			Else
 				randomchest			
 			End if
@@ -13608,6 +13730,20 @@ CrazyFlippers
 End Sub
 
 
+
+Sub TurnOnHelmet 'to end a battle
+    Light001.State = 2
+    Light002.State = 2
+    Light003.State = 2
+    Light011.State = 2
+End Sub
+
+Sub TurnOffHelmet
+    Light001.State = 0
+    Light002.State = 0
+    Light003.State = 0
+    Light011.State = 0
+End Sub
 
 Sub TurnOffArrows 'at the end of the ball or timed mode
     li060.State = 0
@@ -13717,7 +13853,7 @@ Sub AwardCombo
             li046.State = 1
             If Light010.State = 0 Then
  '               DMD CL("_"), CL("SPECIAL IS LIT"), "_", eNone, eBlink, eNone, 2000, True, "vo_specialislit"
-                'Light010.State = 2
+                Light010.State = 2
             End If
         Case 7
 			Debug "ComboCount: "&ComboCount
@@ -13883,7 +14019,11 @@ Debug "Checking for Ball Lock or Multiball"
 					 li022.state=0 
 					 li046.state=0
 					 li039.state=0
-					'ScorbitBuildGameModes
+									'ScorbitBuildGameModes
+					if Scorbit.bSessionActive then
+						GameModeStrTmp="MB{Blue}:Dungeon Multiball"
+						Scorbit.SetGameMode(GameModeStrTmp)
+					End If
 				Else
 					Debug "Hwyman Alive in party so do not start multiball"
 				End If
@@ -13955,9 +14095,9 @@ Debug "---------- In Mode End"
 	gi051.state = 0
 	gi052.state = 0
 	Debug "In ModeEnd -- Starting Theme Music : " &Caller
-	Debug2 "ModeEnd ActiveMode: " &ActiveMode
+	Debug "ModeEnd ActiveMode: " &ActiveMode
 	LastMode = ActiveMode
-	'Light010.State = 2
+	Light010.State = 2
 
 	'Debug "In Mode End " &Caller
 	GlowMod = 0
@@ -14078,7 +14218,7 @@ Debug "-------- Entering ModeFail"
 	LoadLUT:SetLUT
 	DarknessLayer.Opacity = DefaultDarkness
 
-	Debug2 "Entered ModeFail: " &caller
+	Debug "Entered ModeFail: " &caller
 	Debug "ModeFail - ActiveMode: " &ActiveMode 
 	BallGlow DefaultBall,100,15
 
@@ -14107,12 +14247,9 @@ Debug "-------- Entering ModeFail"
 	if BallsRemaining(CurrentPlayer) > 0 Then
 		debug "mode fail calling 100"	
 		if bDrain = 0 Then 
-			Debug2 "Modefail bDrain = 0"
-			GeneralPupQueue.Add "Pup900","pupevent 900",95,0,0,0,0,True
-			GeneralPupQueue.Add "Pup400","pupevent 400",93,0,0,0,0,True
-			GeneralPupQueue.Add "Pup200","pupevent 200",90,0,0,0,0,True
-			'GeneralPupQueue.Add "Pup900","pupevent 900",95,4000,0,0,0,True
-			'GeneralPupQueue.Add "Pup200","pupevent 200",90,4000,0,0,0,True
+			Debug "Modefail bDrain = 0"
+			GeneralPupQueue.Add "Pup900","pupevent 900",95,4000,0,0,0,True
+			GeneralPupQueue.Add "Pup200","pupevent 200",90,4000,0,0,0,True
 		End If
 	End If
 	
@@ -14203,102 +14340,47 @@ Sub HideWizardModeMessage
 	PuPlayer.LabelSet pBackglass,"CryptMessage2","",0,""
 End Sub
 
-Sub ReturnWizPrep
-' this is called from endofballcomplete
-	Debug2 "Return WizPrep"
-	CreateNewBall()
-	FillParty
-	WinWizardModePrep
-End Sub
-
 Sub WizardModePrep
-	Debug2 " Wizard Mode Prep"
-	'StopAttractMode ' Make sure attractmode is off
-	'ChangeCryptImages
+	ChangeCryptImages
 	bDungeonsClosed = True
     DOF 247, DOFOn
+	if bRetry = False Then BallsInLock(CurrentPlayer) = 0 ' reset locked balls on first pass
 	ResetLights ' turn off all other lights
-
-	if bRetry = False Then 
-		BallsInLock(CurrentPlayer) = 0 ' reset locked balls on first pass
-	Else
-		' reset the ball locked Lights
-		If BallsInLock(CurrentPlayer) = 1 Then li032.state = 1 
-		If BallsInLock(CurrentPlayer) = 2 Then li032.state = 1:li021.state = 1
-		If BallsInLock(CurrentPlayer) = 3 Then li032.state = 1:li021.state = 1:li022.state = 1
-		
-	End If
-
-	bRetry = True
 	
 	Mode(CurrentPlayer,0) = 9
 	Mode(CurrentPlayer,9) = 1
 	SetModeTitle
 	BallGlow DefaultBall,100,15
-	Debug2 "Wizard Mode Prep"
+	Debug "Wizard Mode Prep2"
 	UpdateModeLabels
 
-	bInn = True
-	AudioQueue.Add "Pup291","PuPEvent 291",25,0,0,0,AudioExpiry,False
-	AudioQueue.Add "Pup446","PuPEvent 446",20,100,0,0,0,False ' Inn music
-	GeneralPupQueue.Add "Pup347","pupevent 347",90,200,0,0,0,True
-	InnLighting
-
-	ClearPupMessages
-
-	Debug "PartySize: " &PartySize(CurrentPlayer)
-	if PartySize(CurrentPlayer) < 4 Then
-		if DMDType <> 2 Then pupflasher1.visible=true
-
-		GeneralPuPQueue.Add "Pup301","PuPEvent 301",10,0,0,0,0,True
-		BallHandlingQueue.Add "SetPartyLights","SetPartyLights",20,0,0,0,0,False
-	Else
-		CheckParty
-	End If
-
+	SetPartyLights
 	CheckItemColors "winwizardmodeprep"
 	CheckIconColors "winwizardmodeprep"
-	
+	CheckParty
 End Sub
 
 Sub WinWizardModePrep
-' Change BG Image
-' Change BG Music
-	GeneralPupQueue.Add "Pup900","pupevent 900",90,0,0,0,0,True
-	AudioQueue.Add "Pup447","PuPEvent 447",20,0,0,0,0,False ' Crypt music
-
-	Debug2 "WinWizardMode"
-
-
-	ChangeCryptImages
-	GeneralPupQueue.Add "DisplayWizardModeMessage","DisplayWizardModeMessage",10,250,0,0,0,False
-
+	ResetTrapDoorImages
 	bDungeonsClosed = True
     DOF 247, DOFOn
 	HeroCountdown = 60 ' set to higher value so players can survice
 	li021.state = 0 ' turn off ball lights
 	li022.state = 0
 	li032.state = 0
-
-	If BallsInLock(CurrentPlayer) = 1 Then li032.state = 1 
-	If BallsInLock(CurrentPlayer) = 2 Then li032.state = 1:li021.state = 1
-	If BallsInLock(CurrentPlayer) = 3 Then li032.state = 1:li021.state = 1:li022.state = 1
 	Mode(CurrentPlayer,0) = 9
 	Mode(CurrentPlayer,9) = 2
-	'SetModeTitle
-	ModeTitle = "Wizard Lock"
+	SetModeTitle
 	BallGlow 8,100,15
 	Debug "Wizard Mode Prep"
-
+	DisplayWizardModeMessage
 	UpdateModeLabels
 	ResetLights ' turn off all other lights
-
+	bRetry = True
 	EnableBallLock
 	li038.state=0 ' Turn off Quest Light
-	li047.state = 0 ' turn off Inn light
 	CheckItemColors "wizardmodeprep"
 	CheckIconColors "wizardmodeprep"
-	if DMDType = 0 Then UpdateBG
 End Sub
 
 Sub WizardMode
@@ -14308,30 +14390,22 @@ Sub WizardMode
 	ScorbitBuildGameModes
 	HideHelper
 	SetModeTitle
-	PuPHideBattle "WizardMode"   ' make sure pup battle is hidden
 	BallGlow 8,100,15
 	'pNote "WIZARD","MODE"
 	UpdateModeLabels
 	SetCryptLights2
 
 	bMultiBallMode = True
-	'bSupressBGMessages = True
 
 	AudioQueue.Add "Pup444","PuPEvent 444",20,0,0,0,0,False' wizard mode audio
-	'GeneralPupQueue.Add "Pup200","pupevent 200",90,20,0,0,0,True
+	GeneralPupQueue.Add "Pup200","pupevent 200",90,0,0,0,0,True
 	if DMDType <> 2 Then pupflasher1.visible=true
+	GeneralPuPQueue.Add "Pup313","PuPEvent 313",14,100,0,0,0,True
 
-	'GeneralPuPQueue.Add "Pup313","PuPEvent 313",14,50,0,0,0,True
-
-	'triggerscript 100, "EOBHide ""wizardmode"" 
-	'GeneralPuPQueue.Add "EOBHide-WM","EOBHide ""wizardmode"" ",64,100,0,0,0,True
-	PuPevent 200
-	PuPevent 313
-	'PuPevent 300
-	EOBHide "wizardmode"
+	triggerscript 100, "EOBHide ""wizardmode"" "
 	BallHandlingQueue.Add "Pup854","PuPEvent 854",55,200,0,0,0,True
 	GeneralPuPQueue.Add "Pup902","PuPEvent 902",5,6150,0,0,0,False ' Long video need to figure out when it ends in EOB routine
-	BallHandlingQueue.Add "addmultiball-3","addmultiball 3",50,6500,0,0,0,True
+	triggerscript 6500, "addmultiball 3"
 End Sub
 
 'Sub WizardModeAudio
@@ -14588,7 +14662,7 @@ Sub rramp_hit
 				CryptMBCount(4) = CryptMBCount(4) + 1
 				AddScore2 Score_CryptJackpot*CryptRound
 				CheckCryptSuperJP
-				li040.state=0
+				li040.state=1
 				Exit Sub
 			End If
 		Case Else:
@@ -14730,7 +14804,7 @@ Sub lramp_Hit
 				CryptMBCount(2) = CryptMBCount(2) + 1
 				AddScore2 Score_CryptJackpot*CryptRound
 				CheckCryptSuperJP
-				li036.state=0
+				li036.state=1
 				Exit Sub
 			End If
 		Case Else:
@@ -14763,34 +14837,6 @@ Sub ResetOrbitTimer
 End Sub
 
 '==========================================================
-Sub InsideOrbitTrigger_Hit()
-	GetAM
-	Select Case ActiveMode
-		Case 1,3,5,7,9:
-			ORBHIT = 1
-			CheckOrbitHits ' give full credit for this hit
-			ResetOrbitTimer
-		Case 2: ' Dungeon Battle Ruins
-			ORBHIT = 1
-			CheckOrbitHits  ' give full credit for this hit
-			ResetOrbitTimer
-		Case 6,14:
-			Debug "Inside Orbit hit"
-			ORBHIT = 1
-			CheckOrbitHits
-			ResetOrbitTimer
-		Case 15:
-			ORBHIT = 1
-			CheckOrbitHits
-			ResetOrbitTimer
-		Case Else:
-			'Do Nothing
-	End Select
-
-Switch_Hit "orbitinside"
-LastSwitchHit = "orbitinside"
-End Sub
-
 Sub leftorbitinside_Hit
     DOF 215, DOFPulse
     If Tilted Then Exit Sub
@@ -14821,13 +14867,13 @@ Sub leftorbitinside_Hit
 			ResetOrbitTimer
 		Case 6,14:
 			Debug "Inside Orbit hit"
+			ResetOrbitTimer
 			INHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case 15:
+			ResetOrbitTimer
 			INHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case Else:
 			'Do Nothing
 	End Select
@@ -14858,23 +14904,23 @@ Sub leftorbit_Hit
 			end if
 		Case 1,3,5,7,9:
 			if AMState = 1 Then
+				ResetOrbitTimer
 				LOHIT = 1
 				CheckOrbitHits
-				ResetOrbitTimer
 			End If
 		Case 2: ' Dungeon Battle Ruins
+			ResetOrbitTimer
 			LOHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case 6,14:
 			Debug "Left Orbit hit"
+			ResetOrbitTimer
 			LOHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case 15:
+			ResetOrbitTimer
 			LOHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case Else:
 			'Do Nothing
 	End Select	
@@ -14905,23 +14951,23 @@ Sub rightorbit_Hit
 			End If
 		Case 1,3,5,7,9:
 			if AMState = 1 Then
+				ResetOrbitTimer
 				ROHIT = 1
 				CheckOrbitHits
-				ResetOrbitTimer
 			End If
 		Case 2: ' Dungeon Battle Ruins
+			ResetOrbitTimer
 			ROHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case 6,14:
-			Debug2 "Right Orbit hit"
+			Debug "Right Orbit hit"
+			ResetOrbitTimer
 			ROHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case 15:
+			ResetOrbitTimer
 			ROHIT = 1
 			CheckOrbitHits
-			ResetOrbitTimer
 		Case Else:
 			Debug " RightOrbit Else:" & AMCombo
 			'Do Nothing
@@ -14933,14 +14979,14 @@ LastSwitchHit = "rightorbit"
 End Sub 
 
 Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
-'Debug5 "In Check Orbits R/L/I/O - " &ROHIT &":" &LOHIT &":" &INHIT &":" &ORBHIT
+Debug5 "In Check Orbits R/L/I - " &ROHIT &":" &LOHIT &":" &INHIT
 
 
 '' ROUTINES FOR FULL ORBIT HITS
 
 	if LOHIT And ROHIT Then
 		Select Case ActiveMode
-			Case 1,3,5,7,9:
+			Case 1,3,5,7:
 				AddPartyMember
 			Case 2:
 				DungeonProgress
@@ -14949,66 +14995,15 @@ Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
 		End Select
 
 		if Mode(CurrentPlayer,0) = 15 Then
-			debug5 "Running TESTS: " &LastSwitchHit
 			if DMDType <> 2 Then pup2helper 3000
-
 			GeneralPuPQueue.Add "Pup790","PuPEvent 790",10,0,0,0,ShortPuPExpiry,False
 			AudioQueue.Add "Pup270","PuPEvent 270",32,0,0,0,AudioExpiry,False		
-
-			if LastSwitchHit = "rightorbit" or LastSwitchHit = "orbitinside" Then
-				debug5 "right orbit was hit"
-				if CryptMBCount(5) < CryptRound Then
-					CryptMBCount(5) = CryptMBCount(5) + 1
-					AddScore2 Score_CryptJackpot*CryptRound
-					li051.state=0
-					CheckCryptSuperJP
-				End If
-			elseif LastSwitchHit = "leftorbit" Then 
-				debug5 "left orbit was hit"
-				if CryptMBCount(1) < CryptRound Then
-					CryptMBCount(1) = CryptMBCount(1) + 1
-					AddScore2 Score_CryptJackpot*CryptRound
-					li060.state=0
-					CheckCryptSuperJP
-				End If
-			elseif LastSwitchHit = "leftorbitinside" or LastSwitchHit = "orbitinside" Then
-				debug5 "Inside Orbit Hit"
-				if CryptMBCount(3) < CryptRound Then
-					CryptMBCount(3) = CryptMBCount(3) + 1
-					AddScore2 Score_CryptJackpot*CryptRound
-					li037.state=0
-					CheckCryptSuperJP
-				End If
-			End If
-		End If
-		OrbitHits = OrbitHits + 1
-		debug5 " Full Orbit Hit L&R: " &LastSwitchHit
-		ROHIT = 0
-		LOHIT = 0
-	End If
-
-	if (LOHIT Or ORBHIT) And INHIT Then
-		Select Case ActiveMode
-			Case 1,3,5,7,9:
-				AddPartyMember
-			Case 2:
-				DungeonProgress
-			Case Else:
-				' Do Nothing
-		End Select
-
-		if Mode(CurrentPlayer,0) = 15 Then
-			if DMDType <> 2 Then pup2helper 3000
-
-			GeneralPuPQueue.Add "Pup790","PuPEvent 790",10,0,0,0,ShortPuPExpiry,False
-			AudioQueue.Add "Pup270","PuPEvent 270",32,0,0,0,AudioExpiry,False
-
 			if LastSwitchHit = "rightorbit" Then
 				debug5 "right orbit was hit"
 				if CryptMBCount(5) < CryptRound Then
 					CryptMBCount(5) = CryptMBCount(5) + 1
 					AddScore2 Score_CryptJackpot*CryptRound
-					li051.state=0
+					li051.state=1
 					CheckCryptSuperJP
 				End If
 			elseif LastSwitchHit = "leftorbit" Then 
@@ -15016,15 +15011,61 @@ Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
 				if CryptMBCount(1) < CryptRound Then
 					CryptMBCount(1) = CryptMBCount(1) + 1
 					AddScore2 Score_CryptJackpot*CryptRound
-					li060.state=0
+					li060.state=1
 					CheckCryptSuperJP
 				End If
-			elseif LastSwitchHit = "leftorbitinside" or LastSwitchHit = "orbitinside" Then
+			elseif LastSwitchHit = "leftorbitinside" Then
 				debug5 "Inside Orbit Hit"
 				if CryptMBCount(3) < CryptRound Then
 					CryptMBCount(3) = CryptMBCount(3) + 1
 					AddScore2 Score_CryptJackpot*CryptRound
-					li037.state=0
+					li037.state=1
+					CheckCryptSuperJP
+				End If
+			End If
+		End If
+		OrbitHits = OrbitHits + 1
+		debug5 " Full Orbit Hit L&R"
+		ROHIT = 0
+		LOHIT = 0
+	End If
+
+	if LOHIT And INHIT Then
+		Select Case ActiveMode
+			Case 1,3,5,7:
+				AddPartyMember
+			Case 2:
+				DungeonProgress
+			Case Else:
+				' Do Nothing
+		End Select
+
+		if Mode(CurrentPlayer,0) = 15 Then
+			if DMDType <> 2 Then pup2helper 3000
+			GeneralPuPQueue.Add "Pup790","PuPEvent 790",10,0,0,0,ShortPuPExpiry,False
+			AudioQueue.Add "Pup270","PuPEvent 270",32,0,0,0,AudioExpiry,False
+			if LastSwitchHit = "rightorbit" Then
+				debug5 "right orbit was hit"
+				if CryptMBCount(5) < CryptRound Then
+					CryptMBCount(5) = CryptMBCount(5) + 1
+					AddScore2 Score_CryptJackpot*CryptRound
+					li051.state=1
+					CheckCryptSuperJP
+				End If
+			elseif LastSwitchHit = "leftorbit" Then 
+				debug5 "left orbit was hit"
+				if CryptMBCount(1) < CryptRound Then
+					CryptMBCount(1) = CryptMBCount(1) + 1
+					AddScore2 Score_CryptJackpot*CryptRound
+					li060.state=1
+					CheckCryptSuperJP
+				End If
+			elseif LastSwitchHit = "leftorbitinside" Then
+				debug5 "Inside Orbit Hit"
+				if CryptMBCount(3) < CryptRound Then
+					CryptMBCount(3) = CryptMBCount(3) + 1
+					AddScore2 Score_CryptJackpot*CryptRound
+					li037.state=1
 					CheckCryptSuperJP
 				End If
 			End If
@@ -15033,12 +15074,11 @@ Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
 		debug5 " Full Orbit Hit L&I"
 		INHIT = 0
 		LOHIT = 0
-		ORBHIT = 0
 	End If
 
-	if (ROHIT Or ORBHIT) And INHIT Then
+	if ROHIT And INHIT Then
 		Select Case ActiveMode
-			Case 1,3,5,7,9:
+			Case 1,3,5,7:
 				AddPartyMember
 			Case 2:
 				DungeonProgress
@@ -15048,16 +15088,14 @@ Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
 
 		if Mode(CurrentPlayer,0) = 15 Then
 			if DMDType <> 2 Then pup2helper 3000
-
 			GeneralPuPQueue.Add "Pup790","PuPEvent 790",10,0,0,0,ShortPuPExpiry,False
 			AudioQueue.Add "Pup270","PuPEvent 270",32,0,0,0,AudioExpiry,False
-
 			if LastSwitchHit = "rightorbit" Then
 				debug5 "right orbit was hit"
 				if CryptMBCount(5) < CryptRound Then
 					CryptMBCount(5) = CryptMBCount(5) + 1
 					AddScore2 Score_CryptJackpot*CryptRound
-					li051.state=0
+					li051.state=1
 					CheckCryptSuperJP
 				End If
 			elseif LastSwitchHit = "leftorbit" Then 
@@ -15065,15 +15103,15 @@ Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
 				if CryptMBCount(1) < CryptRound Then
 					CryptMBCount(1) = CryptMBCount(1) + 1
 					AddScore2 Score_CryptJackpot*CryptRound
-					li060.state=0
+					li060.state=1
 					CheckCryptSuperJP
 				End If
-			elseif LastSwitchHit = "leftorbitinside" or LastSwitchHit = "orbitinside" Then
+			elseif LastSwitchHit = "leftorbitinside" Then
 				debug5 "Inside Orbit Hit"
 				if CryptMBCount(3) < CryptRound Then
 					CryptMBCount(3) = CryptMBCount(3) + 1
 					AddScore2 Score_CryptJackpot*CryptRound
-					li037.state=0
+					li037.state=1
 					CheckCryptSuperJP
 				End If
 			End If
@@ -15082,7 +15120,6 @@ Sub CheckOrbitHits  ' If both orbits completed allow addpartymember
 		debug5 " Full Orbit Hit R&I"
 		INHIT = 0
 		ROHIT = 0
-		ORBHIT = 0
 	End If
 
 '' ROUTINES FOR PARTIAL ORBIT HITS
@@ -15152,27 +15189,22 @@ Sub FullOrbitTimer_Timer()
 		ROHIT = 0
 		LOHIT = 0
 		INHIT = 0
-		ORBHIT = 0
 		FullOrbitTimer.Enabled = 0
 End Sub
 
-Dim r,Tmp_Total
-
 Sub CheckCryptSuperJP
 
-Tmp_Total = 0
-Debug5 " Calling CheckCryptSuperJP"
+Dim r,Tmp_Total
 
 	For r = 1 to 5
 		Tmp_Total = Tmp_Total + CryptMBCount(r)
 	Next
 
-Debug5 " Calling CheckCryptSuperJP: " & Tmp_Total
 	if Tmp_Total = 5*CryptRound Then
 		bSuperJackpotReady = True
 		'AddScore2 Score_CryptSuperJackpot * CryptRound
 		'if CryptRound < 3 Then CryptRound = CryptRound + 1 ' MAX value is 3 times
-		'SetCryptLights
+		SetCryptLights
 		li038.state = 2 ' turn on quest light for super jackpot
 	End If
 End Sub
@@ -15433,15 +15465,19 @@ ClearPupMessages
 									if Mode(Currentplayer,2) < 2 Then 
 										Mode(CurrentPlayer,0) = 1
 										Mode(Currentplayer,1) = 2
+										ScorbitBuildGameModes
 									Elseif Mode(Currentplayer,4) < 2 Then 
 										Mode(CurrentPlayer,0) = 3
 										Mode(Currentplayer,3) = 2
+										ScorbitBuildGameModes
 									Elseif Mode(Currentplayer,6) < 2 Then 
 										Mode(CurrentPlayer,0) = 5
 										Mode(Currentplayer,5) = 2
+										ScorbitBuildGameModes
 									Elseif Mode(Currentplayer,8) < 2 Then 
 										Mode(CurrentPlayer,0) = 7
 										Mode(Currentplayer,7) = 2
+										ScorbitBuildGameModes
 									Else
 										li038.state = 0 ' party is full so turn on quest light
 										StartMode 9
@@ -15475,6 +15511,10 @@ ClearPupMessages
 				if CryptRound < 3 Then CryptRound = CryptRound + 1 ' MAX value is 3 times
 				SetCryptLights2
 				bSuperJackpotReady = False
+				if Scorbit.bSessionActive then
+					GameModeStrTmp="SJ{red}:Super Jackpot"
+					Scorbit.SetGameMode(GameModeStrTmp)
+				End If
 			End If
 			BallHandlingQueue.Add "KickOut","KickBallOut",70,KickOutDelay,0,0,0,True
 
@@ -16010,11 +16050,16 @@ Sub WinInTheDark
 
 	TorchCountdown.enabled = 0
 	Missions(CurrentPlayer,3) = 3
-	ScorbitBuildGameModes
+	'ScorbitBuildGameModes
 	TorchCountdown.enabled = 0
 	pDMDlabelshow "InTheDarkOn"
-	if DMDType = 0 Then pBackglassLabelShow "InTheDarkOn"
 	TMode = 2
+
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="SM{yellow}:InTheDark Mode Completed"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
+
 	ClearTorchPup
 
 	LoadLUT:SetLUT
@@ -18741,7 +18786,7 @@ End Sub
 
 Sub HideRampCounts
 	if DMDType = 0 Then
-		'PuPlayer.LabelSet pBackglass,"rampcounts","",0,""
+	'	PuPlayer.LabelSet pBackglass,"rampcounts","",0,""
 	Else
 		PuPlayer.LabelSet pDMD,"rampcounts","",0,""
 	End If
@@ -18840,11 +18885,7 @@ BlacksmithModeExpired.Interval = BlacksmithTime * 1000
 			UpdateModeLabels
 			Missions(CurrentPlayer,1) = 1
 			GeneralPupQueue.Add "Pup830","pupevent 830",40,0,0,0,0,False
-			if DMDType = 0 Then 
-				GeneralPupQueue.Add "Pup450","pupevent 450",94,0,0,0,0,True			
-			Else
-				GeneralPupQueue.Add "Pup400","pupevent 400",94,0,0,0,0,True
-			End If
+			GeneralPupQueue.Add "Pup400","pupevent 400",94,0,0,0,0,True
 			AudioQueue.Add "Pup297","PuPEvent 297",93,0,0,0,0,False' Event Start audio
 			Triggerscript 3100, "BlacksmithAudio" ' Audio
 			ResetBSMode
@@ -18897,21 +18938,19 @@ Sub CheckBlacksmithWin
 				GoldSack(CurrentPlayer) = GoldSack(CurrentPlayer) + 1
 				DisplaySacksOfGold
 				Missions(CurrentPlayer,1) = 9 ' Closed and Completed super bonus 
-				ScorbitBuildGameModes
+				'ScorbitBuildGameModes
 				'AudioQueue.Add "Pup280","PuPEvent 280",35,0,0,0,AudioExpiry,False
 				GeneralPupQueue.Add "Pup300","pupevent 300",96,0,0,0,0,True
-				if DMDType = 0 Then 
-					GeneralPupQueue.Add "Pup400","pupevent 400",95,0,0,0,0,True
-					pBackglasslabelshow "BlacksmithOn"
-				End If
 				GeneralPupQueue.Add "Pup836","pupevent 836",42,0,0,0,0,True ' complete BS Mode
 				GeneralPupQueue.Add "ReturnToVillage","ReturnToVillage",95,5000,0,0,0,True
 				AudioQueue.Add "Pup233","PuPEvent 233",35,5000,0,0,AudioExpiry,False
 				BSMode = 2  ' At the last stop so turn off Blacksmith mode
 				pDMDlabelshow "BlacksmithOn"
-			'Else
-				'AudioQueue.Add "Pup281","PuPEvent 281",35,0,0,0,AudioExpiry,False
-			'	AudioQueue.Add "Pup233","PuPEvent 233",35,3000,0,0,AudioExpiry,False
+
+				if Scorbit.bSessionActive then
+					GameModeStrTmp="SM{red}:Blacksmith Mode Completed"
+					Scorbit.SetGameMode(GameModeStrTmp)
+				End If
 			End If
 
 	End if
@@ -19215,7 +19254,6 @@ End sub
 
 Sub GambleCollect
 	pDMDLabelShow "GambleOn"
-	if DMDType = 0 Then pBackglassLabelShow "GambleOn"
     DOFModesOff
 	HideGambleRampHits
 	bSupressBGMessages = False
@@ -19226,13 +19264,19 @@ Sub GambleCollect
 	AudioQueue.Add "Pup233","PuPEvent 233",35,5000,0,0,AudioExpiry,False
 	'gambleCount(CurrentPlayer)=0
 	Missions(CurrentPlayer,2) = 2 ' Set Flag that mode is completed
-	ScorbitBuildGameModes
+	'ScorbitBuildGameModes
 	li036.state=0
 	li040.state=0
 	li038.state=0
 	li047.state = 2 ' turn on Inn light
 	GambleModeTimer.Enabled = 0
 	GMode = 2 ' Reset Gamble Mode
+
+	if Scorbit.bSessionActive then
+		GameModeStrTmp="SM{green}:Gambler Mode Completed"
+		Scorbit.SetGameMode(GameModeStrTmp)
+	End If
+
 	ClearGambleCountDownPup
 	AddScore2 GamblePoints
 	'ResetModes
@@ -19361,7 +19405,7 @@ Sub PuPInit
 
 	if Scorbitactive then 
 '		if Scorbit.DoInit(4112, "PupOverlays", myVersion, "DDUN") then 	' Staging
-		if Scorbit.DoInit(4111, "PupOverlays", myVersion, "DDUN") then 	' Prod
+		if Scorbit.DoInit(4351, "PupOverlays", myVersion, "ddun-vpin") then 	' Prod
 			tmrScorbit.Interval=2000
 			tmrScorbit.UserValue = 0
 			tmrScorbit.Enabled=True 
@@ -19709,16 +19753,14 @@ end Sub
 Sub PuPEvent(EventNum)
 	GetAM
 	if hasPUP=false then Exit Sub
- 
 
 	if bEOBSupress = True Then 
 		Select Case True
-			Case EventNum = 511 or EventNum = 555 or EventNum = 890:
-			Case EventNum = 445 or EventNum = 446 or EventNum = 447: ' audio tracks
+			Case EventNum = 445 or EventNum = 511 or EventNum = 555 or EventNum = 890:
 			Case (EventNum > 750 And EventNum < 756): ' game over screens
 			Case (EventNum > 770 And EventNum < 775): ' continue screens
 			Case (EventNum > 199 And EventNum < 300): ' audio callouts
-			Case (EventNum > 299 And EventNum < 312): ' DMD guides
+			Case (EventNum > 299 And EventNum < 311): ' DMD guides
 			Case Else:
 				Debug2 "***************************"
 				Debug2 "*** SUPRESSING EVENT: " &EventNum
@@ -19736,7 +19778,7 @@ Sub PuPEvent(EventNum)
 		Select Case EventNum
 			Case 824:
 				PuPlayer.B2SData "D286",1  'send AUDIO version of event to puppack driver
-			Case 831,833,837,838,300,400,853,842,843,844,900,298,433:
+			Case 831,833,837,838,300,400,298,433:
 				PuPlayer.B2SData "D"&EventNum,1  'send event to puppack driver  
 		End Select
 		Exit Sub
@@ -19744,7 +19786,7 @@ Sub PuPEvent(EventNum)
 		Select Case EventNum
 			Case 824:
 				PuPlayer.B2SData "D286",1  'send AUDIO version of event to puppack driver
-			Case 292,830,835,836,400,853,842,843,844,900,297,432:
+			Case 292,830,835,836,300,400,297,432:
 				PuPlayer.B2SData "D"&EventNum,1  'send event to puppack driver  
 		End Select
 		Exit Sub
@@ -19752,32 +19794,16 @@ Sub PuPEvent(EventNum)
 		Select Case EventNum
 			Case 824:
 				PuPlayer.B2SData "D286",1  'send AUDIO version of event to puppack driver
-			Case 834,839,840,400,853,842,843,844,900,299,434:
+			Case 834,839,840,300,400,299,434:
 				PuPlayer.B2SData "D"&EventNum,1  'send event to puppack driver  
 		End Select
 		Exit Sub  
 	Elseif Mode(CurrentPlayer,0) = 9 Then
 		Select Case EventNum
-'			Case 824,842,843,844,853,400,900:
-'				PuPlayer.B2SData "D286",1  'send AUDIO version of event to puppack driver
-			Case 820,821,822,823:  ' skip these videos
-				Exit Sub
-			Case Else
+			Case 824:
+				PuPlayer.B2SData "D286",1  'send AUDIO version of event to puppack driver
+			Case 274,300,400,853,900:
 				PuPlayer.B2SData "D"&EventNum,1  'send event to puppack driver  
-		End Select
-'		Exit Sub 
-	Elseif Mode(CurrentPlayer,0) = 15 Then
-		Select Case EventNum
-			Case 200,300,313,444,842,843,844,854,902:
-				PuPlayer.B2SData "D"&EventNum,1  'allow thru
-			Case (EventNum > 750 And EventNum < 756): ' game over screens
-				PuPlayer.B2SData "D"&EventNum,1  'allow thru
-			Case (EventNum > 770 And EventNum < 775): ' continue screens
-				PuPlayer.B2SData "D"&EventNum,1  'allow thru
-			Case (EventNum > 199 And EventNum < 300): ' audio callouts
-				PuPlayer.B2SData "D"&EventNum,1  'send event to puppack driver  
-			Case Else
-				' Do nothing
 		End Select
 		Exit Sub  
 	Else
@@ -19790,7 +19816,7 @@ Sub PuPEvent(EventNum)
 
 		Select Case EventNum
 
-			Case 860: ' ball save
+			Case 860:
 				Select Case ActiveMode
 				Case 2,4,6,8,10,11,12,13,14:
 					InEvent = 1
@@ -19805,7 +19831,7 @@ Sub PuPEvent(EventNum)
 							End If
 					End If
 				End Select
-			Case 824: ' kickback active
+			Case 824:
 				Debug "InEvent: " &EventNum
 '				InEvent = 1
 '				triggerscript 5200, "InEvent = 0 "
@@ -19823,7 +19849,7 @@ Sub PuPEvent(EventNum)
 							End If
 					End Select 'ActoveMode
 
-			Case 850: 'extraball
+			Case 850:
 				Debug "InEvent: " &EventNum
 '				InEvent = 1
 '				triggerscript 5500, "InEvent = 0 "
@@ -19841,7 +19867,7 @@ Sub PuPEvent(EventNum)
 							End If
 					End Select 'ActoveMode
 
-			Case 820,821,822,823: ' kickback letters
+			Case 820,821,822,823:
 				Debug "InEvent: " &EventNum
 '				InEvent = 1
 '				triggerscript 5200, "InEvent = 0 "
@@ -19859,7 +19885,7 @@ Sub PuPEvent(EventNum)
 							End If
 					End Select 'ActoveMode
 
-			Case 910,911,912,913,914,915,916,918: ' items
+			Case 910,911,912,913,914,915,916,918:
 				Debug "InEvent: " &EventNum
 '				InEvent = 1
 '				triggerscript 4400, "InEvent = 0 "
@@ -19878,7 +19904,7 @@ Sub PuPEvent(EventNum)
 							End If
 					End Select 'ActoveMode
 
-			Case 941,942,943,944,945,946,947,948: ' death videos
+			Case 941,942,943,944,945,946,947,948:
 				Debug "InEvent: " &EventNum
 '				InEvent = 1
 '				triggerscript 3100, "InEvent = 0 "
@@ -20047,7 +20073,6 @@ Sub pSetPageLayouts(DMDType)
     PuPlayer.LabelNew pDMD,"Gamblebonus",		dmddef,	5,16777215	,15.8,3.7,1,25,87,1,0  
 
 	PuPlayer.LabelNew pBackglass,"KeyAward",		dmddef,	20,255	,0,1,1,50,20,1,0
-    PuPlayer.LabelNew pBackglass,"Scoop2Helper",dmddef, 14,33023,0,1,1,50,20,1,0
 'Sub CreateLabelImage(lName, lFilename,xpos, ypos, Iwidth, Iheight, pagenum, lvis)
 		'page 1 lables
 
@@ -20131,7 +20156,7 @@ Sub pSetPageLayouts(DMDType)
 	PuPlayer.LabelNew pBackglass,"CryptMessage",		dmddef,	20,255	,0,1,1,50,20,1,0
 	PuPlayer.LabelNew pBackglass,"CryptMessage2",		dmddef,	20,255	,0,1,1,50,40,1,0
 
-    'PuPlayer.LabelNew pBackglass,"Scoop2Helper",dmddef, 14,33023,0,1,1,50,24,1,0
+    PuPlayer.LabelNew pBackglass,"Scoop2Helper",dmddef, 14,33023,0,1,1,50,24,1,0
 'Sub CreateLabel(lName, lValue, lFont, lSize, lColor, xpos, ypos, alignX, alignY, pagenum, lvis)
                         '***text labels
 
@@ -20217,10 +20242,9 @@ if DMDType = 0 Then
 	PuPlayer.LabelNew pBackglass,"GoldSackCount",	dmddef,	4.5,cYellow	,0,1,1,61.3,82.6,1,0
 	PuPlayer.LabelNew pBackglass,"MagnetLockedText",dmddef,5.25,cYellow ,0,0,0,66.5,82.6,1,0
 
-    PuPlayer.LabelNew pBackglass,"DSHelper",dmddef, 14,33023,0,1,1,50,30,1,0
 
 '	PuPlayer.LabelNew pBackglass,"CurrScore",         dmdscr,7,33023   ,0,1,1,18.0,7.0,1,0
-'	PuPlayer.LabelNew pBackglass,"Mode",               dmdscr,7,33023   ,0,1,1,86.6.4,1,0
+'	PuPlayer.LabelNew pBackglass,"Mode",               dmdscr,7,33023   ,0,1,1,86.5,6.4,1,0
 	'PuPlayer.LabelNew pBackglass,"LockedBalls",     dmdscr,8,255   ,0,1,1,75.4,81.5,1,0
 '	PuPlayer.LabelNew pBackglass,"Ball"    ,             dmdscr,8,255   ,0,1,1,27.4,81.35,1,0
 
@@ -20474,13 +20498,11 @@ Sub UpdateModeLabels
 	End If
 
 	if bSupressBGMessages = False Then
-'		if DMDType = 0 And InGuide = 0 Then
-'			PuPlayer.LabelSet pBackglass,"Mode", ModeTitle,1,""
-'		Elseif DMDType = 0 And InGuide = 1 Then
-		PuPlayer.LabelSet pBackglass,"Mode", ModeTitle,1,""
-'		End If
-	Else
-		PuPlayer.LabelSet pBackglass,"Mode", ModeTitle,0,""
+		if DMDType = 0 And InGuide = 0 Then
+			PuPlayer.LabelSet pBackglass,"Mode", ModeTitle,1,""
+		Elseif DMDType = 0 And InGuide = 1 Then
+			PuPlayer.LabelSet pBackglass,"Mode", ModeTitle,0,""
+		End If
 	End If
 End Sub
 
@@ -20510,14 +20532,12 @@ Debug2 "in update balls"
 		Elseif DMDType = 0 And InGuide = 1 Then
 			PuPlayer.LabelSet pBackglass,"Ball"," "  &  Balls ,0,""
 		End If
-	Else
-		PuPlayer.LabelSet pBackglass,"Ball"," "  &  Balls ,0,""
 	End If
 End Sub
 
 Sub UpdateAll
-	debug5 "Called UpdateAll"
-	if bEOBSupress = False Then
+	debug2 "Called UpdateAll"
+	if bEOBSupress = False And DMDType <> 0 Then
 		if bEndOfGame = False And bSupressDMD = False And bDecision = False Then
 			ScoreUpdate
 			UpdatePlayer
@@ -20545,23 +20565,9 @@ Sub UpdateAll
 	End If
 End Sub
 
-Sub UpdateBG
-'exit sub
-Debug5 "In UpdateBG - Supress? " &bSupressBGMessages
-	If bSupressBGMessages = False And DMDType = 0 Then
-		GeneralPupQueue.Add "Pup400","pupevent 400",94,0,0,0,0,True
-		ScoreUpdate
-		UpdatePlayer
-		UpdateModeLabels
-		UpdateBalls
-		DisplayOverlayCounts
-		DisplayMagnetMessages
-	End If
-End Sub
-
 Sub UpdateDMD
 'exit sub
-Debug5 "In UpdateDMD - Supress? " &bSupressDMD &":" &bDecision
+Debug2 "In UpdateDMD - Supress? " &bSupressDMD &":" &bDecision
 	If bSupressDMD = False And bDecision = False And DMDType <> 0 Then
 		Debug2 "UpdateDMD -- PASSED TEST:" &bDecision
 		ScoreUpdate
@@ -20574,7 +20580,7 @@ Debug5 "In UpdateDMD - Supress? " &bSupressDMD &":" &bDecision
 End Sub
 
 Sub UpdateDecision
-	Debug5 "In UpdateDecision"
+	Debug2 "In UpdateDecision"
 	if DMDType <> 0 Then
 		DisplayOverlayCounts
 		DisplayMagnetMessages
@@ -20628,43 +20634,6 @@ if DMDType = 2 Then
 End If
 End Sub
 
-Sub HideBG2(ms)
-
-	'BallHandlingQueue.Add "bSupressBGMessages-T","bSupressBGMessages = True",40,0,0,0,0,False
-	bSupressBGMessages = True
-	GeneralPupQueue.Add "Pup450","pupevent 450",98,0,0,0,0,True
-	BallHandlingQueue.Add "bSupressBGMessages-F","bSupressBGMessages = False",40,ms,0,0,0,False
-	GeneralPupQueue.Add "Pup400","pupevent 400",50,ms,0,0,0,True
-	BallHandlingQueue.Add "UpdateBG","UpdateBG",40,ms+200,0,0,0,False
-
-'if DMDType = 0 Then
-	'HideBGOverlayIcons
-	'HideBGOverlayCounts
-	'GeneralPupQueue.Add "Pup300","pupevent 300",94,0,0,0,0,True
-	
-	PuPlayer.LabelSet pBackglass,"ExtraballDMD","",0,""
-	PuPlayer.LabelSet pBackglass,"CurrScore","",0,""
-	PuPlayer.LabelSet pBackglass,"Mode", ModeTitle,0,""
-	PuPlayer.LabelSet pBackglass,"Ball"," "  &  Balls ,0,""
-
-	pBackglassLabelHide "BlacksmithOn"
-	pBackglassLabelHide "GambleOn"
-	pBackglassLabelHide "InTheDarkOn"
-	pBackglassLabelHide "GoldSackOn"
-	pBackglassLabelHide "MagnetOn"
-	pBackglassHideAnimate "MagnetLocked"
-
-	PuPlayer.LabelSet pBackglass,"spinnercounts","",0,""
-	PuPlayer.LabelSet pBackglass,"rampcounts","",0,""
-	PuPlayer.LabelSet pBackglass,"torchcounts","",0,""
-	PuPlayer.LabelSet pBackglass,"GoldSackCount","",0,""
-	PuPlayer.LabelSet pBackglass, "MagnetLockedText", "", 0, ""
-
-
-
-'End If
-End Sub
-
 Sub ClearDMDGuide
 Debug "*************** Called Clear DMD Guide"
 	if DMDType = 2 Then 
@@ -20675,8 +20644,7 @@ Debug "*************** Called Clear DMD Guide"
 End Sub
 
 Sub HideBG
-'	PuPlayer.LabelSet pDMD,"ExtraballDMD","",0,""
-	PuPlayer.LabelSet pBackglass,"ExtraballDMD","",0,""
+	PuPlayer.LabelSet pDMD,"ExtraballDMD","",0,""
 	PuPlayer.LabelSet pBackglass,"CurrScore","",0,""
 	PuPlayer.LabelSet pBackglass,"Mode", "",0,""
 	PuPlayer.LabelSet pBackglass,"Ball"," "  &  Balls ,0,""
@@ -22512,7 +22480,7 @@ End Sub
 
 Sub TimerVRPlunger2_Timer
 	PinCab_Shooter.Y = -163 + (5* Plunger.Position) -20
-	timervrplunger2.enabled = 0
+	'timervrplunger2.enabled = 0
 End Sub
 
 
@@ -23381,7 +23349,6 @@ debug4 "Scorbit PAIRED"
 '	PuPlayer.LabelSet pDMD, "ScorbitQR1", "PuPOverlays\\clear.png",0,""
 '	PuPlayer.LabelSet pDMD, "ScorbitQRIcon1", "PuPOverlays\\clear.png",0,""
 	PuPEvent 900
-	'PuPEvent 400
 	pbackglasslabelhide "ScorbitQR1"
 	pbackglasslabelhide "ScorbitQRIcon1"
 End Sub 
@@ -23438,93 +23405,73 @@ End Sub
 Sub ScorbitBuildGameModes()		' Custom function to build the game modes for better stats 
 	dim GameModeStr
 	if Scorbit.bSessionActive=False then Exit Sub 
-	GameModeStr="NA:"
+	GameModeStr="Mode{blue}:In The Village"
 
 	if BallsRemaining(CurrentPlayer) <= 0 Then	'no balls left
-		GameModeStr="NA{red}:YOU FAILED!!!"
+		GameModeStr="Mode{red}:YOU FAILED!!!"
 	Else										'game on
 		GetAM
 		Debug4 "AMCombo Value - " &AMCombo
 		Select Case AMCombo
+			Case "1:1","3:1","5:1","7:1"
+				Debug4 "Assemble Party"
+				GameModeStr="Mode{yellow}:Assemble Your Party"
+			Case "1:2","3:2","5:2","7:2"
+				Debug4 "Party Assembled"
+				GameModeStr="Mode{Purple}:Party Assembled"
+			Case "2:1":
+				Debug4 "Entered Ruins Dungeon"
+				GameModeStr="Mode{yellow}:Entered Ruins Dungeon"			
 			Case "2:2": 
-				Debug4 "Ruins Win"
-				GameModeStr="NA{yellow}:Ruins Dungeon Cleared"
+				Debug4 "Ruins Dungeon Cleared"
+				GameModeStr="Mode{yellow}:Ruins Dungeon Cleared"
 			Case "10:2":
 				Debug4 "Prophet Defeated"
-				GameModeStr="NA{purple}:Prophet Defeated"
+				GameModeStr="Boss{purple}:Prophet Defeated"
+			Case "4:1": 
+				Debug4 "Entered Cove Dungeon"
+				GameModeStr="Mode{blue}:Entered Cove Dungeon"
 			Case "4:2": 
-				Debug4 "Cove Win"
-				GameModeStr="NA{blue}:Cove Dungeon Cleared"
+				Debug4 "Cove Dungeon Cleared"
+				GameModeStr="Mode{blue}:Cove Dungeon Cleared"
 			Case "11:2":
 				Debug4 "DrownedCrew Defeated"
-				GameModeStr="NA{blue}:Drowned Crew Defeated"
+				GameModeStr="Boss{blue}:Drowned Crew Defeated"
+			Case "6:1": 
+				Debug4 "Entered Weald Dungeon"
+				GameModeStr="Mode{red}:Entered Weald Dungeon"
 			Case "6:2": 
-				Debug4 "Weald Win"
-				GameModeStr="NA{red}:Weald Dungeon Cleared"
+				Debug4 "Weald Dungeon Cleared"
+				GameModeStr="Mode{red}:Weald Dungeon Cleared"
 			Case "12:2":
 				Debug4 "Vvulf Defeated"
-				GameModeStr="NA{red}:Vvulf Defeated"
+				GameModeStr="Boss{red}:Vvulf Defeated"
+			Case "8:1": 
+				Debug4 "Entered Warrens Dungeon"
+				GameModeStr="Mode{orange}:Entered Warrens Dungeon"
 			Case "8:2": 
-				Debug4 "Warrens Win"
-				GameModeStr="NA{orange}:Warrens Dungeon Cleared"
+				Debug4 "Warrens Dungeon Cleared"
+				GameModeStr="Mode{orange}:Warrens Dungeon Cleared"
 			Case "13:2":
 				Debug4 "SwinePrince Defeated"
-				GameModeStr="NA{pink}:Swine Prince Defeated"
+				GameModeStr="Boss{pink}:Swine Prince Defeated"
 			Case "14:2":
 				Debug4 "Shambler Defeated"
-				GameModeStr="NA{purple}:Shambler Defeated"
+				GameModeStr="Boss{purple}:Shambler Defeated"
 			Case "15:1": 
 				Debug4 "WizardMode Achieved"
-				GameModeStr="NA{green}:Wizard Mode"
+				GameModeStr="Wiz{green}:Wizard Mode"
 			Case Else:
+				Debug4 "Nothing Mapped"
+				GameModeStr="Mode{blue}:In The Village"
 				'Do nothing
 		End Select
 
-		if Missions(CurrentPlayer,1) = 9 And BSMode = 2 Then GameModeStr="NA{red}:Blacksmith Mode Completed"
-		if Missions(CurrentPlayer,2) = 2 And GMode = 2 Then GameModeStr="NA{green}:Gambler Mode Completed"
-		if Missions(CurrentPlayer,3) = 3 And TMode = 2 Then GameModeStr="NA{yellow}:InTheDark Mode Completed"
+'		if Missions(CurrentPlayer,1) = 9 And BSMode = 2 Then GameModeStr="NA{red}:Blacksmith Mode Completed"
+'		if Missions(CurrentPlayer,2) = 2 And GMode = 2 Then GameModeStr="NA{green}:Gambler Mode Completed"
+'		if Missions(CurrentPlayer,3) = 3 And TMode = 2 Then GameModeStr="NA{yellow}:InTheDark Mode Completed"
 
 	End If ' endif balls remaining
-
-
-'		Select Case ReactorState(CurrentPlayer)
-'			Case 0: 'Targeted
-'				GameModeStr="NA{blue}:Reactor " & ReactorLevel(CurrentPlayer) & " Targeted"
-'			Case 1: 'Ready
-'				GameModeStr="NA{yellow}:Reactor " & ReactorLevel(CurrentPlayer) & " Ready"
-'			Case 2:	'Started
-'				GameModeStr="NA{green}:Reactor " & ReactorLevel(CurrentPlayer) & " Started;NA{orange}:Reactor Temp " & ReactorPercent(CurrentPlayer)
-'			Case 3:	'Critical
-'				GameModeStr="NA{red}:Reactor " & ReactorLevel(CurrentPlayer) & " Critical"
-'		End Select	
-
-'                    # Multiball
-'                    if self.game.MultiballController_mode.multiballActive == True:
-'                        mode_str = mode_str + ";MB:Multiball"
-
-'		if bMultiBallMode Then
-'			GameModeStr = GameModeStr & ";MB:Multiball"
-'		end if
-
-'		                    # Bonus X
-'                    if self.game.bonusController_mode.currentPlayerBonusX > 1:
-'                        mode_str = mode_str + ";BX" + str(self.game.bonusController_mode.currentPlayerBonusX) + \
-'                                   ":Bonus " + str(self.game.bonusController_mode.currentPlayerBonusX) + "X"
-
-'		if BonusMultiplier(CurrentPlayer) > 1 Then
-'			GameModeStr = GameModeStr & ";BX" & BonusMultiplier(CurrentPlayer) & ":Bonus " & BonusMultiplier(CurrentPlayer) & "X"
-'		end if
-
-
-'		if ExtraBallsAwards(CurrentPlayer) = 1 then
-'			GameModeStr = GameModeStr & ";EB1:Extra Ball (1)"
-'		elseif ExtraBallsAwards(CurrentPlayer) = 2 then
-'			GameModeStr = GameModeStr & ";EB2:Extra Ball (2)"
-'		elseif ExtraBallsAwards(CurrentPlayer) = 3 then
-'			GameModeStr = GameModeStr & ";EB3:Extra Ball (3)"
-'		end if
-'	end if
-'debug3 GameModeStr
 
 	Scorbit.SetGameMode(GameModeStr)
 
@@ -23799,6 +23746,7 @@ debug4 "Using MAC Addresses:" & Nad.MACAddress & " From Adapter:" & Nad.descript
 	Public Sub StopSession(P1Score, P2Score, P3Score, P4Score, NumberPlayers)
 		StopSession2 P1Score, P2Score, P3Score, P4Score, NumberPlayers, False
 	End Sub 
+
 
 	Public Sub StopSession2(P1Score, P2Score, P3Score, P4Score, NumberPlayers, bCancel)
 		Dim i
@@ -24193,11 +24141,7 @@ Sub dungeonautoselect_Timer()
 		Else
 			' Display a message that dungeon is already closed
 			GeneralPupQueue.Add "UpdateHelperMessage","UpdateHelperMessage ""Dungeon Already Completed"" ",6,0,0,0,0,False
-			if DMDType = 0 Then
-				GeneralPupQueue.Add "DisplayDSHelper","DisplayDSHelper",5,100,0,0,0,False
-			Else
-				GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
-			End If
+			GeneralPupQueue.Add "DisplayHelper","DisplayHelper",5,100,0,0,0,False
 		End If
 	End If
 	dungeonautoselect.Enabled  = False
@@ -24206,10 +24150,6 @@ End Sub
 ' *******                VERSION CONTROL               *************************
 '=================================================================================================================================
 'version history
-'2.2p moved case 9 pandorak to scoop2 exit
-'2.2j inn arrow off, added bdungeonscleared flag to return to mode 9 once all dungeons cleared, changed endofballcomplete activemode-15 to end game
-'2.2h changed endofballcomplete code to return to wizardlock mode
-'2.2f added code for 2 screen pup
 '2.2a replaced activemode calls with Mode(CurrentPlayer,0), changed code in EnterHighScoreKey from = 3 to > 2
 '2.2 Increased MaxPasses from 10 to 20, added check party size to playerattack routine, exit if less than 1, fixed extraballGIF
 '1.2RC16 Added Inn BG image, moved calls for Inn audio
@@ -24671,8 +24611,125 @@ Sub MultiPlungerTrigger_Hit()
 	PlungerIM.AutoFire
 End Sub
 
+'----------- User Options
+
+Sub SetFlipperTricks(Opt)
+	Select Case Opt
+		Case 0: EOST = 0.275
+		Case 1: EOST = 0.375
+	End Select
+End Sub
 
 
-Sub RDampen_Timer()
-	
+Sub SetBallsPerGame(Opt)
+	Select Case Opt
+		Case 0: BallsPerGame = 3
+		Case 1:	BallsPerGame = 4
+		Case 2:	BallsPerGame = 5
+	End Select
+End Sub
+
+Sub SetFreePlay(Opt)
+	Select Case Opt
+		Case 0: bFreePlay = False
+		Case 1:	bFreePlay = True
+	End Select
+End Sub
+
+Sub SetStagedFlippers(Opt)
+	Select Case Opt
+		Case 0: stagedFlippers = 0
+		Case 1:	stagedFlippers = 1
+	End Select
+End Sub
+
+Sub SetScorbitActive(Opt)
+
+Debug2 "Setting Scorbit" &Opt
+	Select Case Opt
+		Case 0: ScorbitActive = 0
+		Case 1:	ScorbitActive = 1: CheckPairing
+	End Select
+End Sub
+
+Sub SetVRRoom(Opt)
+	If RenderingMode = 2 Then
+		VRMode = True
+		lrail.Visible = 0
+		rrail.Visible = 0
+		flasher1.Visible = 0
+		flasher2.Visible = 0
+		wall8.Visible = 0
+		wall8.SideVisible = 0
+		wall9.Visible = 0
+		wall9.SideVisible = 0
+		DarknessLayer2.Visible = 0
+		TimerVRPlunger2.enabled = True 
+		For Each VR_Obj in VRCabinet : VR_Obj.Visible = 1 : Next
+		If Opt = 1 Then
+			For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 0 : Next
+			For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 1 : Next
+		Else
+			For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 0 : Next
+			For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 1 : Next
+		End If
+		PinCab_Backglass.BlendDisableLighting = 1.50
+	Else
+		For Each VR_Obj in VRCabinet : VR_Obj.Visible = 0 : Next
+		For Each VR_Obj in VRSphereRoom : VR_Obj.Visible = 0 : Next
+		For Each VR_Obj in VRCathedralRoom : VR_Obj.Visible = 0 : Next
+		VRMode = False
+	End If
+End Sub
+
+Sub SetWoodRamps(Opt)
+	Select Case Opt
+		Case 0: WoodRamps = False
+		Case 1:	WoodRamps = True
+	End Select
+
+	if WoodRamps = False Then
+		LeftRampRopesOFF	
+		RightRampRopesOFF
+		UPFRampStoneOff
+		newRightRampON
+		newLeftRampON
+		newUPFRAmpOn
+	Else
+		newRightRampOFF
+		newLeftRampOFF
+		newUPFRAmpOff
+		LeftRampRopesON	
+		RightRampRopesON
+		UPFRampStoneOn
+	End If
+
+End Sub
+
+Sub SetGIFlicker(Opt)
+	Select Case Opt
+		Case 0: EnableFlicker = False
+		Case 1:	EnableFlicker = True
+	End Select
+End Sub
+
+Sub SetUserRFlipper(Opt)
+	Select Case Opt
+		Case 0: UseRFlipper = False
+		Case 1:	UseRFlipper = True
+	End Select
+End Sub
+
+Sub SetAutoMagnetOn(Opt)
+	Select Case Opt
+		Case 0: AutoMagnetOn = False
+		Case 1:	AutoMagnetOn = True
+	End Select
+End Sub
+
+Sub SetEnableLUTSelector(Opt)
+	Select Case Opt
+		Case 0: EnableLUTSelector = False
+		Case 1:	EnableLUTSelector = True
+	End Select
 End Sub
