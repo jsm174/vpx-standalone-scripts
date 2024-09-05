@@ -1,6 +1,6 @@
---- "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.30.vbs.original"	2024-04-16 11:36:15.342037978 +0200
-+++ "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.30.vbs"	2024-04-16 11:33:35.470293961 +0200
-@@ -151,10 +151,10 @@
+--- "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs.original"	2024-09-02 15:18:19.069074828 +0200
++++ "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs"	2024-09-02 15:15:48.025991490 +0200
+@@ -156,10 +156,10 @@
  Sub LoadUltraDMD 
  	If turnonultradmd = 0 then exit sub
  
@@ -15,12 +15,12 @@
  
  			Set UltraDMD = CreateObject("UltraDMD.DMDObject")
  			If UltraDMD is Nothing Then
-@@ -972,15 +972,15 @@
+@@ -977,15 +977,15 @@
  		'player3reel.text = ""
  		if ballsremaining(currentplayer) = 3 then
  			D2.text = "ball 1" 
 -			DisplayB2SText (score(currentplayer)) &" " & "              BALL 1 "
-+			DisplayB2SText score(currentplayer) & " " & "              BALL 1 "
++			DisplayB2SText score(currentplayer) &" " & "              BALL 1 "
  		end if
  		if ballsremaining(currentplayer) = 2 then
  			D2.text = "ball 2" 
