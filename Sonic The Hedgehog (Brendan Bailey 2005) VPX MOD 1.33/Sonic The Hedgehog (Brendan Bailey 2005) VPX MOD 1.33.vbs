@@ -93,11 +93,16 @@ Dim VR_Obj
 D1.visible = 0
 D2.visible = 0
 DMD.visible = 0
+PinCab_Backbox.visible = 0
+Primary_backglass01.visible = 0
+
 for each VR_Obj in vr_room1 : VR_Obj.visible = 0 : next  
 for each VR_Obj in vr_room2 : VR_Obj.visible = 0 : next  
 
 if RenderingMode = 2 Then
 	DMD.visible = 1
+	PinCab_Backbox.visible = 1
+	Primary_backglass01.visible = 1
 	If VR_ROOM = 1 then for each VR_Obj in vr_room1 : VR_Obj.visible = 1 : next
 	If VR_ROOM = 2 then for each VR_Obj in vr_room2 : VR_Obj.visible = 1 : next
 	Else if Table1.ShowDT Then
@@ -972,7 +977,7 @@ Sub AddScore(points)
 		'player3reel.text = ""
 		if ballsremaining(currentplayer) = 3 then
 			D2.text = "ball 1" 
-			DisplayB2SText score(currentplayer) & " " & "              BALL 1 "
+			DisplayB2SText score(currentplayer) &" " & "              BALL 1 "
 		end if
 		if ballsremaining(currentplayer) = 2 then
 			D2.text = "ball 2" 
