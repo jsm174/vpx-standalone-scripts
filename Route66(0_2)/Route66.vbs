@@ -13,6 +13,9 @@
 '  Thanks again to the Visual Pinball community - for making the software, making tutorials, and letting people reuse objects and code.
 '
 '  Version 0.0 (initial release - likely full of bugs)
+'  Version 0.1 (quick fix because I left the 1 second counter as 0.1 second from testing)
+'  Version 0.2 (update B2S to use illumination snippits instead of player 2 reels for the odometer so that it stops that annoying clicking)
+'				Mostly visual changes. A few minor scoring changes.
 '
 '	For what its worth, you have my permission to use or modify anything here.  
 '	I don't need any credit and don't blame me if it doesn't work.
@@ -55,6 +58,7 @@ Const TiltSensitivity = 6
 Dim BallsRemaining
 Dim PlayerScore
 Dim MileCount
+Dim OdometerAddAmount
 Dim BumperHitCount
 Dim TiltMeasure
 
@@ -85,6 +89,13 @@ Dim BackglassStatus 'for B2s attract mode
 
 Sub Table1_KeyDown(ByVal Keycode)
 
+'If Keycode = AddCreditKey Then
+'	if GI006.state = 0 then 
+'		GiOn
+'	Else	
+'		GiOff
+'	end if
+'End If
 	If isGameInPlay Then
 		If keycode = PlungerKey Then
 			Plunger.Pullback
@@ -106,7 +117,7 @@ Sub Table1_KeyDown(ByVal Keycode)
 		End If
 
 		'kecode 3 is the "2" key on the keyboard
-		If keycode = StartGameKey or keycode = 3 or keycode = 4 Then
+		If keycode = StartGameKey or keycode = 3 or keycode = 4 or keycode = 5 Then
 			If keycode = 3 then
 				MileCount = 0
 			End If
@@ -115,7 +126,14 @@ Sub Table1_KeyDown(ByVal Keycode)
 			Else
 				isProjectorEnabled = True
 			End If
-			Game_Init
+			If keycode = 5 Then
+				OdometerAddAmount = -1
+			Else
+				OdometerAddAmount = 1
+			End If
+
+			cleanupTimer.Enabled=True
+			'when the cleanupTimer finishes, it will go to Game_Init to start the game
         End If
     End If
 
@@ -268,20 +286,28 @@ Sub RolloverOutlaneRight_Hit
 End Sub
 
 Sub RolloverStarInlaneLeft_Hit
-	PlaySoundAtBall "fx_Sensor"                                                       
-	AddScore 10 + 90 * PlStarInlaneLeft.state + (100 * PlStarInlaneRight.state)
+	PlaySoundAtBall "fx_Sensor"      
+	If PlLeftEnter.State=1 Then
+		AddScore 200
+	Else
+		AddScore 10 + 90 * PlStarInlaneLeft.state + (100 * PlStarInlaneRight.state)
+	End If
 	PlStarInlaneLeft.state = 1
 End Sub
 
 Sub RolloverStarInlaneRight_Hit
 	PlaySoundAtBall "fx_Sensor"
-	AddScore 10 + 90 * PlStarInlaneRight.state + (100 * PlStarInlaneLeft.state)
+	If PlRightEnter.State=1 Then
+		AddScore 200
+	Else
+		AddScore 10 + 90 * PlStarInlaneRight.state + (100 * PlStarInlaneLeft.state)
+	End If
 	PlStarInlaneRight.state = 1
 End Sub
 
 Sub RolloverStarTopLeft_hit  
 	PlaySoundAtBall "fx_Sensor"                                                       
-	AddScore (10 + 90 * PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopRight.state)
+	AddScore ((10 + 90 * PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopRight.state))
 	PlRolloverStarTopLeft.state = 1
 	If PlArrowLoopLeft.state = 2 Then 
 		PlArrowLoopLeft.state = 1
@@ -291,13 +317,13 @@ End Sub
 
 Sub RolloverStarTopCenter_hit
 	PlaySoundAtBall "fx_Sensor"                                                       
-	AddScore (10 + 90 * PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopRight.state)
+	AddScore ((10 + 90 * PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopRight.state))
 	PlRolloverStarTopCenter.state = 1
 End Sub
 
 Sub RolloverStarTopRight_hit
 	PlaySoundAtBall "fx_Sensor"                                                       
-	AddScore (10 + 90 * PlRolloverStarTopRight.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state)
+	AddScore ((10 + 90 * PlRolloverStarTopRight.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state))
 	PlRolloverStarTopRight.state = 1
 	If PlArrowLoopRight.state = 2 Then 
 		PlArrowLoopRight.state = 1
@@ -305,10 +331,10 @@ Sub RolloverStarTopRight_hit
 	End If
 End Sub
 
-Sub RolloverStarTopSpinner_hit
+Sub RolloverStarCenterEnter_hit
 	PlaySoundAtBall "fx_Sensor"                                                       
 	AddScore 10 
-	PlRolloverStarTopSpinner.state = 1
+	PlRolloverStarCenterEnter.state = 1
 	OneSecondTimer.Enabled = True
 End Sub
 
@@ -347,7 +373,7 @@ End Sub
 
 Sub TargetTopRight_Hit
 	PlaySoundAtBall "fx_TargetHit"
-	AddScore (10 + 90 * PlTargetTopRight.state) * (1 + PlTargetTopLeft.state)
+	AddScore ((10 + 90 * PlTargetTopRight.state) * (1 + PlTargetTopLeft.state))
 	FlashKicker.duration 1, 100, 0
 	If PlTargetTopRight.state = 1 Then PlTargetTopRight2.state = 1
 	PlTargetTopRight.state = 1
@@ -376,16 +402,24 @@ Sub TargetBumperLeft_hit
 
 	If LightBumperUpLeft.State = 0 Then
 		LightBumperUpLeft.State = 1
-	Elseif LightBumperUpLeft.State = 1 AND LightBumperLowLeft.state = 0 Then
-		LightBumperUpLeft.State = 0
-		LightBumperLowLeft.State = 1
-	Elseif LightBumperUpLeft.State = 0 AND LightBumperLowLeft.state = 1 Then
-		LightBumperUpLeft.State = 1
-		LightBumperLowLeft.State = 1
-	Else
-		LightBumperUpLeft.State = 2
-		LightBumperLowLeft.State = 2
+	ElseIf LightBumperUpLeft.State = 1 Then
+		If LightBumperUpRight.State > 0 Then
+			LightBumperUpLeft.State = 2
+		Else
+			LightBumperUpLeft.State = 0
+		End If
 	End If
+
+	If LightBumperLowLeft.State = 0 Then
+		LightBumperLowLeft.State = 1
+	ElseIf LightBumperLowLeft.State = 1 Then
+		If LightBumperLowRight.State > 0 Then
+			LightBumperLowLeft.State = 2
+		Else
+			LightBumperLowLeft.State = 0
+		End If
+	End If
+
 End Sub
 
 Sub TargetBumperRight_hit
@@ -395,15 +429,22 @@ Sub TargetBumperRight_hit
 
 	If LightBumperUpRight.State = 0 Then
 		LightBumperUpRight.State = 1
-	Elseif LightBumperUpRight.State = 1 AND LightBumperLowRight.state = 0 Then
-		LightBumperUpRight.State = 0
+	ElseIf LightBumperUpRight.State = 1 Then
+		If LightBumperUpLeft.State > 0 Then
+			LightBumperUpRight.State = 2
+		Else
+			LightBumperUpRight.State = 0
+		End If
+	End If
+
+	If LightBumperLowRight.State = 0 Then
 		LightBumperLowRight.State = 1
-	Elseif LightBumperUpRight.State = 0 AND LightBumperLowRight.state = 1 Then
-		LightBumperUpRight.State = 1
-		LightBumperLowRight.State = 1
-	Else
-		LightBumperUpRight.State = 2
-		LightBumperLowRight.State = 2
+	ElseIf LightBumperLowRight.State = 1 Then
+		If LightBumperLowLeft.State > 0 Then
+			LightBumperLowRight.State = 2
+		Else
+			LightBumperLowRight.State = 0
+		End If
 	End If
 End Sub
 
@@ -542,6 +583,10 @@ Sub CheckRightDropsCompleted
 End Sub
 
 Sub LightBonus
+	If PLBonus5.state = 1 Then
+		FlasherProjector.ImageA="special"
+		AddScore 10000
+	End If
 	If PlBonus4.state = 1 Then PlBonus5.state = 1
 	If PlBonus3.state = 1 Then PlBonus4.state = 1
 	If PlBonus2.state = 1 Then PlBonus3.state = 1
@@ -723,15 +768,14 @@ Sub Table1_Init()
 
     ' Remove desktop items in FS mode
     Dim x
-    If Table1.ShowDT then
-        For each x in aReels
+    
+    For each x in cReels
+		If Table1.ShowDT then
             x.Visible = 1
-        Next
-    Else
-        For each x in aReels
+		Else
             x.Visible = 0
-        Next
-    End If
+        End If
+    Next
 
 	FlasherProjector.ImageA = "milestart"
 
@@ -789,7 +833,9 @@ Sub TurnInitResetLights() 'init lights for new ball/player
 	PlRolloverStarTopLeft.state = 0
 	PlRolloverStarTopCenter.state = 0
 	PlRolloverStarTopRight.state = 0
-	PlRolloverStarTopSpinner.state = 0
+	PlLeftEnter.state = 0
+	PlRolloverStarCenterEnter.state = 0
+	PlRightEnter.state = 0
 	PlStarInlaneLeft.state = 0
 	PlStarInlaneRight.state = 0
 End Sub
@@ -799,10 +845,22 @@ Sub TurnInitResetVariables() 'init variables new ball/player
 End Sub
 
 Sub TurnInitResetPlayfield()
-    RaiseDropTargetsLeft
-    RaiseDropTargetsRight
+    RaiseDropTargetsLeft()
+    RaiseDropTargetsRight()
+	LightRandomBumper()
 End Sub
 
+Sub LightRandomBumper
+	Randomize timer
+	Dim aRnd : aRnd = Int(4 * Rnd)
+	Select Case(aRnd)
+		Case 0:LightBumperLowLeft.state = 1
+		Case 1:LightBumperLowRight.state = 1
+		Case 2:LightBumperUpLeft.state = 1
+		Case 3:LightBumperUpRight.state = 1
+	End Select
+
+End Sub
 
 '****************************************
 '  Create a new ball in the plunger lane
@@ -1042,7 +1100,7 @@ Sub RollingUpdate() 'call this routine from any realtime timer you may have, run
     For b = UBound(BOT) + 1 to tnob
         rolling(b) = False
         StopSound("fx_ballrolling" & b)
-        aBallShadow(b).Y = 2100 'under the apron 'may differ from table to table
+        cBallShadow(b).Y = 2100 'under the apron 'may differ from table to table
     Next
 
     ' exit the sub if no balls on the table
@@ -1050,9 +1108,9 @@ Sub RollingUpdate() 'call this routine from any realtime timer you may have, run
 
     ' draw the ball shadow
     For b = lob to UBound(BOT)
-        aBallShadow(b).X = BOT(b).X
-        aBallShadow(b).Y = BOT(b).Y
-        aBallShadow(b).Height = BOT(b).Z - Ballsize / 2 + 1
+        cBallShadow(b).X = BOT(b).X
+        cBallShadow(b).Y = BOT(b).Y
+        cBallShadow(b).Height = BOT(b).Z - Ballsize / 2 + 1
 
     'play the rolling sound for each ball
         If BallVel(BOT(b)) > 1 Then
@@ -1108,14 +1166,14 @@ End Sub
 'Sub ShooterLaneGate_Hit
 '	debug.print"shooterlanegatehit hit"
 'End Sub
-Sub aMetals_Hit(idx):PlaySoundAtBall "fx_MetalHit":End Sub
-Sub aMetalWires_Hit(idx):PlaySoundAtBall "fx_MetalWire":End Sub
-Sub aRubber_Bands_Hit(idx):PlaySoundAtBall "fx_rubber_band":End Sub
-Sub aRubber_Posts_Hit(idx):PlaySoundAtBall "fx_rubber_post":End Sub
-Sub aRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
-Sub aPlastics_Hit(idx):PlaySoundAtBall "fx_PlasticHit":End Sub
-Sub aGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub
-Sub aWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
+Sub cMetals_Hit(idx):PlaySoundAtBall "fx_MetalHit":End Sub
+Sub cMetalWires_Hit(idx):PlaySoundAtBall "fx_MetalWire":End Sub
+Sub cRubber_Bands_Hit(idx):PlaySoundAtBall "fx_rubber_band":End Sub
+Sub cRubber_Posts_Hit(idx):PlaySoundAtBall "fx_rubber_post":End Sub
+Sub cRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
+Sub cPlastics_Hit(idx):PlaySoundAtBall "fx_PlasticHit":End Sub
+Sub cGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub
+Sub cWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
 
 ' *********************************************************************
 '  Drain
@@ -1257,6 +1315,18 @@ End Sub
 
 Sub BonusCountTimer_Timer
 	
+	If PlLeftEnter.state > 0 AND PlRightEnter.state > 0 Then
+		PlLeftEnter.state = 0 
+		PlRightEnter.state = 0
+		If PlRolloverStarCenterEnter.state > 0 Then
+			AddScore 500
+			PlRolloverStarCenterEnter.state = 0
+		Else
+			AddScore 100
+		End If
+		Exit Sub
+	End If
+
 	If PlLoop5.state > 0 Then
 		AddScore 500
 		PlLoop5.state = 0
@@ -1501,7 +1571,8 @@ Sub LoadConfig
 	ScoreReel2.setvalue MileCount
     If B2SOn then
         Controller.B2SSetScorePlayer 1, PlayerScore
-		Controller.B2SSetScorePlayer 2, MileCount
+		B2sOdometer()
+		'Controller.B2SSetScorePlayer 2, MileCount
     end if
 
 End Sub
@@ -1544,6 +1615,31 @@ Sub Ballcheck
 		end if
 		
 	Next
+End Sub
+
+'Sub Ballcheck_game_init
+	
+ '   Dim BOT, b
+ '   BOT = GetBalls
+
+  '  For b = 0 to UBound(BOT)
+'	Next
+'End Sub
+
+Sub cleanupTimer_Timer
+	'starting new game. if any balls left from testing, set the location right in front of the drain so it gets destroyed
+	'BUT, use a timer to spread it out because if there are a bunch of them they pile up
+    Dim BOT, b
+    BOT = GetBalls
+
+    'debug.print UBound(BOT)
+	If Ubound(BOT) >= 0 Then
+		BOT(b).x = Drain.x
+		BOT(b).y = Drain.y - BOT(b).Radius
+	Else
+		cleanupTimer.Enabled = false
+		Game_init
+	End If
 End Sub
 
 ' ***********************************************************************
@@ -1710,7 +1806,6 @@ Sub UpdateBackglassInfoDisplay()
         ReelTilt.SetValue 0
         If B2SOn Then Controller.B2SSetTilt 0
 	End If
-
             
 End Sub
 
@@ -1724,14 +1819,16 @@ Sub OneSecondTimer_Timer
 
 	If MileCount > 2144 Then 
 		MileCount = 0
-	else
-		MileCount = MileCount + 1
+	ElseIf (MileCount < 0) OR (MileCount = 0 AND OdometerAddAmount < 0) Then 
+		MileCount = 2144
+	Else
+		MileCount = MileCount + OdometerAddAmount
 	End If
 
 	ScoreReel2.Setvalue MileCount
-	If B2SOn then
-		Controller.B2SSetScorePlayer2 MileCount
-	End If
+	B2sOdometer()
+	'If B2SOn then Controller.B2SSetScorePlayer2 MileCount
+
 
 	'dig this: all of our pictures are in the image manager and named "mile####"
 	'we have them all listed in this array.  Each time we hit this routine, we take the current mile we are on and generate an image name
@@ -1740,26 +1837,26 @@ Sub OneSecondTimer_Timer
 	Dim PicId, PicArray
 	PicArray = Array( "mile0001","mile0004","mile0010","mile0025","mile0035","mile0040","mile0046","mile0050","mile0057", _
 "mile0060","mile0066","mile0070","mile0078","mile0080","mile0085","mile0090","mile0105","mile0110","mile0120","mile0130", _
-"mile0135","mile0142","mile0145","mile0151","mile0155","mile0160","mile0163","mile0169","mile0175","mile0180","mile0182", _
-"mile0184","mile0190","mile0193","mile0200","mile0206","mile0210","mile0215","mile0220","mile0223","mile0226","mile0229", _
-"mile0233","mile0237","mile0245","mile0250","mile0255","mile0260","mile0264","mile0268","mile0272","mile0275","mile0277", _
-"mile0280","mile0283","mile0286","mile0289","mile0293","mile0296","mile0305","mile0310","mile0320","mile0325","mile0340", _ 
-"mile0350","mile0355","mile0360","mile0365","mile0380","mile0390","mile0400","mile0405","mile0408","mile0420","mile0425", _ 
-"mile0430","mile0460","mile0465","mile0470","mile0480","mile0500","mile0510","mile0515","mile0520","mile0525","mile0530", _
-"mile0535","mile0540","mile0550","mile0560","mile0570","mile0575","mile0580","mile0585","mile0590","mile0595","mile0598", _ 
-"mile0601","mile0604","mile0607","mile0610","mile0615","mile0620","mile0625","mile0630","mile0635","mile0640","mile0645", _
-"mile0650","mile0655","mile0663","mile0670","mile0675","mile0685","mile0690","mile0695","mile0700","mile0705","mile0710","mile0715", _
-"mile0735","mile0740","mile0745","mile0750","mile0755","mile0762","mile0767","mile0771","mile0775","mile0800","mile0805", _
-"mile0810","mile0815","mile0850","mile0870","mile0875","mile0900","mile0905","mile0945","mile0956","mile0960","mile0965", _
-"mile0970","mile0983","mile0991","mile1015","mile1020","mile1030","mile1045","mile1050","mile1062","mile1066","mile1090", _
-"mile1110","mile1139","mile1141","mile1146","mile1150","mile1160","mile1170","mile1200","mile1220","mile1280","mile1285", _ 
-"mile1340","mile1344","mile1389","mile1415","mile1420","mile1430","mile1474","mile1500","mile1540","mile1545","mile1550", _
-"mile1565","mile1570","mile1575","mile1585","mile1600", _
-"mile1605","mile1616","mile1620","mile1625","mile1635","mile1655","mile1660","mile1670","mile1685","mile1691","mile1720", _
-"mile1725","mile1733","mile1741","mile1750","mile1755","mile1760","mile1765","mile1794","mile1803","mile1808","mile1823", _
-"mile1840","mile1857","mile1860","mile1868","mile1880","mile1890","mile1900","mile1925","mile1928","mile1934","mile1940", _
-"mile1950","mile1960","mile1980","mile1990","mile2000","mile2045","mile2050","mile2060","mile2080","mile2085","mile2091", _
-"mile2107","mile2115","mile2118","mile2124","mile2126","mile2128","mile2138","mile2140")
+"mile0135","mile0142","mile0145","mile0151","mile0154","mile0157","mile0160","mile0163","mile0166","mile0169","mile0172", _
+"mile0175","mile0180","mile0182","mile0184","mile0190","mile0193","mile0196","mile0200","mile0206","mile0209","mile0212", _
+"mile0215","mile0218","mile0221","mile0224","mile0227","mile0230","mile0233","mile0237","mile0245","mile0250","mile0255", _
+"mile0260","mile0264","mile0268","mile0272","mile0275","mile0277","mile0280","mile0283","mile0286","mile0289","mile0293", _
+"mile0296","mile0305","mile0310","mile0320","mile0325","mile0340","mile0350","mile0355","mile0360","mile0365","mile0380", _
+"mile0390","mile0400","mile0405","mile0408","mile0420","mile0425","mile0430","mile0460","mile0465","mile0470","mile0480", _
+"mile0500","mile0510","mile0515","mile0520","mile0525","mile0530","mile0535","mile0540","mile0550","mile0560","mile0570", _
+"mile0575","mile0580","mile0585","mile0590","mile0595","mile0598","mile0601","mile0604","mile0607","mile0610","mile0615", _
+"mile0620","mile0625","mile0630","mile0635","mile0640","mile0645","mile0650","mile0655","mile0663","mile0670","mile0675", _
+"mile0685","mile0690","mile0695","mile0700","mile0705","mile0710","mile0715","mile0735","mile0740","mile0745","mile0750", _
+"mile0755","mile0762","mile0767","mile0771","mile0775","mile0800","mile0805","mile0810","mile0815","mile0850","mile0870", _
+"mile0875","mile0900","mile0905","mile0945","mile0956","mile0960","mile0965","mile0970","mile0983","mile0991","mile1015", _
+"mile1020","mile1030","mile1045","mile1050","mile1062","mile1066","mile1090","mile1110","mile1139","mile1141","mile1146", _
+"mile1150","mile1160","mile1170","mile1200","mile1220","mile1280","mile1285","mile1340","mile1344","mile1389","mile1415", _
+"mile1420","mile1430","mile1474","mile1500","mile1540","mile1545","mile1550","mile1565","mile1570","mile1575","mile1585", _
+"mile1600","mile1605","mile1616","mile1620","mile1625","mile1635","mile1655","mile1660","mile1670","mile1685","mile1691", _
+"mile1720","mile1725","mile1733","mile1741","mile1750","mile1755","mile1760","mile1765","mile1794","mile1803","mile1808", _
+"mile1823","mile1840","mile1857","mile1860","mile1868","mile1880","mile1890","mile1900","mile1925","mile1928","mile1934", _
+"mile1940","mile1945","mile1950","mile1955","mile1960","mile1980","mile1990","mile2000","mile2045","mile2050","mile2060", _
+"mile2080","mile2085","mile2091","mile2107","mile2115","mile2118","mile2124","mile2127","mile2130","mile2138","mile2140")
 
 	'gotta add some leading zeros to make the name format "mile####"
 	if milecount < 9 Then
@@ -1791,3 +1888,68 @@ Sub OneSecondTimer_Timer
 
 End Sub
 
+Sub B2sOdometer()
+
+	If NOT B2SOn Then Exit Sub
+
+'ones
+	Dim x:	x = MileCount mod 10
+    Select Case x
+        Case 0:Controller.B2SSetData 1, 10
+		Case 1:Controller.B2SSetData 1, 1
+		Case 2:Controller.B2SSetData 1, 2
+		Case 3:Controller.B2SSetData 1, 3
+		Case 4:Controller.B2SSetData 1, 4
+		Case 5:Controller.B2SSetData 1, 5
+		Case 6:Controller.B2SSetData 1, 6
+		Case 7:Controller.B2SSetData 1, 7
+		Case 8:Controller.B2SSetData 1, 8
+		Case 9:Controller.B2SSetData 1, 9
+    End Select
+
+'tens
+	x = INT(MileCount / 10) mod 10
+    Select Case x
+        Case 0:Controller.B2SSetData 2, 10
+		Case 1:Controller.B2SSetData 2, 1
+		Case 2:Controller.B2SSetData 2, 2
+		Case 3:Controller.B2SSetData 2, 3
+		Case 4:Controller.B2SSetData 2, 4
+		Case 5:Controller.B2SSetData 2, 5
+		Case 6:Controller.B2SSetData 2, 6
+		Case 7:Controller.B2SSetData 2, 7
+		Case 8:Controller.B2SSetData 2, 8
+		Case 9:Controller.B2SSetData 2, 9
+    End Select
+
+'hundreds
+	x = INT(MileCount / 100) mod 10
+    Select Case x
+        Case 0:Controller.B2SSetData 3, 10
+		Case 1:Controller.B2SSetData 3, 1
+		Case 2:Controller.B2SSetData 3, 2
+		Case 3:Controller.B2SSetData 3, 3
+		Case 4:Controller.B2SSetData 3, 4
+		Case 5:Controller.B2SSetData 3, 5
+		Case 6:Controller.B2SSetData 3, 6
+		Case 7:Controller.B2SSetData 3, 7
+		Case 8:Controller.B2SSetData 3, 8
+		Case 9:Controller.B2SSetData 3, 9
+    End Select
+
+'thousands
+	x = INT(MileCount / 1000) mod 10
+	debug.print x
+    Select Case x
+        Case 0:Controller.B2SSetData 4, 10
+		Case 1:Controller.B2SSetData 4, 1
+		Case 2:Controller.B2SSetData 4, 2
+		Case 3:Controller.B2SSetData 4, 3
+		Case 4:Controller.B2SSetData 4, 4
+		Case 5:Controller.B2SSetData 4, 5
+		Case 6:Controller.B2SSetData 4, 6
+		Case 7:Controller.B2SSetData 4, 7
+		Case 8:Controller.B2SSetData 4, 8
+		Case 9:Controller.B2SSetData 4, 9
+    End Select
+End Sub
