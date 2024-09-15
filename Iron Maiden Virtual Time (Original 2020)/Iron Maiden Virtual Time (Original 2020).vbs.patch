@@ -1,0 +1,11 @@
+--- "Iron Maiden Virtual Time (Original 2020).vbs.original"	2023-11-24 17:38:17.543339626 +0100
++++ "Iron Maiden Virtual Time (Original 2020).vbs"	2023-11-24 17:35:02.118172127 +0100
+@@ -2518,7 +2518,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
+-	If isGIOn <> Not IsOff Then
++	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on
