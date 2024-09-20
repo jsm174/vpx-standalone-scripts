@@ -1,0 +1,17 @@
+--- ./Vampirella.vbs.original	2024-09-20 16:08:48.000000000 -0700
++++ ./Vampirella.vbs	2024-09-20 16:16:03.000000000 -0700
+@@ -1,4 +1,3 @@
+-
+ '
+ Option Explicit
+ Randomize
+@@ -71,7 +70,9 @@
+ On Error Resume Next
+ Dim i
+ For i=0 To 127
++    If IsObject(eval("L" & i)) Then
+     Execute "Set Lights(" & i & ")  = L" & i
++    End If
+ Next
+  
+ Lights(58)=Array(L58,L58A)
