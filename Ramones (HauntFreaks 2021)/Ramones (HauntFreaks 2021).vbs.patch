@@ -1,0 +1,43 @@
+--- "Ramones (HauntFreaks 2021).vbs.original.tmp"       2024-09-23 14:21:31.853799900 -0400
++++ "Ramones (HauntFreaks 2021).vbs"    2024-09-23 13:32:28.382818700 -0400
+@@ -802,14 +802,17 @@
+
+ '****************************
+
+Sub Drain_Hit()n *************
++'******** Drain *************
++
++Sub Drain_Hit()
+        DOF 120, DOFPulse
+        If Player = 1 Then BallN = BallN -1 End If
+        If Player = 2 Then BallN2 = BallN2 -1 End If
+        If Player = 3 Then BallN3 = BallN3 -1 End If
+        If Player = 4 Then BallN4 = BallN4 -1 End If
+        BallsNTot = BallsNTot - 1
+-       Drain.DestroyBallDrain
++       RandomSoundDrain Drain
++       Drain.DestroyBall
+        AllowStart = 0
+
+        If BallsNTot = 0 Then
+@@ -827,6 +830,7 @@
+        End If
+
+        'bsTrough.addball me    :EndMusic
++
+End Sub
+
+ Sub OWDrain_Hit()
+@@ -1866,11 +1870,12 @@
+ Sub Wall75_Hit
+        'PlaySound "toc",0,0.5
+        PlaySoundAt "toc", Wall75
++       Wall75.enabled=0
+        End Sub
+
+-
+ Sub Rubber32_Hit
+-       PlaySoundAt "flip_hit_1". Rubber32
++       PlaySoundAt "flip_hit_1", Rubber32
++       Rubber32.enabled=0
+        End Sub
