@@ -1,0 +1,15 @@
+--- "Legend of Zelda v4.3.vbs.original"	2024-10-16 11:35:57.513483247 +0200
++++ "Legend of Zelda v4.3.vbs"	2024-10-16 11:33:33.760350713 +0200
+@@ -404,10 +404,11 @@
+ '*************
+ 
+ Sub table1_Paused
++    If Isobject(Controller)Then Controller.Pause = True
+ End Sub
+ 
+ Sub table1_unPaused
+-    If Isobject(Controller)Then Controller.Pause
++    If Isobject(Controller)Then Controller.Pause = False
+ End Sub
+ 
+ Sub table1_Exit
