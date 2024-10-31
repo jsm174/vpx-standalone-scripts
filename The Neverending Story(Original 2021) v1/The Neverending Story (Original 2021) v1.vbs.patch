@@ -1,0 +1,128 @@
+--- "The Neverending Story (Original 2021) v1.vbs.original"	2024-10-31 17:16:56.747818100 -0400
++++ "The Neverending Story (Original 2021) v1.vbs"	2024-10-31 16:37:48.085683700 -0400
+@@ -13,6 +13,7 @@
+ Const BallSize = 50    ' 50 is the normal size used in the core.vbs, VP kicker routines uses this value divided by 2
+ Const BallMass = 1
+ Const SongVolume = 0.6 ' 1 is full volume. Value is from 0 to 1
++Const FlexDMDHighQuality = True		' If using RealDMD set to False
+ 
+ ' Load the core.vbs for supporting Subs and functions
+ LoadCoreFiles
+@@ -36,6 +37,14 @@
+ Const BallsPerGame = 5   ' usually 3 or 5
+ Const MaxMultiballs = 10  ' max number of balls during multiballs
+ 
++' Use FlexDMD if in FS mode
++Dim UseFlexDMD
++If Table1.ShowDT = True then
++    UseFlexDMD = False
++Else
++    UseFlexDMD = True
++End If
++
+ ' Define Global Variables
+ Dim PlayersPlayingGame
+ Dim CurrentPlayer
+@@ -370,6 +379,7 @@
+ 
+ Sub Table1_Exit
+     Savehs
++	If UseFlexDMD Then FlexDMD.Run = False
+     If B2SOn = true Then Controller.Stop
+ End Sub
+ 
+@@ -1730,7 +1740,67 @@
+ Dim dqbFlush(64)
+ Dim dqSound(64)
+ 
++Dim FlexDMD
++Dim DMDScene
++
+ Sub DMD_Init() 'default/startup values
++    If UseFlexDMD Then
++        Set FlexDMD = CreateObject("FlexDMD.FlexDMD")
++        If Not FlexDMD is Nothing Then
++            If FlexDMDHighQuality Then
++                FlexDMD.TableFile = Table1.Filename & ".vpx"
++                FlexDMD.RenderMode = 2
++                FlexDMD.Width = 256
++                FlexDMD.Height = 64
++                FlexDMD.Clear = True
++                FlexDMD.GameName = cGameName
++                FlexDMD.Run = True
++                Set DMDScene = FlexDMD.NewGroup("Scene")
++                DMDScene.AddActor FlexDMD.NewImage("Back", "VPX.bkborder")
++                DMDScene.GetImage("Back").SetSize FlexDMD.Width, FlexDMD.Height
++                For i = 0 to 35
++                    DMDScene.AddActor FlexDMD.NewImage("Dig" & i, "VPX.dempty&dmd=2")
++                    Digits(i).Visible = False
++                Next
++                'digitgrid.Visible = False
++                For i = 0 to 19 ' Top
++                    DMDScene.GetImage("Dig" & i).SetBounds 8 + i * 12, 6, 12, 22
++                Next
++                For i = 20 to 35 ' Bottom
++                    DMDScene.GetImage("Dig" & i).SetBounds 8 + (i - 20) * 12, 34, 12, 22
++                Next
++                FlexDMD.LockRenderThread
++                FlexDMD.Stage.AddActor DMDScene
++                FlexDMD.UnlockRenderThread
++            Else
++                FlexDMD.TableFile = Table1.Filename & ".vpx"
++                FlexDMD.RenderMode = 2
++                FlexDMD.Width = 128
++                FlexDMD.Height = 32
++                FlexDMD.Clear = True
++                FlexDMD.GameName = cGameName
++                FlexDMD.Run = True
++                Set DMDScene = FlexDMD.NewGroup("Scene")
++                DMDScene.AddActor FlexDMD.NewImage("Back", "VPX.bkborder")
++                DMDScene.GetImage("Back").SetSize FlexDMD.Width, FlexDMD.Height
++                For i = 0 to 35
++                    DMDScene.AddActor FlexDMD.NewImage("Dig" & i, "VPX.dempty&dmd=2")
++                    Digits(i).Visible = False
++                Next
++                digitgrid.Visible = False
++                For i = 0 to 19 ' Top
++                    DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, 3, 6, 11
++                Next
++                For i = 20 to 35 ' Bottom
++                    DMDScene.GetImage("Dig" & i).SetBounds 4 + (i - 20) * 6, 17, 6, 11
++                Next
++                FlexDMD.LockRenderThread
++                FlexDMD.Stage.AddActor DMDScene
++                FlexDMD.UnlockRenderThread
++            End If
++        End If
++    End If
++
+     Dim i, j
+     DMDFlush()
+     deSpeed = 20
+@@ -2004,7 +2074,7 @@
+ 
+ Sub DMDUpdate(id)
+     Dim digit, value
+-
++	If UseFlexDMD Then FlexDMD.LockRenderThread
+     Select Case id
+         Case 0 'top text line
+             For digit = 20 to 35
+@@ -2017,13 +2087,16 @@
+         Case 2 ' back image - back animations
+             If dLine(2) = "" OR dLine(2) = " " Then dLine(2) = "bkempty"
+             DigitsBack(0).ImageA = dLine(2)
++			If UseFlexDMD Then DMDScene.GetImage("Back").Bitmap = FlexDMD.NewImage("", "VPX." & dLine(2) & "&dmd=2").Bitmap
+     End Select
++	If UseFlexDMD Then FlexDMD.UnlockRenderThread
+ End Sub
+ 
+ Sub DMDDisplayChar(achar, adigit)
+     If achar = "" Then achar = " "
+     achar = ASC(achar)
+     Digits(adigit).ImageA = Chars(achar)
++	If UseFlexDMD Then DMDScene.GetImage("Dig" & adigit).Bitmap = FlexDMD.NewImage("", "VPX." & Chars(achar) & "&dmd=2&add").Bitmap
+ End Sub
+ 
+ '****************************
+
