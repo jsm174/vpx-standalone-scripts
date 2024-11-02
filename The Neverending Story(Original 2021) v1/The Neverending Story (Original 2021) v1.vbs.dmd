@@ -1787,7 +1787,7 @@ Sub DMD_Init() 'default/startup values
                     DMDScene.AddActor FlexDMD.NewImage("Dig" & i, "VPX.dempty&dmd=2")
                     Digits(i).Visible = False
                 Next
-                digitgrid.Visible = False
+                'digitgrid.Visible = False
                 For i = 0 to 19 ' Top
                     DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, 3, 6, 11
                 Next
