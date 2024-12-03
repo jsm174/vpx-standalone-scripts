@@ -1,0 +1,65 @@
+--- "Iron Maiden Virtual Time (Original 2020).vbs.original"	2024-12-04 00:03:05.377635191 +0100
++++ "Iron Maiden Virtual Time (Original 2020).vbs"	2024-12-03 23:56:53.140080569 +0100
+@@ -408,22 +408,37 @@
+ End Sub
+ 
+ Function GetTracks(startsWith)
+-	Dim fso, f, path, ret(), index
+-	Set fso = CreateObject("Scripting.FileSystemObject")
+-	path = UserDirectory & "..\Music"
+-	If Not fso.FolderExists(path) Then path = fso.GetAbsolutePathName("..\Music")
+-	If fso.FolderExists(path) Then
+-		index = 0
+-		For Each f In fso.GetFolder(path).Files
+-			If UCase(startsWith) = UCase(Left(f.Name,Len(startsWith))) Then
+-				ReDim Preserve ret(index)
+-				ret(index) = f.Name
+-				index = index + 1
+-			End If
+-		Next
+-	End If
+-	If index = 0 Then ReDim Preserve ret(0) : ret(0) = ""
+-	Set fso = Nothing
++	Dim fso, f, path, ret(15), index
++	' Set fso = CreateObject("Scripting.FileSystemObject")
++	' path = UserDirectory & "..\Music"
++	' If Not fso.FolderExists(path) Then path = fso.GetAbsolutePathName("..\Music")
++	' If fso.FolderExists(path) Then
++	' 	index = 0
++	' 	For Each f In fso.GetFolder(path).Files
++	' 		If UCase(startsWith) = UCase(Left(f.Name,Len(startsWith))) Then
++	' 			ReDim Preserve ret(index)
++	' 			ret(index) = f.Name
++	' 			index = index + 1
++	' 		End If
++	' 	Next
++	' End If
++	' If index = 0 Then ReDim Preserve ret(0) : ret(0) = ""
++	' Set fso = Nothing
++	ret(0) = "Iron Maiden - 2 Minutes To Midnight.mp3"
++	ret(1) = "Iron Maiden - 22 Acacia Avenue.mp3"
++	ret(2) = "Iron Maiden - Aces High.mp3"
++	ret(3) = "Iron Maiden - Can I Play With Madness.mp3"
++	ret(4) = "Iron Maiden - Fear Of The Dark.mp3"
++	ret(5) = "Iron Maiden - Flight Of Icarus.mp3"
++	ret(6) = "Iron Maiden - Futureal.mp3"
++	ret(7) = "Iron Maiden - Holy Smoke.mp3"
++	ret(8) = "Iron Maiden - Invasion.mp3"
++	ret(9) = "Iron Maiden - Lord Of The Flies.mp3"
++	ret(10) = "Iron Maiden - Powerslave.mp3"
++	ret(11) = "Iron Maiden - Speed Of Light.mp3"
++	ret(12) = "Iron Maiden - The Final Frontier.mp3"
++	ret(13) = "Iron Maiden - The Number Of The Beast.mp3"
++	ret(14) = "Iron Maiden - Wasted Years.mp3"
+ 	GetTracks = ret
+ End Function
+ 
+@@ -2518,7 +2533,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
+-	If isGIOn <> Not IsOff Then
++	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on
