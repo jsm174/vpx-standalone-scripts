@@ -1,0 +1,13 @@
+--- "You\342\200\231ll Shoot Your Eye Out! (Shag 2024).vbs.original"	2024-12-17 18:21:56.996868353 +0100
++++ "You\342\200\231ll Shoot Your Eye Out! (Shag 2024).vbs"	2024-12-17 18:21:46.520483727 +0100
+@@ -60,6 +60,10 @@
+ HSiArray = Array("HSi_0","HSi_1","HSi_2","HSi_3","HSi_4","HSi_5","HSi_6","HSi_7","HSi_8","HSi_9","HSi_10","HSi_11","HSi_12","HSi_13","HSi_14","HSi_15","HSi_16","HSi_17","HSi_18","HSi_19","HSi_20","HSi_21","HSi_22","HSi_23","HSi_24","HSi_25","HSi_26")
+ Dim MatchNumber, Balls, Shift
+  
++For i = 0 to 220
++  Req(i) = ""
++Next
++
+ Req(26)="26 27 28 29 1E 2B " ' background music
+ 'Req(29)="B01 B02 B03 B04 B05 B061 B07 B08 B09 B10 B11 B12  " 'Bumpers
+ Req(28)="1f " ' intro
