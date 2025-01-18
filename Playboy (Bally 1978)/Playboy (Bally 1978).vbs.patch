@@ -1,0 +1,11 @@
+--- "Playboy (Bally 1978).vbs.original"	2025-01-15 16:49:34.647864406 +0100
++++ "Playboy (Bally 1978).vbs"	2025-01-15 16:48:14.097311767 +0100
+@@ -36,7 +36,7 @@
+ SolCallback(13) 		= "dtRBank.SolDropUp"
+ SolCallback(sLRFlipper) = "SolRFlipper"
+ SolCallback(sLLFlipper) = "SolLFlipper"
+-SolCallback(2)     		= "vpmSolSound Soundfx(""Knocker"",DOFKnocker)" 
++' SolCallback(2)     		= "vpmSolSound Soundfx(""Knocker"",DOFKnocker)," 
+ 
+ Set vpmShowDips 		= GetRef("editDips")
+ Set LampCallback		= GetRef("UpdateMultipleLamps")
