@@ -93,7 +93,7 @@ Const VRBats					= 0		'0=No Bats, 1=BATS!
 '   PinUp Player USER Config
 '**************************
 Dim bSingleScreen:bSingleScreen=False	   ' when Playfield is in landscape and single screen this will allow PUP to work properly
-dim PuPDMDDriverType: PuPDMDDriverType=0   ' 0=LCD DMD, 2=FullDMD
+dim PuPDMDDriverType: PuPDMDDriverType=2   ' 0=LCD DMD, 2=FullDMD
 dim useHighResDMD:useHighResDMD=False	   ' if you have a high res FullDMD this will make some animtions look better
 dim useRealDMDScale : useRealDMDScale=0    ' 0 or 1 for RealDMD scaling.  Choose which one you prefer.
 dim useDMDVideos    : useDMDVideos=True	   ' true or false to use DMD splash videos.
@@ -13017,7 +13017,7 @@ Sub AnimateLabel(Screen, LabelName, yStart, yEnd, sizeStart, sizeEnd, msecLen, t
 	thisAni.ani_Enabled=False 
 	thisAni.ani_Cancelled=False 
 	'Add fails if the key already exists according to below linked spec.
-	'I do wonder why this does not fail on windows, or maybe this is ignored somewhere?
+	'I do wonder why this does not fail on windows, but this was using a custom dictionary before?
 	'https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/add-method-dictionary#remarks
 	if aniDict.Exists(LabelName) then aniDict.Remove LabelName
 	aniDict.add LabelName, thisAni 
@@ -13029,7 +13029,17 @@ Sub tmrPupAnimation_Timer
 	Dim Found
 	Found = False
 ''debug.print "tmrPupAnimation_Timer"
+
+	' Dim key
+	' for each key in aniDict.Keys
+	' 	debug.print "Key:" & key & " = " & TypeName(aniDict.Item(key))
+	' next
+
 	for each obj in aniDict.Items
+		'Somehow we end up with two Empty items, maybe our wine implementation of the dictionary remove is broken
+		'The more I look at this the more I get confused. Settling with a workaround for now.
+		If IsEmpty(obj)=False then
+
 		if obj.ani_Enabled and obj.ani_Cancelled=False then 
 ''debug.print "Process:" & obj.ani_LabelName & " " & obj.ani_y & " " & obj.ani_count & " " & obj.ani_endCount
 			Found=True
@@ -13044,6 +13054,8 @@ Sub tmrPupAnimation_Timer
 				obj.ani_Enabled = False 
 			End if
 		End if
+
+		End If
 	Next
 
 	if Not Found Then	' Nothing active (save cycles)
