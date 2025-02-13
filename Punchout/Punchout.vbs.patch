@@ -1,0 +1,11 @@
+--- Punchout.vbs.original	2025-01-27 09:17:09.372076531 +0100
++++ Punchout.vbs	2025-01-27 09:11:26.830043169 +0100
+@@ -2167,7 +2167,7 @@
+                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, 3 + 16 + 2, 8, 8
+             Next
+             For i = 20 to 35 ' Bottom
+-                DMDScene.GetImage("Dig" & i).SetBounds (i - 20) * 8, 3, 8, 16
++                DMDScene.GetImage("Dig" & i).SetBounds 8 * (i - 20), 3, 8, 16
+             Next
+             FlexDMD.LockRenderThread
+             FlexDMD.Stage.AddActor DMDScene
