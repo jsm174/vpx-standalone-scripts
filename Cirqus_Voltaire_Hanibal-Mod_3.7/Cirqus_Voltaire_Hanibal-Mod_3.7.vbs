@@ -2664,7 +2664,7 @@ End Sub
 ' **************
 
 ' Side Show holes
-Sub cSSHoles_Hit(idx):SubwayHandler McSSHoles(idx), 46:End Sub
+Sub cSSHoles_Hit(idx):SubwayHandler cSSHoles(idx), 46:End Sub
 
 ' Ringmaster holes
 Sub cRMHoles_Hit(idx):SubwayHandler cRMHoles(idx), 47:End Sub
@@ -2687,7 +2687,7 @@ Dim WBall
 
 Sub CreateWildBall()
     
-Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.id = 666:kicker1.Kick 0, 0   
+Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.UserValue = 666:kicker1.Kick 0, 0   
 WBall.mass = 1.5
 End Sub
 
@@ -3120,7 +3120,7 @@ End Sub
 
 Sub NewBCol_Timer()
 WBDes.enabled = 0
-Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.id = 666:kicker1.Kick 0, 0
+Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.UserValue = 666:kicker1.Kick 0, 0
 WBall.mass = 1.5
 me.enabled = 0
 End Sub

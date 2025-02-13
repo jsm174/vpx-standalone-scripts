@@ -1,5 +1,5 @@
---- Cirqus_Voltaire_Hanibal-Mod_3.7.vbs.original	2024-04-16 21:36:34.931718823 +0200
-+++ Cirqus_Voltaire_Hanibal-Mod_3.7.vbs	2024-04-16 21:36:08.736040337 +0200
+--- Cirqus_Voltaire_Hanibal-Mod_3.7.vbs.original	2025-02-12 15:38:07.047377018 +0100
++++ Cirqus_Voltaire_Hanibal-Mod_3.7.vbs	2025-02-12 14:45:25.038441621 +0100
 @@ -1282,10 +1282,10 @@
  ' Lights Array 
  ' -------------------------------------
@@ -18,7 +18,7 @@
  
  ' Side Show holes
 -Sub cSSHoles_Hit(idx):SubwayHandler Me(idx), 46:End Sub
-+Sub cSSHoles_Hit(idx):SubwayHandler McSSHoles(idx), 46:End Sub
++Sub cSSHoles_Hit(idx):SubwayHandler cSSHoles(idx), 46:End Sub
  
  ' Ringmaster holes
 -Sub cRMHoles_Hit(idx):SubwayHandler Me(idx), 47:End Sub
@@ -26,6 +26,24 @@
  
  Sub SubwayHandler(aKick, aSwNo)
      'ClearballID
+@@ -2687,7 +2687,7 @@
+ 
+ Sub CreateWildBall()
+     
+-Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.id = 666:kicker1.Kick 0, 0   
++Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.UserValue = 666:kicker1.Kick 0, 0   
+ WBall.mass = 1.5
+ End Sub
+ 
+@@ -3120,7 +3120,7 @@
+ 
+ Sub NewBCol_Timer()
+ WBDes.enabled = 0
+-Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.id = 666:kicker1.Kick 0, 0
++Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.UserValue = 666:kicker1.Kick 0, 0
+ WBall.mass = 1.5
+ me.enabled = 0
+ End Sub
 @@ -3163,7 +3163,7 @@
  
  Dim f24gscale,f24gstate
