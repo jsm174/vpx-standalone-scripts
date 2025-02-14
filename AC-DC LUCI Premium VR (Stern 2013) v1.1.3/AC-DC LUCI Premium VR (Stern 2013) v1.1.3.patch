@@ -1,0 +1,94 @@
+3451a3452,3484
+> Class DropTarget
+>   Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
+> 
+>   Public Property Get Primary(): Set Primary = m_primary: End Property
+>   Public Property Let Primary(input): Set m_primary = input: End Property
+> 
+>   Public Property Get Secondary(): Set Secondary = m_secondary: End Property
+>   Public Property Let Secondary(input): Set m_secondary = input: End Property
+> 
+>   Public Property Get Prim(): Set Prim = m_prim: End Property
+>   Public Property Let Prim(input): Set m_prim = input: End Property
+> 
+>   Public Property Get Sw(): Sw = m_sw: End Property
+>   Public Property Let Sw(input): m_sw = input: End Property
+> 
+>   Public Property Get Animate(): Animate = m_animate: End Property
+>   Public Property Let Animate(input): m_animate = input: End Property
+> 
+>   Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
+>   Public Property Let IsDropped(input): m_isDropped = input: End Property
+> 
+>   Public default Function init(primary, secondary, prim, sw, animate, isDropped)
+>     Set m_primary = primary
+>     Set m_secondary = secondary
+>     Set m_prim = prim
+>     m_sw = sw
+>     m_animate = animate
+>     m_isDropped = isDropped
+> 
+>     Set Init = Me
+>   End Function
+> End Class
+> 
+3471,3478c3504,3511
+< DT1 = Array(sw1, sw1a, sw1p, 1, 0)
+< DT2 = Array(sw2, sw2a, sw2p, 2, 0)
+< DT3 = Array(sw3, sw3a, sw3p, 3, 0)
+< DT4 = Array(sw4, sw4a, sw4p, 4, 0)
+< DT5 = Array(sw5, sw5a, sw5p, 5, 0)
+< DT10 = Array(sw10, sw10a, sw10p, 10, 0)
+< DT11 = Array(sw11, sw11a, sw11p, 11, 0)
+< DT12 = Array(sw12, sw12a, sw12p, 12, 0)
+---
+> Set DT1 = (new DropTarget)(sw1, sw1a, sw1p, 1, 0, false)
+> Set DT2 = (new DropTarget)(sw2, sw2a, sw2p, 2, 0, false)
+> Set DT3 = (new DropTarget)(sw3, sw3a, sw3p, 3, 0, false)
+> Set DT4 = (new DropTarget)(sw4, sw4a, sw4p, 4, 0, false)
+> Set DT5 = (new DropTarget)(sw5, sw5a, sw5p, 5, 0, false)
+> Set DT10 = (new DropTarget)(sw10, sw10a, sw10p, 10, 0, false)
+> Set DT11 = (new DropTarget)(sw11, sw11a, sw11p, 11, 0, false)
+> Set DT12 = (new DropTarget)(sw12, sw12a, sw12p, 12, 0, false)
+3511,3513c3544,3546
+< 	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
+< 	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
+< 		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
+---
+> 	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
+> 	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
+> 		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
+3522c3555
+< 	DTArray(i)(4) = -1
+---
+> 	DTArray(i).animate = -1
+3530c3563
+< 	DTArray(i)(4) = 1
+---
+> 	DTArray(i).animate = 1
+3537c3570
+< 		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
+---
+> 		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
+3592c3625
+< 		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
+---
+> 		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+5318c5351,5353
+<         else u = 0 end if
+---
+>         else
+>             u = 0
+>         end if
+5323c5358,5360
+<         else keygrad1 = 0 end if
+---
+>         else
+>             keygrad1 = 0
+>         end if
+5328c5365,5367
+<         else keygrad2 = 0 end if
+---
+>         else
+>             keygrad2 = 0
+>         end if
