@@ -1,0 +1,19 @@
+--- Scarface-Original-2025-1.0.2.vbs.original	2025-02-24 15:30:33.593808975 +0100
++++ Scarface-Original-2025-1.0.2.vbs	2025-02-24 15:30:20.269416683 +0100
+@@ -7552,10 +7552,12 @@
+ 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay")   
+ 
+ 	'' needed to setup screen info for minigame & pup
+-	pupPackScreenFile = PuPlayer.GetRoot & "scarface\ScreenType.txt"
+-	Set ObjFso = CreateObject("Scripting.FileSystemObject")
+-	Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
+-	DMDType = ObjFile.ReadLine
++	' pupPackScreenFile = PuPlayer.GetRoot & "scarface\ScreenType.txt"
++	' Set ObjFso = CreateObject("Scripting.FileSystemObject")
++	' Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
++	' DMDType = ObjFile.ReadLine
++
++	DMDType = 2
+ 
+ 	if DMDType > 1 Then
+ 		bIsMiniGameActive = 1
