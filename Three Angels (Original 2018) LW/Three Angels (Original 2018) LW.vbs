@@ -172,7 +172,7 @@
 
 
 '===========================================
-' V2.0 - CHANGES by LoadedWeapon
+' V2.0.2 - CHANGES by LoadedWeapon
 '===========================================
 '-Updated images for 4k playfield and videos
 '-Fixed some broken lights
@@ -184,7 +184,9 @@
 '-Updated Physics (nFozzy) table objects,script
 '-Misc fixes for bugs and lost balls 
 '-Tons of other stuff I can't remember 
-
+'-Fixed Lut Save
+'-Fixed Upper Bumper Area and trapped ball
+'-Fixed Duplicated Flipper sounds and some other sounds
 '-I spent a lot of time updating this amazing table and I hope you enjoy it! :)
 
 
@@ -76451,7 +76453,7 @@ Sub WishMasterTimer_Timer()
 		FlashForMS WishMasterKickerBulb, 1000, 25, 0
 		FlashForMS FlasherUPR, 1000, 25, 0
 		
-		WishMasterKicker.Kick 175, 20
+		WishMasterKicker.Kick 175, 23
         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
 			AzarSoundThunder()
 			
@@ -77581,7 +77583,7 @@ Sub WishMasterTimer_Timer()
 		FlashForms WishMasterKickerBulb, 1000, 25, 0
 		FlashForms FlasherUPR, 1000, 25, 0
 		
-		WishMasterKicker.Kick 175, 20
+		WishMasterKicker.Kick 175, 23
 		        PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
 		
 		If PitPriceSelector = 0 then 'Player choose to come back later. So we dont raise the souls
@@ -77757,7 +77759,7 @@ Sub WishMasterTimer_Timer()
 		FlashForms WishMasterKickerBulb, 1000, 25, 0
 		FlashForms FlasherUPR, 1000, 25, 0
 		
-		WishMasterKicker.Kick 175, 20
+		WishMasterKicker.Kick 175, 23
         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
 		
 		If PitPriceSelector = 0 then 'Player choose to come back later. So we dont raise the souls
@@ -90568,7 +90570,7 @@ Sub ClockTimer_Timer()
 		FlashForMs WishMasterKickerBulb, 1000, 25, 0
 		FlashForMs FlasherUPR, 1000, 25, 0
 		
-			WishMasterKicker.Kick 175, 20
+			WishMasterKicker.Kick 175, 23
         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
 			FlashForMs Seal1Light, 500, 25, 0
 			FlashForMs Seal2Light, 500, 25, 0
@@ -98401,7 +98403,7 @@ Sub BallSearchTimer_Timer()
 
 	Case 138 '-: WISHMASTER :-
 
-		WishMasterKicker.Kick 175, 20
+		WishMasterKicker.Kick 175, 23
 		
         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
 		
@@ -100844,7 +100846,9 @@ End Sub
 ' will call this routine. What you add in the sub is up to you. As an example is a simple Playsound with volume and paning
 ' depending of the speed of the collision.
 
-
+Sub Ramp_Hit (idx)
+	PlaySound "fx_nail1", 0, Vol(ActiveBall), AudioPan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
+End Sub
 Sub Pins_Hit (idx)
 	PlaySound "pinhit_low", 0, Vol(ActiveBall), AudioPan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
 End Sub
