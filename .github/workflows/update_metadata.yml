@@ -1,0 +1,76 @@
+name: Update metadata 
+
+on:
+  push:
+
+  workflow_dispatch:
+
+jobs:
+  update-patches:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Patch file for .vbs files
+        run: |
+            for dir in */; do
+              if [[ -d "$dir" ]]; then
+                echo "Entering directory: $dir"
+                cd "$dir"
+                shopt -s nullglob
+                for file in *.original; do
+                  basename="${file%.*.*}"
+                  for file2 in "$basename.vbs"; do
+                    diff -w -U0 --label="$file" "$file" --label="$file2" "$file2" > "$file2.patch" || true
+                  done
+                done
+                shopt -u nullglob
+                cd - > /dev/null 2>&1
+              fi
+            done
+
+      - name: Generate Hashes for .vbs files
+        run: |
+          data='[]'
+          baseUrl="https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/master/"
+
+          for dir in */; do
+            if [[ -d "$dir" ]]; then
+              echo "Entering directory: $dir"
+              cd "$dir"
+              shopt -s nullglob
+              for file in *.vbs; do
+                for file2 in "$file.original"; do
+                  hash=$(sha256sum "$file" | awk '{print $1}')
+                  hash2=$(sha256sum "$file2" | awk '{print $1}')
+                  new_item="{\"file\": \"$file2\", \"sha256\": \"$hash2\", \"url\": \"$baseUrl$dir$file2\", \"patched\": { \"file\": \"$file\", \"sha256\": \"$hash\", \"url\": \"$baseUrl$dir$file\"}  }"
+                  echo $new_item
+                  data=$(jq --argjson new "$new_item" '. + [$new]' <<< "$data")
+                done
+              done
+              cd - > /dev/null 2>&1
+              shopt -u nullglob
+            fi
+          done
+          echo "$data" > hashes.json
+
+      - name: Upload Hashes Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hashes
+          path: hashes.json
+
+      - if: github.repository == 'jsm174/vpx-standalone-scripts' && github.ref == 'refs/heads/master'
+        name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "meta: regenerate hashes and vbs diffs"
+          git push
+          
