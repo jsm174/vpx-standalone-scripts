@@ -1,9 +1,6 @@
---- "Iron Maiden (Original 2022) VPW 1.0.12.vbs.original"	2024-05-30 16:32:33.738977441 +0200
-+++ "Iron Maiden (Original 2022) VPW 1.0.12.vbs"	2024-05-30 16:31:20.052728924 +0200
-@@ -7957,6 +7957,39 @@
- '  DROP TARGETS INITIALIZATION
- '******************************************************
- 
+--- Iron Maiden (Original 2022) VPW 1.0.12.vbs.original
++++ Iron Maiden (Original 2022) VPW 1.0.12.vbs
+@@ -7959,0 +7960,33 @@
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -37,111 +34,49 @@
 +  End Function
 +End Class
 +
- 'Define a variable for each drop target
- Dim DT1, DT2, DT3
- 
-@@ -7976,9 +8009,9 @@
- '
- '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
- 
+@@ -7979,3 +8012,3 @@
 -DT1 = Array(Target004, Target004a, Target004p, 1, 0)
 -DT2 = Array(Target005, Target005a, Target005p, 2, 0)
 -DT3 = Array(Target006, Target006a, Target006p, 3, 0)
 +Set DT1 = (new DropTarget)(Target004, Target004a, Target004p, 1, 0, false)
 +Set DT2 = (new DropTarget)(Target005, Target005a, Target005p, 2, 0, false)
 +Set DT3 = (new DropTarget)(Target006, Target006a, Target006p, 3, 0, false)
- 
- 
- Dim DTArray
-@@ -8012,8 +8045,8 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 	DTIsDropped = DTArray_IsDropped(i)
+@@ -8015,2 +8048,2 @@
 -'WriteToLog "     ", "DTArray(i)(2).transz:" & DTArray(i)(2).transz & " " & DTArray(i)(4)
 -'	if DTArray(i)(2).transz = -DTDropUnits or DTArray(i)(4)>=1 then 	
 +'WriteToLog "     ", "DTArray(i).prim.transz:" & DTArray(i).prim.transz & " " & DTArray(i).animate
 +'	if DTArray(i).prim.transz = -DTDropUnits or DTArray(i).animate>=1 then 	
- '		DTIsDropped=True
- '	else 
- '		DTIsDropped=False 
-@@ -8027,11 +8060,11 @@
- 	DTArray_IsDropped(i)=1
- 
- 	PlayTargetSound
+@@ -8030,3 +8063,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
+@@ -8034 +8067 @@
 -'WriteToLog "     ", "DTHit:(" & i & ") " & DTArray(i)(4)
 +'WriteToLog "     ", "DTHit:(" & i & ") " & DTArray(i).animate
- 	DoDTAnim
- End Sub
- 
-@@ -8042,7 +8075,7 @@
- 	i = DTArrayID(switch)
- 	DTArray_IsDropped(i)=0
- 
+@@ -8045 +8078 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -8051,14 +8084,14 @@
- 	i = DTArrayID(switch)
- 	DTArray_IsDropped(i)=1
- 
+@@ -8054 +8087 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -8061 +8094 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -8117,7 +8150,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -8120 +8153 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-@@ -8360,7 +8393,8 @@
-     MyLamp.TimerEnabled = 0
-     MyLamp.TimerEnabled = 1
- 'WriteToLog "     ", "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
+@@ -8363 +8396,2 @@
 -    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue))*100, " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
 +
 +    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp 100*(" & MyLamp.Name & ".UserValue - INT(" & MyLamp.Name & ".UserValue)), " & MyLamp.Name & ".UserValue MOD 2:" & MyLamp.Name & ".UserValue= " & MyLamp.Name & ".UserValue -1:If " & MyLamp.Name & ".UserValue < 0 then " & MyLamp.Name & ".TimerEnabled=0:End If:End Sub"
- End Sub
- 
- Sub SetLamp(nr, value) ' 0 is off, 1 is on
-@@ -8601,8 +8635,8 @@
- 	if TypeName(n)="LightDummy" then exit sub 	' Fake Light, cant set the color 
- WriteToLog "     ", "SetLightColorTimed:" & n.name & " " & col
- 	dim vL, pL
+@@ -8604,2 +8638,2 @@
 -	Execute "set vL=v" & n.name
 -	Execute "set pL=p" & n.name
 +	Set vL = eval("v" & n.name)
 +	Set pL = eval("p" & n.name)
- 
- 	'UpdateMaterial(string, float wrapLighting, float roughness, float glossyImageLerp, float thickness, float edge, float edgeAlpha, float opacity, OLE_COLOR base, OLE_COLOR glossy, OLE_COLOR clearcoat, VARIANT_BOOL isMetal, VARIANT_BOOL opacityActive, float elasticity, float elasticityFalloff, float friction, float scatterAngle)
- 
-@@ -14019,7 +14053,7 @@
- 
- 		if bDropSweep then 
- 			bDropSweep=False
+@@ -14022 +14056 @@
 -			CheckDrops (tgtIndex+1) Mod 3
 +			CheckDrops ((tgtIndex+1) Mod 3)
- 		else 
- 			vpmtimer.addtimer 1000, "ResetDrop '"
- 		End if 

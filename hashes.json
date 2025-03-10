@@ -1,0 +1,2302 @@
+[
+  {
+    "file": "Power Play (Bally 1977).vbs.original",
+    "sha256": "ef9b7f6c10256d74ce8928c056ff138807a7859c8a27b70e9e2f70f57fb61dfd",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1256692067_PowerPlay(Bally1977)2.1/Power Play (Bally 1977).vbs.original",
+    "patched": {
+      "file": "Power Play (Bally 1977).vbs",
+      "sha256": "7fb40259669996f5bc14e64306aa9609e669a71bb459dee0a65f8bd8e9dd4d00",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1256692067_PowerPlay(Bally1977)2.1/Power Play (Bally 1977).vbs"
+    }
+  },
+  {
+    "file": "1342729923_RollerCoasterTycoon(Stern2002)1.3.vbs.original",
+    "sha256": "70b7c460269a96a460bc81a93f6c372141c663fa99893d3e4c4362e0c479e105",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1342729923_RollerCoasterTycoon(Stern2002)1.3/1342729923_RollerCoasterTycoon(Stern2002)1.3.vbs.original",
+    "patched": {
+      "file": "1342729923_RollerCoasterTycoon(Stern2002)1.3.vbs",
+      "sha256": "33a526f1cb240ef77fdbd821ad4f7c549fb95b5f55c7055cdd1f9e1492a6fb0e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1342729923_RollerCoasterTycoon(Stern2002)1.3/1342729923_RollerCoasterTycoon(Stern2002)1.3.vbs"
+    }
+  },
+  {
+    "file": "1455577933_MedievalMadness_Upgrade(Real_Final).vbs.original",
+    "sha256": "62b2dff47f5bf3742961db26c3540bab485004afd04f9ac629efe99864e66d0c",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1455577933_MedievalMadness_Upgrade(Real_Final)/1455577933_MedievalMadness_Upgrade(Real_Final).vbs.original",
+    "patched": {
+      "file": "1455577933_MedievalMadness_Upgrade(Real_Final).vbs",
+      "sha256": "1a68915254b0319136893ec5b9bb22d8c039ee52543c527ca703c1b08d53d599",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1455577933_MedievalMadness_Upgrade(Real_Final)/1455577933_MedievalMadness_Upgrade(Real_Final).vbs"
+    }
+  },
+  {
+    "file": "2001 (Gottlieb 1971) v0.99a.vbs.original",
+    "sha256": "0bdf965426045a5bb2d98e509cd17ae7b9afc4039b8a10f793cf6123fe9962c9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/2001 (Gottlieb 1971) v0.99a/2001 (Gottlieb 1971) v0.99a.vbs.original",
+    "patched": {
+      "file": "2001 (Gottlieb 1971) v0.99a.vbs",
+      "sha256": "596480d8bf2d6545cd6788c70906afbee811a10487280b05df7d07d29c7ec5c3",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/2001 (Gottlieb 1971) v0.99a/2001 (Gottlieb 1971) v0.99a.vbs"
+    }
+  },
+  {
+    "file": "2104398928_CARtoonsRC(Nailed2021)v1.3.vbs.original",
+    "sha256": "05a93ca19845575a8a8d83d9ea9f8f3adde145664d3e866c3fc55d9d98efc3e2",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/2104398928_CARtoonsRC(Nailed2021)v1.3/2104398928_CARtoonsRC(Nailed2021)v1.3.vbs.original",
+    "patched": {
+      "file": "2104398928_CARtoonsRC(Nailed2021)v1.3.vbs",
+      "sha256": "0d4b95637e0552270662f8e9700d06c2a51ea6b7808d4673dd194fae435ffa07",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/2104398928_CARtoonsRC(Nailed2021)v1.3/2104398928_CARtoonsRC(Nailed2021)v1.3.vbs"
+    }
+  },
+  {
+    "file": "A Charlie Brown Christmas feat. Vince Guaraldi (iDigStuff 2023).vbs.original",
+    "sha256": "9323e9e68a70e38a3ba87c4f94ce4e60e575de4a5fe376d7e98dc17d0d908a9c",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/A Charlie Brown Christmas feat. Vince Guaraldi (iDigStuff 2023) 1.0/A Charlie Brown Christmas feat. Vince Guaraldi (iDigStuff 2023).vbs.original",
+    "patched": {
+      "file": "A Charlie Brown Christmas feat. Vince Guaraldi (iDigStuff 2023).vbs",
+      "sha256": "3001efa51fd709c4a5f14cc22cc88312f6d60802bf5fe8461a432a49fc6afe07",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/A Charlie Brown Christmas feat. Vince Guaraldi (iDigStuff 2023) 1.0/A Charlie Brown Christmas feat. Vince Guaraldi (iDigStuff 2023).vbs"
+    }
+  },
+  {
+    "file": "ABBAv2.0.vbs.original",
+    "sha256": "c182357f982cfd54bc590e6f71a5ecacaec8199b2c7b4f735c0ff15ac96f42c6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/ABBAv2.0/ABBAv2.0.vbs.original",
+    "patched": {
+      "file": "ABBAv2.0.vbs",
+      "sha256": "97fe7b8de86ce1c2c1579f9bd32a5f37dd3342cd099f4b35d53258ddf3456a37",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/ABBAv2.0/ABBAv2.0.vbs"
+    }
+  },
+  {
+    "file": "AC-DC LUCI Premium VR (Stern 2013) v1.1.3.vbs.original",
+    "sha256": "a6209b96bfa298e0240da8f1852fcea678ab0c548911ddeb8b6fd263d3736af6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC LUCI Premium VR (Stern 2013) v1.1.3/AC-DC LUCI Premium VR (Stern 2013) v1.1.3.vbs.original",
+    "patched": {
+      "file": "AC-DC LUCI Premium VR (Stern 2013) v1.1.3.vbs",
+      "sha256": "219d4727387a605e30f9fac042846d152b0c90e3352adb8a1cf2e4552f917357",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC LUCI Premium VR (Stern 2013) v1.1.3/AC-DC LUCI Premium VR (Stern 2013) v1.1.3.vbs"
+    }
+  },
+  {
+    "file": "AC-DC Pro Vault-1.0.vbs.original",
+    "sha256": "918916dc39bf38f5e9160bc76104477222bad3b6e35b0cde702c2e48d8138b4e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC Pro Vault-1.0.vbs.original",
+    "patched": {
+      "file": "AC-DC Pro Vault-1.0.vbs",
+      "sha256": "c9ebb27abc3c70522c123df0d99c17384a5fc7cb04d671ad7e7bb17eec80479d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC Pro Vault-1.0.vbs"
+    }
+  },
+  {
+    "file": "AC-DC Pro-1.0.vbs.original",
+    "sha256": "98175479e2b399436e540bcd9f7970d47da5dc8af425ec4bcb7384a9d6c95e95",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC Pro-1.0.vbs.original",
+    "patched": {
+      "file": "AC-DC Pro-1.0.vbs",
+      "sha256": "0b7934a8b914f6dc29f3cc9e2650eb820cf44d242117418c3aaa5f94024c93d5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC Pro-1.0.vbs"
+    }
+  },
+  {
+    "file": "AC-DC_Back In Black LE-1.5.vbs.original",
+    "sha256": "ad5bcbae67f972dafefb72cf5b81674442aa3d2b0098a22acf882c3dbe35e6f5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Back In Black LE-1.5.vbs.original",
+    "patched": {
+      "file": "AC-DC_Back In Black LE-1.5.vbs",
+      "sha256": "284b84ca168484371f96e2fc35af12f43568b8c0d4949639bd3432ec03cba623",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Back In Black LE-1.5.vbs"
+    }
+  },
+  {
+    "file": "AC-DC_Let There Be Rock LE-1.5.vbs.original",
+    "sha256": "3b5e28c6ddef9a651e31a1ac85bb6c97d2a7fa1428eb1d6ee775505e96c2e132",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Let There Be Rock LE-1.5.vbs.original",
+    "patched": {
+      "file": "AC-DC_Let There Be Rock LE-1.5.vbs",
+      "sha256": "ca4a84786e0ef235ca019f9103a83366035ffc2d1d6f75284d6aaaec3efbfa4f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Let There Be Rock LE-1.5.vbs"
+    }
+  },
+  {
+    "file": "AC-DC_Luci-1.5.vbs.original",
+    "sha256": "02a7db6961c8b198b795ff020b5e1dec0a9323d6f03dd36b8b0fa121e32d73a0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Luci-1.5.vbs.original",
+    "patched": {
+      "file": "AC-DC_Luci-1.5.vbs",
+      "sha256": "dda9232c94fa836b120de9a2a3830f352d5c28191d95fb17958fbc186b5c98c5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Luci-1.5.vbs"
+    }
+  },
+  {
+    "file": "AC-DC_Premium-1.5.vbs.original",
+    "sha256": "6936eae6454eeab357756c7c7d45e40fc2ae2c515e7885fd71621fb23f80fff6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Premium-1.5.vbs.original",
+    "patched": {
+      "file": "AC-DC_Premium-1.5.vbs",
+      "sha256": "6e19d9846463e65d996e47deebb391c553a4cb778a2271525a224b89b847e7c9",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AC-DC ninuzzu 1.0 1.5/AC-DC_Premium-1.5.vbs"
+    }
+  },
+  {
+    "file": "AceOfSpeed.vbs.original",
+    "sha256": "d083ac07a764e3b8f029be28b65ae4450f0b29800dc2f147392520d7dfdcfbd0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AceOfSpeed/AceOfSpeed.vbs.original",
+    "patched": {
+      "file": "AceOfSpeed.vbs",
+      "sha256": "a70d6274e131035634c3ad039bd80dc718ff3c91f1d2ae24a4a94bb2613a8a23",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AceOfSpeed/AceOfSpeed.vbs"
+    }
+  },
+  {
+    "file": "Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01.vbs.original",
+    "sha256": "887db39afbf57a9b269b2af9ad09cc3a366a1460bb2a3b2ba3af548be85a5959",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01/Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01.vbs.original",
+    "patched": {
+      "file": "Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01.vbs",
+      "sha256": "8a94e0d446d64dc40ed33e6371dc3a7bacb1814f005fe0c9fc4b75cfdd804551",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01/Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01.vbs"
+    }
+  },
+  {
+    "file": "Alien Poker (Williams 1980).vbs.original",
+    "sha256": "5b2cd741ee5fafafca8e1f51ae6c668699db374d582c03a659fec508d65517a2",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AlienPoker(Williams1980)1.0/Alien Poker (Williams 1980).vbs.original",
+    "patched": {
+      "file": "Alien Poker (Williams 1980).vbs",
+      "sha256": "846277163d525fc9cf282421c07f33738c176d769a174d6a1ded323e66e8f166",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AlienPoker(Williams1980)1.0/Alien Poker (Williams 1980).vbs"
+    }
+  },
+  {
+    "file": "Andromeda (Game Plan 1985) v4.vbs.original",
+    "sha256": "6bf7c754234932850771243f1963369d0c9b13efd15458a3479a3c77e5dcda82",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Andromeda (Game Plan 1985) v4/Andromeda (Game Plan 1985) v4.vbs.original",
+    "patched": {
+      "file": "Andromeda (Game Plan 1985) v4.vbs",
+      "sha256": "e042333ad7ba8e96c0fdd1f5c2d8023fc91db3eaec69c965afa2b3083245c861",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Andromeda (Game Plan 1985) v4/Andromeda (Game Plan 1985) v4.vbs"
+    }
+  },
+  {
+    "file": "Apollo 13 (Sega 1995) w VR Room v2.1.1.vbs.original",
+    "sha256": "16b9d4e862e5c080b92837fdc218fa20ae365123c7abe84cc6fe1d0f1bb02a5d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Apollo 13 (Sega 1995) w VR Room v2.1.1/Apollo 13 (Sega 1995) w VR Room v2.1.1.vbs.original",
+    "patched": {
+      "file": "Apollo 13 (Sega 1995) w VR Room v2.1.1.vbs",
+      "sha256": "7437549831f8ed4e1b1a0aeef6b91eb59c6bdcece00c900c5a78989901019d70",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Apollo 13 (Sega 1995) w VR Room v2.1.1/Apollo 13 (Sega 1995) w VR Room v2.1.1.vbs"
+    }
+  },
+  {
+    "file": "Atlantis (Bally 1989) w VR Room v2.0.vbs.original",
+    "sha256": "c41c17e9386ef2d6ee5dcf2adc0806006bdd7ef4e9ffe2ff09d7f81470967a4d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Atlantis (Bally 1989) w VR Room v2.0/Atlantis (Bally 1989) w VR Room v2.0.vbs.original",
+    "patched": {
+      "file": "Atlantis (Bally 1989) w VR Room v2.0.vbs",
+      "sha256": "566edd01d8fccba8f94b6bee9a27c9e7a12b44b89deae31faa9c3ef469283a33",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Atlantis (Bally 1989) w VR Room v2.0/Atlantis (Bally 1989) w VR Room v2.0.vbs"
+    }
+  },
+  {
+    "file": "Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP.vbs.original",
+    "sha256": "e2decb7dd02dc27a17dec33014be40fe0ef7c3f8080892993b278669b6ea5e42",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP/Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP.vbs.original",
+    "patched": {
+      "file": "Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP.vbs",
+      "sha256": "3be8ed7937c2f9bc87a0d4ee43261f52d781adb93672c396c323c8dd95bcf53b",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP/Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP.vbs"
+    }
+  },
+  {
+    "file": "BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs.original",
+    "sha256": "3c12ae4cb433313ae80c17ffd07bf4cac5b95b02b8c4aa229522e8e143b29051",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BarbWire(Gottlieb1996)JoePicassoModv1.2/BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs.original",
+    "patched": {
+      "file": "BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs",
+      "sha256": "fd63dee2fc94961554a92a7926ee5a2ea09007d5a5aa20d568c72f2b309782d1",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BarbWire(Gottlieb1996)JoePicassoModv1.2/BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs"
+    }
+  },
+  {
+    "file": "Barracora (Williams 1981) w VR Room v2.1.3.vbs.original",
+    "sha256": "9fe1e86de3c0bc44f31a46837439fcfbdd36e513a0855efd56842b3cf5c51755",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Barracora (Williams 1981) w VR Room v2.1.3/Barracora (Williams 1981) w VR Room v2.1.3.vbs.original",
+    "patched": {
+      "file": "Barracora (Williams 1981) w VR Room v2.1.3.vbs",
+      "sha256": "ad072ef60002645e6a63c59c0f82ce7bf863f787f96fd37d0b1f84cba5d4f9de",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Barracora (Williams 1981) w VR Room v2.1.3/Barracora (Williams 1981) w VR Room v2.1.3.vbs"
+    }
+  },
+  {
+    "file": "Bart VS the Space Mutants 1.1.vbs.original",
+    "sha256": "40b386beefacab0b5b617d55cd5ca449860b17b95aee0f18463cdb36b48b747e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bart VS the Space Mutants 1.1/Bart VS the Space Mutants 1.1.vbs.original",
+    "patched": {
+      "file": "Bart VS the Space Mutants 1.1.vbs",
+      "sha256": "190ac1e9296ff867a7abe310a9897d7e95735ad4d261e643026a0fce88e13dd1",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bart VS the Space Mutants 1.1/Bart VS the Space Mutants 1.1.vbs"
+    }
+  },
+  {
+    "file": "Batman Forever (Sega 1995) 1.3.vbs.original",
+    "sha256": "c07c4a2e6a7c51b5e914b2d846dec6a48883588c28338c551cc819a6215e961d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman Forever (Sega 1995) 1.3/Batman Forever (Sega 1995) 1.3.vbs.original",
+    "patched": {
+      "file": "Batman Forever (Sega 1995) 1.3.vbs",
+      "sha256": "820c8090eefce117acbae230f6f33f3dcceccd69ff778ba2f3a609864500dc4e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman Forever (Sega 1995) 1.3/Batman Forever (Sega 1995) 1.3.vbs"
+    }
+  },
+  {
+    "file": "Batman [The Dark Knight] (Stern 2008) 1.16.vbs.original",
+    "sha256": "ecbd8c41946380822bd318d241873374d136a0569e96c0995b6a4479d66ff5ed",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman [The Dark Knight] (Stern 2008) 1.16/Batman [The Dark Knight] (Stern 2008) 1.16.vbs.original",
+    "patched": {
+      "file": "Batman [The Dark Knight] (Stern 2008) 1.16.vbs",
+      "sha256": "1c6bc48c74e7bb8e48293152ee226318a9a8dce230bd6b63554f9c92075dbff0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman [The Dark Knight] (Stern 2008) 1.16/Batman [The Dark Knight] (Stern 2008) 1.16.vbs"
+    }
+  },
+  {
+    "file": "Batman [The Dark Knight] (Stern 2008) v1.0.8.vbs.original",
+    "sha256": "d1f034e52191a80bcc2a7c3e20b9dd3f781ea18b5588566b84eccfb3f30186cf",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman [The Dark Knight] (Stern 2008) v1.0.8/Batman [The Dark Knight] (Stern 2008) v1.0.8.vbs.original",
+    "patched": {
+      "file": "Batman [The Dark Knight] (Stern 2008) v1.0.8.vbs",
+      "sha256": "b4a3c846c1b747c3844faaa37a6f392546934783d09294d836c409ea3739bb0c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman [The Dark Knight] (Stern 2008) v1.0.8/Batman [The Dark Knight] (Stern 2008) v1.0.8.vbs"
+    }
+  },
+  {
+    "file": "Batman66_1.1.0.vbs.original",
+    "sha256": "dbea3ed5da36ff47933fc6e5575faf456ddfd1d2e08794aba83fdbc34307f95b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman66_1.1.0/Batman66_1.1.0.vbs.original",
+    "patched": {
+      "file": "Batman66_1.1.0.vbs",
+      "sha256": "9ea90ae16d1c10ee4a6d2e2c79db6a9851a25e5046b12deaa115e094abbe5c0d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Batman66_1.1.0/Batman66_1.1.0.vbs"
+    }
+  },
+  {
+    "file": "Batman [The Dark Knight] (Stern 2008).vbs.original",
+    "sha256": "14b9cecab4ace98fd98a7fbd2db890a184b669f8824c463f8a92087d8cc7116d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BatmanTheDarkKnight(Stern2008)bordmod1.0.7/Batman [The Dark Knight] (Stern 2008).vbs.original",
+    "patched": {
+      "file": "Batman [The Dark Knight] (Stern 2008).vbs",
+      "sha256": "d88593817c777865c76b15a930d6f8d9abfc383a1a4292235d1f7b87fa6333e1",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BatmanTheDarkKnight(Stern2008)bordmod1.0.7/Batman [The Dark Knight] (Stern 2008).vbs"
+    }
+  },
+  {
+    "file": "Beavis and Butt-head_Pinballed.vbs.original",
+    "sha256": "6f69794ce24811b216d36a231e3a0761f7ea07619d0340c8d889a75dac7c13d9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Beavis and Butt-head_Pinballed/Beavis and Butt-head_Pinballed.vbs.original",
+    "patched": {
+      "file": "Beavis and Butt-head_Pinballed.vbs",
+      "sha256": "793f82c0a81cd64589eba5f7d5d18f76bb4c244c71f7682def0564503a6ea098",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Beavis and Butt-head_Pinballed/Beavis and Butt-head_Pinballed.vbs"
+    }
+  },
+  {
+    "file": "Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion.vbs.original",
+    "sha256": "66d5b583b8cab0e1aefa2260713673fa7b7704afb5b5038211e4c78da4a07609",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion/Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion.vbs.original",
+    "patched": {
+      "file": "Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion.vbs",
+      "sha256": "2a7aaae032934d22018bf3c0001ed6d2efbce247ee0a0f9aac4acfa4a70376e7",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion/Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion.vbs"
+    }
+  },
+  {
+    "file": "Big Deal (Williams 1977)V2.1.vbs.original",
+    "sha256": "4c0fc9a4a010fe264f9cac3c54648fd49a9349f89886e13a4e92de0b19503e52",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Deal (Williams 1977)V2.1/Big Deal (Williams 1977)V2.1.vbs.original",
+    "patched": {
+      "file": "Big Deal (Williams 1977)V2.1.vbs",
+      "sha256": "4b7019d363d98af858c9c36f057998c723b9de389e9d1eaa426b2e3186430bc2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Deal (Williams 1977)V2.1/Big Deal (Williams 1977)V2.1.vbs"
+    }
+  },
+  {
+    "file": "Big Star (Williams 1972) v4.3.vbs.original",
+    "sha256": "4f1835db3544aa47ee0ddba0d79649f03cf306c8a2296b8794399120873d63af",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Star (Williams 1972) v4.3/Big Star (Williams 1972) v4.3.vbs.original",
+    "patched": {
+      "file": "Big Star (Williams 1972) v4.3.vbs",
+      "sha256": "4c38cbbd76095f8d82f94077e3bf26727dd568458f2a93c1311d50d0e433df04",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Star (Williams 1972) v4.3/Big Star (Williams 1972) v4.3.vbs"
+    }
+  },
+  {
+    "file": "Black & Red (Inder 1975) v4.3.vbs.original",
+    "sha256": "08e6956f8012f3110c589acdfb31693c2f0118b7e7f7f2b0db080c5b7db89736",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black & Red (Inder 1975) v4.3/Black & Red (Inder 1975) v4.3.vbs.original",
+    "patched": {
+      "file": "Black & Red (Inder 1975) v4.3.vbs",
+      "sha256": "10a82b74a684a6b13c2b3103c2edef86ceeb9902b590b53f23a03d1b0568eca8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black & Red (Inder 1975) v4.3/Black & Red (Inder 1975) v4.3.vbs"
+    }
+  },
+  {
+    "file": "Black Knight (Williams 1980).vbs.original",
+    "sha256": "8f3b80424f7376d30c39524ac28992a186741477febe10db09b2ca3a48219bf8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black Knight (Williams 1980)/Black Knight (Williams 1980).vbs.original",
+    "patched": {
+      "file": "Black Knight (Williams 1980).vbs",
+      "sha256": "15a703c8c1a4ae47979d89355ac6840c6d40a2ba4c00c88e22a6fe6bfc85285b",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black Knight (Williams 1980)/Black Knight (Williams 1980).vbs"
+    }
+  },
+  {
+    "file": "Black Knight 2000 (Williams 1989) w VR Room v2.0.2.vbs.original",
+    "sha256": "36316053c832e83a56e69c3625b3e1b8bd79634b7f8e662da3d23561d89f24c0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black Knight 2000 (Williams 1989) w VR Room v2.0.2/Black Knight 2000 (Williams 1989) w VR Room v2.0.2.vbs.original",
+    "patched": {
+      "file": "Black Knight 2000 (Williams 1989) w VR Room v2.0.2.vbs",
+      "sha256": "01778168cc9cf8570c58dc06c94bbb9f6e1e58afaf5d81d52e9a0ab254405dc2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black Knight 2000 (Williams 1989) w VR Room v2.0.2/Black Knight 2000 (Williams 1989) w VR Room v2.0.2.vbs"
+    }
+  },
+  {
+    "file": "Blackout (Williams 1980) v1.0.1 - SBR34.vbs.original",
+    "sha256": "efcd276974dfcd278918f1765e532ac781407dd25812cf2aaa05412713ffb48d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Blackout (Williams 1980) v1.0.1 - SBR34/Blackout (Williams 1980) v1.0.1 - SBR34.vbs.original",
+    "patched": {
+      "file": "Blackout (Williams 1980) v1.0.1 - SBR34.vbs",
+      "sha256": "9c2517baac96312b614ccc995f364527178b532d9cfe9db2cb64f3bfebf45939",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Blackout (Williams 1980) v1.0.1 - SBR34/Blackout (Williams 1980) v1.0.1 - SBR34.vbs"
+    }
+  },
+  {
+    "file": "Blood Machines 2.0.vbs.original",
+    "sha256": "638b67da6583808060f1f26a9e7271d5058021d0274fc0d58ae77c743e3cb6ba",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Blood Machines 2.0/Blood Machines 2.0.vbs.original",
+    "patched": {
+      "file": "Blood Machines 2.0.vbs",
+      "sha256": "24e97979896276d828f2216ab257a4d27b653eaf50d5bdb1caaa6daefe75b0bc",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Blood Machines 2.0/Blood Machines 2.0.vbs"
+    }
+  },
+  {
+    "file": "Bob Marley Mod.vbs.original",
+    "sha256": "d6c71adf2669b442cc8f9de4b0ff53ee753a6ea28d288b706948d18b4fb70520",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bob Marley Mod/Bob Marley Mod.vbs.original",
+    "patched": {
+      "file": "Bob Marley Mod.vbs",
+      "sha256": "39135298fda112bae633efb89be43da96945c32730c726fb479d4fe9d8958527",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bob Marley Mod/Bob Marley Mod.vbs"
+    }
+  },
+  {
+    "file": "Bounty Hunter (Gottlieb 1985).vbs.original",
+    "sha256": "f6af1d4aaf08beca7fcda64bd1a0611d5d8d0bd8da9e5a60a81f8cea7cb53aa9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bounty Hunter (Gottlieb 1985)/Bounty Hunter (Gottlieb 1985).vbs.original",
+    "patched": {
+      "file": "Bounty Hunter (Gottlieb 1985).vbs",
+      "sha256": "b9d6c5c4e37312d6e067b9b68d126be66b715e6eb14007a965091b487dfefb17",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bounty Hunter (Gottlieb 1985)/Bounty Hunter (Gottlieb 1985).vbs"
+    }
+  },
+  {
+    "file": "Bounty Hunter (Gottlieb 1985).vbs.original",
+    "sha256": "5dd8261afaf5bc5e0269bf5f672e0bce061cddedfa4b8499a739c397cebedf69",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bounty Hunter (Gottlieb 1985)1.1/Bounty Hunter (Gottlieb 1985).vbs.original",
+    "patched": {
+      "file": "Bounty Hunter (Gottlieb 1985).vbs",
+      "sha256": "b31341f98435a9c5e144408dfed59245155481cdd41cf0eedeb3aa41a42324aa",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bounty Hunter (Gottlieb 1985)1.1/Bounty Hunter (Gottlieb 1985).vbs"
+    }
+  },
+  {
+    "file": "Bram Stokers Dracula (1993).vbs.original",
+    "sha256": "355f6e82d74862858c27aeb9b1fb3ad02bae67c3d2a7fcd7cedfee450f39b2a5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bram Stoker's Dracula (Williams 1993)/Bram Stokers Dracula (1993).vbs.original",
+    "patched": {
+      "file": "Bram Stokers Dracula (1993).vbs",
+      "sha256": "0c253ec3c6c94c88f27f161e91175933488751d64370646c9ca874a1f57449bb",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bram Stoker's Dracula (Williams 1993)/Bram Stokers Dracula (1993).vbs"
+    }
+  },
+  {
+    "file": "Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs.original",
+    "sha256": "facae5ac02964a5dec416b7e35ee2b09a08a15ce47c9c74dae10def52dda31c2",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b/Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs.original",
+    "patched": {
+      "file": "Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs",
+      "sha256": "1b2bbbbb8431b48b19a3b6f2bccfced9dcfd8224c87468504281aee63d236006",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b/Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs"
+    }
+  },
+  {
+    "file": "Bumper (Bill Port - 1977) v4.vbs.original",
+    "sha256": "38d277c1d27b1e52ddfcd4094650169d027e8f145fd18c1868f2d74a26c8d950",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bumper (Bill Port - 1977) v4/Bumper (Bill Port - 1977) v4.vbs.original",
+    "patched": {
+      "file": "Bumper (Bill Port - 1977) v4.vbs",
+      "sha256": "01ddc0ba19b7f7027d5b558e8d0be3206fb0bd6bbc495d258494f09d2486e22e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bumper (Bill Port - 1977) v4/Bumper (Bill Port - 1977) v4.vbs"
+    }
+  },
+  {
+    "file": "Cactus Canyon (Bally 1998) VPW 1.1.vbs.original",
+    "sha256": "cbe7564b1d6209761e227e6d2bf4d1a0a41d039542aa024053e10c16a61ccbc5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cactus Canyon (Bally 1998) VPW 1.1/Cactus Canyon (Bally 1998) VPW 1.1.vbs.original",
+    "patched": {
+      "file": "Cactus Canyon (Bally 1998) VPW 1.1.vbs",
+      "sha256": "631656f57ea46749410627c8698ac225570bc71b11b644f5e48541b4f735b9e4",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cactus Canyon (Bally 1998) VPW 1.1/Cactus Canyon (Bally 1998) VPW 1.1.vbs"
+    }
+  },
+  {
+    "file": "Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs.original",
+    "sha256": "44fe84da6f670778cce69663c847c2c213e5f88398a5a2ec7f0a48ee6289e46e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2/Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs.original",
+    "patched": {
+      "file": "Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs",
+      "sha256": "dc49ced7bda65bfe4692cda23073ada88a08025dafb494b3694667e792b2f7ad",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2/Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs"
+    }
+  },
+  {
+    "file": "Cannes (Segasa 1976)V1.3.vbs.original",
+    "sha256": "59c64f7221b82b76e9b555dfa93a873a2c40157ffd7416c7dec2d452e8833442",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cannes (Segasa 1976)V1.3/Cannes (Segasa 1976)V1.3.vbs.original",
+    "patched": {
+      "file": "Cannes (Segasa 1976)V1.3.vbs",
+      "sha256": "087dc91beb11879d4861dba850bc82b284eabec3a7a915695a2575ecd22caf10",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cannes (Segasa 1976)V1.3/Cannes (Segasa 1976)V1.3.vbs"
+    }
+  },
+  {
+    "file": "Capt. Fantastic and The Brown Dirt Cowboy (Bally 1976) 2.0.2.vbs.original",
+    "sha256": "eef2f4b0db57a066f73c77a0cc892976f23dc6d921ddddf5da022775f1be363a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Capt. Fantastic and The Brown Dirt Cowboy (Bally 1976) 2.0.2/Capt. Fantastic and The Brown Dirt Cowboy (Bally 1976) 2.0.2.vbs.original",
+    "patched": {
+      "file": "Capt. Fantastic and The Brown Dirt Cowboy (Bally 1976) 2.0.2.vbs",
+      "sha256": "94e719e5d18df0c77493dd97bcc7da005a94aa75819a708e02da82d03d3d9607",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Capt. Fantastic and The Brown Dirt Cowboy (Bally 1976) 2.0.2/Capt. Fantastic and The Brown Dirt Cowboy (Bally 1976) 2.0.2.vbs"
+    }
+  },
+  {
+    "file": "Centaur (Bally 1981).vbs.original",
+    "sha256": "42f29f9715f2d562fc7ebdaede753f344004e7cc374e9660915d5cbf072fd3fc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Centaur (Bally 1981)/Centaur (Bally 1981).vbs.original",
+    "patched": {
+      "file": "Centaur (Bally 1981).vbs",
+      "sha256": "50c02e4412564fb02cfe808f965f5e19af40140a1edf1572db63a7094827ccc6",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Centaur (Bally 1981)/Centaur (Bally 1981).vbs"
+    }
+  },
+  {
+    "file": "Centigrade 37 (Gottlieb 1977).vbs.original",
+    "sha256": "46afab1dd6357bbbbe869edd4e65ce5606eb5181a0620f9dcd15773c8cf6dbcb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Centigrade 37 (Gottlieb 1977)/Centigrade 37 (Gottlieb 1977).vbs.original",
+    "patched": {
+      "file": "Centigrade 37 (Gottlieb 1977).vbs",
+      "sha256": "ba89627cec41f1dcabefcb96c7510285297ae54045f71dd9640fd5c486521b09",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Centigrade 37 (Gottlieb 1977)/Centigrade 37 (Gottlieb 1977).vbs"
+    }
+  },
+  {
+    "file": "Checkpoint (Data East 1991)2.0.vbs.original",
+    "sha256": "d514171897cb6926e6ff810037ef3c9f8d85f33064c6eae7b0fd9583ec2b7832",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Checkpoint (Data East 1991)2.0/Checkpoint (Data East 1991)2.0.vbs.original",
+    "patched": {
+      "file": "Checkpoint (Data East 1991)2.0.vbs",
+      "sha256": "1a0fa0f102427e3fe11eb5e96158b665fdf215594a0059d30e317d363a697b64",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Checkpoint (Data East 1991)2.0/Checkpoint (Data East 1991)2.0.vbs"
+    }
+  },
+  {
+    "file": "Cirqus_Voltaire_Hanibal-Mod_3.7.vbs.original",
+    "sha256": "d5fefa951014c9c56218cb78213d71ac7468dca67766f8a7bab9cee8b7d98bc9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cirqus_Voltaire_Hanibal-Mod_3.7/Cirqus_Voltaire_Hanibal-Mod_3.7.vbs.original",
+    "patched": {
+      "file": "Cirqus_Voltaire_Hanibal-Mod_3.7.vbs",
+      "sha256": "9480c2f6b305f5a032441fe7673cc4d94eca9323df58da6f1ecc9fcf7897da7f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cirqus_Voltaire_Hanibal-Mod_3.7/Cirqus_Voltaire_Hanibal-Mod_3.7.vbs"
+    }
+  },
+  {
+    "file": "Comet (Williams 1985) w VR Room v2.3.vbs.original",
+    "sha256": "d132d50036e2cfe892781967cda6608fc2e2467b15eff06af7bceffffa01652e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Comet (Williams 1985) w VR Room v2.3/Comet (Williams 1985) w VR Room v2.3.vbs.original",
+    "patched": {
+      "file": "Comet (Williams 1985) w VR Room v2.3.vbs",
+      "sha256": "53798dadbccfdea661044bb0428fbbf053f02e66cfdd94811accc3d1959d9a54",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Comet (Williams 1985) w VR Room v2.3/Comet (Williams 1985) w VR Room v2.3.vbs"
+    }
+  },
+  {
+    "file": "Cosmic (Taito do Brasil - 1980) v4.vbs.original",
+    "sha256": "0302236432d85dc2ccd5f2d62982e1036121ee1d273b2c32db915a9a6096d3a6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cosmic (Taito do Brasil - 1980) v4/Cosmic (Taito do Brasil - 1980) v4.vbs.original",
+    "patched": {
+      "file": "Cosmic (Taito do Brasil - 1980) v4.vbs",
+      "sha256": "861d90f3c3392e05784479003acf3f066ce8863c3837a9fcb59e30025cba1b6c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cosmic (Taito do Brasil - 1980) v4/Cosmic (Taito do Brasil - 1980) v4.vbs"
+    }
+  },
+  {
+    "file": "Cue Ball Wizard (Gottlieb 1992) v1.1.2.vbs.original",
+    "sha256": "f3108691f269de22fffdd69ae34a931d42625fd02d04f013961280633677c54a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cue Ball Wizard (Gottlieb 1992) v1.1.2/Cue Ball Wizard (Gottlieb 1992) v1.1.2.vbs.original",
+    "patched": {
+      "file": "Cue Ball Wizard (Gottlieb 1992) v1.1.2.vbs",
+      "sha256": "195256bf258d4d8c001cdeaf53f5fd78979bd08b9ce517e7102e3b0c5191bebc",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cue Ball Wizard (Gottlieb 1992) v1.1.2/Cue Ball Wizard (Gottlieb 1992) v1.1.2.vbs"
+    }
+  },
+  {
+    "file": "Cyclone (Williams 1988) 2.0.1.vbs.original",
+    "sha256": "d77468cfe1dd18a09da208ab5c104ac98417dc261001d776b01af9587001f2d0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cyclone (Williams 1988) 2.0.1/Cyclone (Williams 1988) 2.0.1.vbs.original",
+    "patched": {
+      "file": "Cyclone (Williams 1988) 2.0.1.vbs",
+      "sha256": "25073fbf28d24bde89b9ead21860de4d4a96d51b38b0cf321bb17a556e194cef",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cyclone (Williams 1988) 2.0.1/Cyclone (Williams 1988) 2.0.1.vbs"
+    }
+  },
+  {
+    "file": "DarkPrincess1.3.1.vbs.original",
+    "sha256": "95ad90a27da482ffced00b8d01dc3377f8945ace5e1454a3c2410c71e103f663",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/DarkPrincess1.3.1/DarkPrincess1.3.1.vbs.original",
+    "patched": {
+      "file": "DarkPrincess1.3.1.vbs",
+      "sha256": "25ae53dce734f9aa3844f0807676efe6be688e105f26ac37b0f4cf1a863d246f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/DarkPrincess1.3.1/DarkPrincess1.3.1.vbs"
+    }
+  },
+  {
+    "file": "Darkest Dungeon pupevent_2.3c.vbs.original",
+    "sha256": "86e95b646465b1f1f066f98871d662b9b3fb18ebbb78a3699f86066eaea6d0d6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Darkest Dungeon pupevent_2.3c/Darkest Dungeon pupevent_2.3c.vbs.original",
+    "patched": {
+      "file": "Darkest Dungeon pupevent_2.3c.vbs",
+      "sha256": "c64e0344a7d97e5afdda9750b2a7b9ecb314a3d6709fca899072b59bf20c1be8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Darkest Dungeon pupevent_2.3c/Darkest Dungeon pupevent_2.3c.vbs"
+    }
+  },
+  {
+    "file": "Death Proof Balutito V2.vbs.original",
+    "sha256": "0b051772c108a92cccbbb39710cb3a17fa68469272eaa151fec8432ca999c188",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Death Proof Balutito V2/Death Proof Balutito V2.vbs.original",
+    "patched": {
+      "file": "Death Proof Balutito V2.vbs",
+      "sha256": "ce9aea761aa4038a1f8c490cdbd74f2142ae8e9c2ca3ea1d2746ba059128bb2c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Death Proof Balutito V2/Death Proof Balutito V2.vbs"
+    }
+  },
+  {
+    "file": "Diablo Pinball v4.3.vbs.original",
+    "sha256": "883e8c5bdb81048b2e6982868d0410de4799ef1d2695b43f22cd2fb9a53b7e5a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Diablo Pinball v4.3/Diablo Pinball v4.3.vbs.original",
+    "patched": {
+      "file": "Diablo Pinball v4.3.vbs",
+      "sha256": "fe67337b3f270c5c114320bdb01e6365ae4feafc7720aab6309683741c147c58",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Diablo Pinball v4.3/Diablo Pinball v4.3.vbs"
+    }
+  },
+  {
+    "file": "Diner (Williams 1990) VPW Mod 1.0.2.vbs.original",
+    "sha256": "333ac2f79cb86261b1ebc6cb311cce614ec6294e20804d4a548fb79c7332bfdc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Diner (Williams 1990) VPW Mod 1.0.2/Diner (Williams 1990) VPW Mod 1.0.2.vbs.original",
+    "patched": {
+      "file": "Diner (Williams 1990) VPW Mod 1.0.2.vbs",
+      "sha256": "22bda057f1bae11d5da8fb4b362696be8dbdaf94f9b98db2103ae3cd6f963e3c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Diner (Williams 1990) VPW Mod 1.0.2/Diner (Williams 1990) VPW Mod 1.0.2.vbs"
+    }
+  },
+  {
+    "file": "Doctor Who (Bally 1992) VPW Mod v1.1.vbs.original",
+    "sha256": "f12f472771a13561ea22f4e66b9bdab8c5f3e9299ff99239e7f87e0d8ccc2e79",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Doctor Who (Bally 1992) VPW Mod v1.1/Doctor Who (Bally 1992) VPW Mod v1.1.vbs.original",
+    "patched": {
+      "file": "Doctor Who (Bally 1992) VPW Mod v1.1.vbs",
+      "sha256": "fc4369390b07631cf6831595559c3ae3e1582e657032bb3bcdf902991affbc51",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Doctor Who (Bally 1992) VPW Mod v1.1/Doctor Who (Bally 1992) VPW Mod v1.1.vbs"
+    }
+  },
+  {
+    "file": "Dracula (Stern 1979).vbs.original",
+    "sha256": "11627abd1a948dc060c01cce05d96e6f623c541f6616e672951778d1f48aa9a5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Dracula (Stern 1979)2.1.1/Dracula (Stern 1979).vbs.original",
+    "patched": {
+      "file": "Dracula (Stern 1979).vbs",
+      "sha256": "e05e1d112d6fbbffebe1acdbc16516b8c313d1666d6ab6afe0f8c9e2f4f4997e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Dracula (Stern 1979)2.1.1/Dracula (Stern 1979).vbs"
+    }
+  },
+  {
+    "file": "Dream Daddy1.5.vbs.original",
+    "sha256": "68f370f5ce945bbbec7b6486901a041fdcf7a563323af93fdfdb31304e416ae3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Dream Daddy1.5/Dream Daddy1.5.vbs.original",
+    "patched": {
+      "file": "Dream Daddy1.5.vbs",
+      "sha256": "a79eaa53d99d868dfeea5291a8b03b3bb64dafc19be62921e605e263880d728c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Dream Daddy1.5/Dream Daddy1.5.vbs"
+    }
+  },
+  {
+    "file": "DS.vbs.original",
+    "sha256": "47eda7b7769bc439e1b43e4115ca74dd724431a445deb906b46089a71dbdf6ce",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Drunken Santa (Original 2021)/DS.vbs.original",
+    "patched": {
+      "file": "DS.vbs",
+      "sha256": "06245d8703a9d966dadb81a64e0b57a11ee311338789fa177a79e11e7935b4a6",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Drunken Santa (Original 2021)/DS.vbs"
+    }
+  },
+  {
+    "file": "DUCKTALES.vbs.original",
+    "sha256": "66f09757a2d75272c6bf2da1161f787b48ce329586fbeac2963310f8c4704236",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ducktales (Orginal 2020)/DUCKTALES.vbs.original",
+    "patched": {
+      "file": "DUCKTALES.vbs",
+      "sha256": "5cbd8cc1fb9948819d09712f3b7a61ebcbd1023a5d436911b8130081048d7c21",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ducktales (Orginal 2020)/DUCKTALES.vbs"
+    }
+  },
+  {
+    "file": "Elektra (Bally 1981) w VR Room v2.0.7.vbs.original",
+    "sha256": "ecdffddaa7f160cc2bbd0f4a67b301d8275974842f23dc3fd4bf939fd1fcfbb3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elektra (Bally 1981) w VR Room v2.0.7/Elektra (Bally 1981) w VR Room v2.0.7.vbs.original",
+    "patched": {
+      "file": "Elektra (Bally 1981) w VR Room v2.0.7.vbs",
+      "sha256": "d418424c6fd27be37d57a5a82027fab13f9889c4a6152d53f1c3346db1b88627",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elektra (Bally 1981) w VR Room v2.0.7/Elektra (Bally 1981) w VR Room v2.0.7.vbs"
+    }
+  },
+  {
+    "file": "Elvis_MOD_2.0.vbs.original",
+    "sha256": "3d5e219fad7bed2784b4ccc4a28a5b6b8fba3f337dd34fdd5b401df965a4fd55",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elvis_MOD_2.0/Elvis_MOD_2.0.vbs.original",
+    "patched": {
+      "file": "Elvis_MOD_2.0.vbs",
+      "sha256": "55d063ad64e31616f18e8b3fbae0ace6284d04db02d9546e979dcda200242daa",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elvis_MOD_2.0/Elvis_MOD_2.0.vbs"
+    }
+  },
+  {
+    "file": "Family Guy 1.0.vbs.original",
+    "sha256": "a4fdd1688a86b0e20bc814fc94c8c714efaf826ece4ea0eed0e141fce76e0f30",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Family Guy 1.0/Family Guy 1.0.vbs.original",
+    "patched": {
+      "file": "Family Guy 1.0.vbs",
+      "sha256": "920677770c05670bc93095b0f9621526dca236dfec12177899e6e3920f8f19db",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Family Guy 1.0/Family Guy 1.0.vbs"
+    }
+  },
+  {
+    "file": "Fifteen (Inder 1974) v4.vbs.original",
+    "sha256": "fcbe604efec9c58f0c064bdda77a7b801c6f94a5c99cde8909c43576491a4017",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fifteen (Inder 1974) v4/Fifteen (Inder 1974) v4.vbs.original",
+    "patched": {
+      "file": "Fifteen (Inder 1974) v4.vbs",
+      "sha256": "9016eafbff26de8e05826256649fa4e793b0c53f630eef6ac140de17f2b1b514",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fifteen (Inder 1974) v4/Fifteen (Inder 1974) v4.vbs"
+    }
+  },
+  {
+    "file": "Fire Action (Taito do Brasil - 1980) v4.vbs.original",
+    "sha256": "5bb32de88862edf097d998e8d38543a6a5e934720b6889ee620e3f4625bce08d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fire Action (Taito do Brasil - 1980) v4/Fire Action (Taito do Brasil - 1980) v4.vbs.original",
+    "patched": {
+      "file": "Fire Action (Taito do Brasil - 1980) v4.vbs",
+      "sha256": "1716b1dccc3e3206647ab3a87162bebb1425ccb2b9d5414623491af952d3f406",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fire Action (Taito do Brasil - 1980) v4/Fire Action (Taito do Brasil - 1980) v4.vbs"
+    }
+  },
+  {
+    "file": "Fireball Classic (Bally 1984)1.2.vbs.original",
+    "sha256": "9ace5be6eec0f1a6734a289462a82a95d7bc46c10a7559de8ce508c487b2c9fb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fireball Classic (Bally 1984)1.2/Fireball Classic (Bally 1984)1.2.vbs.original",
+    "patched": {
+      "file": "Fireball Classic (Bally 1984)1.2.vbs",
+      "sha256": "2db366dd34a4961442c5cbf65aed34e6735fe26793c920bf32cf5949ec960d2e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fireball Classic (Bally 1984)1.2/Fireball Classic (Bally 1984)1.2.vbs"
+    }
+  },
+  {
+    "file": "Fireball XL5.vbs.original",
+    "sha256": "f2bc615a6c549ec0ca9631052fd91e88a172f0035a796f322742ca1a1a00e7ff",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fireball XL5/Fireball XL5.vbs.original",
+    "patched": {
+      "file": "Fireball XL5.vbs",
+      "sha256": "e77608f8fa01a2ca0d5f3c89905d13170a7a3b103540fa14e3266d5a4dd41332",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fireball XL5/Fireball XL5.vbs"
+    }
+  },
+  {
+    "file": "Flash (Williams 1979).vbs.original",
+    "sha256": "e6e054f6a1bc876a65911f733b62a4a86466a0437edba13ee754fbfc8be62ad0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash (Williams 1979)/Flash (Williams 1979).vbs.original",
+    "patched": {
+      "file": "Flash (Williams 1979).vbs",
+      "sha256": "840724d25a3a2f9fea5f16dab2595ff6dca496cb55acf6f5f7ff60bea162012c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash (Williams 1979)/Flash (Williams 1979).vbs"
+    }
+  },
+  {
+    "file": "Flash Gordon (Bally 1981) 2.0.2.vbs.original",
+    "sha256": "7ed72cbd7ef556fcad321c1bbf6e45b61a9921e30cb25548ed1f35d5061d3d8f",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash Gordon (Bally 1981) 2.0.2/Flash Gordon (Bally 1981) 2.0.2.vbs.original",
+    "patched": {
+      "file": "Flash Gordon (Bally 1981) 2.0.2.vbs",
+      "sha256": "2cf7ed4176cc49b2f9b77e1bc4bb99a49833a1e85cd27eb70a565c20ca666a00",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash Gordon (Bally 1981) 2.0.2/Flash Gordon (Bally 1981) 2.0.2.vbs"
+    }
+  },
+  {
+    "file": "Fog, The (Gottlieb 1979) v2.5 for 10.7.vbs.original",
+    "sha256": "61fea2f2797b2c24ca425dd3da6a27bb93d1bf566f753af3a6bd5a77549a4a82",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fog, The (Gottlieb 1979) v2.5 for 10.7/Fog, The (Gottlieb 1979) v2.5 for 10.7.vbs.original",
+    "patched": {
+      "file": "Fog, The (Gottlieb 1979) v2.5 for 10.7.vbs",
+      "sha256": "13b183e1e86d2af65055ea9b9f0b603b7c19147225179c212e42b71aef9f18ab",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Fog, The (Gottlieb 1979) v2.5 for 10.7/Fog, The (Gottlieb 1979) v2.5 for 10.7.vbs"
+    }
+  },
+  {
+    "file": "Four Seasons (Gottlieb 1968).vbs.original",
+    "sha256": "c26bba601faacc0a0c0d04599845b807713bbcef4fb86194123caf71ca61d312",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Four Seasons (Gottlieb 1968)/Four Seasons (Gottlieb 1968).vbs.original",
+    "patched": {
+      "file": "Four Seasons (Gottlieb 1968).vbs",
+      "sha256": "a77979da67395c224656b37860f03053d334051b6447e27ffcb86db8c7ece9b7",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Four Seasons (Gottlieb 1968)/Four Seasons (Gottlieb 1968).vbs"
+    }
+  },
+  {
+    "file": "Four Seasons (Gottlieb 1968)_Teisen_MOD.vbs.original",
+    "sha256": "7db0c0feea0576e3c2d03c01321da6f106866460632b797dd56d7b3d0edbb0fc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Four Seasons (Gottlieb 1968)_Teisen_MOD/Four Seasons (Gottlieb 1968)_Teisen_MOD.vbs.original",
+    "patched": {
+      "file": "Four Seasons (Gottlieb 1968)_Teisen_MOD.vbs",
+      "sha256": "a65748c3ab27265c1f42e3a8be19f6fba34b52313c2fdd88d182a8bbdcb23285",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Four Seasons (Gottlieb 1968)_Teisen_MOD/Four Seasons (Gottlieb 1968)_Teisen_MOD.vbs"
+    }
+  },
+  {
+    "file": "Freddys Nightmares.vbs.original",
+    "sha256": "33a4a2d390fb0fc18afcaacc9699ca9566cd33f55f8d049982d14d69b561c754",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Freddys Nightmares/Freddys Nightmares.vbs.original",
+    "patched": {
+      "file": "Freddys Nightmares.vbs",
+      "sha256": "629eebb976dc87248bbb28f42984fe45902464dce236463504eb0ab360fbd9b8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Freddys Nightmares/Freddys Nightmares.vbs"
+    }
+  },
+  {
+    "file": "Galaxy (Stern 1980).vbs.original",
+    "sha256": "ac7e8751a2f26307a8d2ddd9a74c64af944b32aef8f2ddf896c1eab13d2856e4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Galaxy (Stern 1980)/Galaxy (Stern 1980).vbs.original",
+    "patched": {
+      "file": "Galaxy (Stern 1980).vbs",
+      "sha256": "718618ceb396b7ba0a010052956e6862ac3870f28586e5bc34414fbf1969b987",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Galaxy (Stern 1980)/Galaxy (Stern 1980).vbs"
+    }
+  },
+  {
+    "file": "Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs.original",
+    "sha256": "a3dc8923cce74cf1bd41b414621f7bcdfe132c1b7a3c66a349e04b1a0233dbd9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW v1.0.2/Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs.original",
+    "patched": {
+      "file": "Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs",
+      "sha256": "06cd8aa59aa01d800b035a596c221c601b4b8213ca7a5e629ed6b531a881c94f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW v1.0.2/Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs"
+    }
+  },
+  {
+    "file": "Gemini (Gottlieb 1978).vbs.original",
+    "sha256": "f223cdea1f4e29ae8ea0007d10cdf92717cbb41343339b86c967fefa61f567a3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gemini (Gottlieb 1978)/Gemini (Gottlieb 1978).vbs.original",
+    "patched": {
+      "file": "Gemini (Gottlieb 1978).vbs",
+      "sha256": "76ad5faa4c82ef6ca1d0846e518e58b547c3b123ea657c5d0de1f9e073a909b5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gemini (Gottlieb 1978)/Gemini (Gottlieb 1978).vbs"
+    }
+  },
+  {
+    "file": "Genie (Gottlieb 1979).vbs.original",
+    "sha256": "12a5c83ebe62d6098cda86591599fad191a9342b430c399380e0631f3f68ab8c",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Genie (Gottlieb 1979)/Genie (Gottlieb 1979).vbs.original",
+    "patched": {
+      "file": "Genie (Gottlieb 1979).vbs",
+      "sha256": "192a59190f589172cc902fa89bc0763bfd740e0ebf173c94257e75e8653b9098",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Genie (Gottlieb 1979)/Genie (Gottlieb 1979).vbs"
+    }
+  },
+  {
+    "file": "Gladiators (Premier 1993) v1.1.1.vbs.original",
+    "sha256": "74a0f8307bd8376e766e4602d1ff6d5028e5aa8d51af6f6f6dca7af374ff8dd3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gladiators (Premier 1993) v1.1.1/Gladiators (Premier 1993) v1.1.1.vbs.original",
+    "patched": {
+      "file": "Gladiators (Premier 1993) v1.1.1.vbs",
+      "sha256": "5f6892eee612ded70df23c88d51813145572495395e807c000851d132f128853",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gladiators (Premier 1993) v1.1.1/Gladiators (Premier 1993) v1.1.1.vbs"
+    }
+  },
+  {
+    "file": "Gorgar_1.1.vbs.original",
+    "sha256": "0ee929abc1385603d5399761c17b63a6786ddd2b2d3e23b8e41d94494f4cf48e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gorgar_1.1/Gorgar_1.1.vbs.original",
+    "patched": {
+      "file": "Gorgar_1.1.vbs",
+      "sha256": "e3f2b80ad2647db0aa2106eabd56183a61850350e583a20e96049f1cb2664edd",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gorgar_1.1/Gorgar_1.1.vbs"
+    }
+  },
+  {
+    "file": "Grand Slam (Bally 1983) 2.3.vbs.original",
+    "sha256": "08d3e44992108d8b6049debc2f134e9d7f364b91eec743ed7b0fa65263fe9908",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Grand Slam (Bally 1983) 2.3/Grand Slam (Bally 1983) 2.3.vbs.original",
+    "patched": {
+      "file": "Grand Slam (Bally 1983) 2.3.vbs",
+      "sha256": "83f3b1bc56cd90c98e8e64898ddbb983b71dc4d43d55c512ba210d5b44a9b6e8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Grand Slam (Bally 1983) 2.3/Grand Slam (Bally 1983) 2.3.vbs"
+    }
+  },
+  {
+    "file": "Halloween 1978-1981 (Original 2022) 1.03.vbs.original",
+    "sha256": "2af841cdd9c64464fa2697b4267995a40962c2a161dc8bda3c38ab4ed75be692",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Halloween 1978-1981 (Original 2022) 1.03/Halloween 1978-1981 (Original 2022) 1.03.vbs.original",
+    "patched": {
+      "file": "Halloween 1978-1981 (Original 2022) 1.03.vbs",
+      "sha256": "86b45aafed38483105c81f16db5398f3e71ba638df6bb2e51d68028483c2c692",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Halloween 1978-1981 (Original 2022) 1.03/Halloween 1978-1981 (Original 2022) 1.03.vbs"
+    }
+  },
+  {
+    "file": "Hang Glider (Bally 1976) VPW v1.2.vbs.original",
+    "sha256": "824534ecc68283f81223b00dfe1fd8e7b4e9c6aa2b772058a4bc48ace37070e6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Hang Glider (Bally 1976) VPW v1.2/Hang Glider (Bally 1976) VPW v1.2.vbs.original",
+    "patched": {
+      "file": "Hang Glider (Bally 1976) VPW v1.2.vbs",
+      "sha256": "9300e9c4ab298ccd531a0088d2ee9be80cd8222f0a6c45e989263c4bbc7b1d1a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Hang Glider (Bally 1976) VPW v1.2/Hang Glider (Bally 1976) VPW v1.2.vbs"
+    }
+  },
+  {
+    "file": "Harlem Globetrotters (Bally 1979) VPW 1.0.vbs.original",
+    "sha256": "4627b3d83433717565c691b195140aa1e4bcaa7c0f88597e1188b100fa1c28bd",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Harlem Globetrotters (Bally 1979) VPW 1.0/Harlem Globetrotters (Bally 1979) VPW 1.0.vbs.original",
+    "patched": {
+      "file": "Harlem Globetrotters (Bally 1979) VPW 1.0.vbs",
+      "sha256": "477c2a08de211074c507ea9b81d63528281701943a50551d5e4027f2896e7862",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Harlem Globetrotters (Bally 1979) VPW 1.0/Harlem Globetrotters (Bally 1979) VPW 1.0.vbs"
+    }
+  },
+  {
+    "file": "Harlem Globetrotters (Bally 1979) v1.14.vbs.original",
+    "sha256": "cfbf36af6655152e13e00b5de938b643ecc612fb22204ee241cd109885f8142a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Harlem Globetrotters (Bally 1979) v1.14/Harlem Globetrotters (Bally 1979) v1.14.vbs.original",
+    "patched": {
+      "file": "Harlem Globetrotters (Bally 1979) v1.14.vbs",
+      "sha256": "16faa10669a7213614b9d91268e2147fa18401a0cdb84decd6764118da5f5ae2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Harlem Globetrotters (Bally 1979) v1.14/Harlem Globetrotters (Bally 1979) v1.14.vbs"
+    }
+  },
+  {
+    "file": "Harley Davidson (Sega 1999) v1.12.vbs.original",
+    "sha256": "a027619613eecb26c500faf49f16a224c121f284c8eec673045464f4c28c98e5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Harley Davidson (Sega 1999) v1.12/Harley Davidson (Sega 1999) v1.12.vbs.original",
+    "patched": {
+      "file": "Harley Davidson (Sega 1999) v1.12.vbs",
+      "sha256": "e101da5130f14724de2e5b55456c6d008b7cd84742a96245f4b0cd131abc3aad",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Harley Davidson (Sega 1999) v1.12/Harley Davidson (Sega 1999) v1.12.vbs"
+    }
+  },
+  {
+    "file": "Haunted House (Gottlieb 1982) 1.0.vbs.original",
+    "sha256": "c8af1d9ae998e77714509c12120288c075b51f717f33bc45cd6e8e76653c000c",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Haunted House (Gottlieb 1982) 1.0/Haunted House (Gottlieb 1982) 1.0.vbs.original",
+    "patched": {
+      "file": "Haunted House (Gottlieb 1982) 1.0.vbs",
+      "sha256": "dfbdddd754f911009c411f6a449ec4b405c0df1a45e1256859085e3b5c331bf6",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Haunted House (Gottlieb 1982) 1.0/Haunted House (Gottlieb 1982) 1.0.vbs"
+    }
+  },
+  {
+    "file": "Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs.original",
+    "sha256": "36d7e74d64597aebdeba01cdc0b0bb5d556039c4e3ee64c6f6a53bb69355e316",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Haunted House (Gottlieb 1982)_Bigus(MOD)1.0/Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs.original",
+    "patched": {
+      "file": "Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs",
+      "sha256": "87bf9357d873f1ba3ea04aa6045558960d34c34afeee69b761017fa7e321f548",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Haunted House (Gottlieb 1982)_Bigus(MOD)1.0/Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs"
+    }
+  },
+  {
+    "file": "Heat Wave (Williams 1964).vbs.original",
+    "sha256": "96736bb2d22d5312d57543c5b3b8eb66dca88738a4ebdd96ccd2347b6616d077",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/HeatWave(Williams1964)1.0/Heat Wave (Williams 1964).vbs.original",
+    "patched": {
+      "file": "Heat Wave (Williams 1964).vbs",
+      "sha256": "8945a288c1ffefdbdd457c6c7dbe8d23a2d336349462e10a32aeda0b51df9ea8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/HeatWave(Williams1964)1.0/Heat Wave (Williams 1964).vbs"
+    }
+  },
+  {
+    "file": "Heavy Metal Meltdown (Bally 1987).vbs.original",
+    "sha256": "0d6d2cb54eddf734eb4ddc471c4993fd98e5c420e8c025c10afd92bd974b714a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Heavy Metal Meltdown (Bally 1987)/Heavy Metal Meltdown (Bally 1987).vbs.original",
+    "patched": {
+      "file": "Heavy Metal Meltdown (Bally 1987).vbs",
+      "sha256": "e618ef7149c6b77d927bf3b58acb66c60e2ceadee018a251de55b575fd10564e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Heavy Metal Meltdown (Bally 1987)/Heavy Metal Meltdown (Bally 1987).vbs"
+    }
+  },
+  {
+    "file": "High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs.original",
+    "sha256": "6a0d2ac901927e5cf76186c11ae8915bd8adf0299739d05b1ebaa602a5665950",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/High_Speed_(Williams 1986) v0.107a (MOD 3.0)/High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs.original",
+    "patched": {
+      "file": "High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs",
+      "sha256": "d8140ea2812540669c7f04145519748b160006d1aeab3874060661bb7e3f8f65",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/High_Speed_(Williams 1986) v0.107a (MOD 3.0)/High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs"
+    }
+  },
+  {
+    "file": "Honey (Williams 1971)V1.2.vbs.original",
+    "sha256": "ebd983dab2d584be27c4e6a34a91e7643f9a43303f3bf565abb963f311eefe06",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Honey (Williams 1971)V1.2/Honey (Williams 1971)V1.2.vbs.original",
+    "patched": {
+      "file": "Honey (Williams 1971)V1.2.vbs",
+      "sha256": "61918a13d1bb47be91fa23c19e0f4c8b95ffee3fcbd3ba1107d101fbe986b001",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Honey (Williams 1971)V1.2/Honey (Williams 1971)V1.2.vbs"
+    }
+  },
+  {
+    "file": "Hook (Data East 1992)_VPWmod_v1.0.vbs.original",
+    "sha256": "",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Hook (Data East 1992)_VPWmod_v1.0/Hook (Data East 1992)_VPWmod_v1.0.vbs.original",
+    "patched": {
+      "file": "Hook (Data East 1992)_VPWmod_v1.0.vbs",
+      "sha256": "01d547e2916f265516660979684ecb7712c1f2d85e36614c5e4110e3099393ce",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Hook (Data East 1992)_VPWmod_v1.0/Hook (Data East 1992)_VPWmod_v1.0.vbs"
+    }
+  },
+  {
+    "file": "IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original",
+    "sha256": "c1f493104512231117a5b63d6a01b97addac5d4add220132b6532a15b4e57da1",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/IT Pinball Madness (JP Salas,Joe Picasso)1.2/IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original",
+    "patched": {
+      "file": "IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs",
+      "sha256": "6a55cccace7edfd05a08b80c09b11da7939015643844397bd02c3d78ab1ae5df",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/IT Pinball Madness (JP Salas,Joe Picasso)1.2/IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs"
+    }
+  },
+  {
+    "file": "Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs.original",
+    "sha256": "51c6b9a6cfdd48e18e2fe63b7ba8ed54703fb4b0dd566de7b3149cb236fb100a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ice Age Christmas (Original Balutito 2021) endeemillr mod/Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs.original",
+    "patched": {
+      "file": "Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs",
+      "sha256": "b29a8569ee5a6b75d1330f9a38405651b8d0a409b300fb3013755ea397995a1a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ice Age Christmas (Original Balutito 2021) endeemillr mod/Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs"
+    }
+  },
+  {
+    "file": "Indiana Jones (Stern 2008)-Hanibal-2.6.vbs.original",
+    "sha256": "85974b6382fa430ea36fb338f049350c1e138c50a2dc9f2a3b17c6c749ce0615",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Indiana Jones (Stern 2008)-Hanibal-2.6/Indiana Jones (Stern 2008)-Hanibal-2.6.vbs.original",
+    "patched": {
+      "file": "Indiana Jones (Stern 2008)-Hanibal-2.6.vbs",
+      "sha256": "49619cf7ce8506c03fb623db80766964034e2f09ad72ecec376f83dbd0acf394",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Indiana Jones (Stern 2008)-Hanibal-2.6/Indiana Jones (Stern 2008)-Hanibal-2.6.vbs"
+    }
+  },
+  {
+    "file": "Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs.original",
+    "sha256": "107624cb5e5c2b063f7290aead65dec763ffaa0837a483a99f2c50f318c18929",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1/Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs.original",
+    "patched": {
+      "file": "Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs",
+      "sha256": "4af92e2daf04c9fa9767304d20f79a197b0d0f012d83b29a5da6660a697f62ee",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1/Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs"
+    }
+  },
+  {
+    "file": "Inhabiting Mars RC 4.vbs.original",
+    "sha256": "756cdbda12928b01cbd320259cede52e40880455f96e0e34d7c13a63cf2487d7",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Inhabiting Mars RC 4/Inhabiting Mars RC 4.vbs.original",
+    "patched": {
+      "file": "Inhabiting Mars RC 4.vbs",
+      "sha256": "5a5de975ec51c482a56c11e6520e804e0b2e3947172c57259b0905efdf97fa44",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Inhabiting Mars RC 4/Inhabiting Mars RC 4.vbs"
+    }
+  },
+  {
+    "file": "Iron Maiden (Original 2022) VPW 1.0.12.vbs.original",
+    "sha256": "99986e273ee8d0f4cf76568a537d55b70a30cab7baa05281124a25ea4dc7e301",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Iron Maiden (Original 2022) VPW 1.0.12/Iron Maiden (Original 2022) VPW 1.0.12.vbs.original",
+    "patched": {
+      "file": "Iron Maiden (Original 2022) VPW 1.0.12.vbs",
+      "sha256": "7f3b3beb0faf8910f3e806212e9cfcad885d0ebfcff63d9ff91027506ea09b4e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Iron Maiden (Original 2022) VPW 1.0.12/Iron Maiden (Original 2022) VPW 1.0.12.vbs"
+    }
+  },
+  {
+    "file": "Iron Maiden Virtual Time (Original 2020).vbs.original",
+    "sha256": "b3cf9328d84afad6e85e9c14898b953487cea94633562491ae6c502157d64471",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Iron Maiden Virtual Time (Original 2020)/Iron Maiden Virtual Time (Original 2020).vbs.original",
+    "patched": {
+      "file": "Iron Maiden Virtual Time (Original 2020).vbs",
+      "sha256": "c8b25d5934e25095e4964cedc17c5042981d1598b9f5f26d9ee33a2860b01b29",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Iron Maiden Virtual Time (Original 2020)/Iron Maiden Virtual Time (Original 2020).vbs"
+    }
+  },
+  {
+    "file": "Iron Man Vault Edition (Stern 2010) VPW v1.0.vbs.original",
+    "sha256": "d05c786a7a2e0384f47c6581ddfefd664573dda274be4da0b991fb23d9c0c5b6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Iron Man Vault Edition (Stern 2010) VPW v1.0/Iron Man Vault Edition (Stern 2010) VPW v1.0.vbs.original",
+    "patched": {
+      "file": "Iron Man Vault Edition (Stern 2010) VPW v1.0.vbs",
+      "sha256": "756dadd23ad0dd8cadd3cb98d25553a27788230cc3f8fe04ee39c7a7effce37c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Iron Man Vault Edition (Stern 2010) VPW v1.0/Iron Man Vault Edition (Stern 2010) VPW v1.0.vbs"
+    }
+  },
+  {
+    "file": "Jack-Bot (Williams 1995).vbs.original",
+    "sha256": "8edd32cea57460f1d76b864e39b742bb3bc77c0c201816a72094e4476c516c8b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jack-Bot (Williams 1995)/Jack-Bot (Williams 1995).vbs.original",
+    "patched": {
+      "file": "Jack-Bot (Williams 1995).vbs",
+      "sha256": "beee056f6363fa66a37239bfd86842a5e8ca0699f756bc5f437000886815b7d0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jack-Bot (Williams 1995)/Jack-Bot (Williams 1995).vbs"
+    }
+  },
+  {
+    "file": "Jive Time (Williams 1970) 2.0.vbs.original",
+    "sha256": "dfc2c7a03cae095ca99a567ca5ace4c54db8b00e4f006cada7501ffeb1100557",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jive Time (Williams 1970) 2.0/Jive Time (Williams 1970) 2.0.vbs.original",
+    "patched": {
+      "file": "Jive Time (Williams 1970) 2.0.vbs",
+      "sha256": "705f103a52a199dda2eb3391ef97dfbc9bd4da0492fa7087e31e69e8d9796a97",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jive Time (Williams 1970) 2.0/Jive Time (Williams 1970) 2.0.vbs"
+    }
+  },
+  {
+    "file": "Joker Poker EM (Gottlieb 1978) 1.6.vbs.original",
+    "sha256": "34eef42e82bf8586180fe3bc78a671be04a48b606e628f8a7c1e97321046467a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Joker Poker EM (Gottlieb 1978) 1.6/Joker Poker EM (Gottlieb 1978) 1.6.vbs.original",
+    "patched": {
+      "file": "Joker Poker EM (Gottlieb 1978) 1.6.vbs",
+      "sha256": "abafe56c4f02c660c5ed9079537b3d0b73d919efaa7981634997970ebd9505ab",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Joker Poker EM (Gottlieb 1978) 1.6/Joker Poker EM (Gottlieb 1978) 1.6.vbs"
+    }
+  },
+  {
+    "file": "Judge Dredd (Bally 1993) VPW v1.1.vbs.original",
+    "sha256": "8dea331e6c069ede6f2d868f7eda47b37aebef435741744badc2229f066a8ce9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Judge Dredd (Bally 1993) VPW v1.1/Judge Dredd (Bally 1993) VPW v1.1.vbs.original",
+    "patched": {
+      "file": "Judge Dredd (Bally 1993) VPW v1.1.vbs",
+      "sha256": "7f73f336a371a4ade976e77bafca59f9077cae8f29b3e365b0643c6516ce2d6a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Judge Dredd (Bally 1993) VPW v1.1/Judge Dredd (Bally 1993) VPW v1.1.vbs"
+    }
+  },
+  {
+    "file": "Jungle Lord (Williams 1981) w VR Room v2.01.vbs.original",
+    "sha256": "e52404c04f1bfaec5bed141bd452e26714ec8664442f6609dc94b81350c1ae04",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jungle Lord (Williams 1981) w VR Room v2.01/Jungle Lord (Williams 1981) w VR Room v2.01.vbs.original",
+    "patched": {
+      "file": "Jungle Lord (Williams 1981) w VR Room v2.01.vbs",
+      "sha256": "86043a09b5c18568daac3e32ae286f30086b25ec50e9a4ba9c4c923fd69a143d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jungle Lord (Williams 1981) w VR Room v2.01/Jungle Lord (Williams 1981) w VR Room v2.01.vbs"
+    }
+  },
+  {
+    "file": "Junk Yard (Williams 1996) v1.83.vbs.original",
+    "sha256": "705199f19e66e5dc27e6582b665f7d4589576e4d2876665676a7c52e58f801b6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Junk Yard (Williams 1996) v1.83/Junk Yard (Williams 1996) v1.83.vbs.original",
+    "patched": {
+      "file": "Junk Yard (Williams 1996) v1.83.vbs",
+      "sha256": "b80ae2e17dd97dadd0a23f476c0f515ade80e22eb95bc2664842bc6aa4171576",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Junk Yard (Williams 1996) v1.83/Junk Yard (Williams 1996) v1.83.vbs"
+    }
+  },
+  {
+    "file": "Junkyard Cats_1.07.vbs.original",
+    "sha256": "b37ff7b5df970cc311264435b9397d9524e62a5a8cf8f61a5f5358d04d5295e9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Junkyard Cats_1.07/Junkyard Cats_1.07.vbs.original",
+    "patched": {
+      "file": "Junkyard Cats_1.07.vbs",
+      "sha256": "3dbe1aa9b0e8b3c957cf7f8e965a77c6b8b77ee44842fc3187542e9310d2ad2d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Junkyard Cats_1.07/Junkyard Cats_1.07.vbs"
+    }
+  },
+  {
+    "file": "KISS (Stern 2015)_Bigus(MOD)1.1.vbs.original",
+    "sha256": "5e74a9b17a8e742477a783b4f365d67c6de6660fd8b05b5826babf2c96577e3a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/KISS (Stern 2015)_Bigus(MOD)1.1/KISS (Stern 2015)_Bigus(MOD)1.1.vbs.original",
+    "patched": {
+      "file": "KISS (Stern 2015)_Bigus(MOD)1.1.vbs",
+      "sha256": "7e64298d4080a6947478e639416aa47e79d8778909a43afa42dfcd31c38faed7",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/KISS (Stern 2015)_Bigus(MOD)1.1/KISS (Stern 2015)_Bigus(MOD)1.1.vbs"
+    }
+  },
+  {
+    "file": "Laser Cue (Williams 1984) w VR Room 2.0.0.vbs.original",
+    "sha256": "77649200831d78a3356e5545e88bad196436f287f52d628cd26b3cc84f2abdb1",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Laser Cue (Williams 1984) w VR Room 2.0.0/Laser Cue (Williams 1984) w VR Room 2.0.0.vbs.original",
+    "patched": {
+      "file": "Laser Cue (Williams 1984) w VR Room 2.0.0.vbs",
+      "sha256": "eb9bea45d010b9d7fc1be2f3d4aa3744b7e9c525ce5cbca8e20bbade92fb7fd6",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Laser Cue (Williams 1984) w VR Room 2.0.0/Laser Cue (Williams 1984) w VR Room 2.0.0.vbs"
+    }
+  },
+  {
+    "file": "Laser War (Data East 1987) w VR Room v2.0.vbs.original",
+    "sha256": "18c2679106173f13dc4a2b38f3d41e76c6be9d86f0637be04a6c6b8ec749d163",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Laser War (Data East 1987) w VR Room v2.0/Laser War (Data East 1987) w VR Room v2.0.vbs.original",
+    "patched": {
+      "file": "Laser War (Data East 1987) w VR Room v2.0.vbs",
+      "sha256": "5ee063992220c087ecb288d32a12ee427150105dab59114ccdb253cade954fc0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Laser War (Data East 1987) w VR Room v2.0/Laser War (Data East 1987) w VR Room v2.0.vbs"
+    }
+  },
+  {
+    "file": "Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs.original",
+    "sha256": "51e1e9a22b7280f0f0d62800e82a09c7164680919aadb8bc0b71fd8ddb3d937a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Last Starfighter, The (Taito, 1983) hybrid v1.04/Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs.original",
+    "patched": {
+      "file": "Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs",
+      "sha256": "82ba8ed5a3829a3a77e66a1d37cfadbdab0c2547c6642c9cfb94353a2b7366aa",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Last Starfighter, The (Taito, 1983) hybrid v1.04/Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs"
+    }
+  },
+  {
+    "file": "Lawman (Gottlieb 1971) 1.1.vbs.original",
+    "sha256": "43806ef8cb40bd0ecc09eb6e5173df256f5e3e293e5c23e570ed19e41a62dff4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Lawman (Gottlieb 1971) 1.1/Lawman (Gottlieb 1971) 1.1.vbs.original",
+    "patched": {
+      "file": "Lawman (Gottlieb 1971) 1.1.vbs",
+      "sha256": "5c61ea9a01fdb242d58e1fd417d64be9b3a3d7ceba7b5bcb52edef721850419e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Lawman (Gottlieb 1971) 1.1/Lawman (Gottlieb 1971) 1.1.vbs"
+    }
+  },
+  {
+    "file": "Led Zeppelin Pinball 2.5.vbs.original",
+    "sha256": "3e46e225ea04c1d2b38c962c1369786dff1f4f9fbb9ce23982415ca4610539fd",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Led Zeppelin Pinball 2.5/Led Zeppelin Pinball 2.5.vbs.original",
+    "patched": {
+      "file": "Led Zeppelin Pinball 2.5.vbs",
+      "sha256": "0dac071bf3b6c8df31a27cfaf7229eb5da2fda376796718044ffa685468bb986",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Led Zeppelin Pinball 2.5/Led Zeppelin Pinball 2.5.vbs"
+    }
+  },
+  {
+    "file": "Legend of Zelda v4.3.vbs.original",
+    "sha256": "37d610de173066ed0c84215a6e21154dcf1b660f77599827dc9fa5027365b41d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Legend of Zelda v4.3/Legend of Zelda v4.3.vbs.original",
+    "patched": {
+      "file": "Legend of Zelda v4.3.vbs",
+      "sha256": "e28c55fb41e76a0aff5501e10b1d184abf1e4186a754955e12a6ee2accbeaba3",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Legend of Zelda v4.3/Legend of Zelda v4.3.vbs"
+    }
+  },
+  {
+    "file": "Lightning Ball (Gottlieb 1959).vbs.original",
+    "sha256": "df96fb2b9bd1ca7ecd6b66cdcd8fc1dcd3259580bceb0f0351f924e557b42a7b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Lightning Ball (Gottlieb 1959)/Lightning Ball (Gottlieb 1959).vbs.original",
+    "patched": {
+      "file": "Lightning Ball (Gottlieb 1959).vbs",
+      "sha256": "86b8f49649af636ed9d088c0026a38611d24ab05c98692c9fa09c7389301885a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Lightning Ball (Gottlieb 1959)/Lightning Ball (Gottlieb 1959).vbs"
+    }
+  },
+  {
+    "file": "MF DOOM (GOILL773 2024) v1.1.vbs.original",
+    "sha256": "2ce4bf978b60a7ff869c909c283d88de6f9e635ee5afdde1416aa716067e35bb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MF DOOM (GOILL773 2024) v1.1/MF DOOM (GOILL773 2024) v1.1.vbs.original",
+    "patched": {
+      "file": "MF DOOM (GOILL773 2024) v1.1.vbs",
+      "sha256": "ea127a4797d3338e1b27688a3f309490be4bfcddfcc8386a9f3ad418064b245e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MF DOOM (GOILL773 2024) v1.1/MF DOOM (GOILL773 2024) v1.1.vbs"
+    }
+  },
+  {
+    "file": "Magic City (Williams 1967).vbs.original",
+    "sha256": "5de70627871a2900c64a7e35526d28d8cef9ec699c2cf02d5370205c140f31f3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Magic City (Williams 1967)1.0a/Magic City (Williams 1967).vbs.original",
+    "patched": {
+      "file": "Magic City (Williams 1967).vbs",
+      "sha256": "62a4bdca7f581ee21a01a837821197b9a5b4297e8bc9bf1279ac157235ceae5f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Magic City (Williams 1967)1.0a/Magic City (Williams 1967).vbs"
+    }
+  },
+  {
+    "file": "Mago de Oz - the pinball v4.3.vbs.original",
+    "sha256": "3c6e41cd4c8fd5bf060e4ada7f63fb9c2c1382248feb63b027ba20da683dfcc4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mago de Oz - the pinball v4.3/Mago de Oz - the pinball v4.3.vbs.original",
+    "patched": {
+      "file": "Mago de Oz - the pinball v4.3.vbs",
+      "sha256": "4e7ea49ed4b9ae1dce5e433be9ca475484ecead6a66aca4db385b7f92188150a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mago de Oz - the pinball v4.3/Mago de Oz - the pinball v4.3.vbs"
+    }
+  },
+  {
+    "file": "Maverick (Data East 1994) VPW v1.3.vbs.original",
+    "sha256": "684e97edb6c6e65e4769a38691b4e20808f2180456f2380cdc3d0b17f267eb8e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Maverick (Data East 1994) VPW v1.3/Maverick (Data East 1994) VPW v1.3.vbs.original",
+    "patched": {
+      "file": "Maverick (Data East 1994) VPW v1.3.vbs",
+      "sha256": "7fd6f049ff55fea6e2b675803be1ce5ebd8985fb24e336336d35dee0cba14934",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Maverick (Data East 1994) VPW v1.3/Maverick (Data East 1994) VPW v1.3.vbs"
+    }
+  },
+  {
+    "file": "Medusa (Bally 1981) w VR Room v2.0.1.vbs.original",
+    "sha256": "88fe9ceb40a63b0f49acd46cbadb95204e2e03fddd266a5071a7492a15840a9d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Medusa (Bally 1981) w VR Room v2.0.1/Medusa (Bally 1981) w VR Room v2.0.1.vbs.original",
+    "patched": {
+      "file": "Medusa (Bally 1981) w VR Room v2.0.1.vbs",
+      "sha256": "20edde4ebf3d771b867e80483ad6a3685bf166d81578d08e1aa9ee5d25d53d58",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Medusa (Bally 1981) w VR Room v2.0.1/Medusa (Bally 1981) w VR Room v2.0.1.vbs"
+    }
+  },
+  {
+    "file": "Metal Slug_1.05.vbs.original",
+    "sha256": "73332f7edd56bc586c6ceaf06114e5416aa91c531b1b1ad199d16a7019c20299",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Metal Slug_1.05/Metal Slug_1.05.vbs.original",
+    "patched": {
+      "file": "Metal Slug_1.05.vbs",
+      "sha256": "1c00fabcb31efd62918087b08549c97c091f4e93b966653a1d808f0a7ac3f128",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Metal Slug_1.05/Metal Slug_1.05.vbs"
+    }
+  },
+  {
+    "file": "Monaco (Segasa 1977)V1.4.vbs.original",
+    "sha256": "ce17434d262406296f98e2dfa4ea2b2c6d8be100f595fceef9b3be70ebb37694",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monaco (Segasa 1977)V1.4/Monaco (Segasa 1977)V1.4.vbs.original",
+    "patched": {
+      "file": "Monaco (Segasa 1977)V1.4.vbs",
+      "sha256": "8f45537ffb0507d0ed335d46686b837633472abf726d6af2dc9e0b6f051b9675",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monaco (Segasa 1977)V1.4/Monaco (Segasa 1977)V1.4.vbs"
+    }
+  },
+  {
+    "file": "monkeyisland.vbs.original",
+    "sha256": "792cb311829e47d06fe65bb3be8a90849c321367f3c3bb3faee28238c0e10c79",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkeyislandv1.1/monkeyisland.vbs.original",
+    "patched": {
+      "file": "monkeyisland.vbs",
+      "sha256": "1ab7350f013324dc15da89e2fcd2016d34cc26e3de4595c9ff59e77446594f25",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkeyislandv1.1/monkeyisland.vbs"
+    }
+  },
+  {
+    "file": "Monster Bash (Williams 1998) VPWmod v1.0.vbs.original",
+    "sha256": "7507bfa1553b5e5f882509fb2aef972751cdeb6833356f53638a5b1a5c028711",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monster Bash (Williams 1998) VPWmod v1.0/Monster Bash (Williams 1998) VPWmod v1.0.vbs.original",
+    "patched": {
+      "file": "Monster Bash (Williams 1998) VPWmod v1.0.vbs",
+      "sha256": "9c5bff82bc6c95c8c36a2ca285e889195372018a103cda175311d27c454763ee",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monster Bash (Williams 1998) VPWmod v1.0/Monster Bash (Williams 1998) VPWmod v1.0.vbs"
+    }
+  },
+  {
+    "file": "Mousin' Around! (Bally 1989) w VR Room v2.1.vbs.original",
+    "sha256": "ec06f68b60f8c3d0d84452859c1473eb047da4e3e059d79c3dca758d005816d6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mousin' Around! (Bally 1989) w VR Room v2.1/Mousin' Around! (Bally 1989) w VR Room v2.1.vbs.original",
+    "patched": {
+      "file": "Mousin' Around! (Bally 1989) w VR Room v2.1.vbs",
+      "sha256": "c3b3d0bde70f1aa369cee7e6518f4808cc9c76d762177add3168f7b81ea6c7e3",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mousin' Around! (Bally 1989) w VR Room v2.1/Mousin' Around! (Bally 1989) w VR Room v2.1.vbs"
+    }
+  },
+  {
+    "file": "Mr Black (Taito do Brasil - 1984) v4.vbs.original",
+    "sha256": "b9c8ebbf8ffc7397b086b994aabf8b607c2972a0cf7d94554cfaa8f2bd99ef90",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mr Black (Taito do Brasil - 1984) v4/Mr Black (Taito do Brasil - 1984) v4.vbs.original",
+    "patched": {
+      "file": "Mr Black (Taito do Brasil - 1984) v4.vbs",
+      "sha256": "d15e44442c06664ccfac2995496e924763a07e856899a3405522fd020ed26175",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mr Black (Taito do Brasil - 1984) v4/Mr Black (Taito do Brasil - 1984) v4.vbs"
+    }
+  },
+  {
+    "file": "MrDoom (Recel 1979)1.3.0.vbs.original",
+    "sha256": "796ba8944d826b483d101979cc6b0d2a85357d2aebb9358a459170d9f0629859",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MrDoom (Recel 1979)1.3.0/MrDoom (Recel 1979)1.3.0.vbs.original",
+    "patched": {
+      "file": "MrDoom (Recel 1979)1.3.0.vbs",
+      "sha256": "66392cbd314555b00e4f4a2df66e2407f85f93017dde34828a19ed07d39c996f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MrDoom (Recel 1979)1.3.0/MrDoom (Recel 1979)1.3.0.vbs"
+    }
+  },
+  {
+    "file": "MrEvil (Recel 1979)1.3.0.vbs.original",
+    "sha256": "c0335266378fcfee9db463af898e9a2836d8f5bb376222faf55fcef08a2c527d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MrEvil (Recel 1979)1.3.0/MrEvil (Recel 1979)1.3.0.vbs.original",
+    "patched": {
+      "file": "MrEvil (Recel 1979)1.3.0.vbs",
+      "sha256": "d96b07744bdcea80408038b6f1d5749330680fab0991365e02b120f6e1e545e4",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MrEvil (Recel 1979)1.3.0/MrEvil (Recel 1979)1.3.0.vbs"
+    }
+  },
+  {
+    "file": "Munsters (Original 2020) 1.05.vbs.original",
+    "sha256": "4265bae12d9f138dbfd3c273032bcdf3d65d01351e54217427d1de2e36a0e658",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Munsters (Original 2020) 1.05/Munsters (Original 2020) 1.05.vbs.original",
+    "patched": {
+      "file": "Munsters (Original 2020) 1.05.vbs",
+      "sha256": "a831743e35a4424e14004961b7c92abc7d396a45f6ea5340a164415b63188576",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Munsters (Original 2020) 1.05/Munsters (Original 2020) 1.05.vbs"
+    }
+  },
+  {
+    "file": "NBA (Stern 2009)_Bigus(MOD)1.4.vbs.original",
+    "sha256": "c911fd024d0619da3cb4b2bb46d9bbed86866105317a4b97e58affffac5cad76",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/NBA (Stern 2009)_Bigus(MOD)1.4/NBA (Stern 2009)_Bigus(MOD)1.4.vbs.original",
+    "patched": {
+      "file": "NBA (Stern 2009)_Bigus(MOD)1.4.vbs",
+      "sha256": "abcaef5d88806ee47775277c2dbb4b6ffc831e0283956b9f8ebad16535083ecf",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/NBA (Stern 2009)_Bigus(MOD)1.4/NBA (Stern 2009)_Bigus(MOD)1.4.vbs"
+    }
+  },
+  {
+    "file": "Nine Ball (Stern 1980).vbs.original",
+    "sha256": "e070fe9ae774c756d94a866b07dfcebe80d6087a82c8994afe03878ab70279f2",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Nine Ball (Stern 1980)/Nine Ball (Stern 1980).vbs.original",
+    "patched": {
+      "file": "Nine Ball (Stern 1980).vbs",
+      "sha256": "53e98ab906854109115f19f4d006f8c7c65c6b9e38cf2446198460733bcddfa8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Nine Ball (Stern 1980)/Nine Ball (Stern 1980).vbs"
+    }
+  },
+  {
+    "file": "O Brother Where Art Thou (Zoss 2021)1_6.vbs.original",
+    "sha256": "11c5f2265ff5dce12251aad0ab9f7014ba471e2547acda2c9f4e16a1ba987015",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/O Brother Where Art Thou (Zoss 2021)1_6/O Brother Where Art Thou (Zoss 2021)1_6.vbs.original",
+    "patched": {
+      "file": "O Brother Where Art Thou (Zoss 2021)1_6.vbs",
+      "sha256": "cd3c5e67908c0c9d646bc2b3f69311361d75a9a10f255269f5be9001d6e177ad",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/O Brother Where Art Thou (Zoss 2021)1_6/O Brother Where Art Thou (Zoss 2021)1_6.vbs"
+    }
+  },
+  {
+    "file": "Party Animal (Bally 1987).vbs.original",
+    "sha256": "bbc286e11d7f00943d84ada63568b6968357b213c6e2ea69850e7f9963b4589f",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Party Animal (Bally 1987)/Party Animal (Bally 1987).vbs.original",
+    "patched": {
+      "file": "Party Animal (Bally 1987).vbs",
+      "sha256": "d219383ae68882588c7b5b674c0de47c3801eef28b56e37831e17740df6855cc",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Party Animal (Bally 1987)/Party Animal (Bally 1987).vbs"
+    }
+  },
+  {
+    "file": "Pat Hand (Williams 1975)V1.4.vbs.original",
+    "sha256": "afdd3937cd42634fc6da3f8c70640d7d2d4d2a8f16db5dae1dd86021a5608418",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Pat Hand (Williams 1975)V1.4/Pat Hand (Williams 1975)V1.4.vbs.original",
+    "patched": {
+      "file": "Pat Hand (Williams 1975)V1.4.vbs",
+      "sha256": "0bf79c422b890eb7e9933c7c7f9f082decf42150e9e771fd514890977e5c5288",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Pat Hand (Williams 1975)V1.4/Pat Hand (Williams 1975)V1.4.vbs"
+    }
+  },
+  {
+    "file": "Phantom Of The Opera (Data East 1990) v1.24.vbs.original",
+    "sha256": "fe832644277894da6a2cad5f2618383d4b5943f63796c73af795884894c79790",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Phantom Of The Opera (Data East 1990) v1.24/Phantom Of The Opera (Data East 1990) v1.24.vbs.original",
+    "patched": {
+      "file": "Phantom Of The Opera (Data East 1990) v1.24.vbs",
+      "sha256": "1f273cf799f0b2a2b482bdd79f30f85fdd526848f714852f1015252e4e493d0a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Phantom Of The Opera (Data East 1990) v1.24/Phantom Of The Opera (Data East 1990) v1.24.vbs"
+    }
+  },
+  {
+    "file": "Pharaoh (Williams 1981) w VR Room v2.0.3.vbs.original",
+    "sha256": "e8814416271f904c0ea57099ef65e80c67e0b9ef261df5d1365ef6a4455141b0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Pharaoh (Williams 1981) w VR Room v2.0.3/Pharaoh (Williams 1981) w VR Room v2.0.3.vbs.original",
+    "patched": {
+      "file": "Pharaoh (Williams 1981) w VR Room v2.0.3.vbs",
+      "sha256": "253998540e86f424fa70588eec8cc063f010df47f29babbb1d078251901fad08",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Pharaoh (Williams 1981) w VR Room v2.0.3/Pharaoh (Williams 1981) w VR Room v2.0.3.vbs"
+    }
+  },
+  {
+    "file": "PinBlob (CLV 2024).vbs.original",
+    "sha256": "959fb85e0aea11570833663bf6eabe1b6941baa8ecd6375e80093ac54fc44459",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/PinBlob (CLV 2024)/PinBlob (CLV 2024).vbs.original",
+    "patched": {
+      "file": "PinBlob (CLV 2024).vbs",
+      "sha256": "ac67f8afa49918e78acaeef27c3d8efba8b9f358114378bd0a3eb1445f54d9b5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/PinBlob (CLV 2024)/PinBlob (CLV 2024).vbs"
+    }
+  },
+  {
+    "file": "PinBot (Williams 1986) 2.1.1.vbs.original",
+    "sha256": "9dfb664a26dc1f4d7163d8ada0ad2b50870dc3724513dc8c4746794e9661ce91",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/PinBot (Williams 1986) 2.1.1/PinBot (Williams 1986) 2.1.1.vbs.original",
+    "patched": {
+      "file": "PinBot (Williams 1986) 2.1.1.vbs",
+      "sha256": "da61989f38f8a33f5f7d2b66e32f93d2b5ba661ec7abc812cdc7ec0f1b9a2ccd",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/PinBot (Williams 1986) 2.1.1/PinBot (Williams 1986) 2.1.1.vbs"
+    }
+  },
+  {
+    "file": "PinballMagic.v1.9.Hybrid.VPX8.vbs.original",
+    "sha256": "ae121e02a2c6428cc073a1f20ee68f428a30f7e6ddd17327da5d875eeb0e69b1",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/PinballMagic.v1.9.Hybrid.VPX8/PinballMagic.v1.9.Hybrid.VPX8.vbs.original",
+    "patched": {
+      "file": "PinballMagic.v1.9.Hybrid.VPX8.vbs",
+      "sha256": "c463f8c3b3ab55ccf8734cc0fa8bd2f690ce79e8f34956e4071d9af2adc47f36",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/PinballMagic.v1.9.Hybrid.VPX8/PinballMagic.v1.9.Hybrid.VPX8.vbs"
+    }
+  },
+  {
+    "file": "Playboy (Bally 1978).vbs.original",
+    "sha256": "f6c5f7e4a97a4a9d1a092c14c076322ef91b179a9eb996030af0a81f51316486",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Playboy (Bally 1978)/Playboy (Bally 1978).vbs.original",
+    "patched": {
+      "file": "Playboy (Bally 1978).vbs",
+      "sha256": "63e49618cb20b36ac102fb880e440bccf44cc545ebb807b68dafe7b0e8f52705",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Playboy (Bally 1978)/Playboy (Bally 1978).vbs"
+    }
+  },
+  {
+    "file": "Playboy (Stern 2002) v1.1.vbs.original",
+    "sha256": "0a716d687b710712b092184eddbd40ced026963a3e0518af9d1339650330f462",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Playboy(Stern2002)v1.1/Playboy (Stern 2002) v1.1.vbs.original",
+    "patched": {
+      "file": "Playboy (Stern 2002) v1.1.vbs",
+      "sha256": "07ac27d80140bddfd7ed0fa56e4705610074516e5e9835baf37c23371094c8bb",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Playboy(Stern2002)v1.1/Playboy (Stern 2002) v1.1.vbs"
+    }
+  },
+  {
+    "file": "Power Play (Bally 1977).vbs.original",
+    "sha256": "aa37a7217f55c225a959f0f7e9d5411a41151b4fd57e2b0cab32d20073679dda",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Power Play (Bally 1977)/Power Play (Bally 1977).vbs.original",
+    "patched": {
+      "file": "Power Play (Bally 1977).vbs",
+      "sha256": "a52ad97523c788e3cdc1857ff93cee3f9736ee1c201f2674717ebedc8a6ea266",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Power Play (Bally 1977)/Power Play (Bally 1977).vbs"
+    }
+  },
+  {
+    "file": "pulp_fiction.vbs.original",
+    "sha256": "14a49b57067f4cea71c04fb15afeafcacfd8f264d3234a5e8e29765037c17dc3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Pulp Fiction 3.1/pulp_fiction.vbs.original",
+    "patched": {
+      "file": "pulp_fiction.vbs",
+      "sha256": "bf3510768da71d60cb0dfc72ff28408e682b6e2cc2bd954e250b80971fa96cf8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Pulp Fiction 3.1/pulp_fiction.vbs"
+    }
+  },
+  {
+    "file": "Punchout.vbs.original",
+    "sha256": "1ca1bdfabf8363bd0ae7842f588daa1ecf101ec7447a34d7b3f94e319dc0e734",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Punchout/Punchout.vbs.original",
+    "patched": {
+      "file": "Punchout.vbs",
+      "sha256": "e34afc054022cb992ffdad0eee0b607b9a86473a1bd57022d1a79b0507265f3e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Punchout/Punchout.vbs"
+    }
+  },
+  {
+    "file": "PVM.vbs.original",
+    "sha256": "b2c97868468f9b9cfe041ede60be2770c2a5abf780f903b51665088598320ae5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Putin Vodka Mania (Original 2022)/PVM.vbs.original",
+    "patched": {
+      "file": "PVM.vbs",
+      "sha256": "166dedfbd5c17a64cd64be75ba1659a0ec08ece77dd1decec8371ebce098790c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Putin Vodka Mania (Original 2022)/PVM.vbs"
+    }
+  },
+  {
+    "file": "Rally (Taito do Brasil - 1980) v4.vbs.original",
+    "sha256": "ef14de0889af194f4762f0e9c845360b096fe2fe2f1d090df6898b281468f426",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rally (Taito do Brasil - 1980) v4/Rally (Taito do Brasil - 1980) v4.vbs.original",
+    "patched": {
+      "file": "Rally (Taito do Brasil - 1980) v4.vbs",
+      "sha256": "58ba639cad2f7336db619ffbbe99a71a617f8887ae8df8a480779fd02e48fcc0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rally (Taito do Brasil - 1980) v4/Rally (Taito do Brasil - 1980) v4.vbs"
+    }
+  },
+  {
+    "file": "Ramones (HauntFreaks 2021).vbs.original",
+    "sha256": "",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ramones (HauntFreaks 2021)/Ramones (HauntFreaks 2021).vbs.original",
+    "patched": {
+      "file": "Ramones (HauntFreaks 2021).vbs",
+      "sha256": "a17f63e0ccf1fbc908d2d9362a74b5437aec4f20e45c0887abedf334b9c2a27c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ramones (HauntFreaks 2021)/Ramones (HauntFreaks 2021).vbs"
+    }
+  },
+  {
+    "file": "Rancho (Williams 1976)V1.4.vbs.original",
+    "sha256": "a6a1346d2a9c873c6879f58a543da4c6ad427c9baca5e127612b3df90b7bbf31",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rancho (Williams 1976)V1.4/Rancho (Williams 1976)V1.4.vbs.original",
+    "patched": {
+      "file": "Rancho (Williams 1976)V1.4.vbs",
+      "sha256": "3bfffe8b41f57e4f6a7a7583bdb6f9e1dadef7f4c896ae779dc7960884b8bc6c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rancho (Williams 1976)V1.4/Rancho (Williams 1976)V1.4.vbs"
+    }
+  },
+  {
+    "file": "Riccione.vbs.original",
+    "sha256": "f144866a95ccbc7d75e4a5939d1787f1ca1f18500856b8b1d56729853e8eb171",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Riccione_V1.4/Riccione.vbs.original",
+    "patched": {
+      "file": "Riccione.vbs",
+      "sha256": "d456772e67087c52674ce5be46dfa2be8ddda3d33bcc9b2aeb29bdf4a2084ff9",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Riccione_V1.4/Riccione.vbs"
+    }
+  },
+  {
+    "file": "Robocop (Data East 1989)_drakkon(mod_1.2).vbs.original",
+    "sha256": "00abf00a3f2e9cc3977e1053765902071a7caf381407b58ad09c4bef8abe3dd8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Robocop (Data East 1989)_drakkon(mod_1.2)/Robocop (Data East 1989)_drakkon(mod_1.2).vbs.original",
+    "patched": {
+      "file": "Robocop (Data East 1989)_drakkon(mod_1.2).vbs",
+      "sha256": "0c6ce7e4995bdf016dd97a98926a7d9e322fd7a4b38fe3e179ce32a5cd1f81f0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Robocop (Data East 1989)_drakkon(mod_1.2)/Robocop (Data East 1989)_drakkon(mod_1.2).vbs"
+    }
+  },
+  {
+    "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original",
+    "sha256": "ef9629d4d7e02a29cceeadc0b4bd550d2623cee787329e9dcecfd29092a581cb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.3/Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original",
+    "patched": {
+      "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs",
+      "sha256": "1ae5c11b6773117ba7bbf410659da4af1f1374ac16719a7d4f0c2d9676bcce85",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.3/Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs"
+    }
+  },
+  {
+    "file": "Route66.vbs.original",
+    "sha256": "09b327bb32d5f98003edecded1de7d02f56b8cbb525b4ac669d39bf36d35e6df",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Route66(0_2)/Route66.vbs.original",
+    "patched": {
+      "file": "Route66.vbs",
+      "sha256": "c878d8570adaa21bbc63a82628d00aeb1c7bac079237d252e5e81ba890a48135",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Route66(0_2)/Route66.vbs"
+    }
+  },
+  {
+    "file": "Safe Cracker (Bally 1996) v1.0.vbs.original",
+    "sha256": "e224e815280ce8e74ec1d2dfe1562dee9e5675b3f379cb5031ff69c39007fa0a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Safe Cracker (Bally 1996) v1.0/Safe Cracker (Bally 1996) v1.0.vbs.original",
+    "patched": {
+      "file": "Safe Cracker (Bally 1996) v1.0.vbs",
+      "sha256": "400087fca0579fef184754083224e945a71e8be3148e23226737ccafcf2bf440",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Safe Cracker (Bally 1996) v1.0/Safe Cracker (Bally 1996) v1.0.vbs"
+    }
+  },
+  {
+    "file": "Saving Wallden.vbs.original",
+    "sha256": "d42b52f4a83f0e2c2f5e412b0992e424e1e085517cf375fb121268e2681a36e5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Saving Wallden/Saving Wallden.vbs.original",
+    "patched": {
+      "file": "Saving Wallden.vbs",
+      "sha256": "208f92512022fcf2029b2cb420d6e88269897899c281eb96461e49379d92f565",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Saving Wallden/Saving Wallden.vbs"
+    }
+  },
+  {
+    "file": "Scared Stiff (Bally 1996) v1.29.vbs.original",
+    "sha256": "9eb7f0f26bc571fd7c245a6d9aed0e2f8ce920b678dd54e0c237003ee60d2d2d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Scared Stiff (Bally 1996) v1.29/Scared Stiff (Bally 1996) v1.29.vbs.original",
+    "patched": {
+      "file": "Scared Stiff (Bally 1996) v1.29.vbs",
+      "sha256": "78ddd425e178a61d7ca03f00439ce6d2fbc89f56488c3259a8b79a9824df20ef",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Scared Stiff (Bally 1996) v1.29/Scared Stiff (Bally 1996) v1.29.vbs"
+    }
+  },
+  {
+    "file": "Scarface - Balls and Power 1.2.vbs.original",
+    "sha256": "4f744d9d500d11d4598af46fb3a02525ece88ebfad3f531a9f8084ef5be62cdb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Scarface - Balls and Power 1.2/Scarface - Balls and Power 1.2.vbs.original",
+    "patched": {
+      "file": "Scarface - Balls and Power 1.2.vbs",
+      "sha256": "800a7df3d950bb12f1626ef23a19aa0f70dd358c832620dde2a4b875ec8e58c2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Scarface - Balls and Power 1.2/Scarface - Balls and Power 1.2.vbs"
+    }
+  },
+  {
+    "file": "Seawitch (Stern 1980).vbs.original",
+    "sha256": "0e01e027f443447f55083b9709f6918e87093aa56b43c2466ccd6574b5c4e01b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Seawitch (Stern 1980)/Seawitch (Stern 1980).vbs.original",
+    "patched": {
+      "file": "Seawitch (Stern 1980).vbs",
+      "sha256": "33df1c7d14834c5cd764cf5ac319925b8b01e9d8eaf344fcddc70c750959c984",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Seawitch (Stern 1980)/Seawitch (Stern 1980).vbs"
+    }
+  },
+  {
+    "file": "Seven Winner (Inder 1973) v4.vbs.original",
+    "sha256": "8f841d96ffd5fdcac7213137b44f2b41fb04e8966fe5c2b2ba80d7324bb1713b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Seven Winner (Inder 1973) v4/Seven Winner (Inder 1973) v4.vbs.original",
+    "patched": {
+      "file": "Seven Winner (Inder 1973) v4.vbs",
+      "sha256": "450cacb43d3e352cfd18f204867295bc7db1d8e74437f2a1426d5e674d2f6159",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Seven Winner (Inder 1973) v4/Seven Winner (Inder 1973) v4.vbs"
+    }
+  },
+  {
+    "file": "Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs.original",
+    "sha256": "b08bac543b85dc8ae8ec9e79e32cc3be71869b781e8b10f7ee16f30291bc894b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Simpsons (Data East 1990)_Bigus(MOD)3.1/Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs.original",
+    "patched": {
+      "file": "Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs",
+      "sha256": "b9657eebffc2dcd6f82a307ae94725dfdf82d3e5702a34aae4df9a89e2378598",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Simpsons (Data East 1990)_Bigus(MOD)3.1/Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs"
+    }
+  },
+  {
+    "file": "Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3.vbs.original",
+    "sha256": "598bf9762f27229f718a7d5c0869847a753e950aa305c028300f380f6dfba703",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3/Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3.vbs.original",
+    "patched": {
+      "file": "Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3.vbs",
+      "sha256": "ed938acdb19a28df7a4ca9f4ed49ab12168da4e1a32945c08d3568223598628d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3/Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3.vbs"
+    }
+  },
+  {
+    "file": "Skylab (Williams 1974)V1.3.vbs.original",
+    "sha256": "0c75dddb674493b9be941439d4f11081d4c9a4dc33f0ee4ee18092bc6accee24",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Skylab (Williams 1974)V1.3/Skylab (Williams 1974)V1.3.vbs.original",
+    "patched": {
+      "file": "Skylab (Williams 1974)V1.3.vbs",
+      "sha256": "c1a8fc98f3d4340c33ed19f03cee22a0dab02bc1805c6a101335126882758ec2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Skylab (Williams 1974)V1.3/Skylab (Williams 1974)V1.3.vbs"
+    }
+  },
+  {
+    "file": "Solar Fire (Williams 1981) w VR Room v2.0.5.vbs.original",
+    "sha256": "432ac5089667ab21e2fa9060523d4a9af71fc097b8548ed06c43c4da6124731b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Solar Fire (Williams 1981) w VR Room v2.0.5/Solar Fire (Williams 1981) w VR Room v2.0.5.vbs.original",
+    "patched": {
+      "file": "Solar Fire (Williams 1981) w VR Room v2.0.5.vbs",
+      "sha256": "d7329ac96740a035e2a971ce08b4406436790fbc0303abe4492fd838cb5aefab",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Solar Fire (Williams 1981) w VR Room v2.0.5/Solar Fire (Williams 1981) w VR Room v2.0.5.vbs"
+    }
+  },
+  {
+    "file": "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs.original",
+    "sha256": "7a6797bb70820e64ffc8388376bccece95dc979e6e61af3d36bdb9aa44306089",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33/Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs.original",
+    "patched": {
+      "file": "Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs",
+      "sha256": "0f072f82cc88db5841d8ba4eca0d50741402cac2e27d9cb98645a2e06a45bd65",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33/Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs"
+    }
+  },
+  {
+    "file": "South Park (Sega 1999) 1.3.vbs.original",
+    "sha256": "abd5df2b3c2552418e4ee16fe96ae15de8d83f43b218b8ad86ee941643f060e0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/South Park (Sega 1999) 1.3/South Park (Sega 1999) 1.3.vbs.original",
+    "patched": {
+      "file": "South Park (Sega 1999) 1.3.vbs",
+      "sha256": "51b7c24a7b28417481b858ad2fba2b13021f0cad8c2f0cba7303b0bfef500387",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/South Park (Sega 1999) 1.3/South Park (Sega 1999) 1.3.vbs"
+    }
+  },
+  {
+    "file": "SPP.vbs.original",
+    "sha256": "7df894d3dfc2a26cfe9b25143fa3e093bd2f02f7a1f5b9510900fb2db838f025",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SouthParkPinballv1.2/SPP.vbs.original",
+    "patched": {
+      "file": "SPP.vbs",
+      "sha256": "1a4b16001836f239505bb0433532df8deae97fb3769bf4f63c550689005ae5b9",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SouthParkPinballv1.2/SPP.vbs"
+    }
+  },
+  {
+    "file": "Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs.original",
+    "sha256": "8ba7c807479ae99dd9820f854bbc48a78e7d8625bbbfe6c678d395a5076f54d0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou/Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs.original",
+    "patched": {
+      "file": "Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs",
+      "sha256": "6f349b9fa19aa13110241e5dbb832f0500a35e8b919f68ff00732bfd693d93da",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou/Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs"
+    }
+  },
+  {
+    "file": "Space Shuttle (Taito do Brasil - 1982) v4.vbs.original",
+    "sha256": "e92a1a78ebe9ae839a98468797fa8801e09fa5ad4ce995900f4ba84cfb88a2fa",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Space Shuttle (Taito do Brasil - 1982) v4/Space Shuttle (Taito do Brasil - 1982) v4.vbs.original",
+    "patched": {
+      "file": "Space Shuttle (Taito do Brasil - 1982) v4.vbs",
+      "sha256": "0f28e58536d82f1ff40be7463a54ce9aad3096469632cf69de9bc8f2e095a200",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Space Shuttle (Taito do Brasil - 1982) v4/Space Shuttle (Taito do Brasil - 1982) v4.vbs"
+    }
+  },
+  {
+    "file": "Space Shuttle (Williams 1984).vbs.original",
+    "sha256": "d4bf74c9f42617c96f2a1675113ef115bf1f8eaa293030aa6b79183e321cca57",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Space Shuttle (Williams 1984)2.0/Space Shuttle (Williams 1984).vbs.original",
+    "patched": {
+      "file": "Space Shuttle (Williams 1984).vbs",
+      "sha256": "91e15d488be3f71c40324abbad2612c0b1dbe5f0f9b0813a292b8db1ea3e2ab2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Space Shuttle (Williams 1984)2.0/Space Shuttle (Williams 1984).vbs"
+    }
+  },
+  {
+    "file": "SpaceRamp (SuperEd) v3.03b.vbs.original",
+    "sha256": "335d605f5fbad861320a0946a918119c9c1d27c71a26039c63cd8002616f8411",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SpaceRamp (SuperEd) v3.03b/SpaceRamp (SuperEd) v3.03b.vbs.original",
+    "patched": {
+      "file": "SpaceRamp (SuperEd) v3.03b.vbs",
+      "sha256": "9d11a20027517869018af659f818cae74b5c86ec546b2f4df4a6fce3ac263d10",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SpaceRamp (SuperEd) v3.03b/SpaceRamp (SuperEd) v3.03b.vbs"
+    }
+  },
+  {
+    "file": "Spooky Wednesday Pro.vbs.original",
+    "sha256": "5e50ab644e510f2d3aa62d775ebd61e78de62e21d18429143cfeade37df97e5c",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Spooky Wednesday Pro/Spooky Wednesday Pro.vbs.original",
+    "patched": {
+      "file": "Spooky Wednesday Pro.vbs",
+      "sha256": "bf2989d2eea4302d89a5cb05dfb67f9d54507afb18be876f0a6f6db9e9135192",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Spooky Wednesday Pro/Spooky Wednesday Pro.vbs"
+    }
+  },
+  {
+    "file": "Spooky_Wednesday VPX 2024.vbs.original",
+    "sha256": "8b90f0a32b4bcfc425d0af93ba90161be6d6fafa08b0b323cad467eea141a694",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Spooky_Wednesday VPX 2024/Spooky_Wednesday VPX 2024.vbs.original",
+    "patched": {
+      "file": "Spooky_Wednesday VPX 2024.vbs",
+      "sha256": "5d1b5822963f33f710cce5e13d7d2eccedcbbfc764a9e9fe613c6d814dc457c0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Spooky_Wednesday VPX 2024/Spooky_Wednesday VPX 2024.vbs"
+    }
+  },
+  {
+    "file": "Star Trek (Bally 1979) 2.1.1.vbs.original",
+    "sha256": "34c797cc9f27ed8a4f329d5f4f53bb12cbe51afa765ba38703ed0cc90c0d8bc6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Star Trek (Bally 1979) 2.1.1/Star Trek (Bally 1979) 2.1.1.vbs.original",
+    "patched": {
+      "file": "Star Trek (Bally 1979) 2.1.1.vbs",
+      "sha256": "66f43c41af0f7768fa8170d0c594c1bc188f6e98c2b3c8fdafd8e79253ba9f92",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Star Trek (Bally 1979) 2.1.1/Star Trek (Bally 1979) 2.1.1.vbs"
+    }
+  },
+  {
+    "file": "Star Wars (Data East 1992) VPW v1.2.2.vbs.original",
+    "sha256": "1d5252b9ef7d1d00646df732661a07b384d6d5cb14798ff86337a00de1c7d144",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Star Wars (Data East 1992) VPW v1.2.2/Star Wars (Data East 1992) VPW v1.2.2.vbs.original",
+    "patched": {
+      "file": "Star Wars (Data East 1992) VPW v1.2.2.vbs",
+      "sha256": "0eee9e0569ccfbffab55b9a0d52b92594618b80c20711fee68b3bcbdeca6f9fa",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Star Wars (Data East 1992) VPW v1.2.2/Star Wars (Data East 1992) VPW v1.2.2.vbs"
+    }
+  },
+  {
+    "file": "StarWars BountyHunter 3.02.vbs.original",
+    "sha256": "16dc9dadcb82b95d9b03ad7208b96c6fd4a95fc8c7c4c953259c07157f65bd5d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/StarWars BountyHunter 3.02/StarWars BountyHunter 3.02.vbs.original",
+    "patched": {
+      "file": "StarWars BountyHunter 3.02.vbs",
+      "sha256": "5ea74184c202a5f276bd220c7e9d5f7191904d9bb21840a494ef07ea08e972c9",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/StarWars BountyHunter 3.02/StarWars BountyHunter 3.02.vbs"
+    }
+  },
+  {
+    "file": "Stardust (Williams 1971) v4.vbs.original",
+    "sha256": "c2b5178dcf16a88d48d3b7149bbc14a6b776c7030d29f8d1967194d7d0087949",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stardust (Williams 1971) v4/Stardust (Williams 1971) v4.vbs.original",
+    "patched": {
+      "file": "Stardust (Williams 1971) v4.vbs",
+      "sha256": "06698de7c28d7a50a8d471f9b572b609d91cb5b8b0323caee14e78477c760b03",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stardust (Williams 1971) v4/Stardust (Williams 1971) v4.vbs"
+    }
+  },
+  {
+    "file": "Stars (Stern 1978).vbs.original",
+    "sha256": "82ea40733a60135c298d59b19548fb6086175af62923009fdaf5ae255ffcbc72",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stars (Stern 1978)1.0.2/Stars (Stern 1978).vbs.original",
+    "patched": {
+      "file": "Stars (Stern 1978).vbs",
+      "sha256": "d4b3487c7ff635e9f62f16160790680412e17ead2d01310b4327429a0c13f5cf",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stars (Stern 1978)1.0.2/Stars (Stern 1978).vbs"
+    }
+  },
+  {
+    "file": "Starship Troopers (Sega 1997) VPW Mod v2.0.vbs.original",
+    "sha256": "e97088ef82faf82205fbb080dac0f8489370ec03364cedc7d5b3f26bd5b03c3a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Starship Troopers (Sega 1997) VPW Mod v2.0/Starship Troopers (Sega 1997) VPW Mod v2.0.vbs.original",
+    "patched": {
+      "file": "Starship Troopers (Sega 1997) VPW Mod v2.0.vbs",
+      "sha256": "b2baeee7c3cdfa84438c572c5d9519925a7df077ebce92758802ad58546111c1",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Starship Troopers (Sega 1997) VPW Mod v2.0/Starship Troopers (Sega 1997) VPW Mod v2.0.vbs"
+    }
+  },
+  {
+    "file": "Stingray (Stern 1977).vbs.original",
+    "sha256": "94c1e8a3444862ffb953b0813fd1034ae525c6a3978e291fb3a7a45304abbf77",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stingray (Stern 1977) 2.0/Stingray (Stern 1977).vbs.original",
+    "patched": {
+      "file": "Stingray (Stern 1977).vbs",
+      "sha256": "c317abf476428d15ba8e0502c94f0232d2769f0f2ac16fa2b3d4ade055917960",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stingray (Stern 1977) 2.0/Stingray (Stern 1977).vbs"
+    }
+  },
+  {
+    "file": "Stranger Things - SE 1.47_OSB.vbs.original",
+    "sha256": "3b7c854c4e8e0c020063f1f34d53e001a104ebc16c1abd677d377abc0cf38931",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things - SE 1.47_OSB/Stranger Things - SE 1.47_OSB.vbs.original",
+    "patched": {
+      "file": "Stranger Things - SE 1.47_OSB.vbs",
+      "sha256": "fdc90baac6023a3b7d798a92820f9078b558c3e914a2b52f772254b1bb8495a0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things - SE 1.47_OSB/Stranger Things - SE 1.47_OSB.vbs"
+    }
+  },
+  {
+    "file": "Strikes And Spares (Bally 1978) 2.0.vbs.original",
+    "sha256": "6bc25adacccd9895a857d8420fee6dfff1374bbfdc43570bbcfe16bd07a8b087",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Strikes And Spares (Bally 1978) 2.0/Strikes And Spares (Bally 1978) 2.0.vbs.original",
+    "patched": {
+      "file": "Strikes And Spares (Bally 1978) 2.0.vbs",
+      "sha256": "030ae9c1c199375a4d7deaa95005ea31f3fb102f51fd71275cd18c67088ae75f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Strikes And Spares (Bally 1978) 2.0/Strikes And Spares (Bally 1978) 2.0.vbs"
+    }
+  },
+  {
+    "file": "Strip Joker Poker (Gottlieb 1978) 1.5.vbs.original",
+    "sha256": "7af05ea408eb9e690090c3e08ea0fbc48189c3ae3187fc89927db46b8c13567e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Strip-Joker-Poker-(Gottlieb-1978)-1.5/Strip Joker Poker (Gottlieb 1978) 1.5.vbs.original",
+    "patched": {
+      "file": "Strip Joker Poker (Gottlieb 1978) 1.5.vbs",
+      "sha256": "f5774aad215a773d520899d191f921e382434b75ec5775bc99351ec5622d92e8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Strip-Joker-Poker-(Gottlieb-1978)-1.5/Strip Joker Poker (Gottlieb 1978) 1.5.vbs"
+    }
+  },
+  {
+    "file": "Student Prince (Williams 1968).vbs.original",
+    "sha256": "fd4f1483d8bb8814cd400b1fa227cac174a625277c4c474df4f9cb3184a35272",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Student Prince (Williams 1968)/Student Prince (Williams 1968).vbs.original",
+    "patched": {
+      "file": "Student Prince (Williams 1968).vbs",
+      "sha256": "0d0368efe118d66ce0acaf09519885c07ae3e8e807eeeb5187bcca940370d29b",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Student Prince (Williams 1968)/Student Prince (Williams 1968).vbs"
+    }
+  },
+  {
+    "file": "Super Star (Williams 1972) v4.3.vbs.original",
+    "sha256": "a7551199b2f8e3b7d256cac68ba8f1e3310f9e400b2be30c0e75886db63d7a9e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Super Star (Williams 1972) v4.3/Super Star (Williams 1972) v4.3.vbs.original",
+    "patched": {
+      "file": "Super Star (Williams 1972) v4.3.vbs",
+      "sha256": "d808dd945f75dbf8c72dff18e01d38bc0905cb010ff1cf0e7bcdcdb9067fb476",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Super Star (Williams 1972) v4.3/Super Star (Williams 1972) v4.3.vbs"
+    }
+  },
+  {
+    "file": "Surf'n Safari v1.3.4.vbs.original",
+    "sha256": "1a5cf9d31feb4eeeddce06e05ba3a8e87e4b5438cff5cc8b5423cd12d0b8d791",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Surf'n Safari v1.3.4/Surf'n Safari v1.3.4.vbs.original",
+    "patched": {
+      "file": "Surf'n Safari v1.3.4.vbs",
+      "sha256": "fe695e9b9e20df81e9c72b357077c8b7d150a57aeea4c5ac5c053ae2a1731b95",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Surf'n Safari v1.3.4/Surf'n Safari v1.3.4.vbs"
+    }
+  },
+  {
+    "file": "Swords of Fury (Williams 1988).vbs.original",
+    "sha256": "719ed65888f146764f9490baea54f55d2acd210fbe807943823f2df89bacc717",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Swords of Fury (Williams 1988)/Swords of Fury (Williams 1988).vbs.original",
+    "patched": {
+      "file": "Swords of Fury (Williams 1988).vbs",
+      "sha256": "2fe98c70809b636d58d23acd4f6e140f0d1f40c85035b3bcaf9ed4416229d055",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Swords of Fury (Williams 1988)/Swords of Fury (Williams 1988).vbs"
+    }
+  },
+  {
+    "file": "Tales from the Crypt (Data East 1993) VPW v1.22.vbs.original",
+    "sha256": "3b922d69bc9e6c7c3cd5dead7a35b538b526b97c99f62f95bbb6fda2bc2107c2",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Tales from the Crypt (Data East 1993) VPW v1.22/Tales from the Crypt (Data East 1993) VPW v1.22.vbs.original",
+    "patched": {
+      "file": "Tales from the Crypt (Data East 1993) VPW v1.22.vbs",
+      "sha256": "c9225a861e93e208963468c69090142bdca2c676dc30e2a2e4f82a014ae6c805",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Tales from the Crypt (Data East 1993) VPW v1.22/Tales from the Crypt (Data East 1993) VPW v1.22.vbs"
+    }
+  },
+  {
+    "file": "Taxi (Williams 1988) VPW v1.2.2.vbs.original",
+    "sha256": "526c9a94eb09d9aef89796deb1c99c63822e14e7b522b011c0adce7f362d706e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Taxi (Williams 1988) VPW v1.2.2/Taxi (Williams 1988) VPW v1.2.2.vbs.original",
+    "patched": {
+      "file": "Taxi (Williams 1988) VPW v1.2.2.vbs",
+      "sha256": "021693171f198ef492f7c376cebce15ab44e88ba1b93e04ae297a63f9a0694ae",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Taxi (Williams 1988) VPW v1.2.2/Taxi (Williams 1988) VPW v1.2.2.vbs"
+    }
+  },
+  {
+    "file": "VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs.original",
+    "sha256": "33aaf9c0d4b89d15b57a0295f568f8fcce3381035f0749a9a0cd05981802e8b6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Terminator 3 (Stern 2003) Hanibal v1.5/VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs.original",
+    "patched": {
+      "file": "VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs",
+      "sha256": "b38d47519799d4d489dfdb5932e5f073e497f013839e144ddb8e7f8c235292aa",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Terminator 3 (Stern 2003) Hanibal v1.5/VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs"
+    }
+  },
+  {
+    "file": "The Beatles_007.vbs.original",
+    "sha256": "090c4170f75f921a1b1ea46cfb8aa8c102a955f784777f7251786b7a75a52415",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Beatles_007/The Beatles_007.vbs.original",
+    "patched": {
+      "file": "The Beatles_007.vbs",
+      "sha256": "9947ecf33271f3e49c781299000c80c1be1e23fc5a9be5d85dbe4cdea795e556",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Beatles_007/The Beatles_007.vbs"
+    }
+  },
+  {
+    "file": "The Fifth Element 1.3.vbs.original",
+    "sha256": "baa03191f9e45e17d9672f7d4c2ee456b94f9eb792adc23f776860c9fb24d7db",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Fifth Element 1.3/The Fifth Element 1.3.vbs.original",
+    "patched": {
+      "file": "The Fifth Element 1.3.vbs",
+      "sha256": "23ff50b386f4f246e24c8068dcd985305bec7c47cea34107b8764a60cd498eeb",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Fifth Element 1.3/The Fifth Element 1.3.vbs"
+    }
+  },
+  {
+    "file": "The Grinch (Original 2022) pinballfan2018.vbs.original",
+    "sha256": "5fe0dbb3b84b16732c1092772eb78e1de4735c9d49bc746609d15da0dbada1f8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Grinch - Original 2022/The Grinch (Original 2022) pinballfan2018.vbs.original",
+    "patched": {
+      "file": "The Grinch (Original 2022) pinballfan2018.vbs",
+      "sha256": "6ff9b91428f8a68022280306f973a33af05dcb3e478f925df6dc5965dbac41d2",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Grinch - Original 2022/The Grinch (Original 2022) pinballfan2018.vbs"
+    }
+  },
+  {
+    "file": "The Phantom Of The Opera (Data East 1990).vbs.original",
+    "sha256": "4d266c67bc424cb10c2b899058572a82b4f8446e9eb8536428f9b394d62b4408",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Phantom Of The Opera (Data East 1990)/The Phantom Of The Opera (Data East 1990).vbs.original",
+    "patched": {
+      "file": "The Phantom Of The Opera (Data East 1990).vbs",
+      "sha256": "318fe56e1b991d34cf39827e353da98f1e08d20cc44ae9209e0c4bf7bbdd8263",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Phantom Of The Opera (Data East 1990)/The Phantom Of The Opera (Data East 1990).vbs"
+    }
+  },
+  {
+    "file": "TheATeam.vbs.original",
+    "sha256": "a2eb9499500c9e6adb09e363a2b98e7a52638617031a40d2870e845eae0506fe",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_2.0.7/TheATeam.vbs.original",
+    "patched": {
+      "file": "TheATeam.vbs",
+      "sha256": "73c4a84693870e91c7f6fd531bf21d24a0762db0fe3bd4c332a5ac35ec2b8706",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_2.0.7/TheATeam.vbs"
+    }
+  },
+  {
+    "file": "TheATeam.vbs.original",
+    "sha256": "3ba2a5a0a9f8d831ade2f9dea49d94e213d9905c74ead6649abe765bb9d6817c",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_2.0.8/TheATeam.vbs.original",
+    "patched": {
+      "file": "TheATeam.vbs",
+      "sha256": "4e76f373ffbbcec1f3b2b81e5c039bf29b09b77c84f6d817debc25951bd6785b",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_2.0.8/TheATeam.vbs"
+    }
+  },
+  {
+    "file": "TheATeam.vbs.original",
+    "sha256": "92e710516b102e724289f097e9dda7ed28943b1b709164589b8afb65d9a1b919",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_3.0.0/TheATeam.vbs.original",
+    "patched": {
+      "file": "TheATeam.vbs",
+      "sha256": "00ce66429cb887f01c699c514bf90608cc4d5cfca8b5e848c971dbc1d931fcec",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_3.0.0/TheATeam.vbs"
+    }
+  },
+  {
+    "file": "Theatre of Magic (Bally 1995) 2.4.vbs.original",
+    "sha256": "88babcfa830129a4f9d74f0dac20f00757492c9a0b27271ab4016880c26d5ae7",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Theatre of Magic (Bally 1995) 2.4/Theatre of Magic (Bally 1995) 2.4.vbs.original",
+    "patched": {
+      "file": "Theatre of Magic (Bally 1995) 2.4.vbs",
+      "sha256": "70b44beec36778d199662b5e7d4cbf7368ac3c92a286f0f3231c487c714a0336",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Theatre of Magic (Bally 1995) 2.4/Theatre of Magic (Bally 1995) 2.4.vbs"
+    }
+  },
+  {
+    "file": "Three Angels (Original 2018) 1.3.vbs.original",
+    "sha256": "ffeda750a27522036f5fdd36baafbf96ce46079524e12c005e7da555ef90197d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Three Angels (Original 2018) 1.3/Three Angels (Original 2018) 1.3.vbs.original",
+    "patched": {
+      "file": "Three Angels (Original 2018) 1.3.vbs",
+      "sha256": "7dfa4df0485d713f6bf4c4f803dbbef335430d984c3cd3209140f1060777c2f6",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Three Angels (Original 2018) 1.3/Three Angels (Original 2018) 1.3.vbs"
+    }
+  },
+  {
+    "file": "Three Angels (Original 2018) LW.vbs.original",
+    "sha256": "bfbac8f55c7484b4af4e4ffb7864118e249cbc12ffdde6ffeac9910baf23c0cc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Three Angels (Original 2018) LW/Three Angels (Original 2018) LW.vbs.original",
+    "patched": {
+      "file": "Three Angels (Original 2018) LW.vbs",
+      "sha256": "b8495a176dd0815f3801b962af7d54ff4ec09ae898d9d06bb8154b2605638cc0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Three Angels (Original 2018) LW/Three Angels (Original 2018) LW.vbs"
+    }
+  },
+  {
+    "file": "Thunderbirds original 2022 v1.0.2.vbs.original",
+    "sha256": "8840f0285a0dcba0aec029178d5002ff81c6eceae87ca195e20737787d104616",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Thunderbirds original 2022 v1.0.2/Thunderbirds original 2022 v1.0.2.vbs.original",
+    "patched": {
+      "file": "Thunderbirds original 2022 v1.0.2.vbs",
+      "sha256": "db59b2705986a820a5b4be63bd71f87b987791279dde2c27eabf94ef28d2dff5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Thunderbirds original 2022 v1.0.2/Thunderbirds original 2022 v1.0.2.vbs"
+    }
+  },
+  {
+    "file": "TimonPumbaa.vbs.original",
+    "sha256": "a234fab444f8642e08431b51e73b6f1cd3cc90ecd694b5ccc90536c5b7747d7b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TimonPumbaa/TimonPumbaa.vbs.original",
+    "patched": {
+      "file": "TimonPumbaa.vbs",
+      "sha256": "6a1f6d398a22fc41fe659cfe3a542c0ebf346e7f1d6048d17633a2fb831958ef",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TimonPumbaa/TimonPumbaa.vbs"
+    }
+  },
+  {
+    "file": "Titan (Taito do Brasil - 1981) v4.vbs.original",
+    "sha256": "48146d55d4dc104291837c10028b2503861c5cef7ebd649ebb5fd7590e35922b",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Titan (Taito do Brasil - 1981) v4/Titan (Taito do Brasil - 1981) v4.vbs.original",
+    "patched": {
+      "file": "Titan (Taito do Brasil - 1981) v4.vbs",
+      "sha256": "ed264f86636fb7eb1e97911d2dc4faa4ad722569f3b72f0a78dc257b261835e4",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Titan (Taito do Brasil - 1981) v4/Titan (Taito do Brasil - 1981) v4.vbs"
+    }
+  },
+  {
+    "file": "Topaz (Inder 1979).vbs.original",
+    "sha256": "dee20d4ac44c860c1c31bd2f569567e80bf18d99f8814a5e56424ec4afc5c9c4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Topaz (Inder 1979)/Topaz (Inder 1979).vbs.original",
+    "patched": {
+      "file": "Topaz (Inder 1979).vbs",
+      "sha256": "095f15d236f5deed5e99b8d2945e3916290877f55e5a642e71947245ff74d93d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Topaz (Inder 1979)/Topaz (Inder 1979).vbs"
+    }
+  },
+  {
+    "file": "Transporter the Rescue (Midway 1989) VPW v1.05.vbs.original",
+    "sha256": "7d9ccd23ff7009f163095e025079b65a5deb9ec6676624784362f90be9c3a3de",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Transporter the Rescue (Midway 1989) VPW v1.05/Transporter the Rescue (Midway 1989) VPW v1.05.vbs.original",
+    "patched": {
+      "file": "Transporter the Rescue (Midway 1989) VPW v1.05.vbs",
+      "sha256": "504feaf6037e677704862b7194bca72fbd8f97b3a81b716b224af88693863b21",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Transporter the Rescue (Midway 1989) VPW v1.05/Transporter the Rescue (Midway 1989) VPW v1.05.vbs"
+    }
+  },
+  {
+    "file": "Truck Stop (Bally 1988) v2.1.0.vbs.original",
+    "sha256": "34f09ea31700282afb8544439be9846cfa7b58c17dff027f128e2ad38a731eda",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Truck Stop (Bally 1988) v2.1.0/Truck Stop (Bally 1988) v2.1.0.vbs.original",
+    "patched": {
+      "file": "Truck Stop (Bally 1988) v2.1.0.vbs",
+      "sha256": "dac137d64e48c0b0fc5d83362856617efc8d8de4c0c737ee77e00ec398f02eea",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Truck Stop (Bally 1988) v2.1.0/Truck Stop (Bally 1988) v2.1.0.vbs"
+    }
+  },
+  {
+    "file": "Twilight Zone (Bally 1993) 2.3.6.vbs.original",
+    "sha256": "8af8043d62d87d300a9ae93c43bc2949797f4594e7db6208c8a2aee7347fef17",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twilight Zone (Bally 1993) 2.3.6/Twilight Zone (Bally 1993) 2.3.6.vbs.original",
+    "patched": {
+      "file": "Twilight Zone (Bally 1993) 2.3.6.vbs",
+      "sha256": "ed7bde116fd847f0be261e56cf8961a93d482b8ba34d396db4c424575057ba05",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twilight Zone (Bally 1993) 2.3.6/Twilight Zone (Bally 1993) 2.3.6.vbs"
+    }
+  },
+  {
+    "file": "Twister (Sega 1996) v2.0 w VR Room.vbs.original",
+    "sha256": "709bd2fdfb8123e126e71efa0ae08628bbe74b024bc6f4f4a0b6eb4f4361a0c5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twister (Sega 1996) v2.0 w VR Room/Twister (Sega 1996) v2.0 w VR Room.vbs.original",
+    "patched": {
+      "file": "Twister (Sega 1996) v2.0 w VR Room.vbs",
+      "sha256": "974965b4c89095b69a356ac1af0a07ed0903e6acf77201fb0046b255cd899c70",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twister (Sega 1996) v2.0 w VR Room/Twister (Sega 1996) v2.0 w VR Room.vbs"
+    }
+  },
+  {
+    "file": "UT99CTF_GE_2.3.vbs.original",
+    "sha256": "21bd1336217374daa6c34a9a5106ed217e7f0d22fb26c269ab2cb84fb3af89fe",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/UT99CTF_GE_2.3/UT99CTF_GE_2.3.vbs.original",
+    "patched": {
+      "file": "UT99CTF_GE_2.3.vbs",
+      "sha256": "0794a62db9a312dfa8400a0e9d7b5adcea1bce807de6d854e6cd8dcf7cf43dac",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/UT99CTF_GE_2.3/UT99CTF_GE_2.3.vbs"
+    }
+  },
+  {
+    "file": "Vampirella.vbs.original",
+    "sha256": "5f672d49cf10e5fd48007c841d8ea5be4f915b01beac0140154d7af58bbb30f9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Vampirella/Vampirella.vbs.original",
+    "patched": {
+      "file": "Vampirella.vbs",
+      "sha256": "548c8386c19889d7ef57b17ef9d8471aad5f5afd345b953bd56c8071479cef5e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Vampirella/Vampirella.vbs"
+    }
+  },
+  {
+    "file": "Victory (Gottlieb 1987) 2.0.2.vbs.original",
+    "sha256": "33dbe34f5a135cd9bbfd456ca8ab32c62274d21b3817a168a1b1cbfbfc63e554",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Victory (Gottlieb 1987) 2.0.2/Victory (Gottlieb 1987) 2.0.2.vbs.original",
+    "patched": {
+      "file": "Victory (Gottlieb 1987) 2.0.2.vbs",
+      "sha256": "1b1a70ff6b119bb36815d93efa030014a5cd33ffa57e1fbe84b2f495ab84d8ca",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Victory (Gottlieb 1987) 2.0.2/Victory (Gottlieb 1987) 2.0.2.vbs"
+    }
+  },
+  {
+    "file": "Viking (Bally 1980).vbs.original",
+    "sha256": "cf74c98d19ab60206d5a49ca56781543c14fdf1a692f11a633aac23580769473",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Viking (Bally 1980)/Viking (Bally 1980).vbs.original",
+    "patched": {
+      "file": "Viking (Bally 1980).vbs",
+      "sha256": "f79b234e063473031e41bbd0aea946b1244921fd5fe1a646784c43e4f478f796",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Viking (Bally 1980)/Viking (Bally 1980).vbs"
+    }
+  },
+  {
+    "file": "Vortex (Taito do Brasil - 1981) v4.vbs.original",
+    "sha256": "60207a9a222c324433bc137bdcf11f79faeb60b21c307eef76ea99eaba4eb728",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Vortex (Taito do Brasil - 1981) v4/Vortex (Taito do Brasil - 1981) v4.vbs.original",
+    "patched": {
+      "file": "Vortex (Taito do Brasil - 1981) v4.vbs",
+      "sha256": "736d12af53a749d95119dfab37f71257ed56066778493a115d58b9b0d3f26628",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Vortex (Taito do Brasil - 1981) v4/Vortex (Taito do Brasil - 1981) v4.vbs"
+    }
+  },
+  {
+    "file": "Wheel of Fortune (Stern 2007) 1.0.vbs.original",
+    "sha256": "40e7363dd933c2c0a2eed943c4467bfa6398178fd412c180c0b7bb854eccda58",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wheel of Fortune (Stern 2007) 1.0/Wheel of Fortune (Stern 2007) 1.0.vbs.original",
+    "patched": {
+      "file": "Wheel of Fortune (Stern 2007) 1.0.vbs",
+      "sha256": "d58cd58ffe1721f7364135640646b43b589447d5c67473a3524144690cf5b2a4",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wheel of Fortune (Stern 2007) 1.0/Wheel of Fortune (Stern 2007) 1.0.vbs"
+    }
+  },
+  {
+    "file": "World Poker Tour (Stern 2006)_Bigus(MOD)1.0.vbs.original",
+    "sha256": "2129937bb59d832d454159721aaf0a935101342b88f977f7d4c867c982fbb695",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/World Poker Tour (Stern 2006)_Bigus(MOD)1.0/World Poker Tour (Stern 2006)_Bigus(MOD)1.0.vbs.original",
+    "patched": {
+      "file": "World Poker Tour (Stern 2006)_Bigus(MOD)1.0.vbs",
+      "sha256": "83963d0258133b4b018baea89dbddcdeb3366b6a3c147dcb4719df02040d8350",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/World Poker Tour (Stern 2006)_Bigus(MOD)1.0/World Poker Tour (Stern 2006)_Bigus(MOD)1.0.vbs"
+    }
+  },
+  {
+    "file": "X-Files Hanibal 4k LED Edition.vbs.original",
+    "sha256": "900d2b1ec734c9c7b20d051df9cc1a0eec210e96f6d708b643cc4a4864447d67",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/X-Files Hanibal 4k LED Edition/X-Files Hanibal 4k LED Edition.vbs.original",
+    "patched": {
+      "file": "X-Files Hanibal 4k LED Edition.vbs",
+      "sha256": "63e44aa3ec2984a88c8e89beef5e04ff40cc85ff6d5704b0207df9e48fe29d79",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/X-Files Hanibal 4k LED Edition/X-Files Hanibal 4k LED Edition.vbs"
+    }
+  },
+  {
+    "file": "X-Men LE (Stern 2012) VPW v1.0.vbs.original",
+    "sha256": "6287b2815e21ab5aa13f776821e9ddc37c6ab3e0fef34e7c11f2b974a518747f",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/X-Men LE (Stern 2012) VPW v1.0/X-Men LE (Stern 2012) VPW v1.0.vbs.original",
+    "patched": {
+      "file": "X-Men LE (Stern 2012) VPW v1.0.vbs",
+      "sha256": "272219fd0a37b118cd1b61012d216a37a4b69906be5a147ed6ba9519e867ed1a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/X-Men LE (Stern 2012) VPW v1.0/X-Men LE (Stern 2012) VPW v1.0.vbs"
+    }
+  },
+  {
+    "file": "You’ll Shoot Your Eye Out! (Shag 2024).vbs.original",
+    "sha256": "551504ab9b798723ccf8b08ace664df7bd62a69121bdd9255d8d0ca95c90976e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/You’ll Shoot Your Eye Out! (Shag 2024)/You’ll Shoot Your Eye Out! (Shag 2024).vbs.original",
+    "patched": {
+      "file": "You’ll Shoot Your Eye Out! (Shag 2024).vbs",
+      "sha256": "00d6387ab9a0a92784d8d04623e1ede9e057ef6f9e76ce0b8ab3cbbdd867c7a5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/You’ll Shoot Your Eye Out! (Shag 2024)/You’ll Shoot Your Eye Out! (Shag 2024).vbs"
+    }
+  },
+  {
+    "file": "Cybernaut darkmod.vbs.original",
+    "sha256": "d9f206967d11b85fe5c16e84afa62776531854e056e080302dc1288d4ae7f770",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/cybernaut Bally/Cybernaut darkmod.vbs.original",
+    "patched": {
+      "file": "Cybernaut darkmod.vbs",
+      "sha256": "48fc443d4751c186e4aa7b2ca092564eccc71649130ef80f2f6af1bfe2267312",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/cybernaut Bally/Cybernaut darkmod.vbs"
+    }
+  },
+  {
+    "file": "Cybernaut.vbs.original",
+    "sha256": "a1080c56700410add2b372e2bf6b3a5ddec57f217fdf06a54714a09c7ca6d9b4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/cybernaut Bally/Cybernaut.vbs.original",
+    "patched": {
+      "file": "Cybernaut.vbs",
+      "sha256": "57401ecbb7439944b3334f4b4049591d4504066f9148d8456b2284ac2caab8a3",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/cybernaut Bally/Cybernaut.vbs"
+    }
+  },
+  {
+    "file": "fireball II VPX.vbs.original",
+    "sha256": "7785c6c7acbc9d162b57a317bfd5f68b37e0646a849ab400fb0965416bc8d409",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/fireball II VPX/fireball II VPX.vbs.original",
+    "patched": {
+      "file": "fireball II VPX.vbs",
+      "sha256": "f62f4a18642f7e6fc1307237cb8f24ca5906ce9d09a51c01fbc9b313372345e9",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/fireball II VPX/fireball II VPX.vbs"
+    }
+  },
+  {
+    "file": "pizzatime-65.vbs.original",
+    "sha256": "cae86bb619dac45caaa091b97f77fa6ad9fa8f6f6eed4a108319eb9ed2568ec8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/pizzatime-65/pizzatime-65.vbs.original",
+    "patched": {
+      "file": "pizzatime-65.vbs",
+      "sha256": "a7948318f9a0a80266f0e704785be472b77028db740b4d84226573c90b562cc8",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/pizzatime-65/pizzatime-65.vbs"
+    }
+  },
+  {
+    "file": "speakeasy2.vbs.original",
+    "sha256": "e6497d112317972226b9795d2a965f88422b52677d6227b13d2efd5d0ae9ed28",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/speakeasy2/speakeasy2.vbs.original",
+    "patched": {
+      "file": "speakeasy2.vbs",
+      "sha256": "b663e084a5097cff78fe7d610e192f048ae068e8ae25d3b032493c925fb7fc8b",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/speakeasy2/speakeasy2.vbs"
+    }
+  },
+  {
+    "file": "speakeasy4.vbs.original",
+    "sha256": "8bda9c0ee5f8e4797b3f4da9d03a6c0a7309b0df4bca1a0d6976df790366d3ad",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/speakeasy4/speakeasy4.vbs.original",
+    "patched": {
+      "file": "speakeasy4.vbs",
+      "sha256": "c6e66885f7a352280c214d3ec6076e0e7feafb379d2a136ae55045c911154dda",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/speakeasy4/speakeasy4.vbs"
+    }
+  },
+  {
+    "file": "tlk-0.35.vbs.original",
+    "sha256": "544d1aafc692dccaba6037bc85bcd17569d892c9879060424b9cca039aa207b4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/tlk-0.35/tlk-0.35.vbs.original",
+    "patched": {
+      "file": "tlk-0.35.vbs",
+      "sha256": "abb182e840b67048dd0100000f463105071936ebd003e62e3739bb62db7092fc",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/tlk-0.35/tlk-0.35.vbs"
+    }
+  },
+  {
+    "file": "wackyraces.vbs.original",
+    "sha256": "3dcaf92a79622af11e320b6e633fcaa2363344f3d7c6abe9e687e31cb442c6bc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/wackyraces/wackyraces.vbs.original",
+    "patched": {
+      "file": "wackyraces.vbs",
+      "sha256": "fa40a5685bc13fc2d8c6658f815636bd7090ec17197a78c33f6854d6488e477c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/wackyraces/wackyraces.vbs"
+    }
+  }
+]

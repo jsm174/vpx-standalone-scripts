@@ -1,10 +1,6 @@
---- Comet (Williams 1985) w VR Room v2.3.vbs.original	2023-07-10 15:06:30
-+++ Comet (Williams 1985) w VR Room v2.3.vbs	2023-07-10 15:03:06
-@@ -2232,7 +2232,39 @@
- '******************************************************
- '  DROP TARGETS INITIALIZATION
- '******************************************************
-+
+--- Comet (Williams 1985) w VR Room v2.3.vbs.original
++++ Comet (Williams 1985) w VR Room v2.3.vbs
+@@ -2235,0 +2236,32 @@
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -33,67 +29,29 @@
 +	  m_sw = sw
 +	  m_animate = animate
 +	  m_isDropped = isDropped
- 
++  
 +	  Set Init = Me
 +	End Function
 +End Class
- 
- 'Set array with drop target objects
- '
-@@ -2253,7 +2285,7 @@
- 
- Dim DT29
- 
+@@ -2256 +2288 @@
 -DT29 = Array(sw29, sw29a, sw29p, 29, 0)
 +Set DT29 = (new DropTarget)(sw29, sw29a, sw29p, 29, 0, false)
- 
- Dim DTArray
- DTArray = Array(DT29)
-@@ -2286,9 +2318,9 @@
- 	i = DTArrayID(switch)
- 
- 	PlayTargetSound
+@@ -2289,3 +2321,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 	DoDTAnim
- End Sub
-@@ -2297,7 +2329,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -2300 +2332 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -2305,14 +2337,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -2308 +2340 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -2315 +2347 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -2367,7 +2399,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -2370 +2402 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 

@@ -1,12 +1,6 @@
---- "Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs.original"	2025-02-19 19:37:06.829894178 +0100
-+++ "Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs"	2025-02-19 19:34:21.193378200 +0100
-@@ -657,7 +657,9 @@
- 				FlexDMD.LockRenderThread
- 					With FlexDMDScene
- 						For jj = 0 To 31
+--- Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs.original
++++ Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs
+@@ -659,0 +660 @@
 +							if Not IsEmpty(FlexDigits(jj)) then 
- 							.GetImage("Seg" & CStr(jj)).Bitmap = FlexDMD.NewImage("", FlexDMDDict.Item (FlexDigits(jj))).Bitmap
+@@ -660,0 +662 @@
 +							end if
- 						Next
- 					End With
- 				FlexDMD.UnlockRenderThread

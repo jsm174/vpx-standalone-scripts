@@ -1,11 +1,5 @@
---- "Grand Slam (Bally 1983) 2.3.vbs.original"	2024-02-06 12:04:48.249941258 +0100
-+++ "Grand Slam (Bally 1983) 2.3.vbs"	2024-02-06 12:04:07.536767513 +0100
-@@ -791,7 +791,7 @@
-          .AddFrame 187, 184, 160,"Flyaway 25K lite",&H00000040,Array("off at start",0,"on at start",&H00000040)                                                                                  'dip 7
-          .AddFrame 187, 230, 160,"Single & Double lite",&H00000020,Array("alternate",0,"always on",&H00000020)                                                                                   'dip 6
-          .AddFrame 372,   0, 160,"Runs to beat advances",&H00000080,Array("always on",0, "step off by 10",&H00000080)                                                                            'dip 8
+--- Grand Slam (Bally 1983) 2.3.vbs.original
++++ Grand Slam (Bally 1983) 2.3.vbs
+@@ -794 +794 @@
 -         .AddFrame 372,  46, 160,"Runs to beat",&H00700000,Array("20",&H00700000, "25",&H00600000, "30",&H00500000, "35",&H004000000, "40",&H00300000, "45",&H00200000, "50",&H00100000, "55",0) 'dip 21-23
 +         .AddFrame 372,  46, 160,"Runs to beat",&H00700000,Array("20",&H00700000, "25",&H00600000, "30",&H00500000, "35",&H00400000, "40",&H00300000, "45",&H00200000, "50",&H00100000, "55",0) 'dip 21-23
-          .AddFrame 372, 176, 160,"Flyaway special",&H00002000,Array("alternate",0,"always on",&H00002000)                                                                                        'dip 14
-          .AddFrame 372, 222, 160,"Maximum credits",&H03000000,Array("10 credits",0,"15 credits",&H01000000,"25 credits",&H02000000,"40 credits",&H03000000)                                      'dip 25&26
-          .AddChk 187, 279, 160,Array("Credits displayed",&H04000000)                                                                                                                             'dip 27

@@ -1,9 +1,6 @@
---- Three Angels (Original 2018) 1.3.vbs.original	2023-07-24 12:52:18
-+++ Three Angels (Original 2018) 1.3.vbs	2023-07-24 12:46:53
-@@ -291,6 +291,28 @@
- 
- Option Explicit				' Force explicit variable declaration
- 
+--- Three Angels (Original 2018) 1.3.vbs.original
++++ Three Angels (Original 2018) 1.3.vbs
+@@ -293,0 +294,22 @@
 +Sub ImplicitDMD_Init
 +   Me.x = 30
 +   Me.y = 30
@@ -26,63 +23,26 @@
 +   End If
 +End Sub
 +
- Dim VR_Room
- 
- '############-----VR Room-----############
-\ No newline at end of file
-@@ -300,7 +322,7 @@
- 
- '---------- UltraDMD Unique Table Color preference -------------
- Dim DMDColor, DMDColorSelect, UseFullColor
+@@ -303 +325 @@
 -Dim DMDPosition, DMDPosX, DMDPosY, DMDSize, DMDWidth, DMDHeight 
 +Dim DMDPosition, DMDPosX, DMDPosY, DMDSize, DMD_Width, DMD_Height 
- 
- 
- UseFullColor = "True" '                           "True" / "False"
-\ No newline at end of file
-@@ -311,8 +333,8 @@
- DMDPosY = 40                                     ' Position in Decimal
- 
- DMDSize = False                                     ' Use Manual DMD Size, True / False
+@@ -314,2 +336,2 @@
 -DMDWidth = 1276                                    ' Width in Decimal
 -DMDHeight = 684                                   ' Height in Decimal  
 +DMD_Width = 1276                                    ' Width in Decimal
 +DMD_Height = 684                                   ' Height in Decimal  
- 
- 'Note open Ultradmd and right click on window to get the various sizes in decimal 
- 
-\ No newline at end of file
-@@ -321,18 +343,17 @@
- Dim WshShell,filecheck,directory
- Set WshShell = CreateObject("WScript.Shell")
- If DMDSize then
+@@ -324,2 +346,2 @@
 -WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
 -WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
 +WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMD_Width,"REG_DWORD"
 +WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMD_Height,"REG_DWORD"
- End if
- If DMDPosition then
- WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
- WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
- End if
+@@ -331,2 +353,2 @@
 -WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 -WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
- End Sub
- '---------------------------------------------------
+@@ -337 +358,0 @@
 -
- 
- 
- ' Define any Constants 
-\ No newline at end of file
-@@ -62802,7 +62823,7 @@
- 	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
- 	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
- 	
+@@ -62805 +62826 @@
 -	AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
 +	AddScore(1000000 * DoorJackpotNumber)  'This jackpot is a little harder.
- 	bonuspoints(1)=bonuspoints(1)+100000
- 
- 
-\ No newline at end of file

@@ -1,9 +1,6 @@
---- "Darkest Dungeon pupevent_2.3c.vbs.original"	2024-08-12 16:20:09.345166175 +0200
-+++ "Darkest Dungeon pupevent_2.3c.vbs"	2024-08-12 16:17:02.134787830 +0200
-@@ -175,11 +175,11 @@
- '	Table1_exit
- 'End If
- 
+--- Darkest Dungeon pupevent_2.3c.vbs.original
++++ Darkest Dungeon pupevent_2.3c.vbs
+@@ -178,5 +178,5 @@
 -Dim pupPackScreenFile: pupPackScreenFile = PuPlayer.GetRoot & "DarkestDungeon\ScreenType.txt"
 -Dim ObjFso: Set ObjFso = CreateObject("Scripting.FileSystemObject")
 -Dim ObjFile: Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
@@ -14,6 +11,3 @@
 +' Dim ObjFile: Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
 +' Dim DMDType: DMDType = ObjFile.ReadLine
 +Dim DMDType: DMDType = 2
- 
- if DMDType = 2 Then
- 	PupScreen1 = 0 ' Do not use apron pupscreens

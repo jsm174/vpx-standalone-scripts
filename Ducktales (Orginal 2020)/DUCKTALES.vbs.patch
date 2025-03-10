@@ -1,11 +1,5 @@
---- DUCKTALES.vbs.original	2023-10-05 22:47:27.553088520 +0200
-+++ DUCKTALES.vbs	2023-10-05 22:47:11.376676396 +0200
-@@ -1710,7 +1710,7 @@
-                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, 3 + 16 + 2, 8, 8
-             Next
-             For i = 20 to 35 ' Bottom
+--- DUCKTALES.vbs.original
++++ DUCKTALES.vbs
+@@ -1713 +1713 @@
 -                DMDScene.GetImage("Dig" & i).SetBounds (i - 20) * 8, 3, 8, 16
 +                DMDScene.GetImage("Dig" & i).SetBounds ((i - 20) * 8), 3, 8, 16
-             Next
-             FlexDMD.LockRenderThread
-             FlexDMD.Stage.AddActor DMDScene

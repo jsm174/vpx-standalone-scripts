@@ -1,32 +1,14 @@
---- Cosmic (Taito do Brasil - 1980) v4.vbs.original	2024-03-16 23:28:47
-+++ Cosmic (Taito do Brasil - 1980) v4.vbs	2024-03-03 01:53:37
-@@ -56,7 +56,7 @@
- '************
- 
- Sub table1_Init
+--- Cosmic (Taito do Brasil - 1980) v4.vbs.original
++++ Cosmic (Taito do Brasil - 1980) v4.vbs
+@@ -59 +59 @@
 -NVramPatchLoad
 +'NVramPatchLoad
-     vpmInit me
-     With Controller
-         .GameName = cGameName
-@@ -122,7 +122,10 @@
- 
- Sub table1_Paused:Controller.Pause = 1:End Sub
- Sub table1_unPaused:Controller.Pause = 0:End Sub
+@@ -125 +125,4 @@
 -Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
 +Sub table1_exit
 +    'NVramPatchExit
 +    Controller.stop
 +End Sub
- 
- '**********
- ' Keys
-@@ -445,7 +448,7 @@
-     End If
-     UpdateLeds
-     UpdateLamps
+@@ -448 +451 @@
 -    NVramPatchKeyCheck
 +    'NVramPatchKeyCheck
- End Sub
- 
- Sub UpdateLamps()

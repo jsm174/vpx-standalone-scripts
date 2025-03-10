@@ -1,13 +1,7 @@
---- "Space Shuttle (Taito do Brasil - 1982) v4.vbs.original"	2024-04-13 09:16:01.286012032 +0200
-+++ "Space Shuttle (Taito do Brasil - 1982) v4.vbs"	2024-04-13 09:12:25.604229176 +0200
-@@ -962,9 +962,7 @@
- Dim NVramPatchCoinCnt
- 
- Function GetNVramPath()
+--- Space Shuttle (Taito do Brasil - 1982) v4.vbs.original
++++ Space Shuttle (Taito do Brasil - 1982) v4.vbs
+@@ -965,3 +965 @@
 -    Dim WshShell
 -    Set WshShell = CreateObject("WScript.Shell")
 -    GetNVramPath = WshShell.RegRead("HKCU\Software\Freeware\Visual PinMame\globals\nvram_directory")
 +    GetNVramPath = "pinmame\nvram"
- End function
- 
- Function FileExists(FileName)

@@ -1,18 +1,9 @@
---- "Spooky_Wednesday VPX 2024.vbs.original"	2024-10-10 17:17:45.844604100 +0200
-+++ "Spooky_Wednesday VPX 2024.vbs"	2024-10-10 17:12:22.623750252 +0200
-@@ -46,7 +46,7 @@
- 
- '************ PuP-Pack Startup **************
- 
+--- Spooky_Wednesday VPX 2024.vbs.original
++++ Spooky_Wednesday VPX 2024.vbs
+@@ -49 +49 @@
 -PuPStart(cPuPPack) 'Check for PuP - If found, then start Pinup Player / PuP-Pack
 +' PuPStart(cPuPPack) 'Check for PuP - If found, then start Pinup Player / PuP-Pack
- 
- 
- 
-@@ -97,21 +97,21 @@
- 
- 'Note open Ultradmd and right click on window to get the various sizes in decimal 
- 
+@@ -100,15 +100,15 @@
 -GetDMDColor
 -Sub GetDMDColor
 -Dim WshShell,filecheck,directory
@@ -43,38 +34,20 @@
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
 +' End Sub
- '---------------------------------------------------
- 
- 
-@@ -216,6 +216,8 @@
-     LoadEM
-     Dim i
-     Randomize
+@@ -218,0 +219,2 @@
 +    PuPStart(cPuPPack) 'Check for PuP - If found, then start Pinup Player / PuP-Pack
 +    InitPuP
-    '****************************************************************************************************************************************
-    'EVERYTHING FROM LINE THIS LINE TO LINE 415 IS EVERTHING THING THAT NEEDS TO BE SHUT OFF OR TURNED ON WHEN THE TABEL STARTS UP
-    '****************************************************************************************************************************************
-@@ -5080,11 +5082,11 @@
- '			Const pBackglassB2S = 2			
- 			Const pAudio=7
- 			Const pCallouts=8
+@@ -5083 +5085 @@
 -
 +Sub InitPuP
- 	if HasPuP Then
+@@ -5085,3 +5087,3 @@
 -	on error resume next
 -	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
 -	on error goto 0
 +	' on error resume next
 +	' Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
 +	' on error goto 0
- 	if not IsObject(PuPlayer) then HasPuP = False
- 	end If
- 
-@@ -5118,23 +5120,6 @@
- 	End If
- 	End If
- 
+@@ -5121,17 +5122,0 @@
 -	Sub chilloutthemusic
 -		If calloutlowermusicvol = 1 Then
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
@@ -92,13 +65,7 @@
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
 -		End If
 -	End Sub
- 
- 
- PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
-@@ -5188,7 +5173,26 @@
- PuPlayer.playlistadd pBackglass,"LostWizardMode", 1 , 2
- PuPlayer.playlistadd pBackglass,"SkillShot", 1 , 0
- End If
+@@ -5190,0 +5176,12 @@
 +End Sub
 +
 +
@@ -111,7 +78,7 @@
 +    vpmtimer.addtimer 4500, "turnitbackup'"
 +End If
 +End Sub
- 
+@@ -5191,0 +5189,7 @@
 +Sub turnitbackup
 +If calloutlowermusicvol = 1 Then
 +    PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":"&(videovol)&" }"
@@ -119,6 +86,3 @@
 +    PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
 +End If
 +End Sub
- 
- '*****************************************************
- '		 THINGS MAGNET AND BALL SAVE KICKER

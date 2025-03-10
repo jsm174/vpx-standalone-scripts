@@ -1,62 +1,25 @@
---- ./Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1/Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs.original	2023-06-02 16:12:14
-+++ ./Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1/Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs	2023-06-02 16:12:01
-@@ -4357,9 +4357,9 @@
- 	i = DTArrayID(switch)
- 
- '	PlaySoundAtVol  DTHitSound, Activeball, Vol(Activeball)*22.5
+--- Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs.original
++++ Indiana Jones The Pinball Adventure (Williams 1993) VPWmod v1.1.vbs
+@@ -4360,3 +4360,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 	DoDTAnim
- End Sub
-\ No newline at end of file
-@@ -4368,7 +4368,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -4371 +4371 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-\ No newline at end of file
-@@ -4376,14 +4376,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -4379 +4379 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -4386 +4386 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-\ No newline at end of file
-@@ -4492,7 +4492,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -4495 +4495 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-\ No newline at end of file
-@@ -4698,7 +4698,40 @@
- '******************************************************
- '		DROP TARGETS INITIALIZATION
- '******************************************************
-+
+@@ -4701,0 +4702,33 @@
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -71,7 +34,7 @@
 +
 +  Public Property Get Sw(): Sw = m_sw: End Property
 +  Public Property Let Sw(input): m_sw = input: End Property
- 
++
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
 +
@@ -90,16 +53,9 @@
 +  End Function
 +End Class
 +
- 'Define a variable for each drop target
- Dim DT115, DT116, DT117, DT11
- 
-\ No newline at end of file
-@@ -4717,11 +4750,12 @@
- '	animate:			Arrary slot for handling the animation instrucitons, set to 0
- '
- '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+@@ -4719,0 +4753 @@
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
- 
+@@ -4721,4 +4755,4 @@
 -DT11 = Array(sw11a,sw11b, p_sw11, 11, 0)
 -DT115 = Array(sw115a,sw115b, p_sw115, 115, 0)
 -DT116 = Array(sw116a,sw116b, p_sw116, 116, 0)
@@ -108,7 +64,3 @@
 +Set DT115 = (new DropTarget)(sw115a,sw115b, p_sw115, 115, 0, false)
 +Set DT116 = (new DropTarget)(sw116a,sw116b, p_sw116, 116, 0, false)
 +Set DT117 = (new DropTarget)(sw117a,sw117b, p_sw117, 117, 0, false)
- 
- 'Add all the Drop Target Arrays to Drop Target Animation Array
- ' DTAnimationArray = Array(DT1, DT2, ....)
-\ No newline at end of file

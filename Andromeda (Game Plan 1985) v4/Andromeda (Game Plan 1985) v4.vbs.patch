@@ -1,11 +1,5 @@
---- "Andromeda (Game Plan 1985) v4.vbs.original"	2024-03-25 15:26:28.645818924 +0100
-+++ "Andromeda (Game Plan 1985) v4.vbs"	2024-03-25 15:24:50.178807521 +0100
-@@ -922,7 +922,7 @@
-     Dim vpmDips:Set vpmDips = New cvpmDips
-     With vpmDips
-         .AddForm 700, 400, "Gameplan Andromeda - DIP switches"
+--- Andromeda (Game Plan 1985) v4.vbs.original
++++ Andromeda (Game Plan 1985) v4.vbs
+@@ -925 +925 @@
 -        .AddFrame 2, 0, 190, "Credits per coin", &H0000001F, Array("1 credit - 2 coins", &H000000031, "1 credit - 1 coin", &H00000002, "2 credits - 1 coin", &H00000004, "5 credits - 1 coin", &H0000000A) 'dip 1-5
 +        .AddFrame 2, 0, 190, "Credits per coin", &H0000001F, Array("1 credit - 2 coins", &H00000031, "1 credit - 1 coin", &H00000002, "2 credits - 1 coin", &H00000004, "5 credits - 1 coin", &H0000000A) 'dip 1-5
-         .AddFrame 2, 76, 190, "Maximum credits", &H06000000, Array("10 credits", 0, "20 credits", &H02000000, "30 credits", &H04000000, "40 credits", &H06000000)                                          'dip 26&27
-         .AddFrame 2, 152, 190, "High game to date award", &HC0000000, Array("no award", 0, "1 credit", &H40000000, "2 credits", &H80000000, "3 credits", &HC0000000)                                       'dip 31&32
-         .AddFrame 210, 0, 190, "Replay or free ball award", &H18000000, Array("no award", 0, "50,000 points", &H08000000, "extra ball", &H10000000, "replay", &H18000000)                                  'dip 28+29

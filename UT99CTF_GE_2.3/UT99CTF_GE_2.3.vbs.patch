@@ -1,9 +1,6 @@
---- UT99CTF_GE_2.3.vbs.original	2024-03-10 09:21:15.969584958 +0100
-+++ UT99CTF_GE_2.3.vbs	2024-02-29 22:01:28.129131293 +0100
-@@ -1203,10 +1203,10 @@
- 	scene.AddActor FlexDMD.NewLabel("Timer2", FontScoreInactive,"60")
- 	scene.GetLabel("Timer2").SetAlignedPosition 131, 0, FlexDMD_Align_TopRight
- 
+--- UT99CTF_GE_2.3.vbs.original
++++ UT99CTF_GE_2.3.vbs
+@@ -1206,4 +1206,4 @@
 -	scene.AddActor FlexDMD.NewImage("Arrow0", FlexPath & "SNA/Arrowup.png" )
 -	scene.AddActor FlexDMD.NewImage("Arrow1", FlexPath & "SNA/Arrowright.png" )
 -	scene.AddActor FlexDMD.NewImage("Arrow2", FlexPath & "SNA/Arrowdown.png" )
@@ -12,74 +9,27 @@
 +	scene.AddActor FlexDMD.NewImage("Arrow1", FlexPath & "SNA/arrowright.png" )
 +	scene.AddActor FlexDMD.NewImage("Arrow2", FlexPath & "SNA/arrowdown.png" )
 +	scene.AddActor FlexDMD.NewImage("Arrow3", FlexPath & "SNA/arrowleft.png" )
- 	scene.GetImage("Arrow0").visible=False
- 	scene.GetImage("Arrow1").visible=False
- 	scene.GetImage("Arrow2").visible=False
-@@ -1224,7 +1224,7 @@
- 	scene.GetLabel("Splash3").SetAlignedPosition 64,31, FlexDMD_Align_Center
- 
- 
+@@ -1227 +1227 @@
 -'	scene.AddActor FlexDMD.NewImage("Gameover", FlexPath & "SNA/gameover.png" )
 +'	scene.AddActor FlexDMD.NewImage("Gameover", FlexPath & "SNA/Gameover.png" )
- '	scene.AddActor FlexDMD.NewImage("Highscore", FlexPath & "SNA/highscore.png" )
- '	scene.GetImage("Gameover").visible=False
- '	scene.GetImage("Highscore").visible=False
-@@ -1234,7 +1234,7 @@
- 
- 	If Snakeover=1 Then
- 		Snakeover=2
+@@ -1237 +1237 @@
 -			Set title = FlexDMD.NewImage("Gameover", flexpath & "SNA/gameover.png" )
 +			Set title = FlexDMD.NewImage("Gameover", flexpath & "SNA/Gameover.png" )
- 			title.Visible = False
- 			Set af = title.ActionFactory
- 			Set list = af.Sequence()
-@@ -1270,7 +1270,7 @@
- 
- 	If snakelength=snakehigh  Then
- 			playsound "a38"
+@@ -1273 +1273 @@
 -			Set title = FlexDMD.NewImage("Highscore", flexpath & "SNA/highscore.png" )
 +			Set title = FlexDMD.NewImage("Highscore", flexpath & "SNA/Highscore.png" )
- 			title.Visible = False
- 			Set af = title.ActionFactory
- 			Set list = af.Sequence()
-@@ -1547,11 +1547,11 @@
- 	If SC(4,27)>2 Then playchamp=1
- 	If playchamp=1 Then
- 		endmusic
+@@ -1550 +1550 @@
 -		Playmusic "Unrealtournament/UT-Champions.mp3"
 +		Playmusic "UnrealTournament/UT-Champions.mp3"
- 		MusicVolume=Music_Volume
- 	Else
- 		EndMusic
+@@ -1554 +1554 @@
 -		Playmusic "Unrealtournament/UT-Menu.mp3"
 +		Playmusic "UnrealTournament/UT-Menu.mp3"
- 		MusicVolume=Music_Volume
- 
- 	End If
-@@ -11818,7 +11818,7 @@
- 	If initialmusic=0 or playchamp=1 Then
- 		playchamp=2
- 		initialmusic=1
+@@ -11821 +11821 @@
 -		Playmusic "Unrealtournament/UT-Menu.mp3"
 +		Playmusic "UnrealTournament/UT-Menu.mp3"
- 		MusicVolume=Music_Volume
- 	Else
- 		MusicOn
-@@ -11828,7 +11828,7 @@
- Sub MusicON
- 	EndMusic
- 	StopSound "AAOpeningVO" 
+@@ -11831 +11831 @@
 -	PlayMusic "Unrealtournament/UT" & int(rnd(1)*13)+1 & ".mp3"
 +	PlayMusic "UnrealTournament/UT" & int(rnd(1)*13)+1 & ".mp3"
- 	MusicVolume=Music_Volume*0.6
- End	Sub
- Dim voiceoveronce
-@@ -12449,7 +12449,7 @@
- 		Case 1 : 
- 
- 
+@@ -12452 +12452 @@
 -			If Frame = 330 Then	Playmusic "Unrealtournament/UT-Title.mp3" :	MusicVolume = Music_Volume
 +			If Frame = 330 Then	Playmusic "UnrealTournament/UT-Title.mp3" :	MusicVolume = Music_Volume
- 
-  			If Frame >475 Then 
- 				CreateIntroVideo2

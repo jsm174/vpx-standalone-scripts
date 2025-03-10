@@ -1,10 +1,6 @@
---- ./Doctor Who (Bally 1992) VPW Mod v1.1/Doctor Who (Bally 1992) VPW Mod v1.1.vbs.original	2023-06-02 16:20:11
-+++ ./Doctor Who (Bally 1992) VPW Mod v1.1/Doctor Who (Bally 1992) VPW Mod v1.1.vbs	2023-06-02 16:19:50
-@@ -1110,31 +1110,61 @@
- '******************************************************
- '		STAND-UP TARGET INITIALIZATION
- '******************************************************
-+
+--- Doctor Who (Bally 1992) VPW Mod v1.1.vbs.original
++++ Doctor Who (Bally 1992) VPW Mod v1.1.vbs
+@@ -1113,0 +1114,30 @@
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate, m_target
 +
@@ -16,7 +12,7 @@
 +
 +  Public Property Get Sw(): Sw = m_sw: End Property
 +  Public Property Let Sw(input): m_sw = input: End Property
- 
++
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
 +
@@ -35,22 +31,14 @@
 +End Class
 +
 +
- 'Define a variable for each stand-up target
- Dim ST41, ST42, ST43, ST44, ST45, ST46, ST51, ST52, ST53, ST54, ST55, ST56, ST58, ST71, ST72, ST73, ST74, ST75, ST78
- 
+@@ -1117,21 +1147,21 @@
 -ST41 = Array(sw41, psw41,41, 0, 79)
 -ST42 = Array(sw42, psw42,42, 0, 79)
 -ST43 = Array(sw43, psw43,43, 0, 79)
 -ST44 = Array(sw44, psw44,44, 0, 79)
 -ST45 = Array(sw45, psw45,45, 0, 79)
 -ST46 = Array(sw46, psw46,46, 0, 79)
-+Set ST41 = (new StandupTarget)(sw41, psw41,41, 0, 79)
-+Set ST42 = (new StandupTarget)(sw42, psw42,42, 0, 79)
-+Set ST43 = (new StandupTarget)(sw43, psw43,43, 0, 79)
-+Set ST44 = (new StandupTarget)(sw44, psw44,44, 0, 79)
-+Set ST45 = (new StandupTarget)(sw45, psw45,45, 0, 79)
-+Set ST46 = (new StandupTarget)(sw46, psw46,46, 0, 79)
- 
+-
 -ST51 = Array(sw51, psw51,51, 0, -88)
 -ST52 = Array(sw52, psw52,52, 0, -88)
 -ST53 = Array(sw53, psw53,53, 0, -88)
@@ -58,6 +46,20 @@
 -ST55 = Array(sw55, psw55,55, 0, -88)
 -ST56 = Array(sw56, psw56,56, 0, -88)
 -ST58 = Array(sw58, psw58,58, 0, 84)
+-
+-ST71 = Array(sw71, sw71p,71, 0, 0)
+-ST72 = Array(sw72, sw72p,72, 0, 0)
+-ST73 = Array(sw73, sw73p,73, 0, 0)
+-ST74 = Array(sw74, sw74p,74, 0, 0)
+-ST75 = Array(sw75, sw75p,75, 0, 0)
+-ST78 = Array(sw78, ANIM_target_TE,78, 0, 0)
++Set ST41 = (new StandupTarget)(sw41, psw41,41, 0, 79)
++Set ST42 = (new StandupTarget)(sw42, psw42,42, 0, 79)
++Set ST43 = (new StandupTarget)(sw43, psw43,43, 0, 79)
++Set ST44 = (new StandupTarget)(sw44, psw44,44, 0, 79)
++Set ST45 = (new StandupTarget)(sw45, psw45,45, 0, 79)
++Set ST46 = (new StandupTarget)(sw46, psw46,46, 0, 79)
++
 +Set ST51 = (new StandupTarget)(sw51, psw51,51, 0, -88)
 +Set ST52 = (new StandupTarget)(sw52, psw52,52, 0, -88)
 +Set ST53 = (new StandupTarget)(sw53, psw53,53, 0, -88)
@@ -65,55 +67,24 @@
 +Set ST55 = (new StandupTarget)(sw55, psw55,55, 0, -88)
 +Set ST56 = (new StandupTarget)(sw56, psw56,56, 0, -88)
 +Set ST58 = (new StandupTarget)(sw58, psw58,58, 0, 84)
- 
--ST71 = Array(sw71, sw71p,71, 0, 0)
--ST72 = Array(sw72, sw72p,72, 0, 0)
--ST73 = Array(sw73, sw73p,73, 0, 0)
--ST74 = Array(sw74, sw74p,74, 0, 0)
--ST75 = Array(sw75, sw75p,75, 0, 0)
--ST78 = Array(sw78, ANIM_target_TE,78, 0, 0)
++
 +Set ST71 = (new StandupTarget)(sw71, sw71p,71, 0, 0)
 +Set ST72 = (new StandupTarget)(sw72, sw72p,72, 0, 0)
 +Set ST73 = (new StandupTarget)(sw73, sw73p,73, 0, 0)
 +Set ST74 = (new StandupTarget)(sw74, sw74p,74, 0, 0)
 +Set ST75 = (new StandupTarget)(sw75, sw75p,75, 0, 0)
 +Set ST78 = (new StandupTarget)(sw78, ANIM_target_TE,78, 0, 0)
- 
- 
- Dim STArray
-\ No newline at end of file
-@@ -1154,10 +1184,10 @@
- 	i = STArrayID(switch)
- 
- 	PlayTargetSound
+@@ -1157 +1187 @@
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0),STArray(i)(4))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary,STArray(i).target)
- 
+@@ -1159,2 +1189,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(4), STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).target, STMass
- 	End If
- 	DoSTAnim
- End Sub
-\ No newline at end of file
-@@ -1165,7 +1195,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(STArray) 
+@@ -1168 +1198 @@
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
- 	Next
- End Function
- 
-\ No newline at end of file
-@@ -1196,7 +1226,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i=0 to Ubound(STArray)
+@@ -1199 +1229 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 
-\ No newline at end of file

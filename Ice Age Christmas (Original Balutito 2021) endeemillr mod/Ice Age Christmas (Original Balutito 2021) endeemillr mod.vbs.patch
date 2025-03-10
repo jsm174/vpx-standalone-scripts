@@ -1,30 +1,17 @@
---- "Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs.original"	2024-12-23 11:42:13.323040045 +0100
-+++ "Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs"	2024-12-23 11:41:52.487397463 +0100
-@@ -151,13 +151,10 @@
- 
- 'Start the music
- 
+--- Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs.original
++++ Ice Age Christmas (Original Balutito 2021) endeemillr mod.vbs
+@@ -154,4 +154 @@
 -DIM music
 -
 -music = "iceage.mp3"
 -PlayMusic "iceage.mp3" 
 +PlayMusic "Music/iceage.mp3" 
- 
- Sub Table1_MusicDone()
+@@ -160 +157 @@
 -PlayMusic "iceage.mp3"
 +PlayMusic "Music/iceage.mp3"
- End Sub 
- 
- 
-@@ -955,8 +952,9 @@
- 	L4Chars = Array("11","11","11","11","11","11","11")
- 	LastScoreUpdated = 0
- 	FlexDictionary_Init
+@@ -958,2 +955,3 @@
 -	Set fso = CreateObject("Scripting.FileSystemObject")
 -	curDir = fso.GetAbsolutePathName(".")
 +	' Set fso = CreateObject("Scripting.FileSystemObject")
 +	' curDir = fso.GetAbsolutePathName(".")
 +    curDir = "."
- 	FlexPath = curdir & "\Christmas.Flex\"
- 
- 	Set FlexDMD = CreateObject("FlexDMD.FlexDMD")

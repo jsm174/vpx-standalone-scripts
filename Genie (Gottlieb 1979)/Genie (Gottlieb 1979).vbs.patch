@@ -1,10 +1,6 @@
---- ./Genie (Gottlieb 1979)/Genie (Gottlieb 1979).vbs.original	2023-06-23 22:28:47
-+++ ./Genie (Gottlieb 1979)/Genie (Gottlieb 1979).vbs	2023-06-23 22:28:43
-@@ -407,7 +407,40 @@
- '******************************************************
- '		DROP TARGETS INITIALIZATION
- '******************************************************
-+
+--- Genie (Gottlieb 1979).vbs.original
++++ Genie (Gottlieb 1979).vbs
+@@ -410,0 +411,33 @@
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -19,7 +15,7 @@
 +
 +  Public Property Get Sw(): Sw = m_sw: End Property
 +  Public Property Let Sw(input): m_sw = input: End Property
- 
++
 +  Public Property Get Animate(): Animate = m_animate: End Property
 +  Public Property Let Animate(input): m_animate = input: End Property
 +
@@ -38,13 +34,7 @@
 +  End Function
 +End Class
 +
- 'Define a variable for each drop target
- Dim DT20, DT21, DT23, DT24, DT30, DT70, DT31, DT71, DT60, DT74, DT61
- 
-@@ -428,17 +461,17 @@
- '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
- 
- ' Left Bank
+@@ -431,11 +464,11 @@
 -DT20 = Array(sw20, csw20, layer3sw20, 20, 0)
 -DT21 = Array(sw21, csw21, layer3sw21, 21, 0)
 -DT23 = Array(sw23, csw23, layer3sw23, 23, 0)
@@ -67,62 +57,26 @@
 +Set DT60 = (new DropTarget)(sw60, csw60, layer3sw60, 60, 0, false)
 +Set DT74 = (new DropTarget)(sw74, csw74, layer3sw74, 74, 0, false)
 +Set DT61 = (new DropTarget)(sw61, csw61, layer3sw61, 61, 0, false)
- 
- 'Add all the Drop Target Arrays to Drop Target Animation Array
- ' DTAnimationArray = Array(DT1, DT2, ....)
-@@ -471,9 +504,9 @@
- 	i = DTArrayID(switch)
- 
- 	PlayTargetSound
+@@ -474,3 +507,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 	DoDTAnim
- End Sub
-@@ -482,7 +515,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -485 +518 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -490,14 +523,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -493 +526 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -500 +533 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -572,7 +605,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -575 +608 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-@@ -825,7 +858,32 @@
- '******************************************************
- '		STAND-UP TARGET INITIALIZATION
- '******************************************************
-+
+@@ -828,0 +862,25 @@
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
 +
@@ -143,18 +97,12 @@
 +    Set m_prim = prim
 +    m_sw = sw
 +    m_animate = animate
- 
++
 +    Set Init = Me
 +  End Function
 +End Class
 +
- 'Define a variable for each stand-up target
- Dim ST40, ST44, ST51, ST63
- 
-@@ -839,10 +897,10 @@
- '	switch:				ROM switch number
- '	animate:			Arrary slot for handling the animation instrucitons, set to 0
- 
+@@ -842,4 +900,4 @@
 -ST40 = Array(sw40, Layer3sw40,40, 0)
 -ST44 = Array(sw44, Layer3sw44,44, 0)
 -ST51 = Array(sw51, Layer3sw51,51, 0)
@@ -163,38 +111,17 @@
 +Set ST44 = (new StandupTarget)(sw44, Layer3sw44,44, 0)
 +Set ST51 = (new StandupTarget)(sw51, Layer3sw51,51, 0)
 +Set ST63 = (new StandupTarget)(sw63, Layer3sw63,63, 0)
- 
- 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
- ' STAnimationArray = Array(ST1, ST2, ....)
-@@ -865,10 +923,10 @@
- 	i = STArrayID(switch)
- 
- 	PlayTargetSound
+@@ -868 +926 @@
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
- 
+@@ -870,2 +928,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
- 	End If
- 	DoSTAnim
- End Sub
-@@ -876,7 +934,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(STArray) 
+@@ -879 +937 @@
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -905,7 +963,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i=0 to Ubound(STArray)
+@@ -908 +966 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 

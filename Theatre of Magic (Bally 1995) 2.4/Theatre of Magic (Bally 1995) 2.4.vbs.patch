@@ -1,12 +1,5 @@
---- ./Theatre of Magic (Bally 1995) 2.4/Theatre of Magic (Bally 1995) 2.4.vbs.original	2023-06-02 17:50:17
-+++ ./Theatre of Magic (Bally 1995) 2.4/Theatre of Magic (Bally 1995) 2.4.vbs	2023-06-02 17:50:25
-@@ -214,7 +214,7 @@
- ' 					TABLE INIT
- '******************************************************
- 
+--- Theatre of Magic (Bally 1995) 2.4.vbs.original
++++ Theatre of Magic (Bally 1995) 2.4.vbs
+@@ -217 +217 @@
 - Const cGameName = "tom_14hb" '1.3x arcade rom - with credits
 + Const cGameName = "tom_13f" '1.3x arcade rom - with credits
- 
- Dim  TOMBall1, TOMBall2, TOMBall3, TOMBall4, zz
- Dim CapL1, CapL2
-\ No newline at end of file

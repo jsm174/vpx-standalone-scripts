@@ -1,20 +1,36 @@
---- "Three Angels (Original 2018) LW.vbs.original"	2025-03-03 18:36:27.285232231 +0100
-+++ "Three Angels (Original 2018) LW.vbs"	2025-03-03 18:32:43.105787397 +0100
-@@ -333,7 +333,7 @@
- 
- 'Note open Ultradmd and right click on window to get the various sizes in decimal 
- 
+--- Three Angels (Original 2018) LW.vbs.original
++++ Three Angels (Original 2018) LW.vbs
+@@ -175 +175 @@
+-' V2.0 - CHANGES by LoadedWeapon
++' V2.0.2 - CHANGES by LoadedWeapon
+@@ -187 +187,3 @@
+-
++'-Fixed Lut Save
++'-Fixed Upper Bumper Area and trapped ball
++'-Fixed Duplicated Flipper sounds and some other sounds
+@@ -336 +338 @@
 -GetDMDColor
 +'GetDMDColor
- Sub GetDMDColor
- Dim WshShell,filecheck,directory
- Set WshShell = CreateObject("WScript.Shell")
-@@ -62828,7 +62828,7 @@
- 	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
- 	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
- 	
+@@ -62831 +62833 @@
 -	AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
 +	AddScore(1000000 * DoorJackpotNumber)  'This jackpot is a little harder.
- 	bonuspoints(1)=bonuspoints(1)+100000
- 
- 
+@@ -76454 +76456 @@
+-		WishMasterKicker.Kick 175, 20
++		WishMasterKicker.Kick 175, 23
+@@ -77584 +77586 @@
+-		WishMasterKicker.Kick 175, 20
++		WishMasterKicker.Kick 175, 23
+@@ -77760 +77762 @@
+-		WishMasterKicker.Kick 175, 20
++		WishMasterKicker.Kick 175, 23
+@@ -90571 +90573 @@
+-			WishMasterKicker.Kick 175, 20
++			WishMasterKicker.Kick 175, 23
+@@ -98404 +98406 @@
+-		WishMasterKicker.Kick 175, 20
++		WishMasterKicker.Kick 175, 23
+@@ -100847 +100849,3 @@
+-
++Sub Ramp_Hit (idx)
++	PlaySound "fx_nail1", 0, Vol(ActiveBall), AudioPan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
++End Sub

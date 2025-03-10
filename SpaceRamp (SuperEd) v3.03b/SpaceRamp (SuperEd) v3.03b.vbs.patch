@@ -1,22 +1,8 @@
---- SpaceRamp (SuperEd) v3.03b.vbs.original	2023-08-31 16:37:58
-+++ SpaceRamp (SuperEd) v3.03b.vbs	2023-08-31 16:36:45
-@@ -612,7 +612,7 @@
- 	vpmtimer.addtimer 4000 , "DMD2 """",""Bonus Multiplier"",cstr(nBonusMultiplier(nCurrentPlayer))+"" X"", 2000, UltraDMD_eScrollLeft, """" '"
- 	vpmtimer.addtimer 6000 , "DMD2 """",""Bonus Score"",cstr( ((nCombos(nCurrentPlayer)*cScoreCombo) + (nPlanets(nCurrentPlayer)*cScorePlanet)) * nBonusMultiplier(nCurrentPlayer) ), 2000, UltraDMD_eZoom, """" '"
- 
+--- SpaceRamp (SuperEd) v3.03b.vbs.original
++++ SpaceRamp (SuperEd) v3.03b.vbs
+@@ -615 +615 @@
 -	AddScore ((nCombos(nCurrentPlayer)*cScoreCombo) + (nPlanets(nCurrentPlayer)*cScorePlanet)) * nBonusMultiplier(nCurrentPlayer)
 +	AddScore (((nCombos(nCurrentPlayer)*cScoreCombo) + (nPlanets(nCurrentPlayer)*cScorePlanet)) * nBonusMultiplier(nCurrentPlayer))
- 
- 	if bblackholemode = true Then
- 		dim b
-\ No newline at end of file
-@@ -3681,7 +3681,7 @@
- Sub AttractMode(aState)
- 	If aState = true Then
- 		bPlayerHasStartedGame = false
+@@ -3684 +3684 @@
 -		GIOverhead.state = off
 +		GIOverhead.state = 0
- 		nAttractSteps=0:nAttractSteps2=0:nAttractSteps3=0:nAttractSteps4=0:nAttractSteps5=0:nAttractDMD=0
- 		DMDFlush
- 		TimerDMDAttract.enabled = True
-\ No newline at end of file

@@ -1,71 +1,23 @@
---- "Dream Daddy1.5.vbs.original"	2024-09-18 09:27:15.472992942 +0200
-+++ "Dream Daddy1.5.vbs"	2024-09-18 09:22:04.440074382 +0200
-@@ -69,7 +69,7 @@
- Const VolSling  = 1    	' Slingshot volume.
- Const VolClock  = 1.5   	' Clock volume.
- 
+--- Dream Daddy1.5.vbs.original
++++ Dream Daddy1.5.vbs
+@@ -72 +72 @@
 -Const typefont = "Bebas Neue Regular"
 +Const typefont = "BebasNeue-Regular"
- 
- 
- 
-@@ -96,6 +96,7 @@
- Const pAudio=7
- Const pCallouts=8
- 
+@@ -98,0 +99 @@
 +Sub InitPuP()
- if HasPuP Then
-     Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay")
- 
-@@ -131,6 +132,7 @@
- 	PuPlayer.playlistadd pBackglass, "BG", 1, 0
- 	PuPlayer.playlistadd pBackglass, "Search", 0, 5
- End if
+@@ -133,0 +135 @@
 +End Sub
- 
- ' *********************************************************************
- ' *********************************************************************
-@@ -200,6 +202,8 @@
- 
- Sub Table1_Init()
-     LoadEM
+@@ -202,0 +205,2 @@
 +    InitPuP
 +    SetupPuP
-     Dim i
-     'Impulse Plunger as autoplunger
-     Const IMPowerSetting = 45 ' Plunger Power
-@@ -1876,7 +1880,7 @@
-                 ' End Mode and timers
-                 StopSong
-                 PuPlayer.playlistplayex pFullDMD, "Drains", "", 100, 1
+@@ -1879 +1883 @@
 -				PuPlayer.playlistplayex pBackglass,"BG","Backglass2.mp4",0,1
 +				PuPlayer.playlistplayex pBackglass,"Backglass","Backglass2.mp4",0,1
-                 'ResetGi white
-                 GiOff
-                 ' Show the end of ball animation
-@@ -1887,7 +1891,7 @@
-             End If
-         End If
-     End If
+@@ -1890 +1894 @@
 -	PuPlayer.playlistplayex pBackglass,"BG","Backglass3.mp4",0,1
 +	PuPlayer.playlistplayex pBackglass,"Backglass","Backglass3.mp4",0,1
- End Sub
- 
- ' The Ball has rolled out of the Plunger Lane and it is pressing down the trigger in the shooters lane
-@@ -2188,6 +2192,8 @@
- 		PuPlayer.LabelSet pFullDMD, "Score2", msgText2, 1, ""
- End Sub
- 
+@@ -2190,0 +2195,2 @@
 +
 +Sub SetupPuP()
- '***************************************************************************************
- 'Backglass Labelsets
- '***************************************************************************************
-@@ -2297,6 +2303,7 @@
- 	PuPlayer.LabelNew pFullDMD,"Play4scoreA",typefont,		4,cWhite  	,0,0,1,	5,77,	2,1
- 
- '********************************************************************************************************
+@@ -2299,0 +2306 @@
 +End Sub
- 
- Sub resetbackglass
- 	PuPlayer.LabelShowPage pFullDMD,1,0,""

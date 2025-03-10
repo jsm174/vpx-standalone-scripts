@@ -1,12 +1,6 @@
---- "VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs.original"	2023-11-27 09:44:01.666682676 +0100
-+++ "VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs"	2023-11-27 09:41:17.746740612 +0100
-@@ -1236,7 +1236,9 @@
- Dim i
- 
- For i=0 To 127
+--- VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs.original
++++ VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs
+@@ -1238,0 +1239 @@
 +	If IsObject(eval("L" & i)) Then
- Execute "Set Lights(" & i & ")  = L" & i
+@@ -1239,0 +1241 @@
 +	End If
- Next
- 
- 

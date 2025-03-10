@@ -1,11 +1,5 @@
---- "Black & Red (Inder 1975) v4.3.vbs.original"	2023-11-26 15:54:42.661870254 +0100
-+++ "Black & Red (Inder 1975) v4.3.vbs"	2023-11-26 15:52:59.932595021 +0100
-@@ -924,7 +924,7 @@
- End Sub
- 
- Sub Display_Match()
+--- Black & Red (Inder 1975) v4.3.vbs.original
++++ Black & Red (Inder 1975) v4.3.vbs
+@@ -927 +927 @@
 -    MatchReel.SetValue(Match \ 10) + 1
 +    MatchReel.SetValue 1 + (Match \ 10)
-     If B2SOn then
-         If Match = 0 then
-             Controller.B2SSetMatch 100

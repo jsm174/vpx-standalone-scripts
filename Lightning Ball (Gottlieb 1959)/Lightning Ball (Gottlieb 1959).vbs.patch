@@ -1,20 +1,8 @@
---- Lightning Ball (Gottlieb 1959).vbs.original	2023-07-19 15:15:22
-+++ Lightning Ball (Gottlieb 1959).vbs	2023-07-19 15:15:09
-@@ -1216,7 +1216,7 @@
- 	end if
- 	LetterReel.SetValue(LetterCounter)
- 	if B2SOn then
+--- Lightning Ball (Gottlieb 1959).vbs.original
++++ Lightning Ball (Gottlieb 1959).vbs
+@@ -1219 +1219 @@
 -		Controller.B2SSetData (LetterCounter-1)+60,0
 +		Controller.B2SSetData ((LetterCounter-1)+60),0
- 		Controller.B2SSetData LetterCounter+60,1
- 	end if
- 	PlaySound SoundFXDOF("SpinACard_100_Point_Bell",136,DOFPulse,DOFChimes)
-@@ -1241,7 +1241,7 @@
- 
- 	LetterReel.SetValue(LetterCounter)
- 	if B2SOn then
+@@ -1244 +1244 @@
 -		Controller.B2SSetData (LetterCounter-1)+60,0
 +		Controller.B2SSetData ((LetterCounter-1)+60),0
- 		Controller.B2SSetData LetterCounter+60,1
- 	end if
- 	

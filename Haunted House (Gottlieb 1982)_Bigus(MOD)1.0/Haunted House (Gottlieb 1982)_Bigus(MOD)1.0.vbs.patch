@@ -1,19 +1,12 @@
---- ./Haunted House (Gottlieb 1982)_Bigus(MOD)1.0/Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs.original	2023-06-09 22:49:01
-+++ ./Haunted House (Gottlieb 1982)_Bigus(MOD)1.0/Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs	2023-06-09 22:48:32
-@@ -2970,11 +2970,11 @@
- 	Controller.Switch(54)=0
- End Sub
- 
+--- Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs.original
++++ Haunted House (Gottlieb 1982)_Bigus(MOD)1.0.vbs
+@@ -2973,2 +2973,2 @@
 -Sub Sw64_Hit()Controller.Switch(64)=1:PlaySoundAt "sensor",sw64:Gate3.Damping = .85:sw64step = 0:me.timerenabled = True: End Sub
 -Sub Sw64_UnHit()Controller.Switch(64)=0: End Sub
 +Sub Sw64_Hit():Controller.Switch(64)=1:PlaySoundAt "sensor",sw64:Gate3.Damping = .85:sw64step = 0:me.timerenabled = True: End Sub
 +Sub Sw64_UnHit():Controller.Switch(64)=0: End Sub
- 
+@@ -2976,2 +2976,2 @@
 -Sub Sw35_Hit()Controller.Switch(35)=1:PlaySoundAt "sensor",sw35:Gate4.Damping = .85:sw35step = 0:me.timerenabled = True: End Sub
 -Sub Sw35_UnHit()Controller.Switch(35)=0: End Sub
 +Sub Sw35_Hit():Controller.Switch(35)=1:PlaySoundAt "sensor",sw35:Gate4.Damping = .85:sw35step = 0:me.timerenabled = True: End Sub
 +Sub Sw35_UnHit():Controller.Switch(35)=0: End Sub
- 
- 
- 
-\ No newline at end of file

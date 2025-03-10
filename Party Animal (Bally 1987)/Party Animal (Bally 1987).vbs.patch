@@ -1,12 +1,6 @@
---- "Party Animal (Bally 1987).vbs.original"	2024-02-02 17:14:43.111073807 +0100
-+++ "Party Animal (Bally 1987).vbs"	2024-02-02 17:11:47.357705165 +0100
-@@ -223,7 +223,8 @@
- 
- InitPolarity
- 
+--- Party Animal (Bally 1987).vbs.original
++++ Party Animal (Bally 1987).vbs
+@@ -226 +226,2 @@
 -InitPolarity
 +' This second InitPolarity was crashing vpinball, so I commented it out
 +'InitPolarity
- 
- Sub InitPolarity()
- 	dim x, a : a = Array(LF, RF)

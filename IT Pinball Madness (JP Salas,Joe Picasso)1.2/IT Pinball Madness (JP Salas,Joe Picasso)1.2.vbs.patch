@@ -1,10 +1,4 @@
---- IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original	2023-06-24 21:08:46
-+++ IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs	2023-06-24 21:08:42
-@@ -4870,6 +4870,7 @@
- Const purple = 9
- Const white = 11
- Const teal = 10
+--- IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs.original
++++ IT Pinball Madness (JP Salas,Joe Picasso)1.2.vbs
+@@ -4872,0 +4873 @@
 +Const default = 0
- 
- Sub SetLightColor(n, col, stat) 'stat 0 = off, 1 = on, 2 = blink, -1= no change
-     Select Case col

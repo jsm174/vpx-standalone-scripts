@@ -1,10 +1,6 @@
---- ./Diner (Williams 1990) VPW Mod 1.0.2/Diner (Williams 1990) VPW Mod 1.0.2.vbs.original	2023-06-02 07:07:27
-+++ ./Diner (Williams 1990) VPW Mod 1.0.2/Diner (Williams 1990) VPW Mod 1.0.2.vbs	2023-05-31 21:51:19
-@@ -4175,6 +4175,39 @@
- '******************************************************
- '  DROP TARGETS INITIALIZATION
- '******************************************************
-+
+--- Diner (Williams 1990) VPW Mod 1.0.2.vbs.original
++++ Diner (Williams 1990) VPW Mod 1.0.2.vbs
+@@ -4178,0 +4179,33 @@
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -37,16 +33,10 @@
 +    Set Init = Me
 +  End Function
 +End Class
- 
- 'Define a variable for each drop target
- Dim DT1, DT2, DT3, DT4, DT5, DT6
-\ No newline at end of file
-@@ -4194,13 +4227,14 @@
- '	animate:			Arrary slot for handling the animation instrucitons, set to 0
- '
- '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
++
+@@ -4196,0 +4230 @@
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
- 
+@@ -4198,6 +4232,6 @@
 -DT1 = Array(rootbeer, rootbeer_a, rootbeer_p, swRootBeer, 0)
 -DT2 = Array(fries, fries_a, fries_p, swFries, 0)
 -DT3 = Array(icedtea, icedtea_a, icedtea_p, swIcedTea, 0)
@@ -59,59 +49,22 @@
 +Set DT4 = (new DropTarget)(hotdog, hotdog_a, hotdog_p, swHotdog, 0, false)
 +Set DT5 = (new DropTarget)(burger, burger_a, burger_p, swBurger, 0, false)
 +Set DT6 = (new DropTarget)(chili, chili_a, chili_p, swChili, 0, false)
- 
- 
- Dim DTArray
-\ No newline at end of file
-@@ -4233,9 +4267,9 @@
- 	i = DTArrayID(switch)
- 
- 	PlayTargetSound
+@@ -4236,3 +4270,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 	DoDTAnim
- End Sub
-\ No newline at end of file
-@@ -4244,7 +4278,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -4247 +4281 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-\ No newline at end of file
-@@ -4252,14 +4286,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -4255 +4289 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -4262 +4296 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-\ No newline at end of file
-@@ -4314,7 +4348,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -4317 +4351 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-\ No newline at end of file

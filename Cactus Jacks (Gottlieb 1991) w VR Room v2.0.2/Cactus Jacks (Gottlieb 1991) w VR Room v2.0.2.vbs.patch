@@ -1,70 +1,31 @@
---- Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs.original	2023-07-05 15:02:27
-+++ Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs	2023-07-05 15:01:08
-@@ -1544,7 +1544,8 @@
- 		FlBG20.visible = 1 
- 		Sound_Flash_Relay enabled, Relay_GI_BG1
- 	Else
+--- Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs.original
++++ Cactus Jacks (Gottlieb 1991) w VR Room v2.0.2.vbs
+@@ -1547 +1547,2 @@
 -		FlBG20.visible = 0	End If 
 +		FlBG20.visible = 0
 +	End If 
- End Sub
- 
- Sub Sol21(Enabled)
-@@ -1552,7 +1553,8 @@
- 		FlBG21.visible = 1 
- 		Sound_Flash_Relay enabled, Relay_GI_BG2
- 	Else
+@@ -1555 +1556,2 @@
 -		FlBG21.visible = 0	End If 
 +		FlBG21.visible = 0
 +	End If 
- End Sub
- 
- Sub Sol22(Enabled)
-@@ -1560,7 +1562,8 @@
- 		FlBG22.visible = 1 
- 		Sound_Flash_Relay enabled, Relay_GI_BG3
- 	Else
+@@ -1563 +1565,2 @@
 -		FlBG22.visible = 0	End If 
 +		FlBG22.visible = 0
 +	End If 
- End Sub
- 
- Sub Sol24(Enabled)
-@@ -1568,7 +1571,8 @@
- 		FlBG24.visible = 1 
- 		Sound_Flash_Relay enabled, Relay_GI_BG4
- 	Else
+@@ -1571 +1574,2 @@
 -		FlBG24.visible = 0	End If 
 +		FlBG24.visible = 0
 +	End If 
- End Sub
- 
- Sub BGLamps
-@@ -2618,9 +2622,9 @@
- 	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
- 
- 	Public Sub Update()	'tracks in-ball-velocity
+@@ -2621 +2625 @@
 -		dim str, b, highestID
 +		dim str, b, AllBalls, highestID : allBalls = getballs
- 
+@@ -2623 +2627 @@
 -		for each b in gBOT
 +		for each b in allBalls
- 			if b.id >= HighestID then highestID = b.id
- 		Next
- 
-@@ -2628,7 +2632,7 @@
- 		if uBound(ballvelx) < highestID then redim ballvelx(highestID)	'set bounds
- 		if uBound(ballvely) < highestID then redim ballvely(highestID)	'set bounds
- 
+@@ -2631 +2635 @@
 -		for each b in gBOT
 +		for each b in allBalls
- 			ballvel(b.id) = BallSpeed(b)
- 			ballvelx(b.id) = b.velx
- 			ballvely(b.id) = b.vely
-@@ -2667,6 +2671,39 @@
- '  DROP TARGETS INITIALIZATION
- '******************************************************
- 
+@@ -2669,0 +2674,33 @@
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -98,13 +59,7 @@
 +	End Function
 +  End Class
 +
- 'Define a variable for each drop target
- 
- 
-@@ -2694,14 +2731,14 @@
- 
- 
- 
+@@ -2697,8 +2734,8 @@
 -DT16 = Array(sw16, sw16a, sw16p, 16, 0)
 -DT26 = Array(sw26, sw26a, sw26p, 26, 0)
 -DT36 = Array(sw36, sw36a, sw36p, 36, 0)
@@ -121,62 +76,26 @@
 +Set DT27 = (new DropTarget)(sw27, sw27a, sw27p, 27, 0, false)
 +Set DT37 = (new DropTarget)(sw37, sw37a, sw37p, 37, 0, false)
 +Set DT47 = (new DropTarget)(sw47, sw47a, sw47p, 47, 0, false)
- 
- 
- Dim DTArray
-@@ -2734,9 +2771,9 @@
- 	i = DTArrayID(switch)
- 
- 	PlayTargetSound
+@@ -2737,3 +2774,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate = DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 	DoDTAnim
- End Sub
-@@ -2745,7 +2782,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -2748 +2785 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -2753,14 +2790,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -2756 +2793 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -2763 +2800 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -2815,7 +2852,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -2818 +2855 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-@@ -2991,8 +3028,33 @@
- '******************************************************
- '		STAND-UP TARGET INITIALIZATION
- '******************************************************
-+
+@@ -2994,0 +3032,25 @@
 +Class StandupTarget
 +	Private m_primary, m_prim, m_sw, m_animate
 +  
@@ -191,25 +110,18 @@
 +  
 +	Public Property Get Animate(): Animate = m_animate: End Property
 +	Public Property Let Animate(input): m_animate = input: End Property
- 
++  
 +	Public default Function init(primary, prim, sw, animate)
 +	  Set m_primary = primary
 +	  Set m_prim = prim
 +	  m_sw = sw
 +	  m_animate = animate
- 
++  
 +	  Set Init = Me
 +	End Function
 +  End Class
 +
-+
- Dim ST20, ST30, ST40, ST41
- 
- 
-@@ -3010,10 +3072,10 @@
- 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
- 
- 
+@@ -3013,4 +3075,4 @@
 -ST20 = Array(sw20, psw20,20, 0)
 -ST30 = Array(sw30, psw30,30, 0)
 -ST40 = Array(sw40, psw40,40, 0)
@@ -218,38 +130,17 @@
 +Set ST30 = (new StandupTarget)(sw30, psw30,30, 0)
 +Set ST40 = (new StandupTarget)(sw40, psw40,40, 0)
 +Set ST41 = (new StandupTarget)(sw41, psw41,41, 0)
- 
- 
- 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
-@@ -3038,10 +3100,10 @@
- 	i = STArrayID(switch)
- 
- 	PlayTargetSound
+@@ -3041 +3103 @@
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
- 
+@@ -3043,2 +3105,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
- 	End If
- 	DoSTAnim
- End Sub
-@@ -3049,7 +3111,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(STArray) 
+@@ -3052 +3114 @@
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -3078,7 +3140,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i=0 to Ubound(STArray)
+@@ -3081 +3143 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 

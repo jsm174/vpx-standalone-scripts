@@ -1,9 +1,6 @@
---- "Diablo Pinball v4.3.vbs.original"	2023-11-07 11:44:54.731677853 +0100
-+++ "Diablo Pinball v4.3.vbs"	2023-11-07 11:44:26.358960456 +0100
-@@ -2344,24 +2344,24 @@
- 
- ' Load & Save UltraDMD colors
- Sub SetDMDColors
+--- Diablo Pinball v4.3.vbs.original
++++ Diablo Pinball v4.3.vbs
+@@ -2347,11 +2347,11 @@
 -    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 -    ' Read the current Values
 -    On Error Resume Next
@@ -26,16 +23,10 @@
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\color", "Tomato", "REG_SZ"
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\hideVDMD", "False", "REG_SZ"
 +    ' On Error Goto 0
- End Sub
- 
- Sub DMD_Exit
-     If UltraDMD.IsRendering Then UltraDMD.CancelRendering
+@@ -2362,3 +2362,3 @@
 -    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 -    WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
 -    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
 +    ' Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
-     UltraDMD = Null
- End Sub
- 

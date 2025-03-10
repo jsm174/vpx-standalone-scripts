@@ -1,11 +1,5 @@
---- TheATeam.vbs.original	2024-04-03 16:07:59.461555670 +0200
-+++ TheATeam.vbs	2024-04-03 16:06:26.114852613 +0200
-@@ -12826,7 +12826,7 @@
- 			If Lotery_Score = 10000000 Then 
- 				GifDMD "10Millions"
- 			Else
+--- TheATeam.vbs.original
++++ TheATeam.vbs
+@@ -12829 +12829 @@
 -				DoubleFraseDMD (Lotery_Score/1000000) & " MILLIONS", "LOTERY VIDEOMODE"
 +				DoubleFraseDMD "" & (Lotery_Score/1000000) & " MILLIONS", "LOTERY VIDEOMODE"
- 			End If
- 				Lotery_Score = 0
- End Sub

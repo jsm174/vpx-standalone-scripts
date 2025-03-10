@@ -1,16 +1,9 @@
---- ./1455577933_MedievalMadness_Upgrade(Real_Final)/1455577933_MedievalMadness_Upgrade(Real_Final).vbs.original	2023-06-02 19:04:52
-+++ ./1455577933_MedievalMadness_Upgrade(Real_Final)/1455577933_MedievalMadness_Upgrade(Real_Final).vbs	2023-06-02 19:05:24
-@@ -2185,7 +2185,11 @@
- Sub InitLamps
- On Error Resume Next
- Dim i
+--- 1455577933_MedievalMadness_Upgrade(Real_Final).vbs.original
++++ 1455577933_MedievalMadness_Upgrade(Real_Final).vbs
+@@ -2188 +2188,5 @@
 -For i=0 To 127: Execute "Set Lights(" & i & ")  = L" & i: Next
 +For i=0 To 127
 +    If IsObject(eval("L" & i)) Then
 +        Execute "Set Lights(" & i & ")  = L" & i
 +    End If
 +Next
- Lights(14)=Array(L14,L14a)
- Lights(64)=Array(L64,L64a)
- Lights(78)=Array(L78,L78a)
-\ No newline at end of file

@@ -1,11 +1,5 @@
---- "Beavis and Butt-head_Pinballed.vbs.original"	2024-02-05 11:37:49.367062556 +0100
-+++ "Beavis and Butt-head_Pinballed.vbs"	2024-02-05 11:34:37.369768554 +0100
-@@ -51,7 +51,7 @@
- 
- Const cGameName= "beav_butt"
- 
+--- Beavis and Butt-head_Pinballed.vbs.original
++++ Beavis and Butt-head_Pinballed.vbs
+@@ -54 +54 @@
 -LoadVPM "02800000", "beav_butt.VBS", 3.50
 +LoadVPM "02800000", "beav_butt.vbs", 3.50
- 
- '********************
- 'Standard definitions

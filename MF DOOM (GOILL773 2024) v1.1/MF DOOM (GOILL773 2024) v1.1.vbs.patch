@@ -1,14 +1,11 @@
---- "MF DOOM (GOILL773 2024) v1.1.vbs.original"	2024-08-12 15:52:18.229512882 +0200
-+++ "MF DOOM (GOILL773 2024) v1.1.vbs"	2024-08-12 15:45:57.510284217 +0200
-@@ -88,9 +88,26 @@
- 	Randomize
- 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
- ' This will dynamically create an array SONGS that has the mp3 files it finds in music\MFDOOM directory
+--- MF DOOM (GOILL773 2024) v1.1.vbs.original
++++ MF DOOM (GOILL773 2024) v1.1.vbs
+@@ -91,2 +91,2 @@
 -Dim re,fso,folder,files,Songs
 -Songs = mp3PathArray
 +'Dim re,fso,folder,files,Songs
 +'Songs = mp3PathArray
- 
+@@ -93,0 +94,17 @@
 +dim Songs(15)
 +Songs(1) = "MFDOOM01.mp3"
 +Songs(2) = "MFDOOM02.mp3"
@@ -26,6 +23,3 @@
 +Songs(13) = "MFDOOM14.mp3"
 +Songs(14) = "Attract1.mp3"
 +Songs(15) = "Attract2.mp3"
- 
- 
- '  USER OPTIONS

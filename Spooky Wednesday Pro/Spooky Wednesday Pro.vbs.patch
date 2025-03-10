@@ -1,34 +1,19 @@
---- "Spooky Wednesday Pro.vbs.original"	2024-10-10 18:34:17.347943724 +0200
-+++ "Spooky Wednesday Pro.vbs"	2024-10-10 18:30:47.309024656 +0200
-@@ -46,7 +46,7 @@
- 
- '************ PuP-Pack Startup **************
- 
+--- Spooky Wednesday Pro.vbs.original
++++ Spooky Wednesday Pro.vbs
+@@ -49 +49 @@
 -PuPStart(cPuPPack) 'Check for PuP - If found, then start Pinup Player / PuP-Pack
 +' PuPStart(cPuPPack) 'Check for PuP - If found, then start Pinup Player / PuP-Pack
- 
- 
- 
-@@ -114,11 +114,11 @@
- 			Const pCallouts=8
-             Const pFullDMD=5        'change this number to the screen of your choosing for FullDMD
-             
+@@ -117 +117 @@
 -
 +Sub InitPuP
- 	if HasPuP Then
+@@ -119,3 +119,3 @@
 -	on error resume next
 -	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
 -	on error goto 0
 +	' on error resume next
 +	' Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
 +	' on error goto 0
- 	if not IsObject(PuPlayer) then HasPuP = False
- 	end If
- 
-@@ -165,25 +165,6 @@
- 	End If
- 	End If  
- 
+@@ -168,19 +167,0 @@
 -	Sub chilloutthemusic
 -		If calloutlowermusicvol = 1 Then
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
@@ -48,15 +33,9 @@
 -		End If
 -	End Sub
 -
- 
- PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
- PuPlayer.playlistadd pMusic,"audiobg", 1 , 0
-@@ -238,8 +219,26 @@
- PuPlayer.playlistadd pTopper2,"Topper", 1 , 0
- PuPlayer.playlistadd pFullDMD,"fulldmd", 1 , 0
- End If
+@@ -240,0 +222 @@
 +End Sub
- 
+@@ -241,0 +224,9 @@
 +Sub chilloutthemusic
 +If calloutlowermusicvol = 1 Then
 +    PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
@@ -66,7 +45,7 @@
 +    vpmtimer.addtimer 4500, "turnitbackup'"
 +End If
 +End Sub
- 
+@@ -242,0 +234,8 @@
 +Sub turnitbackup
 +If calloutlowermusicvol = 1 Then
 +    PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":"&(videovol)&" }"
@@ -75,13 +54,7 @@
 +    PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(Topper2vol)&" }"
 +End If
 +End Sub
- 
- '***********************************
- 'Intro art options on line 281, 2211 
-@@ -266,21 +265,21 @@
- 
- 'Note open Ultradmd and right click on window to get the various sizes in decimal 
- 
+@@ -269,15 +268,15 @@
 -GetDMDColor
 -Sub GetDMDColor
 -Dim WshShell,filecheck,directory
@@ -112,25 +85,10 @@
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
 +' End Sub
- '---------------------------------------------------
- 
- 
-@@ -294,6 +293,8 @@
-     ExecuteGlobal GetTextFile("controller.vbs")
-     If Err Then MsgBox "Can't open controller.vbs"
-     On Error Goto 0
+@@ -296,0 +296,2 @@
 +End Sub
 +Sub InitTable    
-     AudioAttractTimer.Enabled = True
-     DiscoBallLightGlow.State=0
-     FireBallDMDTrigger.Enabled = True
-@@ -485,6 +486,9 @@
-     LoadEM
-     Dim i
-     Randomize
+@@ -487,0 +489,3 @@
 +    PuPStart(cPuPPack) 'Check for PuP - If found, then start Pinup Player / PuP-Pack
 +    InitPuP
 +    InitTable
-    '****************************************************************************************************************************************
-    'EVERYTHING FROM LINE THIS LINE TO LINE 415 IS EVERTHING THING THAT NEEDS TO BE SHUT OFF OR TURNED ON WHEN THE TABEL STARTS UP
-    '****************************************************************************************************************************************

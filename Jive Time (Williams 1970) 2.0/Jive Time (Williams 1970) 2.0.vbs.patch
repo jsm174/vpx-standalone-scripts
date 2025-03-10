@@ -1,10 +1,6 @@
---- Jive Time (Williams 1970) 2.0.vbs.original	2023-08-28 16:59:17
-+++ Jive Time (Williams 1970) 2.0.vbs	2023-08-28 16:53:09
-@@ -776,7 +776,33 @@
- '******************************************************
- '		STAND-UP TARGET INITIALIZATION
- '******************************************************
-+
+--- Jive Time (Williams 1970) 2.0.vbs.original
++++ Jive Time (Williams 1970) 2.0.vbs
+@@ -779,0 +780,26 @@
 +Class StandupTarget
 +	Private m_primary, m_prim, m_sw, m_animate
 +  
@@ -19,7 +15,7 @@
 +  
 +	Public Property Get Animate(): Animate = m_animate: End Property
 +	Public Property Let Animate(input): m_animate = input: End Property
- 
++  
 +	Public default Function init(primary, prim, sw, animate)
 +	  Set m_primary = primary
 +	  Set m_prim = prim
@@ -31,14 +27,7 @@
 +  End Class
 +  
 +
- 'Define a variable for each stand-up target
- Dim ST1, ST2, ST3, ST4, ST5, ST6, ST7, ST8, ST9
- 
-\ No newline at end of file
-@@ -790,15 +816,15 @@
- '	switch:				ROM switch number
- '	animate:			Arrary slot for handling the animation instrucitons, set to 0
- 
+@@ -793,9 +819,9 @@
 -ST1 = Array(ABTarget1,pST001,1,0)
 -ST2 = Array(ABTarget2,pST002,2,0)
 -ST3 = Array(ABTarget3,pST003,3,0)
@@ -57,42 +46,17 @@
 +Set ST7 = (new StandupTarget)(DownPostTarget,pST007,7,0)
 +Set ST8 = (new StandupTarget)(GreenOnTarget,pST008,8,0)
 +Set ST9 = (new StandupTarget)(YellowOnTarget,pST009,9,0)
- 
- 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
- ' STAnimationArray = Array(ST1, ST2, ....)
-\ No newline at end of file
-@@ -821,10 +847,10 @@
- 	i = STArrayID(switch)
- 
- 	PlayTargetSound
+@@ -824 +850 @@
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
- 
+@@ -826,2 +852,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		STBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		STBallPhysics Activeball, STArray(i).primary.orientation, STMass
- 	End If
- 	DoSTAnim
- End Sub
-\ No newline at end of file
-@@ -832,7 +858,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(STArray) 
+@@ -835 +861 @@
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
- 	Next
- End Function
- 
-\ No newline at end of file
-@@ -869,7 +895,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i=0 to Ubound(STArray)
+@@ -872 +898 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 
-\ No newline at end of file

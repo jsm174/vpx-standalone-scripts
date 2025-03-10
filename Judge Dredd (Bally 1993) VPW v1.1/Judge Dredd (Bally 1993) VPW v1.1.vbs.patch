@@ -1,10 +1,6 @@
---- ./Judge Dredd (Bally 1993) VPW v1.1/Judge Dredd (Bally 1993) VPW v1.1.vbs.original	2023-10-03 07:02:11
-+++ ./Judge Dredd (Bally 1993) VPW v1.1/Judge Dredd (Bally 1993) VPW v1.1.vbs	2023-10-03 07:21:22
-@@ -3044,7 +3044,40 @@
- '****************************************************************
- '		DROP TARGETS INITIALIZATION
- '****************************************************************
-+
+--- Judge Dredd (Bally 1993) VPW v1.1.vbs.original
++++ Judge Dredd (Bally 1993) VPW v1.1.vbs
+@@ -3047,0 +3048,33 @@
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -33,20 +29,14 @@
 +    m_sw = sw
 +    m_animate = animate
 +    m_isDropped = isDropped
- 
++
 +    Set Init = Me
 +  End Function
 +End Class
 +
- 'Define a variable for each drop target
- Dim DT54, DT55, DT56, DT57, DT58
- 
-@@ -3063,12 +3096,13 @@
- '	animate:			Arrary slot for handling the animation instrucitons, set to 0
- '
- '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+@@ -3065,0 +3099 @@
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
- 
+@@ -3067,5 +3101,5 @@
 -DT54 = Array(sw54, sw54off, sw54prim, 54, 0)
 -DT55 = Array(sw55, sw55off, sw55prim, 55, 0)
 -DT56 = Array(sw56, sw56off, sw56prim, 56, 0)
@@ -57,62 +47,26 @@
 +Set DT56 = (new DropTarget)(sw56, sw56off, sw56prim, 56, 0, false)
 +Set DT57 = (new DropTarget)(sw57, sw57off, sw57prim, 57, 0, false)
 +Set DT58 = (new DropTarget)(sw58, sw58off, sw58prim, 58, 0, false)
- 
- Dim DTArray
- DTArray = Array(DT54, DT55, DT56, DT57, DT58)
-@@ -3098,9 +3132,9 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 	PlaySoundAtVol  DTHitSound, Activeball, Vol(Activeball)*22.5
+@@ -3101,3 +3135,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 	DoDTAnim
- End Sub
-@@ -3109,7 +3143,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -3112 +3146 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -3117,14 +3151,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -3120 +3154 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -3127 +3161 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -3182,7 +3216,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -3185 +3219 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-@@ -3304,6 +3338,35 @@
- '****************************************************************
- '		STAND-UP TARGET INITIALIZATION
- '****************************************************************
-+
+@@ -3307,0 +3342,29 @@
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate, m_target
 +
@@ -141,13 +95,8 @@
 +    Set Init = Me
 +  End Function
 +End Class
- 
- 'Define a variable for each stand-up target
- Dim ST18, ST18a, ST18b, ST25, ST27, ST36, ST68
-@@ -3319,13 +3382,13 @@
- '	animate:			Arrary slot for handling the animation instructions, set to 0
- '	target identifier:	The target
- 
++
+@@ -3322,7 +3385,7 @@
 -ST18 = Array(sw18, sw18p, 18, 0, 180)
 -ST18a = Array(sw18a, sw18ap, 18, 0, 181)
 -ST18b = Array(sw18b, sw18bp, 18, 0, 182)
@@ -162,38 +111,17 @@
 +Set ST27 = (new StandupTarget)(sw27, sw27p, 27, 0, 27)
 +Set ST36 = (new StandupTarget)(sw36, sw36p, 36, 0, 36)
 +Set ST68 = (new StandupTarget)(sw68, sw68p, 68, 0, 68)
- 
- 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
- ' STAnimationArray = Array(ST1, ST2, ....)
-@@ -3347,10 +3410,10 @@
- 	i = STArrayID(switch)
- 
- '	PlayTargetSound		'Replaced with Fleep Code
+@@ -3350 +3413 @@
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
- 
+@@ -3352,2 +3415,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
- 	End If
- 	DoSTAnim
- End Sub
-@@ -3358,7 +3421,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(STArray) 
+@@ -3361 +3424 @@
 -		If STArray(i)(4) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).target = switch Then STArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -3382,7 +3445,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i=0 to Ubound(STArray)
+@@ -3385 +3448 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 

@@ -1,89 +1,35 @@
---- ./2104398928_CARtoonsRC(Nailed2021)v1.3/2104398928_CARtoonsRC(Nailed2021)v1.3.vbs.original	2023-11-22 06:48:26
-+++ ./2104398928_CARtoonsRC(Nailed2021)v1.3/2104398928_CARtoonsRC(Nailed2021)v1.3.vbs	2023-11-22 06:48:30
-@@ -841,9 +841,12 @@
- 	roach4.y=roachxy4(1)(roachstep)
- 	if roachstep>0 Then
- 		for xx = 1 to 4											'change each roach rotation
+--- 2104398928_CARtoonsRC(Nailed2021)v1.3.vbs.original
++++ 2104398928_CARtoonsRC(Nailed2021)v1.3.vbs
+@@ -844 +844,3 @@
 -			dy=-1*(EVAL("roachxy"&xx)(1)(roachstep)-EVAL("roachxy"&xx)(1)(roachstep-1))	'delta Y
 +			dim roachxy : roachxy = EVAL("roachxy"&xx)
 +			'dy=-1*(EVAL("roachxy"&xx)(1)(roachstep)-EVAL("roachxy"&xx)(1)(roachstep-1))	'delta Y
 +			dy=-1*(roachxy(1)(roachstep)-roachxy(1)(roachstep-1))	'delta Y
- 			if dy=0 then dy=0.0000001													'avoid divide by zero errors
+@@ -846 +848,2 @@
 -			dx=EVAL("roachxy"&xx)(0)(roachstep)-EVAL("roachxy"&xx)(0)(roachstep-1)		'delta X
 +			'dx=EVAL("roachxy"&xx)(0)(roachstep)-EVAL("roachxy"&xx)(0)(roachstep-1)		'delta X
 +			dx=roachxy(0)(roachstep)-roachxy(0)(roachstep-1)		'delta X
- 			roachA=atn(dX/dY)												'angle in radians
- 			if roachA<0 then roachA=roachA+PI								'correction for negative angles
- 			roachA=int(roachA/(pi/180))							'convert to degrees
-@@ -1886,7 +1889,7 @@
- Sub DTredL_dropped
- 	if roachloc=2 then roachmove
- 	PlaySoundAt SoundFXDOF("fx_droptarget",123,DOFPulse,DOFContactors), DTRedL
+@@ -1889 +1892 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then
- 		LDTRedL.state=1
- 		LDTRedL1.state=1
-@@ -1904,7 +1907,7 @@
- Sub DTredR_dropped
- 	if roachloc=2 then roachmove
- 	PlaySoundAt SoundFXDOF("fx_droptarget",123,DOFPulse,DOFContactors), DTRedR
+@@ -1907 +1910 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTRedR.state=1
- 	If StarRed.State = 1 then 
- 		addbonus
-@@ -1918,7 +1921,7 @@
- 
- Sub DTwhiteL_dropped
- 	PlaySoundAt SoundFXDOF("fx_droptarget",124,DOFPulse,DOFContactors), DTwhiteL
+@@ -1921 +1924 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTwhiteL.state=1
- 	If StarWhite.State = 1 then 
- 		addbonus
-@@ -1932,7 +1935,7 @@
- 
- Sub DTwhiteR_dropped
- 	PlaySoundAt SoundFXDOF("fx_droptarget",124,DOFPulse,DOFContactors), DTwhiteR
+@@ -1935 +1938 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTwhiteR.state=1
- 	If StarWhite.State = 1 then 
- 		addbonus
-@@ -1946,7 +1949,7 @@
- 
- Sub DTgreenL_dropped
- 	PlaySoundAt SoundFXDOF("fx_droptarget",125,DOFPulse,DOFContactors), DTGreenL
+@@ -1949 +1952 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTGreenL.state=1
- 	If StarGreen.State = 1 then 
- 		addbonus
-@@ -1960,7 +1963,7 @@
- 
- Sub DTGreenR_dropped
- 	PlaySoundAt SoundFXDOF("fx_droptarget",125,DOFPulse,DOFContactors), DTGreenR
+@@ -1963 +1966 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTGreenR.state=1
- 	If StarGreen.State = 1 then 
- 		addbonus
-@@ -1975,7 +1978,7 @@
- Sub DTyellowL_dropped
- 	if roachloc=1 then roachmove
- 	PlaySoundAt SoundFXDOF("fx_droptarget",126,DOFPulse,DOFContactors), DTYellowL
+@@ -1978 +1981 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTYellowL.state=1
- 	If StarYellow.State = 1 then 
- 		addbonus
-@@ -1990,7 +1993,7 @@
- Sub DTyellowR_dropped
- 	if roachloc=1 then roachmove
- 	PlaySoundAt SoundFXDOF("fx_droptarget",126,DOFPulse,DOFContactors), DTYellowR
+@@ -1993 +1996 @@
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
- 	If BrokeLights=0 Then LDTYellowR.state=1
- 	If StarYellow.State = 1 then 
- 		addbonus

@@ -1,36 +1,14 @@
---- Route66.vbs.original	2024-09-11 14:36:39.566053315 +0200
-+++ Route66.vbs	2024-09-11 14:27:46.599517576 +0200
-@@ -307,7 +307,7 @@
- 
- Sub RolloverStarTopLeft_hit  
- 	PlaySoundAtBall "fx_Sensor"                                                       
+--- Route66.vbs.original
++++ Route66.vbs
+@@ -310 +310 @@
 -	AddScore (10 + 90 * PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopRight.state)
 +	AddScore ((10 + 90 * PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopRight.state))
- 	PlRolloverStarTopLeft.state = 1
- 	If PlArrowLoopLeft.state = 2 Then 
- 		PlArrowLoopLeft.state = 1
-@@ -317,13 +317,13 @@
- 
- Sub RolloverStarTopCenter_hit
- 	PlaySoundAtBall "fx_Sensor"                                                       
+@@ -320 +320 @@
 -	AddScore (10 + 90 * PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopRight.state)
 +	AddScore ((10 + 90 * PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state) * (1 + PlRolloverStarTopRight.state))
- 	PlRolloverStarTopCenter.state = 1
- End Sub
- 
- Sub RolloverStarTopRight_hit
- 	PlaySoundAtBall "fx_Sensor"                                                       
+@@ -326 +326 @@
 -	AddScore (10 + 90 * PlRolloverStarTopRight.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state)
 +	AddScore ((10 + 90 * PlRolloverStarTopRight.state) * (1 + PlRolloverStarTopCenter.state) * (1 + PlRolloverStarTopLeft.state))
- 	PlRolloverStarTopRight.state = 1
- 	If PlArrowLoopRight.state = 2 Then 
- 		PlArrowLoopRight.state = 1
-@@ -373,7 +373,7 @@
- 
- Sub TargetTopRight_Hit
- 	PlaySoundAtBall "fx_TargetHit"
+@@ -376 +376 @@
 -	AddScore (10 + 90 * PlTargetTopRight.state) * (1 + PlTargetTopLeft.state)
 +	AddScore ((10 + 90 * PlTargetTopRight.state) * (1 + PlTargetTopLeft.state))
- 	FlashKicker.duration 1, 100, 0
- 	If PlTargetTopRight.state = 1 Then PlTargetTopRight2.state = 1
- 	PlTargetTopRight.state = 1

@@ -1,12 +1,5 @@
---- monkeyisland.vbs.original	2023-06-09 10:44:28
-+++ monkeyisland.vbs	2023-06-09 10:44:45
-@@ -2441,7 +2441,7 @@
-                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, dCharsPerLine(0) + 5, 8, 8
-             Next
-             For i = dCharsPerLine(1) to (dCharsPerLine(0) + dCharsPerLine(1) - 1) ' Bottom
+--- monkeyisland.vbs.original
++++ monkeyisland.vbs
+@@ -2444 +2444 @@
 -                DMDScene.GetImage("Dig" & i).SetBounds (i - dCharsPerLine(1)) * 8, 3, 8, 16
 +                DMDScene.GetImage("Dig" & i).SetBounds ((i - dCharsPerLine(1)) * 8), 3, 8, 16
-             Next
-             FlexDMD.LockRenderThread
-             FlexDMD.Stage.AddActor DMDScene
-\ No newline at end of file

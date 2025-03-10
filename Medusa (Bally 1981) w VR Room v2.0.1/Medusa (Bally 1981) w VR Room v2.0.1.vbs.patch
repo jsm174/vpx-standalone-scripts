@@ -1,10 +1,6 @@
---- Medusa (Bally 1981) w VR Room v2.0.1.vbs.original	2023-07-25 17:07:54
-+++ Medusa (Bally 1981) w VR Room v2.0.1.vbs	2023-07-25 17:02:41
-@@ -2296,7 +2296,39 @@
- '******************************************************
- '****  DROP TARGETS by Rothbauerw
- '******************************************************
-+
+--- Medusa (Bally 1981) w VR Room v2.0.1.vbs.original
++++ Medusa (Bally 1981) w VR Room v2.0.1.vbs
+@@ -2299,0 +2300,32 @@
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -22,7 +18,7 @@
 +  
 +	Public Property Get Animate(): Animate = m_animate: End Property
 +	Public Property Let Animate(input): m_animate = input: End Property
- 
++  
 +	Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
 +	Public Property Let IsDropped(input): m_isDropped = input: End Property
 +  
@@ -37,13 +33,7 @@
 +	  Set Init = Me
 +	End Function
 +End Class
- 
- '******************************************************
- '  DROP TARGETS INITIALIZATION
-@@ -2328,17 +2360,17 @@
- 
- 
- 
+@@ -2331,11 +2363,11 @@
 -DT1 = Array(sw1, sw1a, sw1p, 1, 0, false)
 -DT2 = Array(sw2, sw2a, sw2p, 2, 0, false)
 -DT3 = Array(sw3, sw3a, sw3p, 3, 0, false)
@@ -66,80 +56,32 @@
 +Set DT46 = (new DropTarget)(sw46, sw46a, sw46p, 46, 0, false)
 +Set DT47 = (new DropTarget)(sw47, sw47a, sw47p, 47, 0, false)
 +Set DT48 = (new DropTarget)(sw48, sw48a, sw48p, 48, 0, false)
- 
- Dim DTArray
- DTArray = Array(DT1, DT2, DT3, DT4, DT42, DT43, DT44, DT45, DT46, DT47, DT48)
-@@ -2435,9 +2467,9 @@
- 	End If
- 
- 	PlayTargetSound
+@@ -2438,3 +2470,3 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 
- '	Controls Drop Shadow for a direct hit only
- 		DTShadow(swmod).visible = 0
-@@ -2450,7 +2482,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -2453 +2485 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -2458,14 +2490,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -2461 +2493 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -2468 +2500 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -2520,7 +2552,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -2523 +2555 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 
-@@ -2576,7 +2608,7 @@
- 		if prim.transz <= -DTDropUnits Then 
- 			prim.transz = -DTDropUnits
- 			secondary.collidable = 0
+@@ -2579 +2611 @@
 -			DTArray(ind)(5) = true 'Mark target as dropped
 +			DTArray(ind).isDropped = true 'Mark target as dropped
- 			if UsingROM then 
- 				controller.Switch(Switchid) = 1
- 			else 
-@@ -2634,7 +2666,7 @@
- 		end if
- 		primary.collidable = 0
- 		secondary.collidable = 1
+@@ -2637 +2669 @@
 -		DTArray(ind)(5) = false 'Mark target as not dropped
 +		DTArray(ind).isDropped = false 'Mark target as not dropped
- 		if UsingROM then controller.Switch(Switchid) = 0
- 
- 	End If
-@@ -2705,7 +2737,32 @@
- '******************************************************
- '		STAND-UP TARGET INITIALIZATION
- '******************************************************
-+
+@@ -2708,0 +2741,25 @@
 +Class StandupTarget
 +	Private m_primary, m_prim, m_sw, m_animate
 +  
@@ -160,18 +102,12 @@
 +	  Set m_prim = prim
 +	  m_sw = sw
 +	  m_animate = animate
- 
++  
 +	  Set Init = Me
 +	End Function
 +  End Class
 +
- 'Define a variable for each stand-up target
- 
- Dim ST12, ST13, ST14, ST27, ST29, ST30
-@@ -2727,12 +2784,12 @@
- 
- 
- 
+@@ -2730,6 +2787,6 @@
 -ST12 = Array(sw12, psw12,12, 0)
 -ST13 = Array(sw13, psw13,13, 0)
 -ST14 = Array(sw14, psw14,14, 0)
@@ -184,38 +120,17 @@
 +Set ST27 = (new StandupTarget)(sw27, psw27,27, 0)
 +Set ST29 = (new StandupTarget)(sw29, psw29,29, 0)
 +Set ST30 = (new StandupTarget)(sw30, psw30,30, 0)
- 
- 
- Dim STArray
-@@ -2754,10 +2811,10 @@
- 	i = STArrayID(switch)
- 
- 	PlayTargetSound
+@@ -2757 +2814 @@
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
- 
+@@ -2759,2 +2816,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
- 	End If
- 	DoSTAnim
- End Sub
-@@ -2765,7 +2822,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(STArray) 
+@@ -2768 +2825 @@
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -2794,7 +2851,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i=0 to Ubound(STArray)
+@@ -2797 +2854 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 

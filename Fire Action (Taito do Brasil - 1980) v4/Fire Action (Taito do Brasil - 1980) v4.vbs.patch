@@ -1,13 +1,7 @@
---- "Fire Action (Taito do Brasil - 1980) v4.vbs.original"	2024-04-13 10:03:20.621324730 +0200
-+++ "Fire Action (Taito do Brasil - 1980) v4.vbs"	2024-04-09 17:52:38.622223960 +0200
-@@ -1070,9 +1070,7 @@
- Dim NVramPatchCoinCnt
- 
- Function GetNVramPath()
+--- Fire Action (Taito do Brasil - 1980) v4.vbs.original
++++ Fire Action (Taito do Brasil - 1980) v4.vbs
+@@ -1073,3 +1073 @@
 -    Dim WshShell
 -    Set WshShell = CreateObject("WScript.Shell")
 -    GetNVramPath = WshShell.RegRead("HKCU\Software\Freeware\Visual PinMame\globals\nvram_directory")
 +    GetNVramPath = "pinmame\nvram"
- End function
- 
- Function FileExists(FileName)

@@ -1,0 +1,14 @@
+--- Titan (Taito do Brasil - 1981) v4.vbs.original
++++ Titan (Taito do Brasil - 1981) v4.vbs
+@@ -60 +60 @@
+-NVramPatchLoad
++' NVramPatchLoad
+@@ -131 +131,4 @@
+-Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
++Sub table1_exit
++    'NVramPatchExit
++    Controller.stop
++End Sub
+@@ -473 +476 @@
+-    NVramPatchKeyCheck
++    'NVramPatchKeyCheck

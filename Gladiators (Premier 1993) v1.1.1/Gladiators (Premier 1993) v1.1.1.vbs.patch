@@ -1,20 +1,8 @@
---- "Gladiators (Premier 1993) v1.1.1.vbs.original"	2024-04-16 09:47:23.138678911 +0200
-+++ "Gladiators (Premier 1993) v1.1.1.vbs"	2024-04-16 09:40:41.003557085 +0200
-@@ -344,7 +344,7 @@
- 	If ModePlay < 0 Then
- 		RailSx.visible=1
- 		RailDx.visible=1
+--- Gladiators (Premier 1993) v1.1.1.vbs.original
++++ Gladiators (Premier 1993) v1.1.1.vbs
+@@ -347 +347 @@
 -		Trim.visible=1
 +		'Trim.visible=1
- 		TrimS1.visible=1
- 		TrimS2.visible=1
- 		TrimS3.visible=1
-@@ -357,7 +357,7 @@
- 	Else
- 		RailSx.visible=RailsLights
- 		RailDx.visible=RailsLights
+@@ -360 +360 @@
 -		Trim.visible=RailsLights
 +		'Trim.visible=RailsLights
- 		TrimS1.visible=RailsLights
- 		TrimS2.visible=RailsLights
- 		TrimS3.visible=RailsLights

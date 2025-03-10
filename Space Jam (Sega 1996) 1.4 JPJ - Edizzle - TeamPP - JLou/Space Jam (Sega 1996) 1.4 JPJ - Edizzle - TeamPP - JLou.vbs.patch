@@ -1,11 +1,5 @@
---- "Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs.original"	2024-03-10 11:22:59.906809363 +0100
-+++ "Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs"	2024-03-10 11:19:20.880676204 +0100
-@@ -7,8 +7,6 @@
- On Error Goto 0
- 
- Const BallSize = 52
+--- Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs.original
++++ Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs
+@@ -10,2 +9,0 @@
 -Const Bsize = 26
 -Const Bsize2 = 26
- Const BallMass = 2.2
- 'Const Lumen = 10
- 

@@ -1,9 +1,6 @@
---- "Iron Maiden Virtual Time (Original 2020).vbs.original"	2024-12-04 00:03:05.377635191 +0100
-+++ "Iron Maiden Virtual Time (Original 2020).vbs"	2024-12-03 23:56:53.140080569 +0100
-@@ -408,22 +408,37 @@
- End Sub
- 
- Function GetTracks(startsWith)
+--- Iron Maiden Virtual Time (Original 2020).vbs.original
++++ Iron Maiden Virtual Time (Original 2020).vbs
+@@ -411,16 +411,31 @@
 -	Dim fso, f, path, ret(), index
 -	Set fso = CreateObject("Scripting.FileSystemObject")
 -	path = UserDirectory & "..\Music"
@@ -51,15 +48,6 @@
 +	ret(12) = "Iron Maiden - The Final Frontier.mp3"
 +	ret(13) = "Iron Maiden - The Number Of The Beast.mp3"
 +	ret(14) = "Iron Maiden - Wasted Years.mp3"
- 	GetTracks = ret
- End Function
- 
-@@ -2518,7 +2533,7 @@
- Dim GIStep : GIStep = 0
- Sub SolGI(IsOff)
- 	If EnableGI = 0 And Not isGIOn Then Exit Sub
+@@ -2521 +2536 @@
 -	If isGIOn <> Not IsOff Then
 +	If isGIOn <> (Not IsOff) Then
- 		isGIOn = Not IsOff
- 		If isGIOn Then
- 			' GI goes on

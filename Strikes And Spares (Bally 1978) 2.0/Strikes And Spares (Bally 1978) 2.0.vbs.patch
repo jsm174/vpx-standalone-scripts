@@ -1,10 +1,6 @@
---- ./Strikes And Spares (Bally 1978) 2.0/Strikes And Spares (Bally 1978) 2.0.vbs.original	2023-06-02 07:07:27
-+++ ./Strikes And Spares (Bally 1978) 2.0/Strikes And Spares (Bally 1978) 2.0.vbs	2023-06-01 20:12:03
-@@ -2092,6 +2092,32 @@
- '******************************************************
- '		STAND-UP TARGET INITIALIZATION
- '******************************************************
-+
+--- Strikes And Spares (Bally 1978) 2.0.vbs.original
++++ Strikes And Spares (Bally 1978) 2.0.vbs
+@@ -2095,0 +2096,26 @@
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
 +
@@ -30,13 +26,8 @@
 +  End Function
 +End Class
 +
- 
- 'Define a variable for each stand-up target
- Dim ST12, ST28, ST29, ST30, ST31, ST33
-@@ -2110,12 +2136,12 @@
- 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
- 
- 
++
+@@ -2113,6 +2139,6 @@
 -ST12 = Array(sw12, psw12, 12, 0)
 -ST28 = Array(sw28, psw28, 28, 0)
 -ST29 = Array(sw29, psw29, 29, 0)
@@ -49,38 +40,17 @@
 +Set ST30 = (new StandupTarget)(sw30, psw30, 30, 0)
 +Set ST31 = (new StandupTarget)(sw31, psw31, 31, 0)
 +Set ST33 = (new StandupTarget)(sw33, psw33, 33, 0)
- 
- 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
- '   STAnimationArray = Array(ST1, ST2, ....)
-@@ -2137,10 +2163,10 @@
- 	i = STArrayID(switch)
- 	
- 	'PlayTargetSound
+@@ -2140 +2166 @@
 -	STArray(i)(3) = STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate = STCheckHit(Activeball,STArray(i).primary)
- 	
+@@ -2142,2 +2168,2 @@
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
- 	End If
- 	DoSTAnim
- End Sub
-@@ -2148,7 +2174,7 @@
- Function STArrayID(switch)
- 	Dim i
- 	For i = 0 To UBound(STArray)
+@@ -2151 +2177 @@
 -		If STArray(i)(2) = switch Then 
 +		If STArray(i).sw = switch Then 
- 			STArrayID = i
- 			Exit Function
- 		End If
-@@ -2179,7 +2205,7 @@
- Sub DoSTAnim()
- 	Dim i
- 	For i = 0 To UBound(STArray)
+@@ -2182 +2208 @@
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
- 	Next
- End Sub
- 

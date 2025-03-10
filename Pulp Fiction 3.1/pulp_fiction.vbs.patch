@@ -1,12 +1,5 @@
---- pulp_fiction.vbs.original	2023-06-12 09:29:41
-+++ pulp_fiction.vbs	2023-06-12 09:29:45
-@@ -2621,7 +2621,7 @@
-     MyLamp.TimerInterval = BlinkPeriod
-     MyLamp.TimerEnabled = 0
-     MyLamp.TimerEnabled = 1
+--- pulp_fiction.vbs.original
++++ pulp_fiction.vbs
+@@ -2624 +2624 @@
 -    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
 +    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp ((me.UserValue - INT(me.UserValue))*100), me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
- End Sub
- 
- ' standard VPX objects
-\ No newline at end of file

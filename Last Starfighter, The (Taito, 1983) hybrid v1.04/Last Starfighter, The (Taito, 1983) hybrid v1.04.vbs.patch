@@ -1,12 +1,5 @@
---- ./Last Starfighter, The (Taito, 1983) hybrid v1.04/Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs.original	2023-06-02 17:05:12
-+++ ./Last Starfighter, The (Taito, 1983) hybrid v1.04/Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs	2023-06-02 17:05:01
-@@ -104,7 +104,7 @@
- '************
- 
- Sub table1_Init
+--- Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs.original
++++ Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs
+@@ -107 +107 @@
 -NVramPatchLoad
 +'NVramPatchLoad
-     vpmInit me
-     With Controller
-         .GameName = cGameName
-\ No newline at end of file
