@@ -1,0 +1,1333 @@
+--- Freddys Nightmares (Original 2024).vbs.original
++++ Freddys Nightmares (Original 2024).vbs
+@@ -203,15 +203,15 @@
+ 
+ 	if HasPuP Then
+ 
+-	PuPlayer.Init pBackglass,"FreddysNightmares"
++	'PuPlayer.Init pBackglass,"FreddysNightmares"
+ 	If useB2SBG = 1 Then
+ 		PuPlayer.Init pBackglass,"FreddysNightmares"		
+ 	End If
+-    PuPlayer.Init pFullDMD,"FreddysNightmares"
+-    PuPlayer.Init pTopper2,"FreddysNightmares"
+-	PuPlayer.Init pMusic,"FreddysNightmares"
+-	PuPlayer.Init pAudio,"FreddysNightmares"
+-	PuPlayer.Init pCallouts,"FreddysNightmares"
++    'PuPlayer.Init pFullDMD,"FreddysNightmares"
++    'PuPlayer.Init pTopper2,"FreddysNightmares"
++	'PuPlayer.Init pMusic,"FreddysNightmares"
++	'PuPlayer.Init pAudio,"FreddysNightmares"
++	'PuPlayer.Init pCallouts,"FreddysNightmares"
+ 	If toppervideo = 1 Then
+ 	PuPlayer.Init pTopper,"FreddysNightmares"
+ 	If useB2SBG = 1 Then
+@@ -227,15 +227,15 @@
+     '**********************************************************************************************************************************************
+ 
+ 
+-	PuPlayer.SetScreenex pBackglass,0,0,0,0,0       'Set PuPlayer DMD TO Always ON    <screen number> , xpos, ypos, width, height, POPUP
+-    PuPlayer.SetScreenex pAudio,0,0,0,0,2
+-	PuPlayer.hide pAudio
+-	PuPlayer.SetScreenex pMusic,0,0,0,0,2
+-	PuPlayer.hide pMusic
+-	PuPlayer.SetScreenex pCallouts,0,0,0,0,2
+-	PuPlayer.hide pCallouts
+-    PuPlayer.SetScreenex pTopper2,0,0,0,0,0	
+-    PuPlayer.SetScreenex pFullDMD,0,0,0,0,0
++	'PuPlayer.SetScreenex pBackglass,0,0,0,0,0       'Set PuPlayer DMD TO Always ON    <screen number> , xpos, ypos, width, height, POPUP
++    'PuPlayer.SetScreenex pAudio,0,0,0,0,2
++	'PuPlayer.hide pAudio
++	'PuPlayer.SetScreenex pMusic,0,0,0,0,2
++	'PuPlayer.hide pMusic
++	'PuPlayer.SetScreenex pCallouts,0,0,0,0,2
++	'PuPlayer.hide pCallouts
++    'PuPlayer.SetScreenex pTopper2,0,0,0,0,0
++    'PuPlayer.SetScreenex pFullDMD,0,0,0,0,0
+     'PuPlayer.SetScreenex pDMD,0,0,0,0,0	
+ 	If useB2SBG = 1 then 
+ 		PuPlayer.SetScreenex pBackglassB2S,0,0,0,0,0
+@@ -265,40 +265,40 @@
+ 	End Sub
+ 
+ 
+-PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
+-PuPlayer.playlistadd pMusic,"audiobg", 1 , 0
+-PuPlayer.playlistadd pMusic,"audioclear", 1 , 0
+-PuPlayer.playlistadd pMusic,"audiobgrock", 1 , 0
+-PuPlayer.playlistadd pAudio,"audioevents", 1 , 0
+-PuPlayer.playlistadd pAudio,"audiomodes", 1 , 0
+-PuPlayer.playlistadd pMusic,"audioquotes", 1 , 0
+-PuPlayer.playlistadd pAudio,"audioFreddyQuotes", 1 , 0
+-PuPlayer.playlistadd pAudio,"audiomultiballs", 1 , 0
+-PuPlayer.playlistadd pCallouts,"audiocallouts", 1 , 0
+-PuPlayer.playlistadd pCallouts,"AudioBallLost", 1 , 0
+-PuPlayer.playlistadd pCallouts,"AudioJackpots", 1 , 0
+-PuPlayer.playlistadd pCallouts,"AudioSuperJackpots", 1 , 0
+-PuPlayer.playlistadd pCallouts,"AudioWizardMode", 1 , 0
+-PuPlayer.playlistadd pCallouts,"AudioWizardCleared", 1 , 0
+-PuPlayer.playlistadd pCallouts,"AudioGameLost", 1 , 0
+-PuPlayer.playlistadd pCallouts,"audiocheers", 1 , 0
+-PuPlayer.playlistadd pBackglass,"bgs", 1 , 0
+-PuPlayer.playlistadd pBackglass,"scene", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videointro", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videoballsaved", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videodrain", 1 , 0
+-PuPlayer.playlistadd pBackglass,"EightBitWave", 1 , 0
+-PuPlayer.playlistadd pBackglass,"SixteenBitWave", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videoNightmares", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videoDreamSequence", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videoquotes", 1 , 0
+-PuPlayer.playlistadd pBackglass,"videoWizard", 1 , 0
+-PuPlayer.playlistadd pBackglass,"EndOfWizardMode", 1 , 0
+-PuPlayer.playlistadd pBackglass,"LostWizardMode", 1 , 2
+-PuPlayer.playlistadd pBackglass,"SkillShot", 1 , 0
+-PuPlayer.playlistadd pBackglass,"Highscore", 1 , 0
+-PuPlayer.playlistadd pTopper2,"Topper", 1 , 0
+-PuPlayer.playlistadd pFullDMD,"fulldmd", 1 , 0
++'PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
++'PuPlayer.playlistadd pMusic,"audiobg", 1 , 0
++'PuPlayer.playlistadd pMusic,"audioclear", 1 , 0
++'PuPlayer.playlistadd pMusic,"audiobgrock", 1 , 0
++'PuPlayer.playlistadd pAudio,"audioevents", 1 , 0
++'PuPlayer.playlistadd pAudio,"audiomodes", 1 , 0
++'PuPlayer.playlistadd pMusic,"audioquotes", 1 , 0
++'PuPlayer.playlistadd pAudio,"audioFreddyQuotes", 1 , 0
++'PuPlayer.playlistadd pAudio,"audiomultiballs", 1 , 0
++'PuPlayer.playlistadd pCallouts,"audiocallouts", 1 , 0
++'PuPlayer.playlistadd pCallouts,"AudioBallLost", 1 , 0
++'PuPlayer.playlistadd pCallouts,"AudioJackpots", 1 , 0
++'PuPlayer.playlistadd pCallouts,"AudioSuperJackpots", 1 , 0
++'PuPlayer.playlistadd pCallouts,"AudioWizardMode", 1 , 0
++'PuPlayer.playlistadd pCallouts,"AudioWizardCleared", 1 , 0
++'PuPlayer.playlistadd pCallouts,"AudioGameLost", 1 , 0
++'PuPlayer.playlistadd pCallouts,"audiocheers", 1 , 0
++'PuPlayer.playlistadd pBackglass,"bgs", 1 , 0
++'PuPlayer.playlistadd pBackglass,"scene", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videointro", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videoballsaved", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videodrain", 1 , 0
++'PuPlayer.playlistadd pBackglass,"EightBitWave", 1 , 0
++'PuPlayer.playlistadd pBackglass,"SixteenBitWave", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videoNightmares", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videoDreamSequence", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videoquotes", 1 , 0
++'PuPlayer.playlistadd pBackglass,"videoWizard", 1 , 0
++'PuPlayer.playlistadd pBackglass,"EndOfWizardMode", 1 , 0
++'PuPlayer.playlistadd pBackglass,"LostWizardMode", 1 , 2
++'PuPlayer.playlistadd pBackglass,"SkillShot", 1 , 0
++'PuPlayer.playlistadd pBackglass,"Highscore", 1 , 0
++'PuPlayer.playlistadd pTopper2,"Topper", 1 , 0
++'PuPlayer.playlistadd pFullDMD,"fulldmd", 1 , 0
+ End If
+ 
+ 
+@@ -795,9 +795,9 @@
+     If Tilt > 15 Then 'If more that 15 then TILT the table
+         Tilted = True
+         'display Tilt
+-        PuPlayer.playlistplayex pBackglass,"Highscore","Tilt.mkv",videovol,1
+-        PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-        PuPlayer.SetBackground pBackglass,1
++        'PuPlayer.playlistplayex pBackglass,"Highscore","Tilt.mkv",videovol,1
++        'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++        'PuPlayer.SetBackground pBackglass,1
+         'SixteenBitSuperJackpotFail
+         'EightBitSuperJackpotFail
+         SpecialtyTilt
+@@ -1342,36 +1342,36 @@
+         'Lane Bonus
+         AwardPoints = LaneBonus * 1000
+         TotalBonus = AwardPoints
+-        DMD "bonus-background.wmv", "LANE BONUS", AwardPoints, 700
++        DMD "bonus-background.gif", "LANE BONUS", AwardPoints, 700
+         vpmtimer.addtimer 1300, "PlaySound ""ClawSwipe"", 0, 1, 0, 0, 0, 0, 0 '"
+ 
+         'Number of Target banks completed
+         AwardPoints = TargetBonus * 100000
+         TotalBonus = TotalBonus + AwardPoints
+-        DMD "bonus-background.wmv", "TARGET BONUS", AwardPoints, 700
++        DMD "bonus-background.gif", "TARGET BONUS", AwardPoints, 700
+         vpmtimer.addtimer 2200, "PlaySound ""ClawSwipe"", 0, 1, 0, 0, 1000, 0, 0 '"
+ 
+         'Number of Ramps completed
+         AwardPoints = RampBonus * 10000
+         TotalBonus = TotalBonus + AwardPoints
+-        DMD "bonus-background.wmv", "RAMP BONUS", AwardPoints, 700
++        DMD "bonus-background.gif", "RAMP BONUS", AwardPoints, 700
+         vpmtimer.addtimer 2900, "PlaySound ""ClawSwipe"", 0, 1, 0, 0, 2000, 0, 0 '"
+ 
+         'Number of Orbits registered
+         AwardPoints = OrbitHits * 32260
+         TotalBonus = TotalBonus + AwardPoints
+-        DMD "bonus-background.wmv", "ORBIT BONUS", AwardPoints, 700
++        DMD "bonus-background.gif", "ORBIT BONUS", AwardPoints, 700
+         vpmtimer.addtimer 3600, "PlaySound ""ClawSwipe"", 0, 1, 0, 0, 3000, 0, 0 '"
+ 
+         'Number of monsters defeated
+         AwardPoints = Monsters(CurrentPlayer) * 25130
+-        DMD "bonus-background.wmv", "BRATS KILLED", monsters(CurrentPlayer), 700
++        DMD "bonus-background.gif", "BRATS KILLED", monsters(CurrentPlayer), 700
+         vpmtimer.addtimer 4400, "PlaySound ""ClawSwipe"", 0, 1, 0, 0, 4000, 0, 0 '"
+ 
+         'Player Level
+         AwardPoints = Level(CurrentPlayer) * 50000
+         TotalBonus = TotalBonus + AwardPoints
+-        DMD "bonus-background.wmv", "LEVEL BONUS", Level(CurrentPlayer), 700
++        DMD "bonus-background.gif", "LEVEL BONUS", Level(CurrentPlayer), 700
+         vpmtimer.addtimer 5000, "PlaySound ""ClawSwipe"", 0, 1, 0, 0, 5000, 0, 0 '"
+ 
+         ' calculate the totalbonus
+@@ -1392,7 +1392,7 @@
+         bBonusHeld = False
+ 
+         ' Add the bonus to the score
+-        DMD "bonus-background.wmv", "TOTAL BONUS X " &BonusMultiplier(CurrentPlayer), TotalBonus, 2200
++        DMD "bonus-background.gif", "TOTAL BONUS X " &BonusMultiplier(CurrentPlayer), TotalBonus, 2200
+         vpmtimer.addtimer 6200, "PlaySound ""FreddyLaugh2"" '"
+         AddScore TotalBonus
+ 
+@@ -1427,7 +1427,7 @@
+         End If
+ 
+         ' You may wish to do a bit of a song AND dance at this point
+-        DMD "extra-ball.wmv", "", "", 5000
++        DMD "extra-ball.gif", "", "", 5000
+ 
+         ' In this table an extra ball will have the skillshot and ball saver, so we reset the playfield for the new ball
+         ResetForNewPlayerBall()
+@@ -1528,7 +1528,7 @@
+     ' terminate all Mode - eject locked balls
+     ' most of the Mode/timers terminate at the end of the ball
+     ' show game over on the DMD
+-    DMD "game-over.wmv", "", "", 11000
++    DMD "game-over.gif", "", "", 11000
+     GameOverResetGameOver
+ 
+     ' set any lights for the attract mode
+@@ -1739,7 +1739,7 @@
+             bAutoPlunger = True
+             ' you may wish to put something on a display or play a sound at this point
+             DMDFlush
+-            DMD "ball-save.wmv", "", "", 5000
++            DMD "ball-save.gif", "", "", 5000
+             MissMe
+         Else
+             ' cancel any multiball if on last ball (ie. lost all other balls)
+@@ -1773,10 +1773,10 @@
+                 DMDFlush
+                 Select Case Mode(0)
+                     Case 0, 1, 3, 5, 7
+-                        DMD "ball-lost-2.wmv", "", "", 5000
++                        DMD "ball-lost-2.gif", "", "", 5000
+                         vpmtimer.addtimer 4500, "EndOfBall '"
+                     Case 2, 4, 6, 8, 10
+-                        DMD "ball-lost-1.wmv", "", "", 10000
++                        DMD "ball-lost-1.gif", "", "", 10000
+                         vpmtimer.addtimer 9500, "EndOfBall '"
+                 End Select
+                 StopEndOfBallMode
+@@ -1973,7 +1973,7 @@
+ Sub AwardExtraBall()
+     If NOT bExtraBallWonThisBall Then
+         DMDBlink "black.jpg", " ", "EXTRA BALL WON", 100, 10
+-        'DMD "extra-ball.wmv", "", "", 5000
++        'DMD "extra-ball.gif", "", "", 5000
+         ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
+         DOF 121, DOFPulse
+         DOF 112, DOFPulse
+@@ -2040,27 +2040,27 @@
+         case 1000000
+             cellarlight.State = 2
+             PlaySound "FreddysHome"
+-            DMD "skillshot1.wmv", " ", " ", 20000
++            DMD "skillshot1.gif", " ", " ", 20000
+             AddScore SkillshotValue(CurrentPLayer)
+         case 2000000
+             cellarlight.State = 2
+             PlaySound "FreddysHome"
+-            DMD "skillshot2.wmv", " ", " ", 20000
++            DMD "skillshot2.gif", " ", " ", 20000
+             AddScore SkillshotValue(CurrentPLayer)
+         case 3000000
+             cellarlight.State = 2
+             PlaySound "FreddysHome"
+-            DMD "skillshot3.wmv", " ", " ", 20000
++            DMD "skillshot3.gif", " ", " ", 20000
+             AddScore SkillshotValue(CurrentPLayer)
+         case 4000000
+             cellarlight.State = 2
+             PlaySound "FreddysHome"
+-            DMD "skillshot4.wmv", " ", " ", 20000
++            DMD "skillshot4.gif", " ", " ", 20000
+             AddScore SkillshotValue(CurrentPLayer)
+         case 5000000
+             cellarlight.State = 2
+             PlaySound "FreddysHome"
+-            DMD "skillshot5.wmv", " ", " ", 20000
++            DMD "skillshot5.gif", " ", " ", 20000
+             AddScore SkillshotValue(CurrentPLayer)
+         case ELSE
+             cellarlight.State = 2
+@@ -2177,9 +2177,9 @@
+     DMDFlush
+     DMDId "hsc", "black.jpg", "YOUR NAME:", " ", 999999
+     HighScoreDisplayName()
+-    PuPlayer.playlistplayex pBackglass,"Highscore","High-Score.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"videointro","",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pBackglass,"Highscore","High-Score.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"videointro","",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+ End Sub
+ 
+ Sub EnterHighScoreKey(keycode)
+@@ -2656,24 +2656,24 @@
+ 
+ ' Load & Save UltraDMD colors
+ Sub SetDMDColors
+-    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
++    'Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
+     ' Read the current Values
+     On Error Resume Next
+     DMDOldColor = WshShell.RegRead("HKCU\Software\UltraDMD\color")
+     DMDOldFullColor = WshShell.RegRead("HKCU\Software\UltraDMD\fullcolor")
+     If DMDOldFullColor = "" Then DMDOldFullColor = "False"
+     ' Set table Values
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", "True", "REG_SZ"
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\color", "White", "REG_SZ"
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\hideVDMD", "False", "REG_SZ"
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", "True", "REG_SZ"
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\color", "White", "REG_SZ"
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\hideVDMD", "False", "REG_SZ"
+     On Error Goto 0
+ End Sub
+ 
+ Sub DMD_Exit
+     If UltraDMD.IsRendering Then UltraDMD.CancelRendering
+-    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
+-    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
++    'Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
++    'WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
+     UltraDMD = Null
+ End Sub
+ 
+@@ -2700,14 +2700,14 @@
+     'coins or freeplay
+     If bFreePlay Then
+         DMD "black.jpg", " ", "FREE PLAY", 2000
+-        DMD "intro-freeplay.wmv", "", "", 135000
++        DMD "intro-freeplay.gif", "", "", 135000
+     Else
+         If Credits > 0 Then
+             DMD "black.jpg", "CREDITS " &credits, "PRESS START", 2000
+         Else
+             DMD "black.jpg", "CREDITS " &credits, "INSERT COIN", 2000
+         End If
+-        DMD "intro-coins.wmv", "", "", 135000
++        DMD "intro-coins.gif", "", "", 135000
+     End If
+ 
+     DMD "black.jpg", "HIGHSCORES", "1> " & HighScoreName(0) & " " & FormatNumber(HighScore(0), 0, , , -1), 3000
+@@ -3301,7 +3301,7 @@
+         LightEffect 3
+         FlashEffect 3
+         DMDFlush
+-        DMD "levelup.wmv", "", "", 10000
++        DMD "levelup.gif", "", "", 10000
+         PlaySound "PlayingWithPower"
+         ' open the gates and enable the orbit shots
+         Gate1.Open = true:Gate2.Open = True
+@@ -3381,7 +3381,7 @@
+ Sub CheckQUESTLanes() 'use the lane lights
+     If l15.State + l16.State + l17.State + l18.State + l19.State = 5 Then
+         DMDFlush
+-        DMD "quest-lights.wmv", "", "", 4000
++        DMD "quest-lights.gif", "", "", 4000
+         PlaySound "You'reFucked"
+         'Increase bonus multiplier
+         AddBonusMultiplier 1
+@@ -3600,11 +3600,11 @@
+         If TargetBonus = 3 Then 'lit extra ball at the chest
+             l25.State = 2
+             'DMDBlink "black.jpg", " ", "EXTRA BALL IS LIT", 50, 20
+-            DMD "extra-ball-lit.wmv", "", "", 11000
++            DMD "extra-ball-lit.gif", "", "", 11000
+         End If
+         Select Case Mode(0)
+             Case 1, 3, 5, 7, 9
+-                DMD "bash-lights.wmv", "", "", 4000
++                DMD "bash-lights.gif", "", "", 4000
+                 MonsterHits = MonsterHits + 5 + Level(CurrentPlayer)
+                 CheckActMonsters
+                 MonsterHitTimer_Timer
+@@ -3734,11 +3734,11 @@
+         If TargetBonus = 3 Then 'lit extra ball at the chest
+             l25.State = 2
+             'DMDBlink "black.jpg", " ", "EXTRA BALL IS LIT", 50, 20
+-            DMD "extra-ball-lit2.wmv", "", "", 11000
++            DMD "extra-ball-lit2.gif", "", "", 11000
+         End If
+         Select Case Mode(0)
+             Case 1, 3, 5, 7, 9
+-                DMD "skill-lights.wmv", "", "", 3000
++                DMD "skill-lights.gif", "", "", 3000
+                 MonsterHits = MonsterHits + 7 + Level(CurrentPlayer)
+                 CheckActMonsters
+                 MonsterHitTimer_Timer
+@@ -3925,7 +3925,7 @@
+                 Case 1, 3, 5, 7, 9
+                     GiEffect 2
+                     DOF 125, DOFPulse
+-                    DMD "leftloop.wmv", "", "", 2000
++                    DMD "leftloop.gif", "", "", 2000
+                     Monsters(CurrentPlayer) = Monsters(CurrentPlayer) + 1 'bonus
+                     MonsterHits = MonsterHits + 1 + Level(CurrentPlayer)
+                     CheckActMonsters
+@@ -3974,7 +3974,7 @@
+                 Case 1, 3, 5, 7, 9
+                     GiEffect 2
+                     DOF 125, DOFPulse
+-                    DMD "rightloop.wmv", "", "", 2000
++                    DMD "rightloop.gif", "", "", 2000
+                     Monsters(CurrentPlayer) = Monsters(CurrentPlayer) + 1 'bonus
+                     MonsterHits = MonsterHits + 1 + Level(CurrentPlayer)
+                     CheckActMonsters
+@@ -4025,7 +4025,7 @@
+             Case 1, 3, 5, 7, 9
+                 GiEffect 2
+                 DOF 125, DOFPulse
+-                DMD "leftramp.wmv", "", "", 2000
++                DMD "leftramp.gif", "", "", 2000
+                 Monsters(CurrentPlayer) = Monsters(CurrentPlayer) + 1 'bonus
+                 MonsterHits = MonsterHits + 1 + Level(CurrentPlayer)
+                 CheckActMonsters
+@@ -4069,7 +4069,7 @@
+             Case 1, 3, 5, 7, 9
+                 GiEffect 2
+                 DOF 125, DOFPulse
+-                DMD "rightramp.wmv", "", "", 2000
++                DMD "rightramp.gif", "", "", 2000
+                 Monsters(CurrentPlayer) = Monsters(CurrentPlayer) + 1 'bonus
+                 MonsterHits = MonsterHits + 1 + Level(CurrentPlayer)
+                 CheckActMonsters
+@@ -4377,9 +4377,9 @@
+ Sub StartAct1
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act1.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN1.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act1.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN1.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     RollingEnemiesActive
+     SuperSavingKickersActive
+     LanesClosed
+@@ -4427,14 +4427,14 @@
+     NancyLit.State = 2
+     ControllerTarget002.Isdropped = 0
+     KillNancyTimer.Enabled = True
+-    DMD "act1-complete.wmv", "", "", 12000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","kill-nancy.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act1-complete.gif", "", "", 12000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","kill-nancy.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     FlashEffect 2
+     DOF 154, DOFPulse
+     'setup variables
+@@ -4456,9 +4456,9 @@
+ 
+ Sub StartButcher
+     StopSound Song:Song = ""
+-    DMD "butcher-start.wmv", "", "", 12000
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN1.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "butcher-start.gif", "", "", 12000
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN1.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     EnemiesLit
+     SuperSavingKickersActive
+     BothClawsAreUp
+@@ -4516,14 +4516,14 @@
+     ChangeGi white
+     YaLost
+     EnemiesLitOff
+-    PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ Sub WinButcher
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "butcher-defeated.wmv", "", "", 14000
++    DMD "butcher-defeated.gif", "", "", 14000
+     FlagTimer.Enabled = True
+     PiggyDefeatedTimer.Enabled = True
+     DeathGirlSplatterStartTimer.Enabled = True
+@@ -4531,16 +4531,16 @@
+     NancyAxedTimer.Enabled = True
+     ControllerTarget002.Isdropped = 0
+     NightmareKickersActive
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","Nancy-Axed.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperNancyAxed.mkv",0,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperNancyAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","Nancy-Axed.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperNancyAxed.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperNancyAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     PlaySound "EnemyKilled"
+     FreddysGlowingEyesOff
+     BothClawTargetsDropped
+@@ -4580,9 +4580,9 @@
+ Sub StartAct2
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act2.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN2.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act2.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN2.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     RollingEnemies2Active
+     SuperSavingKickersActive
+     LanesClosed
+@@ -4625,14 +4625,14 @@
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+     DMDFlush
+-    DMD "act2-complete.wmv", "", "", 12000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","kill-DW.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act2-complete.gif", "", "", 12000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","kill-DW.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     NightmareKickersActive
+     KillDWTimer.Enabled = True
+     ControllerTarget002.Isdropped = 0
+@@ -4666,9 +4666,9 @@
+ 
+ Sub StartBelial
+     StopSound Song:Song = ""
+-    DMD "belial-start.wmv", "", "", 12000
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN3.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "belial-start.gif", "", "", 12000
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN3.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     FreddysGlowingEyesOn
+     BothClawsAreUp
+     Enemies2Lit
+@@ -4717,15 +4717,15 @@
+     ChangeGi white
+     YaLost
+     EnemiesLitOff
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperNancyAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperNancyAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ Sub WinBelial
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+     PlaySound "EnemyKilled"
+-    DMD "belial-defeated.wmv", "", "", 14000
++    DMD "belial-defeated.gif", "", "", 14000
+     FlagTimer.Enabled = True
+     PiggyDefeatedTimer.Enabled = True
+     DeathGirlSplatterStartTimer.Enabled = True
+@@ -4790,9 +4790,9 @@
+ Sub StartAct3
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act3.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN4.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act3.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN4.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     RollingEnemies3Active
+     SuperSavingKickersActive
+     LanesClosed
+@@ -4834,14 +4834,14 @@
+     StopMonsterTimer
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act3-complete.wmv", "", "", 12000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Kill-Alice.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act3-complete.gif", "", "", 12000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Kill-Alice.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     NightmareKickersActive
+     KillAliceTimer.Enabled = True
+     ControllerTarget002.Isdropped = 0
+@@ -4871,9 +4871,9 @@
+ 
+ Sub StartAzmodan
+     StopSound Song:Song = ""
+-    DMD "azmodan-start.wmv", "", "", 20000
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN5.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "azmodan-start.gif", "", "", 20000
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN5.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     BothClawsAreUp
+     SuperSavingKickersActive
+     Enemies3Lit
+@@ -4921,25 +4921,25 @@
+     ChangeGi white
+     YaLost
+     EnemiesLitOff
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ Sub WinAzmodan
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+     PlaySound "EnemyKilled"
+-    DMD "azmodan-defeated.wmv", "", "", 14000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","Alice-Axed.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperAliceAxed.mkv",0,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperAliceAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    DMD "azmodan-defeated.gif", "", "", 14000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","Alice-Axed.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperAliceAxed.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperAliceAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     NightmareKickersActive
+     AliceAxedTimer.Enabled = True
+     ControllerTarget002.Isdropped = 0
+@@ -4982,9 +4982,9 @@
+ Sub StartAct4
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act4.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN7.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act4.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN7.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     RollingEnemies4Active
+     SuperSavingKickersActive
+     LanesClosed
+@@ -5025,14 +5025,14 @@
+     StopMonsterTimer
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act4-complete.wmv", "", "", 12000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Kill-Maggie.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act4-complete.gif", "", "", 12000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Kill-Maggie.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     NightmareCatchTarget.Isdropped = 0
+     blockerCatchTarget.Isdropped = 0
+     NightmareKickOutKicker.Enabled = True
+@@ -5071,9 +5071,9 @@
+ 
+ Sub StartDiablo
+     StopSound Song:Song = ""
+-    DMD "diablo-start.wmv", "", "", 19000
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN6.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "diablo-start.gif", "", "", 19000
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN6.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     BothClawsAreUp
+     Enemies4Lit
+     SuperSavingKickersActive
+@@ -5121,15 +5121,15 @@
+     ChangeGi white
+     YaLost
+     EnemiesLitOff
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperAliceAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperAliceAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ Sub WinDiablo
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+     PlaySound "EnemyKilled"
+-    DMD "diablo-defeated.wmv", "", "", 14000
++    DMD "diablo-defeated.gif", "", "", 14000
+     SixteenBitKickersActive
+     SixteenBitPreTimer.Enabled = True
+     BaseMusicRestartTrigger.Enabled = True
+@@ -5171,9 +5171,9 @@
+ Sub StartAct5
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act5.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN8.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act5.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN8.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     RollingEnemies5Active
+     SuperSavingKickersActive
+     LanesClosed
+@@ -5214,14 +5214,14 @@
+     StopMonsterTimer
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "act5-complete.wmv", "", "", 13000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoWizard","Kill-Jason.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "act5-complete.gif", "", "", 13000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoWizard","Kill-Jason.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     NightmareKickersActive
+     ControllerTarget002.Isdropped = 0
+     KillJasonTimer.Enabled = True
+@@ -5251,9 +5251,9 @@
+ 
+ Sub StartMalthael
+     StopSound Song:Song = ""
+-    DMD "malthael-start.wmv", "", "", 18000
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN8.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "malthael-start.gif", "", "", 18000
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDN8.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     FreddysGlowingEyesOn
+     BothClawsAreUp
+     Enemies5Lit
+@@ -5301,8 +5301,8 @@
+     ChangeGi white
+     YaLost
+     EnemiesLitOff
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ Sub WinMalthael
+@@ -5316,8 +5316,8 @@
+     ChangeGi white
+     SetLightColor l47, purple, 1
+     DMD "black.jpg", "SHOOT THE HOUSE", "TO KILL JASON", 5000
+-    PuPlayer.playlistplayex pBackglass,"videoWizard","WizardJackpot.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pBackglass,"videoWizard","WizardJackpot.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+     LanesClosed
+     MalthaelAttackTimer.Enabled = 0
+     ChestDoor.IsDropped = 1
+@@ -5334,17 +5334,17 @@
+     Dim i
+     'play a sound - video -dmd
+     StopSound Song:Song = ""
+-    DMD "malthael-defeated.wmv", "", "", 80000
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoWizard","WizardModeEnd.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperJasonAxed.mkv",0,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    DMD "malthael-defeated.gif", "", "", 80000
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoWizard","WizardModeEnd.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperJasonAxed.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     BothClawTargetsDropped
+     SuperSavingKickersDeactive
+     EnemiesLitOff
+@@ -6255,10 +6255,10 @@
+     KillLightTrigger002.Enabled = True
+     KillLightTrigger003.Enabled = True
+     KillLightTrigger004.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare1Start.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare1Start.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+ End Sub
+ 
+ Sub RollingEnemies2Active
+@@ -6273,10 +6273,10 @@
+     KillLightTrigger002.Enabled = True
+     KillLightTrigger003.Enabled = True
+     KillLightTrigger004.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare2Start.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare2Start.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+ End Sub
+ 
+ Sub RollingEnemies3Active
+@@ -6287,10 +6287,10 @@
+     KillLightTrigger002.Enabled = True
+     KillLightTrigger003.Enabled = True
+     KillLightTrigger004.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare3Start.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare3Start.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+ End Sub
+ 
+ Sub RollingEnemies4Active
+@@ -6300,10 +6300,10 @@
+     KillLightTrigger002.Enabled = True
+     KillLightTrigger003.Enabled = True
+     KillLightTrigger004.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare4Start.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare4Start.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+ End Sub
+ 
+ Sub RollingEnemies5Active
+@@ -6312,10 +6312,10 @@
+     KillLightTrigger002.Enabled = True
+     KillLightTrigger003.Enabled = True
+     KillLightTrigger004.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare5Start.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoNightmares","Nightmare5Start.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+ End Sub
+ 
+ 
+@@ -6339,12 +6339,12 @@
+     NancyLit.State = 2
+     DeathLightTrigger001.Enabled = True
+     DeathLightTrigger002.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence1.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperKillNancy.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence1.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperKillNancy.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+  End Sub
+ 
+ Sub Enemies2Lit
+@@ -6354,24 +6354,24 @@
+     TarynLit.State = 2
+     DeathLightTrigger001.Enabled = True
+     DeathLightTrigger002.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence2.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperKillDW.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence2.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperKillDW.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ Sub Enemies3Lit
+     AliceLit.State = 2
+     DeathLightTrigger001.Enabled = True
+     DeathLightTrigger002.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence3.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperKillAlice.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence3.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperKillAlice.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+  End Sub
+ 
+ 
+@@ -6379,24 +6379,24 @@
+     MaggieLit.State = 2
+     DeathLightTrigger001.Enabled = True
+     DeathLightTrigger002.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence4.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperKillMaggie.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DreamSequence4.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperKillMaggie.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+  End Sub
+ 
+ Sub Enemies5Lit
+     JasonVLit.State = 2
+     DeathLightTrigger001.Enabled = True
+     DeathLightTrigger002.Enabled = True
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videoWizard","WizardModeStart.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperKillJason.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videoWizard","WizardModeStart.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperKillJason.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+  End Sub
+ 
+ 
+@@ -7141,12 +7141,12 @@
+     triggertop1.Enabled = False
+     triggertop2.Enabled = False
+     triggertop3.Enabled = False
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DW-Axed.mkv",videovol,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxed.mkv",0,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","DW-Axed.mkv",videovol,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxed.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ 
+@@ -7253,14 +7253,14 @@
+     EightBitBloodDrop003.visible = 0
+     EightBitBloodDrop004.visible = 0
+     DMDFlush
+-    DMD "EightBitWon.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"EightBitWave","8bitWaveWon.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "EightBitWon.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"EightBitWave","8bitWaveWon.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     EightBitWonTimer.Enabled = True
+     PlaySound "1up"
+   End Sub
+@@ -7282,11 +7282,11 @@
+     EightBitBloodDrop004.visible = 1
+     BonusWaveTopperTrigger001.Enabled = False
+     DMDFlush
+-    DMD "EightBitSuperJackpot.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pBackglass,"EightBitWave","8BitSuper.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    DMD "EightBitSuperJackpot.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pBackglass,"EightBitWave","8BitSuper.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+ End Sub
+ 
+ 
+@@ -7349,11 +7349,11 @@
+ Sub EightBitBonusWaveVideo_Timer 'in timer options look at the interval, its 2500 2 1/2 seconds
+     EightBitBonusWaveVideo.Enabled = False 'after 2 1/2 seconds Timer1 stops and finishes the Sub
+     DMDFlush
+-    DMD "EightBitTimer.wmv", "", "", 420000
+-    PuPlayer.playlistplayex pBackglass,"EightBitWave","8bitBonusWave.mkv",videovol,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMD8bit.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
++    DMD "EightBitTimer.gif", "", "", 420000
++    'PuPlayer.playlistplayex pBackglass,"EightBitWave","8bitBonusWave.mkv",videovol,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMD8bit.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
+     BonusWaveTopperTrigger001.Enabled = True
+    end sub
+ 
+@@ -7361,20 +7361,20 @@
+ 
+ sub BonusWaveTopperTrigger001_hit()
+     if BallsOnPlayfield = 5 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
+     End If
+     If BallsOnPlayfield = 4 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
+     End If
+     If BallsOnPlayfield =3 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
+     End If
+     If BallsOnPlayfield =2 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper8bitWave.mkv",0,1
+     End If
+     if BallsOnPlayfield = 1 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1 
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperDWAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     end if
+  end sub
+ 
+@@ -7568,10 +7568,10 @@
+     triggertop1.Enabled = False
+     triggertop2.Enabled = False
+     triggertop3.Enabled = False
+-    PuPlayer.playlistplayex pBackglass,"videoDreamSequence","Maggie-Axed.mkv",videovol,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxed.mkv",0,1
++    'PuPlayer.playlistplayex pBackglass,"videoDreamSequence","Maggie-Axed.mkv",videovol,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxed.mkv",0,1
+ End Sub
+ 
+ 
+@@ -7615,14 +7615,14 @@
+     EightBitBloodDrop003.visible = 0
+     EightBitBloodDrop004.visible = 0
+     DMDFlush
+-    DMD "SixteenBitWon.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"SixteenBitWave","16BitWon.mkv",videovol,1
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    DMD "SixteenBitWon.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"SixteenBitWave","16BitWon.mkv",videovol,1
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     SixteenBitWonTimer.Enabled = True
+     PlaySound "1up"
+   End Sub
+@@ -7644,11 +7644,11 @@
+     EightBitBloodDrop004.visible = 1
+     BonusWaveTopperTrigger.Enabled = False
+     DMDFlush
+-    DMD "EightBitSuperJackpot.wmv", " ", "         ", 6500
+-    PuPlayer.playlistplayex pBackglass,"SixteenBitWave","16BitSuper.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    DMD "EightBitSuperJackpot.gif", " ", "         ", 6500
++    'PuPlayer.playlistplayex pBackglass,"SixteenBitWave","16BitSuper.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+  End Sub
+ 
+ 
+@@ -7711,11 +7711,11 @@
+ Sub SixteenBitBonusWaveVideo_Timer 'in timer options look at the interval, its 2500 2 1/2 seconds
+     SixteenBitBonusWaveVideo.Enabled = False 'after 2 1/2 seconds Timer1 stops and finishes the Sub
+     DMDFlush
+-    DMD "SixteenBitTimer.wmv", "", "", 420000
+-    PuPlayer.playlistplayex pBackglass,"SixteenBitWave","16BitBonusWave.mkv",videovol,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMD16bit.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
++    DMD "SixteenBitTimer.gif", "", "", 420000
++    'PuPlayer.playlistplayex pBackglass,"SixteenBitWave","16BitBonusWave.mkv",videovol,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMD16bit.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
+     BonusWaveTopperTrigger.Enabled = True
+    end sub
+ 
+@@ -7723,20 +7723,20 @@
+ 
+ sub BonusWaveTopperTrigger_hit()
+     if BallsOnPlayfield = 5 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
+     End If
+     If BallsOnPlayfield = 4 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
+     End If
+     If BallsOnPlayfield =3 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
+     End If
+     If BallsOnPlayfield =2 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","Topper16bitWave.mkv",0,1
+     End If
+     if BallsOnPlayfield = 1 Then
+-    PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxedBase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1 
++    'PuPlayer.playlistplayex pTopper2,"Topper","TopperMaggieAxedBase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     end if
+  end sub
+ 
+@@ -8116,7 +8116,7 @@
+ '**************************************************************************************
+ 
+ Sub MissMe
+-    PuPlayer.playlistplayex pBackglass,"videoballsaved","",videovol,0
++    'PuPlayer.playlistplayex pBackglass,"videoballsaved","",videovol,0
+     ControllerTarget003.Isdropped = 0
+     MissMeTimer.Enabled = True
+     BigFreddyQuoteTrigger002.Enabled = False
+@@ -8366,11 +8366,11 @@
+ '***************************
+ 
+ Sub BigFreddyQuoteTrigger001_hit
+-    PuPlayer.playlistplayex pAudio,"audioFreddyQuotes","",Audiovol,0
++    'PuPlayer.playlistplayex pAudio,"audioFreddyQuotes","",Audiovol,0
+    End Sub
+ 
+ Sub BigFreddyQuoteTrigger002_hit
+-    PuPlayer.playlistplayex pAudio,"audioFreddyQuotes","",Audiovol,1
++    'PuPlayer.playlistplayex pAudio,"audioFreddyQuotes","",Audiovol,1
+    End Sub
+ 
+ Sub BigFreddyQuoteTriggerOn_hit
+@@ -8387,8 +8387,8 @@
+ '******************************************
+ 
+ Sub BaseMusicTrigger_Hit()
+-     PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-     PuPlayer.SetLoop pMusic,1
++     'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++     'PuPlayer.SetLoop pMusic,1
+      BaseMusicKillTimer.Enabled = True
+     end sub 
+ 
+@@ -8405,8 +8405,8 @@
+ 
+ 
+ Sub BaseMusicRestartTrigger_Hit()
+-     PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
+-     PuPlayer.SetLoop pMusic,1
++     'PuPlayer.playlistplayex pMusic,"audiobg","",soundtrackvol,0
++     'PuPlayer.SetLoop pMusic,1
+      BaseMusicRestartTimer.Enabled = True
+     end sub 
+ 
+@@ -8427,14 +8427,14 @@
+     GameOverPoster
+     SpecialStartTrigger.Enabled = True
+     EnemiesDeadReset
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.SetLoop pMusic,1
+-    PuPlayer.playlistplayex pBackglass,"videointro","",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.SetLoop pMusic,1
++    'PuPlayer.playlistplayex pBackglass,"videointro","",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     PipeSteamingOff
+     FreddysGlowingEyesOn
+     SnesControllerTarget.Isdropped = 1
+@@ -8457,12 +8457,12 @@
+     EightBitSuperJackpotFail
+     SixteenBitSpecialDrain
+     SixteenBitSuperJackpotFail
+-    PuPlayer.playlistplayex pBackglass,"videodrain","",videovol,1
+-    PuPlayer.playlistplayex pMusic,"audiobg","",0,0
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pBackglass,"videodrain","",videovol,1
++    'PuPlayer.playlistplayex pMusic,"audiobg","",0,0
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     HouseBlockerTimer.Enabled = True
+     BaseMusicTrigger.Enabled = True
+     ClawingAnimation.Enabled = True
+@@ -8495,8 +8495,8 @@
+     HouseBlockerTimer.Enabled = True
+     TiltKicker.Enabled = True
+     TiltKickerTimer.Enabled = True
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
+     BaseMusicTrigger.Enabled = True
+     ClawingAnimation.Enabled = True
+     EightBitKillTimer.Enabled = True
+@@ -8558,12 +8558,12 @@
+ 
+ Sub SpecialTableStartups
+     BothClawTargetsDropped
+-    PuPlayer.playlistplayex pBackglass,"videointro","",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
+-    PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
+-    PuPlayer.SetBackground pFullDMD,1
+-    PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
+-    PuPlayer.SetBackground pTopper2,1
++    'PuPlayer.playlistplayex pBackglass,"videointro","",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
++    'PuPlayer.playlistplayex pFullDMD,"fulldmd","FullDMDBase.mkv",0,1
++    'PuPlayer.SetBackground pFullDMD,1
++    'PuPlayer.playlistplayex pTopper2,"Topper","topperbase.mkv",0,1
++    'PuPlayer.SetBackground pTopper2,1
+     BaseMusicTrigger.Enabled = True
+     EightBitSpecialDrain
+     SixteenBitSpecialDrain
+@@ -8584,9 +8584,9 @@
+ 
+ 
+ Sub SpecialGameStartUpFunction
+-    DMD "start.wmv", "", "", 13000
+-    PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
+-    PuPlayer.SetBackground pBackglass,1
++    DMD "start.gif", "", "", 13000
++    'PuPlayer.playlistplayex pBackglass,"scene","base.mkv",videovol,1
++    'PuPlayer.SetBackground pBackglass,1
+     APGlow.State = 0
+     PipeSteaming
+     FreddysGlowingEyesOff
