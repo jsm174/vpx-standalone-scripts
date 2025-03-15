@@ -77,6 +77,12 @@
 -	Execute "set pL=p" & n.name
 +	Set vL = eval("v" & n.name)
 +	Set pL = eval("p" & n.name)
-@@ -14022 +14056 @@
+@@ -8687,0 +8722,5 @@
++	If IsEmpty(vL) OR IsEmpty(pL) Then
++		'debug.print "SetLightColorRGB: v" & n.name & " = " & TypeName(vL) & " p" & n.name & " = " & TypeName(pL)
++		exit sub
++	End If
++
+@@ -14022 +14061 @@
 -			CheckDrops (tgtIndex+1) Mod 3
 +			CheckDrops ((tgtIndex+1) Mod 3)
