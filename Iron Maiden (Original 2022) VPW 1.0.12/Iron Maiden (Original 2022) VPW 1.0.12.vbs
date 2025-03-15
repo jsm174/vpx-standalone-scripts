@@ -8719,6 +8719,11 @@ Sub SetLightColorRGB(n, cRed, cGreen, cBlue, fRed, fGreen, fBlue) ' n = light, c
 	Execute "set vL=v" & n.name
 	Execute "set pL=p" & n.name
 
+	If IsEmpty(vL) OR IsEmpty(pL) Then
+		'debug.print "SetLightColorRGB: v" & n.name & " = " & TypeName(vL) & " p" & n.name & " = " & TypeName(pL)
+		exit sub
+	End If
+
 	vL.color = RGB(cRed, cGreen, cBlue)
 	vL.colorfull = RGB(fRed, fGreen, fBlue)
 	UpdateMaterial pL.material,0,0,0,0,0,0,1,RGB(fRed, fGreen, fBlue),0,0,False,True,0,0,0,0
