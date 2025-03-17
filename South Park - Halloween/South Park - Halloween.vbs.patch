@@ -1,0 +1,9 @@
+--- South Park - Halloween.vbs.original
++++ South Park - Halloween.vbs
+@@ -52 +52,2 @@
+-Const cGameName = "sprk_103h"
++'Const cGameName = "sprk_103h"
++Const cGameName = "sprk_103"
+@@ -1148 +1149 @@
+-	If GiOnState = False then FlasherTimer1.Enabled = 1: Else 
++	If GiOnState = False then FlasherTimer1.Enabled = 1 Else: 

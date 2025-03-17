@@ -1140,6 +1140,16 @@
     }
   },
   {
+    "file": "Kingpin (Capcom 1996)_Bigus(MOD)3.0.vbs.original",
+    "sha256": "",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Kingpin (Capcom 1996)_Bigus(MOD)3.0/Kingpin (Capcom 1996)_Bigus(MOD)3.0.vbs.original",
+    "patched": {
+      "file": "Kingpin (Capcom 1996)_Bigus(MOD)3.0.vbs",
+      "sha256": "bea7f77d66d56d5bb01678c36fd21661ced263728d25f3309f5a1979ecab8995",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Kingpin (Capcom 1996)_Bigus(MOD)3.0/Kingpin (Capcom 1996)_Bigus(MOD)3.0.vbs"
+    }
+  },
+  {
     "file": "Laser Cue (Williams 1984) w VR Room 2.0.0.vbs.original",
     "sha256": "77649200831d78a3356e5545e88bad196436f287f52d628cd26b3cc84f2abdb1",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Laser Cue (Williams 1984) w VR Room 2.0.0/Laser Cue (Williams 1984) w VR Room 2.0.0.vbs.original",
@@ -1697,6 +1707,16 @@
       "file": "South Park (Sega 1999) 1.3.vbs",
       "sha256": "51b7c24a7b28417481b858ad2fba2b13021f0cad8c2f0cba7303b0bfef500387",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/South Park (Sega 1999) 1.3/South Park (Sega 1999) 1.3.vbs"
+    }
+  },
+  {
+    "file": "South Park - Halloween.vbs.original",
+    "sha256": "78248fc5b9b1493c3d8012042e88dad53db5bcda4fb468bf25423a014ab37a7a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/South Park - Halloween/South Park - Halloween.vbs.original",
+    "patched": {
+      "file": "South Park - Halloween.vbs",
+      "sha256": "e42883bcbeb4b546ee7c244e00196f287ffad06cf1f3e867d6763e2ed482b51f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/South Park - Halloween/South Park - Halloween.vbs"
     }
   },
   {
