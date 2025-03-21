@@ -1,0 +1,11 @@
+--- Aerosmith (Original 2021) 1.02 with VR.vbs.original
++++ Aerosmith (Original 2021) 1.02 with VR.vbs
+@@ -10949,7 +10949,7 @@
+ 	End If
+ 
+ 	MultiplierShot = 1		' Clear shot multiplier 
+-	vpmTimer.addtimer Delay, "RightEject """ & shootToyBox & """ '"
++	vpmTimer.addtimer Delay, "RightEject " & shootToyBox & " '"
+ End Sub
+ 
+ dim bBallInBox, bStartMB
