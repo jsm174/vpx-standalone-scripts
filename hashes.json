@@ -655,7 +655,7 @@
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ducktales (Orginal 2020)/DUCKTALES.vbs.original",
     "patched": {
       "file": "DUCKTALES.vbs",
-      "sha256": "5cbd8cc1fb9948819d09712f3b7a61ebcbd1023a5d436911b8130081048d7c21",
+      "sha256": "205f8976857b311ef5e1a616f8bd7f77a3680c3db96cb1c534a04319210e93e3",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Ducktales (Orginal 2020)/DUCKTALES.vbs"
     }
   },
@@ -677,6 +677,16 @@
       "file": "Elvis_MOD_2.0.vbs",
       "sha256": "55d063ad64e31616f18e8b3fbae0ace6284d04db02d9546e979dcda200242daa",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elvis_MOD_2.0/Elvis_MOD_2.0.vbs"
+    }
+  },
+  {
+    "file": "FNAF.vbs.original",
+    "sha256": "ce0e80f8918e4253e319e9cedecf3d9e7088ba24ae5c4d16216bb83273131bb8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/FNAF/FNAF.vbs.original",
+    "patched": {
+      "file": "FNAF.vbs",
+      "sha256": "7a3141a3ca179655b410b6206b6d803355db283dba6a9192790c4abb37140d67",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/FNAF/FNAF.vbs"
     }
   },
   {
@@ -1287,6 +1297,16 @@
       "file": "Monaco (Segasa 1977)V1.4.vbs",
       "sha256": "8f45537ffb0507d0ed335d46686b837633472abf726d6af2dc9e0b6f051b9675",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monaco (Segasa 1977)V1.4/Monaco (Segasa 1977)V1.4.vbs"
+    }
+  },
+  {
+    "file": "Monkey Island VR Room.vbs.original",
+    "sha256": "0d777ea67313fa30ad32edbde6c3cdc389f6b8ca261b8bcbf2d7bd8e34967283",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkey Island VR Room/Monkey Island VR Room.vbs.original",
+    "patched": {
+      "file": "Monkey Island VR Room.vbs",
+      "sha256": "696894331070da9d1f7391a3312b6235ef90e7bc590964ee234ca351d3277326",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkey Island VR Room/Monkey Island VR Room.vbs"
     }
   },
   {
