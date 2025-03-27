@@ -1,12 +1,9 @@
 --- Thundercats Pinball v1.0.9.vbs.original
 +++ Thundercats Pinball v1.0.9.vbs
-@@ -63,12 +63,12 @@
- ' DO NOT CHANGE ANYTHING IN THIS SECTION
- Const     ScorbitClaimSmall		= 1 	' Make Claim QR Code smaller for high res backglass 
- 
+@@ -66 +66 @@
 -Dim PuPlayer: Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
 +'Dim PuPlayer: Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
- 
+@@ -68,4 +68,4 @@
 -Dim pupPackScreenFile: pupPackScreenFile = PuPlayer.GetRoot & "Thundercats\ScreenType.txt"
 -Dim ObjFso: Set ObjFso = CreateObject("Scripting.FileSystemObject")
 -Dim ObjFile: Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
@@ -15,37 +12,16 @@
 +'Dim ObjFso: Set ObjFso = CreateObject("Scripting.FileSystemObject")
 +'Dim ObjFile: Set ObjFile = ObjFso.OpenTextFile(pupPackScreenFile)
 +Dim DMDType: DMDType = 1'ObjFile.ReadLine
- 
- 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
- debug "DMD: "&DMDType
-@@ -292,7 +292,7 @@
- Const pDMDTypeReal=1
- Const pDMDTypeFULL=2
- 
+@@ -295 +295 @@
 -'Dim PuPlayer
 +Dim PuPlayer
- dim PUPDMDObject  'for realtime mirroring.
- Dim pDMDlastchk: pDMDLastchk= -1    'performance of updates
- Dim pDMDCurPage: pDMDCurPage= 0     'default page is empty.
-@@ -318,7 +318,7 @@
- Sub PuPStart(cPuPPack)
-     If PUPStatus=true then Exit Sub
-     If usePUP=true then
+@@ -321 +321 @@
 -        'Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay")
 +        Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay")
- 		
-         If PuPlayer is Nothing Then
-             usePUP=false
-@@ -3087,9 +3087,9 @@
- 
- Sub DMD_Exit
-     If UltraDMD.IsRendering Then UltraDMD.CancelRendering
+@@ -3090,3 +3090,3 @@
 -    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 -    WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
 -    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
 +    ' Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
-     UltraDMD = Null
- End Sub
- 

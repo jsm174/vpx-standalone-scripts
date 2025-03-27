@@ -2120,6 +2120,16 @@
     }
   },
   {
+    "file": "Thundercats Pinball v1.0.9.vbs.original",
+    "sha256": "cbf8a174fc827fa04a4c384516bd901fb75308cd4a42529bf3e7562b2bf9b5d0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Thundercats Pinball v1.0.9/Thundercats Pinball v1.0.9.vbs.original",
+    "patched": {
+      "file": "Thundercats Pinball v1.0.9.vbs",
+      "sha256": "c998cce27c88dadbb60f532fbebfa28894e9bf5a7a5949791eace31caee5cd4f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Thundercats Pinball v1.0.9/Thundercats Pinball v1.0.9.vbs"
+    }
+  },
+  {
     "file": "TimonPumbaa.vbs.original",
     "sha256": "a234fab444f8642e08431b51e73b6f1cd3cc90ecd694b5ccc90536c5b7747d7b",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TimonPumbaa/TimonPumbaa.vbs.original",
