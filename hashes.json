@@ -970,6 +970,16 @@
     }
   },
   {
+    "file": "Hellraiser 1.2.vbs.original",
+    "sha256": "1f833a89bf31f5ec0ff02a07bb32e296d4e2e1bd746a9b17d218ac929b852576",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Hellraiser 1.2/Hellraiser 1.2.vbs.original",
+    "patched": {
+      "file": "Hellraiser 1.2.vbs",
+      "sha256": "258a09ab150dc917b1df61eb39bf334e64f4b35d97250c81959e061afca19ad5",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Hellraiser 1.2/Hellraiser 1.2.vbs"
+    }
+  },
+  {
     "file": "High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs.original",
     "sha256": "6a0d2ac901927e5cf76186c11ae8915bd8adf0299739d05b1ebaa602a5665950",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/High_Speed_(Williams 1986) v0.107a (MOD 3.0)/High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs.original",
