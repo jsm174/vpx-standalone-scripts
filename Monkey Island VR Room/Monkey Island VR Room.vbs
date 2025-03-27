@@ -1,0 +1,9150 @@
+'' ****************************************************************
+'	VISUAL PINBALL X
+'	Escape from monkey island
+'	first version by ianski
+'	second version by Popotte
+'	vpx version by Shoopity and Remdwaas1986
+'   VR Room by Firebrand007 - thanks to Rajo Joey for his VR guide and Sixtoe for the VR table resources !
+'	images and 3d objects provided by ianski, hauntfreaks, Shoopity and Remdwaas1986
+'	Version 1.0.0
+'	started 10-5-2021
+' ****************************************************************
+'
+' 0.001 - Sixtoe - Changed walls, plastics, sorted some layers out, tried to organised and wrap my head around table, changed some walls, images and materials so they're more visible, lots of messing around with positioning, script untouched.
+' 0.002 - apophis - Converted all major flashers to Flupper flashers. Right now they do not blink like they did before.
+' 0.003 - Sixtoe - more wall and layout clarification work, monkey head and skull primitives redone a little, fixed banana issue, changed textures for plastics (still can be placeholders, but work better)
+' 0.004 - apophis - Added BlinkFlasher routine. The flupper flashers blink now.
+' 0.005 - Sixtoe - Fixed broken ramp to poopdeck, tweaked ramps a little.
+' 0.006 - remdwaas - Added the dive mode and added a different apron
+' 0.007 - remdwaas - Adding tomate textured rocky objects
+' 0.008 - Wylte - Added Dynamic Ball Shadows, added a -1 timer to run it, changed tnob to 10, deleted JP shadows
+' 0.009 - Remdwaas - Added Multiball code/ music shoopity by compare function notepad++.finished dive modes,added grave mode,edited some walls.made the objects visible again.fixed the coins for b2s.
+' 0.010 - Remdwaas - added lightsequence lechuck.Deleted textbox001.added water001.added sounds/dmd's.timer grog machine with on/off.fixed le chuck items.
+' 0.011 - Remdwaas - after completing the bar modus treasure will be available. added Dainty Lady mode. added sword mastery. added multiball coin collection. added escape mode.
+' 0.012 - Oqqsan - spinning wheel1
+' 0.013 - Remdwaas - bugfixes, deleted the voodooball and added collecting magic eyes  
+ 
+'   
+
+'DOF Some updating by Outhere
+'101 Left Flipper
+'102 Right Flipper
+'103 Left Slingshot
+'104 
+'105 Right Slingshot
+'106 
+'107 Bumper Left
+'108 Bumper Center
+'109 Bumper Right
+'110 
+'111 Kicker003 TOP
+'112 Kicker004 RIGHT TOP
+'113 Kicker002 Left Righr
+'114 Kicker006 Left Lower
+'115 Shaker Spinner001
+'116 Shaker  Center Monkey
+'117 Shaker  Left Monkey
+'118 Shaker  Right Monkey
+'119 Shaker  119,0 / 119,1 
+'120 AutoPlunger
+'121 
+'122 Knocker
+'123 Ball Release
+'124 Monkey3Hit
+'125 Credits
+'126 Monkey1Hit
+'127 GiOn / GiOff
+'128 Monkey2Hit
+'129 monkey Head Kick Out
+'130 Beacon
+'131 Bell   chuck's Beard
+'132 tmurray Lower Left
+'133 
+'134 
+'135 
+'136 
+'137 
+'138 
+'139 
+'140 
+'141 
+'142  
+'143 
+'144 
+'145 
+'146 
+'147 
+'149 
+'150 
+'152 
+'153 
+'154 
+'155 
+
+Option Explicit
+Randomize
+
+Const BallSize = 50	   ' 50 is the normal size used in the core.vbs, VP kicker routines uses this value divided by 2
+Const BallMass = 1
+Const SongVolume = 0.1 ' 1 is full volume. Value is from 0 to 1
+
+' Load the core.vbs for supporting Subs and functions
+LoadCoreFiles
+
+Sub LoadCoreFiles
+On Error Resume Next
+	ExecuteGlobal GetTextFile("core.vbs")
+	If Err Then MsgBox "Can't open core.vbs"
+	ExecuteGlobal GetTextFile("controller.vbs")
+	If Err Then MsgBox "Can't open controller.vbs"
+	On Error Goto 0
+End Sub
+
+'*******************************************
+'  User Options
+'*******************************************
+
+
+'----- VR Room -----
+Const VR = 1		'0 = regular cabinet  '1 = VR Room active
+	If VR = 1 Then 'hiding some dekstop cabinet layers and making VR things visible
+			Dim VRThings, Rampthings
+			for each VRThings in VRRoom:VRThings.visible = 1:Next
+			Ramp15.visible = 0
+            Ramp16.visible = 0
+            Ramp17.visible = 0
+            Wall001.visible = 0
+            Wall002.visible = 0
+            
+		Else
+		for each VRThings in VRRoom:VRThings.visible = 0:Next
+					End If
+
+
+'----- Shadow Options -----
+Const DynamicBallShadowsOn = 1		'0 = no dynamic ball shadow, 1 = enable dynamic ball shadow
+
+Sub startB2S(aB2S)
+	If B2SOn Then
+	Controller.B2SSetData 1,0
+	Controller.B2SSetData 2,0
+	Controller.B2SSetData 3,0
+	Controller.B2SSetData 4,0
+	Controller.B2SSetData 5,0
+	Controller.B2SSetData 6,0
+	Controller.B2SSetData 7,0
+	Controller.B2SSetData 8,0
+	Controller.B2SSetData 9,0
+	Controller.B2SSetData 10,0
+	Controller.B2SSetData 11,0
+	Controller.B2SSetData 20,0
+	Controller.B2SSetData 21,0
+	Controller.B2SSetData 22,0
+	Controller.B2SSetData 23,0
+	Controller.B2SSetData 24,0
+	Controller.B2SSetData 25,0
+	Controller.B2SSetData 26,0
+	Controller.B2SSetData 27,0
+	Controller.B2SSetData 28,0
+	Controller.B2SSetData 29,0
+	Controller.B2SSetData 30,0
+	Controller.B2SSetData 31,0
+	Controller.B2SSetData 32,0
+	Controller.B2SSetData 33,0
+	Controller.B2SSetData 34,0
+	Controller.B2SSetData 35,0
+	Controller.B2SSetData 36,0
+	Controller.B2SSetData 37,0
+	Controller.B2SSetData 38,0
+	Controller.B2SSetData 39,0
+	Controller.B2SSetData 40,0
+	Controller.B2SSetData 41,0
+	Controller.B2SSetData 42,0
+	Controller.B2SSetData 43,0
+	Controller.B2SSetData 44,0
+	Controller.B2SSetData 45,0
+	Controller.B2SSetData 46,0
+	Controller.B2SSetData 47,0
+	Controller.B2SSetData 48,0
+	Controller.B2SSetData 49,0
+	Controller.B2SSetData 50,0
+	Controller.B2SSetData 51,0
+	Controller.B2SSetData 52,0
+	Controller.B2SSetData 53,0
+	Controller.B2SSetData 54,0
+	Controller.B2SSetData 55,0
+	Controller.B2SSetData 56,0
+	Controller.B2SSetData 57,0
+	Controller.B2SSetData 58,0
+	Controller.B2SSetData 59,0
+	Controller.B2SSetData 60,0
+	Controller.B2SSetData 61,0
+	Controller.B2SSetData 62,0
+	Controller.B2SSetData 63,0
+	Controller.B2SSetData 64,0
+	Controller.B2SSetData 65,0
+	Controller.B2SSetData 66,0
+	Controller.B2SSetData 67,0
+	Controller.B2SSetData 68,0
+	Controller.B2SSetData 69,0
+	Controller.B2SSetData 70,0
+	Controller.B2SSetData 71,0
+	Controller.B2SSetData 72,0
+	Controller.B2SSetData 73,0
+	Controller.B2SSetData 74,0
+	Controller.B2SSetData 75,0
+	Controller.B2SSetData 76,0
+	Controller.B2SSetData 77,0
+	Controller.B2SSetData 78,0
+	Controller.B2SSetData 79,0
+	Controller.B2SSetData 80,0
+	Controller.B2SSetData 81,0
+	Controller.B2SSetData 82,0
+	Controller.B2SSetData 83,0
+	Controller.B2SSetData 84,0
+	Controller.B2SSetData 85,0
+	Controller.B2SSetData 86,0
+	Controller.B2SSetData 87,0
+	Controller.B2SSetData 88,0
+	Controller.B2SSetData 89,0
+	Controller.B2SSetData 90,0
+	Controller.B2SSetData 91,0
+	Controller.B2SSetData 92,0
+	Controller.B2SSetData 93,0
+	Controller.B2SSetData 94,0
+	Controller.B2SSetData 95,0
+	Controller.B2SSetData 96,0
+	Controller.B2SSetData 97,0
+	Controller.B2SSetData 98,0
+	Controller.B2SSetData 99,0
+	Controller.B2SSetData aB2S,1
+	End If
+End Sub
+
+' Define any Constants
+Const cGameName = "monkeyisland"
+Const TableName = "monkeyisland"
+Const myVersion = "1.0.0"
+Const MaxPlayers = 4	 ' from 1 to 4
+Const BallSaverTime = 20 ' in seconds
+Const MaxMultiplier = 3	 ' limit to 3x in this game, both bonus multiplier and playfield multiplier
+Const BallsPerGame = 5	 ' usually 3 or 5
+Const MaxMultiballs = 4	 ' max number of balls during multiballs
+
+Const Special1 = 1000000  ' High score to obtain an extra ball/game
+Const Special2 = 3000000
+Const Special3 = 5000000
+
+' Use FlexDMD if in FS mode
+Dim UseFlexDMD
+If Table1.ShowDT = True then
+	UseFlexDMD = False
+Else
+	UseFlexDMD = True
+End If
+ 
+
+' Define Global Variables
+Dim PlayersPlayingGame
+Dim CurrentPlayer
+Dim Credits
+Dim BonusPoints(4)
+Dim BonusMultiplier(4)
+Dim bBonusHeld
+Dim BallsRemaining(4)
+Dim CallApirate(4)
+Dim ExtraBallsAwards(4)
+Dim Special1Awarded(4)
+Dim Special2Awarded(4)
+Dim Special3Awarded(4)
+Dim Score(4)
+Dim HighScore(4)
+Dim HighScoreName(4)
+Dim Tilt
+Dim TiltSensitivity
+Dim Tilted
+Dim TotalGamesPlayed
+Dim bAttractMode
+Dim mBalls2Eject
+Dim bAutoPlunger
+Dim Insult
+Dim Status
+
+' Define Game Control Variables
+Dim BallsOnPlayfield
+
+' Define Game Flags
+Dim bFreePlay
+Dim bGameInPlay
+Dim bOnTheFirstBall
+Dim bBallInPlungerLane
+Dim bBallSaverActive
+Dim bBallSaverReady
+Dim bMultiBallMode
+'Dim Multiball
+Dim bMusicOn
+Dim bJustStarted
+Dim bJackpot
+Dim plungerIM
+Dim LastSwitchHit
+dim countr
+dim countr1
+dim countr2
+dim countr3
+dim countr4
+dim countr5
+dim countr6
+dim countr41
+dim monkeybattle
+dim treasuresfound
+dim PFMultiplier
+dim baropen
+dim barunlocked
+dim voodoounlocked
+dim quest
+dim mode1TimerCount
+dim mode2TimerCount
+dim bonustime
+dim LowerFlippersActive
+dim bananasearned
+dim coinsearned
+dim treasurfindy
+dim imagechest
+Dim bumperHits
+Dim RovingMagnet
+dim greatdive
+dim gravediggers
+dim playtreasure
+dim escapeMI
+dim trytoescape
+dim findcrewDL
+dim LvLSwordM
+dim monkeykeepball
+
+' core.vbs variables
+Dim BSBarToBar, BSVoodooToVoodoo, BSLeChuck, BSTreasure
+ReDim MyTroughLR(-1), MyTroughTreasure(-1), MyTroughLeChuck(-1)
+
+' *********************************************************************
+'				 Visual Pinball Defined Script Events
+' *********************************************************************
+
+Sub Table1_Init()
+	LoadEM
+	Dim i
+	'Randomize
+
+'reset HighScore
+'Reseths
+
+	'Impulse Plunger as autoplunger
+	Const IMPowerSetting = 36 ' Plunger Power
+	Const IMTime = 1.1		  ' Time in seconds for Full Plunge
+	Set plungerIM = New cvpmImpulseP
+	With plungerIM
+		.InitImpulseP swplunger, IMPowerSetting, IMTime
+		.Random 1.5
+		.InitExitSnd SoundFXDOF("fx_kicker", 141, DOFPulse, DOFContactors), SoundFXDOF("fx_solenoid", 141, DOFPulse, DOFContactors)
+		.CreateEvents "plungerIM"
+	End With
+	' Misc. VP table objects Initialisation, droptargets, animations...
+	VPObjects_Init
+	' load saved values, highscore, names, jackpot
+	Loadhs
+	'Init main variables
+	For i = 1 To MaxPlayers
+		Score(i) = 0
+		BonusPoints(i) = 0
+		BonusMultiplier(i) = 1
+		BallsRemaining(i) = BallsPerGame
+		ExtraBallsAwards(i) = 0
+	Next
+	' Initalise the DMD display
+	DMD_Init
+	' freeplay or coins
+	bFreePlay = False 'we want coins
+	'if bFreePlay = false Then DOF 125, DOFOn
+	' Init main variables and any other flags
+	bAttractMode = False
+	bOnTheFirstBall = False
+	bBallInPlungerLane = False
+	bBallSaverActive = False
+	bBallSaverReady = False
+	bGameInPlay = False
+	bMusicOn = True
+	BallsOnPlayfield = 0
+	bMultiBallMode = False
+	'Multiball=false
+	bAutoPlunger = False
+	LastSwitchHit = ""
+	Tilt = 0
+	TiltSensitivity = 6
+	Tilted = False
+	bJustStarted = True
+	' set any lights for the attract mode
+	GiOff
+	StartAttractMode
+	'EndOfGame()
+	Status = "Normal"
+	PirateShipTimer.Interval = 20
+	Set BSBarToBar = New cvpmSaucer
+	Set BSVoodooToVoodoo = New cvpmSaucer
+	Set BSLeChuck = New cvpmSaucer
+	Set BSTreasure = New cvpmSaucer
+	With BSBarToBar
+		.InitKicker Kicker006, 0, 160, 7, 0
+		.InitSounds "fx_hole_enter", "fx_kicker", "fx_kicker"
+	End With
+	With BSVoodooToVoodoo
+		.InitKicker Kicker005, 0, 190, 7, 0
+		.InitSounds "fx_hole_enter", "fx_kicker", "fx_kicker"
+	End With
+	With BSLeChuck
+		.InitKicker Kicker003, 0, 160, 7, 0
+		.InitSounds "fx_hole_enter", "fx_kicker", "fx_kicker"
+	End With
+	With BSTreasure
+		.InitKicker Kicker007, 0, 8, 38, 0
+		.InitSounds "fx_hole_enter", "fx_kicker", "fx_kicker"
+	End With
+	schatkist001.Visible=1
+	FlShipShadow.X = PirateShip.X
+	FlShipShadow.Y = PirateShip.Y
+	PrMonkeyHead.X = 615		'615, 440
+	PrMonkeyHead.Y = 506		'506, 1440
+	PrMonkeyMouth.X = 615		'615, 440
+	PrMonkeyMouth.Y = 574		'574, 1508
+	Wall020.TimerInterval = 1
+	Wall014.TimerInterval = 1
+	Wall015.TimerInterval = 1
+End Sub
+
+'****************************************
+' Real Time updatess using the GameTimer
+'****************************************
+'used for all the real time updates
+Dim Monkey1Frame, Monkey1HitRepeat, Repeat1, FrameNext1, FrameRate1b, FrameRate1c
+'Starting Frame
+Monkey1Frame = 1
+'How many times HAVE we repeated the angry animation
+Monkey1HitRepeat = 0
+'How many times TO repeat the angry animation
+Repeat1 = 1
+'Speed of idle animation
+FrameRate1c = 0.005
+'Speed of Angry Animation
+FrameRate1b = 0.05
+'Speed of init Animation
+FrameNext1 = FrameRate1c
+
+Dim Monkey2Frame, Monkey2HitRepeat, Repeat2, FrameNext2, FrameRate2b, FrameRate2c
+Monkey2Frame = 4
+Monkey2HitRepeat = 0
+Repeat2 = 1
+FrameRate2c = 0.005
+FrameRate2b = 0.05
+FrameNext2 = FrameRate2c
+
+Dim Monkey3Frame, Monkey3HitRepeat, Repeat3, FrameNext3, FrameRate3b, FrameRate3c
+Monkey3Frame = 7
+Monkey3HitRepeat = 0
+Repeat3 = 1
+FrameRate3c = 0.005
+FrameRate3b = 0.05
+FrameNext3 = FrameRate3c
+
+'*********
+' Framerate Timer for Dynamic Shadows (and more?)
+
+Sub FrameTimer_Timer
+	If DynamicBallShadowsOn=1 Then DynamicBSUpdate 'update ball shadows
+End Sub
+'*********
+
+Dim PullBack:PullBack = 0
+Sub GameTimer_Timer
+	Dim X, Y, tmpBall
+	RollingUpdate
+	If DynamicBallShadowsOn=1 Then DynamicBSUpdate 'update ball shadows
+	' add any other real time update subs, like gates or diverters
+	FlipperLSh.Rotz = LeftFlipper.CurrentAngle
+	FlipperRSh.Rotz = RightFlipper.CurrentAngle
+
+	'Monkey Animations
+	'Center Monkey
+	'Show the current frame of animation
+	Monkey1.ShowFrame(Monkey1Frame)
+	'Go to the next frame of animation (including VPX interpolated frames)
+	Monkey1Frame = Monkey1Frame + FrameNext1
+	'Idle animation or angry animation
+	Select Case Monkey1Hit
+		'Idle
+		Case 0
+			'If we've reached the end or beginning of the animation...
+			If Monkey1Frame > 9 OR Monkey1Frame < 1 Then
+				'Change the direction of the frame step
+				FrameNext1 = FrameNext1 * -1
+			end if
+		'Angry
+		Case 1
+DOF 116, DOFPulse
+			'If we've reached the end, then flip directions
+			If Monkey1Frame > 19 Then FrameNext1 = FrameNext1 * -1
+			'If we've reached the beginning...
+			If Monkey1Frame < 11 Then
+				'increment repeat count...
+				Monkey1HitRepeat = Monkey1HitRepeat + 1
+				'and flip directions
+				FrameNext1 = FrameNext1 * -1
+			end if
+			'If we've repeated the desired amount...
+			If Monkey1HitRepeat > Repeat1 Then
+				'Reset the speed
+				FrameNext1 = FrameRate1c
+				'Reset to the first frame
+				Monkey1Frame = 1
+				'Back to idle
+				Monkey1Hit = 0
+				'Reset Repeat amount for the next time it gets hit
+				Monkey1HitRepeat = 0
+			End If
+	End Select
+	'Right Monkey
+	Monkey2.ShowFrame(Monkey2Frame)
+	Monkey2Frame = Monkey2Frame + FrameNext2
+	Select Case Monkey2Hit
+		Case 0
+			If Monkey2Frame > 9 OR Monkey2Frame < 1 Then
+				FrameNext2 = FrameNext2 * -1
+			end if
+		Case 1
+DOF 118, DOFPulse
+			If Monkey2Frame > 19 Then FrameNext2 = FrameNext2 * -1
+			If Monkey2Frame < 11 Then
+				Monkey2HitRepeat = Monkey2HitRepeat + 1
+				FrameNext2 = FrameNext2 * -1
+			end if
+			If Monkey2HitRepeat > Repeat2 Then
+				FrameNext2 = FrameRate2c
+				Monkey2Frame = 1
+				Monkey2Hit = 0
+				Monkey2HitRepeat = 0
+			End If
+	End Select
+	'Left Monkey
+	Monkey3.ShowFrame(Monkey3Frame)
+	Monkey3Frame = Monkey3Frame + FrameNext3
+	Select Case Monkey3Hit
+		Case 0
+			If Monkey3Frame > 9 OR Monkey3Frame < 1 Then
+				FrameNext3 = FrameNext3 * -1
+			end if
+		Case 1
+DOF 117, DOFPulse
+			If Monkey3Frame > 19 Then FrameNext3 = FrameNext3 * -1
+			If Monkey3Frame < 11 Then
+				Monkey3HitRepeat = Monkey3HitRepeat + 1
+				FrameNext3 = FrameNext3 * -1
+			end if
+			If Monkey3HitRepeat > Repeat3 Then
+				FrameNext3 = FrameRate3c
+				Monkey3Frame = 1
+				Monkey3Hit = 0
+				Monkey3HitRepeat = 0
+			End If
+	End Select
+	'Match the Kanon position to the plunger position
+	kanon.TransX = Plunger.Position
+End Sub
+
+'******
+' Keys
+'******
+
+Sub Table1_KeyDown(ByVal Keycode)
+
+
+	If Keycode = AddCreditKey Then
+		Credits = Credits + 1
+		if bFreePlay = False Then
+			DOF 125, DOFOn
+			If(Tilted = False) Then
+				DMDFlush
+				DMD "_", CL(1, "CREDITS: " & Credits), "", eNone, eNone, eNone, 500, True, "fx_coin"
+			End If
+		End If
+	End If
+	If keycode = PlungerKey Then
+		Plunger.Pullback
+		Playsound "plungerpull2"
+	End If
+	If hsbModeActive Then
+		EnterHighScoreKey(keycode)
+		Exit Sub
+	End If
+	' Normal flipper action
+	If bGameInPlay AND NOT Tilted Then
+		If keycode = LeftTiltKey Then
+			Nudge 90, 8
+			PlaySound "fx_nudge", 0, 1, -0.1, 0.25
+			CheckTilt()
+		End If
+		If keycode = RightTiltKey Then
+			Nudge 270, 8
+			PlaySound "fx_nudge", 0, 1, 0.1, 0.25
+			CheckTilt()
+		End If
+		If keycode = CenterTiltKey Then Nudge 0, 9:PlaySound "fx_nudge", 0, 1, 1, 0.25:CheckTilt
+		If keycode = StartGameKey Then
+			If((PlayersPlayingGame <MaxPlayers) AND(bOnTheFirstBall = True) ) Then
+				If(bFreePlay = True) Then
+					PlayersPlayingGame = PlayersPlayingGame + 1
+					TotalGamesPlayed = TotalGamesPlayed + 1
+					DMD "_", CL(1, PlayersPlayingGame & " PLAYERS"), "", eNone, eBlink, eNone, 500, True, "so_fanfare1"
+'					playsound "start"
+				Else
+					If(Credits> 0) then
+						PlayersPlayingGame = PlayersPlayingGame + 1
+						TotalGamesPlayed = TotalGamesPlayed + 1
+						Credits = Credits - 1
+						DMD "_", CL(1, PlayersPlayingGame & " PLAYERS"), "", eNone, eBlink, eNone, 500, True, "so_fanfare1"
+'						playsound "start"
+						If Credits <1 And bFreePlay = False Then DOF 125, DOFOff
+					Else
+						' Not Enough Credits to start a game.
+						DMD CL(0, "CREDITS " & Credits), CL(1, "INSERT COIN"), "", eNone, eBlink, eNone, 500, True, "so_nocredits"
+						playsound "nomoney"
+					End If
+				End If
+			End If
+		End If
+		If keycode = LeftFlipperKey Then
+			SolLFlipper 1
+		End If
+		If keycode = RightFlipperKey Then
+			SolRFlipper 1
+		End If
+	Else ' If (GameInPlay)
+		If keycode = StartGameKey Then
+			If(bFreePlay = True) Then
+				If(BallsOnPlayfield = 0) Then
+					ResetForNewGame()
+					UpdateMusicNow()
+				End If
+			Else
+				If(Credits> 0) Then
+					If(BallsOnPlayfield = 0) Then
+						Credits = Credits - 1
+						If Credits <1 And bFreePlay = False Then DOF 125, DOFOff
+						playsound "start"
+						ResetForNewGame()
+						UpdateMusicNow()
+
+					End If
+				Else
+					' Not Enough Credits to start a game.
+					DMD CL(0, "CREDITS " & Credits), CL(1, "INSERT COIN"), "", eNone, eBlink, eNone, 500, True, "so_nocredits"
+					playsound "nomoney"
+				End If
+			End If
+		End If
+	End If ' If (GameInPlay)
+End Sub
+
+Sub Table1_KeyUp(ByVal keycode)
+	If keycode = PlungerKey Then
+		Plunger.Fire
+	End If
+	If hsbModeActive Then
+		Exit Sub
+	End If
+	' Table specific
+	If bGameInPLay AND NOT Tilted Then
+		If keycode = LeftFlipperKey Then
+			Select Case Status
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					LeftFlipper001.RotatetoStart
+				Case Else
+					SolLFlipper 0
+			End Select
+		End If
+		If keycode = RightFlipperKey Then
+			Select Case Status
+				Case "Treasure"
+					PlaySound "fx_flipperup", 0, 1, 0, 0.25
+					RightFlipper001.RotatetoStart
+				Case Else
+					SolRFlipper 0
+			End Select
+		End If
+	End If
+End Sub
+
+'*************
+' Pause Table
+'*************
+
+Sub table1_Paused
+End Sub
+
+Sub table1_unPaused
+End Sub
+
+Sub Table1_Exit
+	Savehs
+	If B2SOn = true Then Controller.Stop
+End Sub
+
+'********************
+'	  Flippers
+'********************
+
+Sub SolLFlipper(Enabled)
+'	MoveMouth 1, 1
+	Select Case Status
+		Case "Spitting"
+			SpitProcessKey(LeftFlipperKey)
+		Case "Treasure"
+			PlaySound "fx_flipperup", 0, 1, 0, 0.25
+			LeftFlipper001.RotateToEnd
+		Case Else
+			If Enabled Then
+				PlaySoundAt SoundFXDOF("fx_flipperup", 101, DOFOn, DOFFlippers), LeftFlipper
+				LeftFlipper.RotateToEnd
+				RotateLaneLightsLeft()
+			Else
+				PlaySoundAt SoundFXDOF("fx_flipperdown", 101, DOFOff, DOFFlippers), LeftFlipper
+				LeftFlipper.RotateToStart
+			End If
+	End Select
+End Sub
+
+Sub SolRFlipper(Enabled)
+'	MoveMouth 0, 1
+	Select Case Status
+		Case "Spitting"
+			SpitProcessKey(RightFlipperKey)
+		Case "Treasure"
+			PlaySound "fx_flipperup", 0, 1, 0, 0.25
+			RightFlipper001.RotateToEnd
+		Case Else
+			If Enabled Then
+				PlaySoundAt SoundFXDOF("fx_flipperup", 102, DOFOn, DOFFlippers), RightFlipper
+				RightFlipper.RotateToEnd
+				RotateLaneLightsRight()
+			Else
+				PlaySoundAt SoundFXDOF("fx_flipperdown", 102, DOFOff, DOFFlippers), RightFlipper
+				RightFlipper.RotateToStart
+			End If
+	End Select
+End Sub
+
+' flippers hit Sound
+
+Sub LeftFlipper_Collide(parm)
+	PlaySound "fx_rubber_flipper", 0, parm / 10, pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
+End Sub
+
+Sub RightFlipper_Collide(parm)
+	PlaySound "fx_rubber_flipper", 0, parm / 10, pan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
+End Sub
+
+Sub RotateLaneLightsLeft
+	Dim TempState
+	TempState = LeftOutlane.State
+	LeftOutlane.State = LeftInlane.State
+	LeftInlane.State = RightInlane.State
+	RightInlane.State = RightOutlane.State
+	RightOutlane.State = TempState
+End Sub
+
+Sub RotateLaneLightsRight
+	Dim TempState
+	TempState = RightOutlane.State
+	RightOutlane.State = RightInlane.State
+	RightInlane.State = LeftInlane.State
+	LeftInlane.State = LeftOutlane.State
+	LeftOutlane.State = TempState
+End Sub
+
+'*********
+' TILT
+'*********
+
+'NOTE: The TiltDecreaseTimer Subtracts .01 from the "Tilt" variable every round
+
+Sub CheckTilt()									 'Called when table is nudged
+	Tilt = Tilt + TiltSensitivity				 'Add to tilt count
+	TiltDecreaseTimer.Enabled = True
+	If(Tilt> TiltSensitivity) AND(Tilt <15) Then 'show a warning
+		DMD "_", CL(1, "CAREFUL!"), "", eNone, eBlinkFast, eNone, 500, True, "whathappend"
+	End if
+	If Tilt > 15 Then 'If more that 15 then TILT the table
+		Tilted = True
+		'display Tilt
+		playSound "TILTY"
+		DMDFlush()
+		DMD "", "", "TILT", eNone, eNone, eBlink, 200, False, ""
+		DisableTable True
+		TiltRecoveryTimer.Enabled = True 'start the Tilt delay to check for all the balls to be drained
+	End If
+End Sub
+
+Sub TiltDecreaseTimer_Timer
+	' DecreaseTilt
+	If Tilt> 0 Then
+		Tilt = Tilt - 0.1
+	Else
+		TiltDecreaseTimer.Enabled = False
+	End If
+End Sub
+
+Sub DisableTable(Enabled)
+	If Enabled Then
+		'turn off GI and turn off all the lights
+		GiOff
+		LightSeqTilt.Play SeqAllOff
+		'Disable slings, bumpers etc
+		LeftFlipper.RotateToStart
+		RightFlipper.RotateToStart
+		LeftSlingshot.Disabled = 1
+		RightSlingshot.Disabled = 1
+	Else
+		'turn back on GI and the lights
+		GiOn
+		LightSeqTilt.StopPlay
+		LeftSlingshot.Disabled = 0
+		RightSlingshot.Disabled = 0
+		'clean up the buffer display
+		DMDFlush
+	End If
+End Sub
+
+' GI light sequence effects
+
+Sub GiEffect(n)
+	Select Case n
+		Case 0 'all blink
+			LightSeqGi.UpdateInterval = 8
+			LightSeqGi.Play SeqBlinking, , 5, 50
+		Case 1 'random
+			LightSeqGi.UpdateInterval = 10
+			LightSeqGi.Play SeqRandom, 5, , 1000
+		Case 2 'upon
+			LightSeqGi.UpdateInterval = 4
+			LightSeqGi.Play SeqUpOn, 5, 1
+	End Select
+End Sub
+
+Sub LightEffect(n)
+	Select Case n
+		Case 0 'all blink
+			LightSeqInserts.UpdateInterval = 8
+			LightSeqInserts.Play SeqBlinking, , 5, 50
+		Case 1 'random
+			LightSeqInserts.UpdateInterval = 10
+			LightSeqInserts.Play SeqRandom, 5, , 1000
+		Case 2 'upon
+			LightSeqInserts.UpdateInterval = 4
+			LightSeqInserts.Play SeqUpOn, 10, 1
+		Case 3 ' left-right-left
+			LightSeqInserts.UpdateInterval = 5
+			LightSeqInserts.Play SeqLeftOn, 10, 1
+			LightSeqInserts.UpdateInterval = 5
+			LightSeqInserts.Play SeqRightOn, 10, 1
+	End Select
+End Sub
+
+Sub TiltRecoveryTimer_Timer()
+	' if all the balls have been drained then..
+	If(BallsOnPlayfield = 0) Then
+		' do the normal end of ball thing (this doesn't give a bonus if the table is tilted)
+		EndOfBall()
+		TiltRecoveryTimer.Enabled = False
+	End If
+' else retry (checks again in another second or so)
+End Sub
+
+'********************
+' Music as wav sounds
+'********************
+
+Dim Song, UpdateMusic
+Song = ""
+
+Sub PlaySong(name)
+	If bMusicOn Then
+		If Song <> name Then		'This if statement allows for the same song to play on top of itself; do we need it?
+			StopSound Song
+			Song = name
+			PlaySound Song, -1, SongVolume
+		End If
+	End If
+End Sub
+
+Sub StopSong()
+	If bMusicOn Then
+		StopSound Song
+		Song = ""
+	End If
+End Sub
+
+Sub ChangeSong()
+	If(BallsOnPlayfield = 0)Then
+		PlaySong "M_end"
+		Exit Sub
+	End If
+	If bAttractMode Then
+		PlaySong "M_end"
+		Exit Sub
+	End If
+	If bMultiBallMode Then
+		PlaySong "MULTI"
+	Else
+		UpdateMusicNow()
+	end if
+End Sub
+
+'if you add more balls to the game use changesong then if bMultiBallMode = true, your multiball song will be played.
+
+Sub UpdateMusicNow()
+	Select Case UpdateMusic
+		Case 0:PlaySong "1"
+		Case 1:PlaySong "2"
+		Case 2:PlaySong "3"
+		Case 3:PlaySong "4"
+		Case 4:PlaySong "5"
+		Case 5:PlaySong "M_end"
+	End Select
+end sub
+
+'********************
+' Play random quotes
+'********************
+
+Sub PlayLechuckQuote
+	Dim tmp
+	Randomize()
+	tmp = INT(RND * 74) + 1
+	PlaySound "Lechuck_" &tmp
+End Sub
+
+Sub PlayMurrayQuote
+	Dim tmp
+	Randomize()
+	tmp = INT(RND * 88) + 1
+	PlaySound "MUR_" &tmp
+End Sub
+
+Sub PlayQuoteInsult
+	Dim tmp
+	Randomize()
+	tmp = INT(RND * 28) + 1
+	PlaySound "INS_" &tmp
+End Sub
+
+Sub PlayQuoteVoodoo
+	Dim tmp
+	Randomize()
+	tmp = INT(RND * 49) + 1
+	PlaySound "voodool_" &tmp
+End Sub
+
+'**********************
+'	  GI effects
+' independent routine
+' it turns on the gi
+' when there is a ball
+' in play
+'**********************
+
+Dim OldGiState
+OldGiState = -1	  'start witht the Gi off
+
+Sub ChangeGi(col) 'changes the gi color
+	Dim bulb
+	For each bulb in aGILights
+		SetLightColor bulb, col, -1
+	Next
+End Sub
+
+Sub GIUpdateTimer_Timer
+	Dim tmp, obj
+	tmp = Getballs
+	If UBound(tmp) <> OldGiState Then
+		OldGiState = Ubound(tmp)
+		If UBound(tmp) = 1 Then 'we have 2 captive balls on the table (-1 means no balls, 0 is the first ball, 1 is the second..)
+			GiOff				' turn off the gi if no active balls on the table, we could also have used the variable ballsonplayfield.
+		Else
+			Gion
+		End If
+	End If
+End Sub
+
+Sub GiOn
+	DOF 127, DOFOn
+	Dim bulb
+	For each bulb in aGiLights
+		bulb.State = 1
+	Next
+	For each bulb in aBumperLights
+		bulb.State = 1
+	Next
+' table1.ColorGradeImage = "ColorGradeLUT256x16_HalfSat"
+End Sub
+
+Sub GiOff
+	DOF 127, DOFOff
+	Dim bulb
+	For each bulb in aGiLights
+		bulb.State = 0
+	Next
+	For each bulb in aBumperLights
+		bulb.State = 0
+	Next
+' table1.ColorGradeImage = "ColorGradeLUT256x16_HalfSat-dark"
+End Sub
+
+' GI, light & flashers sequence effects
+
+Sub GiEffect(n)
+	Dim ii
+	Select Case n
+		Case 0 'all off
+			LightSeqGi.Play SeqAlloff
+		Case 1 'all blink
+			LightSeqGi.UpdateInterval = 10
+			LightSeqGi.Play SeqBlinking, , 15, 10
+		Case 2 'random
+			LightSeqGi.UpdateInterval = 10
+			LightSeqGi.Play SeqRandom, 50, , 1000
+		Case 3 'all blink fast
+			LightSeqGi.UpdateInterval = 10
+			LightSeqGi.Play SeqBlinking, , 10, 10
+		Case 4 'all blink once
+			LightSeqGi.UpdateInterval = 10
+			LightSeqGi.Play SeqBlinking, , 4, 1
+	End Select
+End Sub
+
+Sub LightEffect(n)
+	Select Case n
+		Case 0 ' all off
+			LightSeqInserts.Play SeqAlloff
+		Case 1 'all blink
+			LightSeqInserts.UpdateInterval = 10
+			LightSeqInserts.Play SeqBlinking, , 15, 10
+		Case 2 'random
+			LightSeqInserts.UpdateInterval = 10
+			LightSeqInserts.Play SeqRandom, 50, , 1000
+		Case 3 'all blink fast
+			LightSeqInserts.UpdateInterval = 10
+			LightSeqInserts.Play SeqBlinking, , 10, 10
+		Case 4 'up 1 time
+			LightSeqInserts.UpdateInterval = 4
+			LightSeqInserts.Play SeqUpOn, 8, 1
+		Case 5 'up 2 times
+			LightSeqInserts.UpdateInterval = 4
+			LightSeqInserts.Play SeqUpOn, 8, 2
+		Case 6 'down 1 time
+			LightSeqInserts.UpdateInterval = 4
+			LightSeqInserts.Play SeqDownOn, 8, 1
+		Case 7 'down 2 times
+			LightSeqInserts.UpdateInterval = 4
+			LightSeqInserts.Play SeqDownOn, 8, 2
+	End Select
+End Sub
+
+' *********************************************************************
+'					   Supporting Ball & Sound Functions
+' *********************************************************************
+
+Function Vol(ball) ' Calculates the Volume of the sound based on the ball speed
+	Vol = Csng(BallVel(ball) ^2 / 2000)
+End Function
+
+Function Pan(ball) ' Calculates the pan for a ball based on the X position on the table. "table1" is the name of the table
+	Dim tmp
+	tmp = ball.x * 2 / table1.width-1
+	If tmp > 0 Then
+		Pan = Csng(tmp ^10)
+	Else
+		Pan = Csng(-((- tmp) ^10))
+	End If
+End Function
+
+Function Pitch(ball) ' Calculates the pitch of the sound based on the ball speed
+	Pitch = BallVel(ball) * 20
+End Function
+
+Function BallVel(ball) 'Calculates the ball speed
+	BallVel = (SQR((ball.VelX ^2) + (ball.VelY ^2)))
+End Function
+
+Function AudioFade(ball) 'only on VPX 10.4 and newer
+	Dim tmp
+	tmp = ball.y * 2 / Table1.height-1
+	If tmp > 0 Then
+		AudioFade = Csng(tmp ^10)
+	Else
+		AudioFade = Csng(-((- tmp) ^10))
+	End If
+End Function
+
+Sub PlaySoundAt(soundname, tableobj) 'play sound at X and Y position of an object, mostly bumpers, flippers and other fast objects
+	PlaySound soundname, 0, 1, Pan(tableobj), 0.06, 0, 0, 0, AudioFade(tableobj)
+End Sub
+
+Sub PlaySoundAtBall(soundname) ' play a sound at the ball position, like rubbers, targets, metals, plastics
+	PlaySound soundname, 0, Vol(ActiveBall), pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
+End Sub
+
+'********************************************
+'	JP's VP10 Rolling Sounds
+										   
+'********************************************
+
+Const tnob = 10 ' total number of balls
+Const lob = 0	'number of locked balls
+ReDim rolling(tnob)
+InitRolling
+
+Sub InitRolling
+	Dim i
+	For i = 0 to tnob
+		rolling(i) = False
+	Next
+End Sub
+
+Sub RollingUpdate()
+	Dim BOT, b, ballpitch, ballvol
+	BOT = GetBalls
+
+	' stop the sound of deleted balls
+	For b = UBound(BOT) + 1 to tnob
+		rolling(b) = False
+		StopSound("fx_ballrolling" & b)
+	Next
+
+	' exit the sub if no balls on the table
+	If UBound(BOT) = lob - 1 Then Exit Sub 'there no extra balls on this table
+
+	' play the rolling sound for each ball
+	For b = lob to UBound(BOT)
+																				  
+		If BallVel(BOT(b) )> 1 Then
+			If BOT(b).z <30 Then
+				ballpitch = Pitch(BOT(b) )
+				ballvol = Vol(BOT(b) )
+			Else
+				ballpitch = Pitch(BOT(b) ) + 25000 'increase the pitch on a ramp
+				ballvol = Vol(BOT(b) ) * 10
+			End If
+			rolling(b) = True
+			PlaySound("fx_ballrolling" & b), -1, ballvol, Pan(BOT(b) ), 0, ballpitch, 1, 0, AudioFade(BOT(b) )
+		Else
+			If rolling(b) = True Then
+				StopSound("fx_ballrolling" & b)
+				rolling(b) = False
+			End If
+		End If
+		' rothbauerw's Dropping Sounds
+		If BOT(b).VelZ <-1 and BOT(b).z <55 and BOT(b).z> 27 Then 'height adjust for ball drop sounds
+			PlaySound "fx_balldrop", 0, ABS(BOT(b).velz) / 17, Pan(BOT(b) ), 0, Pitch(BOT(b) ), 1, 0, AudioFade(BOT(b) )
+		End If
+	Next
+End Sub
+
+'**********************
+' Ball Collision Sound
+'**********************
+
+Sub OnBallBallCollision(ball1, ball2, velocity)
+	PlaySound "fx_collide", 0, Csng(velocity) ^2 / 2000, Pan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
+End Sub
+
+'***************************************************************
+'****  VPW DYNAMIC BALL SHADOWS by Iakki, Apophis, and Wylte
+'***************************************************************
+
+' The "DynamicBSUpdate" sub should be called with an interval of -1 (framerate)
+' Place a toggleable variable (DynamicBallShadowsOn) in user options at the top of the script
+' Import the "bsrtx7" and "ballshadow" images
+' Import the shadow materials (3 sets included)
+' Copy in the sets of primitives named BallShadow#, RtxBallShadow#, and RtxBall2Shadow#, with at least as many objects each as there can be balls
+'
+' Create a collection called DynamicSources that includes all light sources you want to cast ball shadows
+'***These must be organized in order, so that lights that intersect on the table are adjacent in the collection***
+' This is because the code will only project two shadows if they are coming from lights that are consecutive in the collection
+' The easiest way to keep track of this is to start with the group on the left slingshot and move clockwise around the table
+'	For example, if you use 6 lights: A & B on the left slingshot and C & D on the right, with E near A&B and F next to C&D, your collection would look like EBACDF
+'
+'																E
+'	A		 C													B
+'	 B		D			your collection should look like		A		because E&B, B&A, etc. intersect; but B&D or E&F do not
+'  E		  F													C
+'																D
+'																F
+'
+'Update shadow options in the code to fit your table and preference
+
+Const fovY					= -2	'Offset y position under ball to account for layback or inclination
+Const DynamicBSFactor 		= 0.98	'0 to 1, higher is darker, 1 will always be maxed even with 2 sources
+Const AmbientBSFactor 		= 0.8	'0 to 1, higher is darker
+Const Wideness				= 15	'Sets how wide the shadows can get (20 +5 thinness should be most realistic)
+Const Thinness				= 5		'Sets minimum as ball moves away from source
+
+Dim sourcenames, currentShadowCount
+
+sourcenames = Array ("","","","","","","","","","","","")
+currentShadowCount = Array (0,0,0,0,0,0,0,0,0,0,0,0)
+
+
+dim objrtx1(20), objrtx2(20)
+dim objBallShadow(20)
+DynamicBSInit
+
+sub DynamicBSInit()
+	Dim iii
+
+	for iii = 0 to tnob									'Prepares the shadow objects before play begins
+		Set objrtx1(iii) = Eval("RtxBallShadow" & iii)
+		objrtx1(iii).material = "RtxBallShadow" & iii
+		objrtx1(iii).z = iii/1000 + 0.01
+		objrtx1(iii).visible = 0
+		'objrtx1(iii).uservalue=0
+
+		Set objrtx2(iii) = Eval("RtxBall2Shadow" & iii)
+		objrtx2(iii).material = "RtxBallShadow2_" & iii
+		objrtx2(iii).z = (iii)/1000 + 0.02
+		objrtx2(iii).visible = 0
+		'objrtx2(iii).uservalue=0
+		currentShadowCount(iii) = 0
+		Set objBallShadow(iii) = Eval("BallShadow" & iii)
+		objBallShadow(iii).material = "BallShadow" & iii
+		objBallShadow(iii).Z = iii/1000 + 0.04
+	Next
+end sub
+
+
+Sub DynamicBSUpdate
+	Dim falloff:        falloff 		= 150			'Max distance to light source, can be changed in code if you have a reason
+	Dim ShadowOpacity, ShadowOpacity2 
+	Dim s, Source, LSd, b, currentMat, AnotherSource, BOT
+	BOT = GetBalls
+
+	'Hide shadow of deleted balls
+	For s = UBound(BOT) + 1 to tnob
+		objrtx1(s).visible = 0
+		objrtx2(s).visible = 0
+		objBallShadow(s).visible = 0
+	Next
+
+	If UBound(BOT) = lob - 1 Then Exit Sub		'No balls in play, exit
+
+	'The Magic happens here
+	For s = lob to UBound(BOT)
+
+		'Normal ambient shadow
+		If BOT(s).X < tablewidth/2 Then
+			objBallShadow(s).X = ((BOT(s).X) - (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/13)) + 5
+		Else
+			objBallShadow(s).X = ((BOT(s).X) + (Ballsize/10) + ((BOT(s).X - (tablewidth/2))/13)) - 5
+		End If
+		objBallShadow(s).Y = BOT(s).Y + fovY
+
+		If BOT(s).Z < 30 Then 'or BOT(s).Z > 105 Then		'Defining when (height-wise) you want ambient shadows
+			objBallShadow(s).visible = 1
+		Else
+			objBallShadow(s).visible = 0
+		end if
+
+		'Dynamic shadows
+		For Each Source in DynamicSources
+			LSd=DistanceFast((BOT(s).x-Source.x),(BOT(s).y-Source.y))	'Calculating the Linear distance to the Source
+			If BOT(s).Z < 30 Then 'Or BOT(s).Z > 105 Then				'Defining when (height-wise) you want dynamic shadows
+				If LSd < falloff and Source.state=1 Then	    		'If the ball is within the falloff range of a light and light is on
+					currentShadowCount(s) = currentShadowCount(s) + 1	'Within range of 1 or 2
+					if currentShadowCount(s) = 1 Then					'1 dynamic shadow source
+						sourcenames(s) = source.name
+						currentMat = objrtx1(s).material
+						objrtx2(s).visible = 0 : objrtx1(s).visible = 1 : objrtx1(s).X = BOT(s).X : objrtx1(s).Y = BOT(s).Y + fovY
+						objrtx1(s).rotz = AnglePP(Source.x, Source.y, BOT(s).X, BOT(s).Y) + 90
+						ShadowOpacity = (falloff-LSd)/falloff									'Sets opacity/darkness of shadow by distance to light
+						objrtx1(s).size_y = Wideness*ShadowOpacity+Thinness						'Scales shape of shadow with distance/opacity
+						UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity*DynamicBSFactor^2,RGB(0,0,0),0,0,False,True,0,0,0,0
+						'debug.print "update1" & source.name & " at:" & ShadowOpacity
+
+						currentMat = objBallShadow(s).material
+						UpdateMaterial currentMat,1,0,0,0,0,0,AmbientBSFactor*(1-ShadowOpacity),RGB(0,0,0),0,0,False,True,0,0,0,0
+
+					Elseif currentShadowCount(s) = 2 Then
+																'Same logic as 1 shadow, but twice
+						currentMat = objrtx1(s).material
+						set AnotherSource = Eval(sourcenames(s))
+						objrtx1(s).visible = 1 : objrtx1(s).X = BOT(s).X : objrtx1(s).Y = BOT(s).Y + fovY
+						objrtx1(s).rotz = AnglePP(AnotherSource.x, AnotherSource.y, BOT(s).X, BOT(s).Y) + 90
+						ShadowOpacity = (falloff-(((BOT(s).x-AnotherSource.x)^2+(BOT(s).y-AnotherSource.y)^2)^0.5))/falloff
+						objrtx1(s).size_y = Wideness*ShadowOpacity+Thinness
+						UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity*DynamicBSFactor^3,RGB(0,0,0),0,0,False,True,0,0,0,0
+
+						currentMat = objrtx2(s).material
+						objrtx2(s).visible = 1 : objrtx2(s).X = BOT(s).X : objrtx2(s).Y = BOT(s).Y + fovY
+						objrtx2(s).rotz = AnglePP(Source.x, Source.y, BOT(s).X, BOT(s).Y) + 90
+						ShadowOpacity2 = (falloff-LSd)/falloff
+						objrtx2(s).size_y = Wideness*ShadowOpacity2+Thinness
+						UpdateMaterial currentMat,1,0,0,0,0,0,ShadowOpacity2*DynamicBSFactor^3,RGB(0,0,0),0,0,False,True,0,0,0,0
+						'debug.print "update2: " & source.name & " at:" & ShadowOpacity & " and "  & Eval(sourcenames(s)).name & " at:" & ShadowOpacity2
+
+						currentMat = objBallShadow(s).material
+						UpdateMaterial currentMat,1,0,0,0,0,0,AmbientBSFactor*(1-max(ShadowOpacity,ShadowOpacity2)),RGB(0,0,0),0,0,False,True,0,0,0,0
+					end if
+				Else
+					currentShadowCount(s) = 0
+				End If
+			Else									'Hide dynamic shadows everywhere else
+				objrtx2(s).visible = 0 : objrtx1(s).visible = 0
+			End If
+		Next
+	Next
+End Sub
+
+
+Function DistanceFast(x, y)
+	dim ratio, ax, ay
+	'Get absolute value of each vector
+	ax = abs(x)
+	ay = abs(y)
+	'Create a ratio
+	ratio = 1 / max(ax, ay)
+	ratio = ratio * (1.29289 - (ax + ay) * ratio * 0.29289)
+	if ratio > 0 then
+		DistanceFast = 1/ratio
+	Else
+		DistanceFast = 0
+	End if
+end Function
+
+Function max(a,b)
+	if a > b then 
+		max = a
+	Else
+		max = b
+	end if
+end Function
+
+Function AnglePP(ax,ay,bx,by)
+    AnglePP = Atn2((by - ay),(bx - ax))*180/PI
+End Function
+
+Function Atn2(dy, dx)
+    If dx > 0 Then
+        Atn2 = Atn(dy / dx)
+    ElseIf dx < 0 Then
+        If dy = 0 Then 
+            Atn2 = pi
+        Else
+            Atn2 = Sgn(dy) * (pi - Atn(Abs(dy / dx)))
+        end if
+    ElseIf dx = 0 Then
+        if dy = 0 Then
+            Atn2 = 0
+        else
+            Atn2 = Sgn(dy) * pi / 2
+        end if
+    End If
+End Function
+
+'***************************************************************
+'****  END VPW DYNAMIC BALL SHADOWS by Iakki, Apophis, and Wylte
+'***************************************************************
+'******************************
+' Diverse Collection Hit Sounds
+'******************************
+
+'Sub aMetals_Hit(idx):PlaySoundAtBall "fx_MetalHit":End Sub
+'Sub aRubber_Bands_Hit(idx):PlaySoundAtBall "fx_rubber_band":End Sub
+'Sub aRubber_Posts_Hit(idx):PlaySoundAtBall "fx_rubber_post":End Sub
+'Sub aRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
+'Sub aPlastics_Hit(idx):PlaySoundAtBall "fx_PlasticHit":End Sub
+'Sub aGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub
+'Sub aWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
+
+Sub trs001_Hit()
+	PlaySound "fx_metalrolling"
+end sub
+
+Sub trs002_Hit()
+	PlaySound "fx_metalrolling"
+end sub
+
+Sub trs003_Hit()
+	PlaySound "fx_metalrolling"
+end sub
+
+Sub trs004_Hit()
+	PlaySound "fx_metalrolling"
+end sub
+
+Sub trs005_Hit()
+PlaySound "fx_metalrolling"
+if findcrewDL = 5 then exit sub
+findcrewDL = findcrewDL + 1
+checkcrewDL
+end sub
+
+sub checkcrewDL
+if findcrewDL = 1 then
+DMD "", "", "dmddl", eNone, eNone, eNone, 1000, True, ""
+Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+Prpirate001.Visible = true
+PlaySound "ld1"
+end if
+if findcrewDL = 2 then
+DMD "", "", "dmddl", eNone, eNone, eNone, 1000, True, ""
+Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+Prpirate002.Visible = true
+PlaySound "ld2"
+end if
+if findcrewDL = 3 then
+DMD "", "", "dmddl", eNone, eNone, eNone, 1000, True, ""
+Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+Prpirate003.Visible = true
+PlaySound "ld3"
+end if
+if findcrewDL = 4 then
+DMD "", "", "dmddl", eNone, eNone, eNone, 1000, True, ""
+Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+Prpirate004.Visible = true
+PlaySound "ld4"
+end if
+if findcrewDL = 5 then
+DMD "", "", "dmddlc", eNone, eNone, eNone, 1000, True, ""
+Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+Prpirate005.Visible = true
+PlaySound "ld5"
+li044.state = 1
+escapeMI = escapeMI + 1
+checktoescape
+end if
+end sub
+
+Sub trs006_Hit()
+	'FlashForMs Flasher020, 1000, 50, 0
+	PrGrog.image = "grog_on"
+	grogyoff.enabled = 1
+	BlinkFlasher 3,450,150
+	PlaySound "fx_metalrolling"
+	if LvLSwordM = 10 then exit sub
+	LvLSwordM = LvLSwordM + 1
+	checkLvLSwordM
+end sub
+
+sub grogyoff_timer
+	PrGrog.image = "grog_off"
+grogyoff.enabled = 0
+end sub
+
+sub checkLvLSwordM
+if LvLSwordM = 1 then
+DMD "", "", "dmdswm1", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 2 then
+DMD "", "", "dmdswm2", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 3 then
+DMD "", "", "dmdswm3", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 4 then
+DMD "", "", "dmdswm4", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 5 then
+DMD "", "", "dmdswm5", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 6 then
+DMD "", "", "dmdswm6", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 7 then
+DMD "", "", "dmdswm7", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 8 then
+DMD "", "", "dmdswm8", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 9 then
+DMD "", "", "dmdswm9", eNone, eNone, eNone, 1000, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+end if
+if LvLSwordM = 10 then
+DMD "", "", "dmdswm10", eNone, eNone, eNone, 750, True, "swordend"
+DMD "", "", "dmdswm11", eNone, eNone, eNone, 750, True, "swordend"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+li046.state = 1
+escapeMI = escapeMI + 1
+checktoescape
+end if
+end sub
+
+Sub thelp001_Hit()
+	RampBonus2 = RampBonus2 + 1
+	FlashForMs Flasher003, 1000, 50, 0
+	FlashForMs Flasher004, 1000, 50, 0
+	StopSound "fx_metalrolling"
+	PlaySound "fx_ballrampdrop"
+End Sub
+
+Sub thelp002_Hit()
+	vpmtimer.addtimer 1000, "startB2S(3) '"
+	RampBonus2 = RampBonus2 + 1
+	baropen = baropen + 1 
+	FlashForMs Flasher005, 1000, 50, 0
+	FlashForMs Flasher006, 1000, 50, 0
+	StopSound "fx_metalrolling"
+	PlaySound "fx_ballrampdrop"
+	if baropen > 4 then exit sub
+	checkbarr()
+End Sub
+
+Sub thelp003_Hit()
+	RampBonus2 = RampBonus2 + 1
+	FlashForMs Flasher007, 1000, 50, 0
+	FlashForMs Flasher008, 1000, 50, 0
+	StopSound "fx_metalrolling"
+	PlaySound "fx_ballrampdrop"
+End Sub
+
+sub checkbarr()
+	if(baropen = 3) then
+		itemrotytimer001.enabled = 1
+		banaan001.Visible = 1
+		tbanaan001.enabled = 1
+		barunlocked = 1
+		li048.state = 0
+		If Status = "Normal" Then li007.state = 2
+		PrScumm.Image = "Scumm Bar On"
+	end if
+end sub
+
+Sub CheckBar()
+	if voodoounlocked = 1 then
+		li047.state = 0 
+		li011.state = 2
+	end if
+	if barunlocked = 1 then
+		li048.state = 0
+		li007.state = 2
+	end if
+	If BarSlot = 31 Then
+		BarUnlocked = 0
+		playtreasure = 1
+		li048.state = 1
+		li007.state = 0
+	End If
+	If LeChuckHits >= 3 AND LeChuckSlot < 255 Then li009.State = 2
+End Sub
+
+' *********************************************************************
+'						 User Defined Script Events
+' *********************************************************************
+
+' Initialise the Table for a new Game
+'
+Sub ResetForNewGame()
+	startB2S(11)
+	StopSong()
+	PlaySound "wait"
+	Dim i
+	bGameInPLay = True
+	'resets the score display, and turn off attract mode
+	StopAttractMode
+	GiOn
+	TotalGamesPlayed = TotalGamesPlayed + 1
+	CurrentPlayer = 1
+	PlayersPlayingGame = 1
+	bOnTheFirstBall = True
+	'Multiball=false	
+	For i = 1 To MaxPlayers
+		Score(i) = 0
+		BonusPoints(i) = 0
+		'BonusHeldPoints(i) = 0
+		BonusMultiplier(i) = 1
+		BallsRemaining(i) = BallsPerGame
+		CallApirate(i)=0
+		ExtraBallsAwards(i) = 0
+		Special1Awarded(i) = False
+		Special2Awarded(i) = False
+		Special3Awarded(i) = False
+	Next
+	' initialise any other flags
+	Tilt = 0
+	resetycoins
+	resetMBcoin
+	'reset variables
+	bumperHits = 100
+	UpdateMusic = 0
+'	BallInHoles = 0
+	PFMultiplier = 1
+	monkeybattle = 0
+	treasuresfound = 0
+	bananasearned = 0
+	coinsearned = 0
+	baropen = 0
+	barunlocked = 0
+	voodoounlocked = 0
+	bonustime = 0
+	greatdive = 0
+	gravediggers = 0
+	playtreasure = 0
+	escapeMI = 0
+	trytoescape = 0
+	findcrewDL = 0
+	LvLSwordM = 0
+	monkeykeepball = 0
+	imagechest = 0
+	Prpirate001.Visible = false
+	Prpirate002.Visible = false
+	Prpirate003.Visible = false
+	Prpirate004.Visible = false
+	Prpirate005.Visible = false
+	Tescaper001.Enabled = false
+Wall030.Isdropped = False
+MonkeyHeadCounter = 0
+	'UpdateMusic = UpdateMusic + 6
+	UpdateMusicNow()
+	' initialise Game variables
+	Game_Init()
+	' you may wish to start some music, play a sound, do whatever at this point
+	DMD "", "", "rt", eNone, eNone, eNone, 5000, True, ""
+	'reset games/timers
+	stopquests()
+	PrScumm.Image = "Scumm Bar Off"
+	disablebanana
+	countr6 = 0
+	countr41 = 0
+	Updatechest()
+	updateimagechest()
+	vpmtimer.addtimer 5000, "FirstBall '"
+	LeftOrbitStart = 0
+	RightOrbitStart = 0
+	GrogCounter = 0
+	LeChuckHits = 0
+	KiGrog.Enabled = 0
+End Sub
+
+' This is used to delay the start of a game to allow any attract sequence to
+' complete.	 When it expires it creates a ball for the player to start playing with
+
+Sub FirstBall()
+	' reset the table for a new ball
+SkillshotNORESTART = False
+	ResetForNewPlayerBall()
+	' create a new ball in the shooters lane
+	CreateNewBall()
+End Sub
+
+' (Re-)Initialise the Table for a new ball (either a new ball after the player has
+' lost one or we have moved onto the next player (if multiple are playing))
+
+Sub ResetForNewPlayerBall()
+	startB2S(2)
+	LightSeq002.Play SeqUpOn, 25, 1000
+	' make sure the correct display is upto date
+	AddScore 0
+	' set the current players bonus multiplier back down to 1X
+	BonusMultiplier(CurrentPlayer) = 1
+	'UpdateBonusXLights
+	'reset any drop targets, lights, game Mode etc..
+	'This is a new ball, so activate the ballsaver
+	bBallSaverReady = True
+	'Reset any table specific
+	BumperBonus = 0
+	HoleBonus = 0
+	ALLRampBonus = 0
+	RampBonus1 = 0
+	RampBonus2 = 0
+	RampBonus3 = 0
+	MulitballBonus = 0
+	Countr = 0
+	bumperHits = 0
+	Countr1 = 0
+	Countr2 = 0
+	Countr3 = 0
+	Countr4 = 0
+	Countr5 = 0
+	ChickenChecker = 0
+	DollChecker = 0
+	EarChecker = 0
+	MushroomChecker = 0
+	treasurfindy = 0
+	Status = "Normal"
+	ResetNewBallVariables
+	ResetNewBallLights()
+	'Multiball=false	
+End Sub
+
+' Create a new ball on the Playfield
+Sub CreateNewBall()
+	LightSeqAttract.StopPlay
+	' create a ball in the plunger lane kicker.
+	BallRelease.CreateSizedBallWithMass BallSize / 2, BallMass
+	' There is a (or another) ball on the playfield
+	BallsOnPlayfield = BallsOnPlayfield + 1
+	' kick it out..
+	PlaySoundAt SoundFXDOF("fx_Ballrel", 123, DOFPulse, DOFContactors), BallRelease
+	BallRelease.Kick 90, 4
+	'only this tableDrain / Plunger Functions
+	'ChangeBallImage
+	If BallsOnPlayfield > 1 Then
+		bMultiBallMode = True
+		bAutoPlunger = True
+		'ChangeSong
+	End If
+End Sub
+
+' Add extra balls to the table with autoplunger
+' Use it as AddMultiball 4 to add 4 extra balls to the table
+Sub AddMultiball(nballs)
+	mBalls2Eject = mBalls2Eject + nballs
+	CreateMultiballTimer.Enabled = True
+	'and eject the first ball
+	CreateMultiballTimer_Timer
+End Sub
+
+' Eject the ball after the delay, AddMultiballDelay
+Sub CreateMultiballTimer_Timer()
+	' wait if there is a ball in the plunger lane
+	If bBallInPlungerLane Then
+		Exit Sub
+	Else
+		If BallsOnPlayfield < MaxMultiballs Then
+			CreateNewBall()
+			mBalls2Eject = mBalls2Eject -1
+			If mBalls2Eject = 0 Then 'if there are no more balls to eject then stop the timer
+				CreateMultiballTimer.Enabled = False
+			End If
+		Else 'the max number of multiballs is reached, so stop the timer
+			mBalls2Eject = 0
+			CreateMultiballTimer.Enabled = False
+		End If
+	End If
+End Sub
+
+' The Player has lost his ball (there are no more balls on the playfield).
+' Handle any bonus points awarded
+
+Sub EndOfBall()
+	Dim BonusDelayTime
+	' the first ball has been lost. From this point on no new players can join in
+	bOnTheFirstBall = False
+	DMDFlush
+	startB2S(5)
+					If LockCounter = 3 and monkeykeepball = 0 then'Status = "MonkeyMB" Then
+					changemonkeyheadback
+					End If	
+	' only process any of this if the table is not tilted.	(the tilt recovery
+	' mechanism will handle any extra balls or end of game)
+	'LightSeqAttract.Play SeqBlinking, , 5, 150
+	StopmodeEndofBall
+	LightSeq001.StopPlay
+	StopSong
+	SkillshotNORESTART = False
+	playsound "splash44"
+	LightSeq003.Play SeqCircleOutOn, 25, 1
+	'bonuscheckie
+	Dim AwardPoints, TotalBonus, ii
+	AwardPoints = 0
+	TotalBonus = 0
+	'If NOT Tilted Then
+	If(Tilted = False) Then
+		AwardPoints = TargetBonus * 2000
+		TotalBonus = TotalBonus + AwardPoints
+		DMD CL(0, FormatScore(AwardPoints)), CL(1, "TARGET BONUS " & TargetBonus), "", eBlink, eNone, eNone, 1000, False, "monkeyend"
+		AwardPoints = RampBonus2 * 25000
+		TotalBonus = TotalBonus + AwardPoints
+		DMD CL(0, FormatScore(AwardPoints) ), CL(1, "RAMP BONUS: " & RampBonus2), "", eBlink, eNone, eNone, 1000, False, "monkeyend"
+		AwardPoints = bananasearned * 10000
+		TotalBonus = TotalBonus + AwardPoints
+		DMD CL(0, FormatScore(AwardPoints) ), CL(1, "BANANA BONUS: " & bananasearned), "", eBlink, eNone, eNone, 1000, False, "monkeyend"
+		AwardPoints = MulitballBonus * 150000
+		TotalBonus = TotalBonus + AwardPoints
+		AwardPoints = bumperHits * 10000
+		TotalBonus = TotalBonus + AwardPoints
+		DMD CL(0, FormatScore(AwardPoints) ), CL(1, "BARREL BONUS: " & BumperBonus), "", eBlink, eNone, eNone, 1000, False, "monkeyend"
+		DMD CL(0, FormatScore(TotalBonus) ), CL(1, "TOTAL BONUS" & BonusMultiplier(CurrentPlayer) ), "", eBlinkFast, eNone, eNone, 1500, True, "monkeyend"
+		TotalBonus = TotalBonus * BonusMultiplier(CurrentPlayer)
+		AddScore TotalBonus
+		' add a bit of a delay to allow for the bonus points to be shown & added up
+		vpmtimer.addtimer 5700, "EndOfBall2 '"
+	Else 'Si hay falta simplemente espera un momento y va directo a la segunta parte después de perder la bola
+		BonusDelayTime = 100
+		EndOfBall2
+	End If
+	'vpmtimer.addtimer BonusDelayTime, "EndOfBall2 '"
+End Sub
+
+' The Timer which delays the machine to allow any bonus points to be added up
+' has expired.	Check to see if there are any extra balls for this player.
+' if not, then check to see if this was the last ball (of the CurrentPlayer)
+'
+Sub EndOfBall2()
+	' if were tilted, reset the internal tilted flag (this will also
+	' set TiltWarnings back to zero) which is useful if we are changing player LOL
+	UpdateMusic = UpdateMusic + 1
+	UpdateMusicNow()
+	Tilted = False
+	Tilt = 0
+	DisableTable False 'enable again bumpers and slingshots
+	' has the player won an extra-ball ? (might be multiple outstanding)
+	If(ExtraBallsAwards(CurrentPlayer) <> 0) Then
+		'debug.print "Extra Ball"
+		' yep got to give it to them
+		ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) - 1
+		' if no more EB's then turn off any shoot again light
+		If(ExtraBallsAwards(CurrentPlayer) = 0) Then
+			LightShootAgain.State = 0
+		End If
+		' You may wish to do a bit of a song AND dance at this point
+		'DMD CL(0, "EXTRA BALL"), CL(1, "SHOOT AGAIN"), "", eNone, eNone, eBlink, 1000, True, "vo_extraball"
+		DMD "", "", "dmdextraball", eNone, eNone, eNone, 1000, True, "fantastic"
+		UpdateMusic = UpdateMusic - 1
+		UpdateMusicNow()
+		' reset the playfield for the new ball
+		ResetForNewPlayerBall()
+		' set the dropped wall for bonus
+		' Create a new ball in the shooters lane
+		CreateNewBall()
+	Else ' no extra balls
+		BallsRemaining(CurrentPlayer) = BallsRemaining(CurrentPlayer) - 1
+		' was that the last ball ?
+		If(BallsRemaining(CurrentPlayer) <= 0) Then
+			'debug.print "No More Balls, High Score Entry"
+			' Submit the CurrentPlayers score to the High Score system
+			CheckHighScore()
+		' you may wish to play some music at this point
+		Else
+			' not the last ball (for that player)
+			' if multiple players are playing then move onto the next one
+			EndOfBallComplete()
+		End If
+	End If
+End Sub
+
+' This function is called when the end of bonus display
+' (or high score entry finished) AND it either end the game or
+' move onto the next player (or the next ball of the same player)
+'
+Sub EndOfBallComplete()
+	Dim NextPlayer
+
+	'debug.print "EndOfBall - Complete"
+
+	' are there multiple players playing this game ?
+	If(PlayersPlayingGame> 1) Then
+		' then move to the next player
+		NextPlayer = CurrentPlayer + 1
+		' are we going from the last player back to the first
+		' (ie say from player 4 back to player 1)
+		If(NextPlayer> PlayersPlayingGame) Then
+			NextPlayer = 1
+		End If
+	Else
+		NextPlayer = CurrentPlayer
+	End If
+
+	'debug.print "Next Player = " & NextPlayer
+
+	' is it the end of the game ? (all balls been lost for all players)
+	If((BallsRemaining(CurrentPlayer) <= 0) AND(BallsRemaining(NextPlayer) <= 0) ) Then
+		' you may wish to do some sort of Point Match free game award here
+		' generally only done when not in free play mode
+		StopSong
+		disablebanana
+		startB2S(10)
+		PlaySound "GAMEOVER"
+		'DMD CL(0, "GAME OVER") "", eNone, 13000, True, ""
+		DMD CL(0, "MONKEYS"), CL(1, "BATTLED " &monkeybattle), "", eNone, eNone, eNone, 750, True, ""
+		DMD CL(0, "TREASURES"), CL(1, "FOUND " &treasuresfound), "", eNone, eNone, eNone, 750, True, ""
+		DMD CL(0, "BANANAS"), CL(1, "CAUGHT " &bananasearned), "", eNone, eNone, eNone, 750, True, ""
+		DMD CL(0, "COINS"), CL(1, "FOUND " &coinsearned), "", eNone, eNone, eNone, 750, True, ""
+		DMD "", "", "dmdgameover", eNone, eNone, eNone, 2000, True, ""
+		' set the machine into game over mode
+		vpmtimer.addtimer 5000, "EndOfGame() '"
+	' you may wish to put a Game Over message on the desktop/backglass
+	Else
+		' set the next player
+		CurrentPlayer = NextPlayer
+		' make sure the correct display is up to date
+		DMDScoreNow()
+		' reset the playfield for the new player (or new ball)
+		ResetForNewPlayerBall()
+		' AND create a new ball
+		CreateNewBall()
+		' play a sound if more than 1 player
+		If PlayersPlayingGame> 1 Then
+			PlaySound "vo_player" &CurrentPlayer
+			DMD "_", CL(1, "PLAYER " &CurrentPlayer), "", eNone, eNone, eNone, 800, True, ""
+		End If
+	End If
+End Sub
+
+' This function is called at the End of the Game, it should reset all
+' Drop targets, AND eject any 'held' balls, start any attract sequences etc..
+
+Sub EndOfGame()
+	LightSeqAttract.StopPlay
+	'debug.print "End Of Game"
+	bGameInPLay = False
+	' just ended your game then play the end of game tune
+	If NOT bJustStarted Then
+		ChangeSong
+	End If
+	bJustStarted = False
+	' ensure that the flippers are down
+	SolLFlipper 0
+	SolRFlipper 0
+	' terminate all Mode - eject locked balls
+	' most of the Mode/timers terminate at the end of the ball
+	' set any lights for the attract mode
+	GiOff
+	StartAttractMode
+	' you may wish to light any Game Over Light you may have
+End Sub
+
+Function Balls
+	Dim tmp
+	tmp = BallsPerGame - BallsRemaining(CurrentPlayer) + 1
+	If tmp> BallsPerGame Then
+		Balls = BallsPerGame
+	Else
+		Balls = tmp
+	End If
+End Function
+
+' *********************************************************************
+'					   Drain / Plunger Functions
+' *********************************************************************
+
+' lost a ball ;-( check to see how many balls are on the playfield.
+' if only one then decrement the remaining count AND test for End of game
+' if more than 1 ball (multi-ball) then kill of the ball but don't create
+' a new one
+'
+Sub Drain_Hit()
+	'If this is a test ball, just destroy it and pretend like nothing happened
+	'If ActiveBall.ID = 21 Then Drain.DestroyBall:Exit Sub
+	'If we're in voodoo Magic, do stuff to take us out
+	'If Status = "Magic" Then
+	'	GetRidOfVoodooBall(ActiveBall)
+	'	Exit Sub
+	'End If
+	BallsOnPlayfield = BallsOnPlayfield - 1
+	' Destroy the ball
+	Drain.DestroyBall
+	'If BallsOnPlayfield<2 Then
+	'Multiball=false
+	'end if
+	' pretend to knock the ball into the ball storage mech
+	PlaySoundAt "fx_drain", Drain
+	'if Tilted then end Ball Mode
+	If Tilted Then
+		StopEndOfBallMode()
+	End If
+	' if there is a game in progress AND it is not Tilted
+	If(bGameInPLay = True) AND(Tilted = False) Then
+		' is the ball saver active,
+		If(bBallSaverActive = True) Then
+			AddMultiball 1
+			Playsound "fire"
+			bAutoPlunger = True
+			' yep, create a new ball in the shooters lane
+			' we use the Addmultiball in case the multiballs are being ejected
+			'DMD CL(0, "BALL SAVED"), CL(1, "SHOOT AGAIN"), "", eBlink, eBlink, eNone, 800, True, ""
+			'vpmtimer.addtimer 1250, "CreateNewBall() '"
+		   ' you may wish to put something on a display or play a sound at this point
+		Else
+			If(BallsOnPlayfield = 1)Then
+				' AND in a multi-ball??
+				If(bMultiBallMode = True)then
+					' not in multiball mode any more
+					bMultiBallMode = False 
+					TMBcoinys.enabled = 0
+					resetMBcoin
+					' you may wish to change any music over at this point and
+					' turn off any multiball specific lights
+					if monkeykeepball = 0 then
+					ChangeSong()
+					end if
+					If LockCounter = 3 and monkeykeepball = 0 then'Status = "MonkeyMB" Then
+						kickoutmonkeyheady
+						vpmtimer.addtimer 250, "changemonkeyheadback '" '
+					End If		   
+				End If
+			End If
+			' was that the last ball on the playfield
+			If(BallsOnPlayfield = 0) Then 
+               DOF 130,0
+
+				If BallsRemaining(CurrentPlayer)=1 And CallApirate(CurrentPlayer)=0 And ExtraBallsAwards(CurrentPlayer)=0 Then
+					CallApirate(CurrentPlayer)=1
+					StartRandomWheel
+				Else
+					' End Mode and timers
+					StopSong()
+					PlaySound ""
+					'vp	mtimer.addtimer 3000, "ChangeSong '"
+					' S	how the end of ball animation
+					' and continue with the end of ball
+					' DMD something?
+					StopEndOfBallMode()
+					vpmtimer.addtimer 200, "EndOfBall '" 'the delay is depending of the animation of the end of ball, since there is no animation then move to the end of ball
+
+				End If
+
+			End If
+		End If
+	End If
+	'Set BallMoverHold = Nothing
+End Sub
+
+sub kickoutmonkeyheady
+PlaySound "fx_popper"
+KiHead.Kick 180, 7, 0
+end sub
+
+sub changemonkeyheadback
+li010.state = 0
+Status = "Normal"
+'PFMultiplier = 1
+'li023.state = 0
+MoveHead 180, 1
+Wall030.IsDropped = 0
+KiHead.Enabled = 0
+MonkeyHeadCounter = 0
+LockCounter = 0
+MoveMouth 0, 1
+end sub
+
+
+' The Ball has rolled out of the Plunger Lane and it is pressing down the trigger in the shooters lane
+' Check to see if a ball saver mechanism is needed and if so fire it up.
+Dim BallMoverHold:Set BallMoverHold = Nothing
+Sub Trigger1_Hit()
+	If bAutoPlunger Then
+		'Let it settle
+		vpmTimer.AddTimer 1000, "PlungerIM.AutoFire '"
+		vpmTimer.AddTimer 1000, "DOF 121, DOFPulse '"
+		vpmTimer.AddTimer 1000, "PlaySound ""fire"" '"
+		vpmTimer.AddTimer 1000, "bAutoPlunger = False '"
+	End If	
+	bBallInPlungerLane = True
+	If (BallMoverHold Is Nothing) Then Set ballmoverhold = ActiveBall
+	If bMultiBallMode = false and SkillshotNORESTART = False Then
+		PirateShipTimer.Enabled = 1
+		ShipAngleSpeed = 2.5
+		ShipReset = 1
+
+	End If
+End Sub
+
+' The ball is released from the plunger
+
+Sub Trigger1_UnHit()
+	bBallInPlungerLane = False
+	'LightEffect 4
+	'ChangeSong
+	If PirateShipTimer.Enabled Then
+		'If the ship is low then sink it
+		If (ShipAngle > 160 AND ShipAngle < 200) OR (ShipAngle > 520 AND ShipAngle < 560) OR (ShipAngle > 880 AND ShipAngle < 920) OR (ShipAngle > 1240 AND ShipAngle < 1280) Then
+			SinkPirateShip = 1
+			DMD "", "", "dmdhit", enone, enone, eblink, 1000, True, ""
+			SkillshotNORESTART= true
+		Else
+			ShipAngleSpeed = 8
+			ShipReset = -1
+			DMD "", "", "dmdmis", enone, enone, eblink, 1000, True, ""
+			SkillshotNORESTART= true
+		End If
+		smokeytimer.enabled = 1
+	End If
+	If(bBallSaverReady = True) AND(BallSaverTime <> 0) And(bBallSaverActive = False) Then
+		EnableBallSaver BallSaverTime
+	Else
+		' show the message to shoot the ball in case the player has fallen sleep
+		Trigger1.TimerEnabled = 1
+	'End If
+'Playsound "Fire"	
+'DOF 120, DOFPulse
+End If
+Playsound "Fire"	
+DOF 120, DOFPulse
+End Sub
+
+Sub Trigger1_Timer
+'	DMD "_", CL(1, "SHOOT THE BALL"), "", eNone, eNone, eNone, 800, True, ""
+	trigger1.TimerEnabled = 0
+End Sub
+
+Sub EnableBallSaver(seconds)
+	bBallSaverActive = True
+	bBallSaverReady = False
+	BallSaverTimer.Interval = 1000 * seconds
+	BallSaverTimer.Enabled = True
+	BallSaverSpeedUpTimer.Interval = 1000 * seconds -(1000 * seconds) / 3
+	BallSaverSpeedUpTimer.Enabled = True
+	' if you have a ball saver light you might want to turn it on at this point (or make it flash)
+	LightShootAgain.BlinkInterval = 160
+	LightShootAgain.State = 2
+End Sub
+
+' The ball saver timer has expired.	 Turn it off AND reset the game flag
+'
+Sub BallSaverTimer_Timer()
+	'debug.print "Ballsaver ended"
+	BallSaverTimer.Enabled = False
+	' clear the flag
+	bBallSaverActive = False
+	' if you have a ball saver light then turn it off at this point
+   LightShootAgain.State = 0
+End Sub
+
+Sub BallSaverSpeedUpTimer_Timer()
+	'debug.print "Ballsaver Speed Up Light"
+	BallSaverSpeedUpTimer.Enabled = False
+	' Speed up the blinking
+	LightShootAgain.BlinkInterval = 80
+	LightShootAgain.State = 2
+End Sub
+
+' *********************************************************************
+'					   Supporting Score Functions
+' *********************************************************************
+
+' Add points to the score AND update the score board
+Sub AddScore(points)
+	If Tilted Then Exit Sub
+	' add the points to the current players score variable
+	Score(CurrentPlayer) = Score(CurrentPlayer) + points
+	' play a sound for each score
+	PlaySound "tone"&points
+	' you may wish to check to see if the player has gotten an extra ball by a high score
+	If Score(CurrentPlayer) >= Special1 AND Special1Awarded(CurrentPlayer) = False Then
+		AwardExtraBall
+		Special1Awarded(CurrentPlayer) = True
+	End If
+	If Score(CurrentPlayer) >= Special2 AND Special2Awarded(CurrentPlayer) = False Then
+		AwardExtraBall
+		Special2Awarded(CurrentPlayer) = True
+	End If
+	If Score(CurrentPlayer) >= Special3 AND Special3Awarded(CurrentPlayer) = False Then
+		AwardExtraBall
+		Special3Awarded(CurrentPlayer) = True
+	End If
+End Sub
+
+' Add bonus to the bonuspoints AND update the score board
+Sub AddBonus(points) 'not used in this table, since there are many different bonus items.
+	If(Tilted = False) Then
+		' add the bonus to the current players bonus variable
+		BonusPoints(CurrentPlayer) = BonusPoints(CurrentPlayer) + points
+	End if
+End Sub
+
+Sub AwardExtraBall()
+	DMD "", "", "dmdextraball", eNone, eNone, eNone, 1000, True, "fantastic"
+	'DMD "_", CL(1, ("EXTRA BALL WON") ), "", eNone, eBlink, eNone, 1000, True, SoundFXDOF("fx_Knocker", 122, DOFPulse, DOFKnocker)
+	DOF 121, DOFPulse
+	ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
+	LightShootAgain.State = 1
+	LightEffect 2
+End Sub
+
+'*****************************
+'	 Load / Save / Highscore
+'*****************************
+
+Sub Loadhs
+	Dim x
+	x = LoadValue(TableName, "HighScore1")
+	If(x <> "") Then HighScore(0) = CDbl(x) Else HighScore(0) = 100000 End If
+	x = LoadValue(TableName, "HighScore1Name")
+	If(x <> "") Then HighScoreName(0) = x Else HighScoreName(0) = "AAA" End If
+	x = LoadValue(TableName, "HighScore2")
+	If(x <> "") then HighScore(1) = CDbl(x) Else HighScore(1) = 100000 End If
+	x = LoadValue(TableName, "HighScore2Name")
+	If(x <> "") then HighScoreName(1) = x Else HighScoreName(1) = "BBB" End If
+	x = LoadValue(TableName, "HighScore3")
+	If(x <> "") then HighScore(2) = CDbl(x) Else HighScore(2) = 100000 End If
+	x = LoadValue(TableName, "HighScore3Name")
+	If(x <> "") then HighScoreName(2) = x Else HighScoreName(2) = "CCC" End If
+	x = LoadValue(TableName, "HighScore4")
+	If(x <> "") then HighScore(3) = CDbl(x) Else HighScore(3) = 100000 End If
+	x = LoadValue(TableName, "HighScore4Name")
+	If(x <> "") then HighScoreName(3) = x Else HighScoreName(3) = "DDD" End If
+	x = LoadValue(TableName, "Credits")
+	If(x <> "") then Credits = CInt(x) Else Credits = 0:If bFreePlay = False Then DOF 125, DOFOff:End If
+	x = LoadValue(TableName, "TotalGamesPlayed")
+	If(x <> "") then TotalGamesPlayed = CInt(x) Else TotalGamesPlayed = 0 End If
+End Sub
+
+Sub Savehs
+	SaveValue TableName, "HighScore1", HighScore(0)
+	SaveValue TableName, "HighScore1Name", HighScoreName(0)
+	SaveValue TableName, "HighScore2", HighScore(1)
+	SaveValue TableName, "HighScore2Name", HighScoreName(1)
+	SaveValue TableName, "HighScore3", HighScore(2)
+	SaveValue TableName, "HighScore3Name", HighScoreName(2)
+	SaveValue TableName, "HighScore4", HighScore(3)
+	SaveValue TableName, "HighScore4Name", HighScoreName(3)
+	SaveValue TableName, "Credits", Credits
+	SaveValue TableName, "TotalGamesPlayed", TotalGamesPlayed
+End Sub
+
+Sub Reseths
+	HighScoreName(0) = "AAA"
+	HighScoreName(1) = "BBB"
+	HighScoreName(2) = "CCC"
+	HighScoreName(3) = "DDD"
+	HighScore(0) = 100000
+	HighScore(1) = 110000
+	HighScore(2) = 120000
+	HighScore(3) = 130000
+	Savehs
+End Sub
+
+' ***********************************************************
+'  High Score Initals Entry Functions - based on Black's code
+' ***********************************************************
+
+Dim hsbModeActive
+Dim hsEnteredName
+Dim hsEnteredDigits(3)
+Dim hsCurrentDigit
+Dim hsValidLetters
+Dim hsCurrentLetter
+Dim hsLetterFlash
+
+Sub CheckHighscore()
+	Dim tmp
+	tmp = Score(1)
+	If Score(2)> tmp Then tmp = Score(2)
+	If Score(3)> tmp Then tmp = Score(3)
+	If Score(4)> tmp Then tmp = Score(4)
+
+	'If tmp > HighScore(1)Then 'add 1 credit for beating the highscore
+	'	 Credits = Credits + 1
+	'	 DOF 125, DOFOn
+	'End If
+
+	If tmp> HighScore(3) Then
+		PlaySound SoundFXDOF("fx_Knocker", 122, DOFPulse, DOFKnocker)
+		DOF 121, DOFPulse
+		HighScore(3) = tmp
+		'enter player's name
+		HighScoreEntryInit()
+	Else
+		EndOfBallComplete()
+	End If
+End Sub
+
+Sub HighScoreEntryInit()
+	hsbModeActive = True
+	PlaySound "legend"
+	ChangeSong()
+	hsLetterFlash = 0
+
+	hsEnteredDigits(0) = " "
+	hsEnteredDigits(1) = " "
+	hsEnteredDigits(2) = " "
+	hsCurrentDigit = 0
+
+	'hsValidLetters = " ABCDEFGHIJKLMNOPQRSTUVWXYZ'<>*+-/=\^0123456789`" ' ` is back arrow
+	hsValidLetters = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<" ' < is back arrow JP FLEX FIX
+	hsCurrentLetter = 1
+	DMDFlush()
+	HighScoreDisplayNameNow()
+
+	HighScoreFlashTimer.Interval = 250
+	HighScoreFlashTimer.Enabled = True
+End Sub
+
+Sub EnterHighScoreKey(keycode)
+	If keycode = LeftFlipperKey Then
+		playsound "fx_Previous"
+		hsCurrentLetter = hsCurrentLetter - 1
+		if(hsCurrentLetter = 0) then
+			hsCurrentLetter = len(hsValidLetters)
+		end if
+		HighScoreDisplayNameNow()
+	End If
+
+	If keycode = RightFlipperKey Then
+		playsound "fx_Next"
+		hsCurrentLetter = hsCurrentLetter + 1
+		if(hsCurrentLetter> len(hsValidLetters) ) then
+			hsCurrentLetter = 1
+		end if
+		HighScoreDisplayNameNow()
+	End If
+
+	If keycode = PlungerKey Then
+		'if(mid(hsValidLetters, hsCurrentLetter, 1) <> "`") then
+		if(mid(hsValidLetters, hsCurrentLetter, 1) <> "<") then 'JP FLEX FIX
+			playsound "fx_Enter"
+			hsEnteredDigits(hsCurrentDigit) = mid(hsValidLetters, hsCurrentLetter, 1)
+			hsCurrentDigit = hsCurrentDigit + 1
+			if(hsCurrentDigit = 3) then
+				HighScoreCommitName()
+			else
+				HighScoreDisplayNameNow()
+			end if
+		else
+			playsound "fx_Esc"
+			hsEnteredDigits(hsCurrentDigit) = " "
+			if(hsCurrentDigit> 0) then
+				hsCurrentDigit = hsCurrentDigit - 1
+			end if
+			HighScoreDisplayNameNow()
+		end if
+	end if
+End Sub
+
+Sub HighScoreDisplayNameNow()
+	HighScoreFlashTimer.Enabled = False
+	hsLetterFlash = 0
+	HighScoreDisplayName()
+	HighScoreFlashTimer.Enabled = True
+End Sub
+
+Sub HighScoreDisplayName()
+	Dim i
+	Dim TempTopStr
+	Dim TempBotStr
+
+	TempTopStr = "YOUR NAME:"
+	dLine(0) = ExpandLine(TempTopStr, 0)
+	DMDUpdate 0
+
+	TempBotStr = "	  > "
+	if(hsCurrentDigit> 0) then TempBotStr = TempBotStr & hsEnteredDigits(0)
+	if(hsCurrentDigit> 1) then TempBotStr = TempBotStr & hsEnteredDigits(1)
+	if(hsCurrentDigit> 2) then TempBotStr = TempBotStr & hsEnteredDigits(2)
+
+	if(hsCurrentDigit <> 3) then
+		if(hsLetterFlash <> 0) then
+			TempBotStr = TempBotStr & "_"
+		else
+			TempBotStr = TempBotStr & mid(hsValidLetters, hsCurrentLetter, 1)
+		end if
+	end if
+
+	if(hsCurrentDigit <1) then TempBotStr = TempBotStr & hsEnteredDigits(1)
+	if(hsCurrentDigit <2) then TempBotStr = TempBotStr & hsEnteredDigits(2)
+
+	TempBotStr = TempBotStr & " <	 "
+	dLine(1) = ExpandLine(TempBotStr, 1)
+	DMDUpdate 1
+End Sub
+
+Sub HighScoreFlashTimer_Timer()
+	HighScoreFlashTimer.Enabled = False
+	hsLetterFlash = hsLetterFlash + 1
+	if(hsLetterFlash = 2) then hsLetterFlash = 0
+	HighScoreDisplayName()
+	HighScoreFlashTimer.Enabled = True
+End Sub
+
+Sub HighScoreCommitName()
+	HighScoreFlashTimer.Enabled = False
+	hsbModeActive = False
+	ChangeSong()
+	hsEnteredName = hsEnteredDigits(0) & hsEnteredDigits(1) & hsEnteredDigits(2)
+	if(hsEnteredName = "   ") then
+		hsEnteredName = "YOU"
+	end if
+
+	HighScoreName(3) = hsEnteredName
+	SortHighscore
+	EndOfBallComplete()
+End Sub
+
+Sub SortHighscore
+	Dim tmp, tmp2, i, j
+	For i = 0 to 3
+		For j = 0 to 2
+			If HighScore(j) <HighScore(j + 1) Then
+				tmp = HighScore(j + 1)
+				tmp2 = HighScoreName(j + 1)
+				HighScore(j + 1) = HighScore(j)
+				HighScoreName(j + 1) = HighScoreName(j)
+				HighScore(j) = tmp
+				HighScoreName(j) = tmp2
+			End If
+		Next
+	Next
+End Sub
+
+' *************************************************************************
+'	JP's Reduced Display Driver Functions (based on script by Black)
+' only 5 effects: none, scroll left, scroll right, blink and blinkfast
+' 3 Lines, treats all 3 lines as text. 3rd line is just 1 character
+' Example format:
+' DMD "text1","text2","backpicture", eNone, eNone, eNone, 250, True, "sound"
+' Short names:
+' dq = display queue
+' de = display effect
+' *************************************************************************
+
+Const eNone = 0		   ' Instantly displayed
+Const eScrollLeft = 1  ' scroll on from the right
+Const eScrollRight = 2 ' scroll on from the left
+Const eBlink = 3	   ' Blink (blinks for 'TimeOn')
+Const eBlinkFast = 4   ' Blink (blinks for 'TimeOn') at user specified intervals (fast speed)
+
+Const dqSize = 64
+
+Dim dqHead
+Dim dqTail
+Dim deSpeed
+Dim deBlinkSlowRate
+Dim deBlinkFastRate
+
+Dim dCharsPerLine(2)
+Dim dLine(2)
+Dim deCount(2)
+Dim deCountEnd(2)
+Dim deBlinkCycle(2)
+
+Dim dqText(2, 64)
+Dim dqEffect(2, 64)
+Dim dqTimeOn(64)
+Dim dqbFlush(64)
+Dim dqSound(64)
+
+Dim FlexDMD
+Dim DMDScene
+
+Sub DMD_Init() 'default/startup values
+	deSpeed = 20
+    deBlinkSlowRate = 5
+    deBlinkFastRate = 2
+    dCharsPerLine(0) = 16 'characters top line
+    dCharsPerLine(1) = 20 'characters lower line
+    dCharsPerLine(2) = 1  'characters back line
+    If UseFlexDMD Then
+        Set FlexDMD = CreateObject("FlexDMD.FlexDMD")
+        If Not FlexDMD is Nothing Then
+            FlexDMD.TableFile = Table1.Filename & ".vpx"
+            FlexDMD.RenderMode = 2
+            FlexDMD.Width = 128
+            FlexDMD.Height = 32
+            FlexDMD.Clear = True
+            FlexDMD.GameName = cGameName
+            FlexDMD.Run = True
+            Set DMDScene = FlexDMD.NewGroup("Scene")
+            DMDScene.AddActor FlexDMD.NewImage("Back", "VPX.bkempty")
+            DMDScene.GetImage("Back").SetSize FlexDMD.Width, FlexDMD.Height
+            For i = 0 to UBound(Digits)
+                DMDScene.AddActor FlexDMD.NewImage("Dig" & i, "VPX.dempty&dmd=2")
+                Digits(i).Visible = False
+            Next
+            'digitgrid.Visible = False
+            For i = 0 to (dCharsPerLine(1) - 1) ' Top
+                DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, dCharsPerLine(0) + 5, 8, 8
+            Next
+            For i = dCharsPerLine(1) to (dCharsPerLine(0) + dCharsPerLine(1) - 1) ' Bottom
+                DMDScene.GetImage("Dig" & i).SetBounds 8 * (i - dCharsPerLine(1)), 3, 8, 16
+            Next
+            FlexDMD.LockRenderThread
+            FlexDMD.Stage.AddActor DMDScene
+            FlexDMD.UnlockRenderThread
+        End If
+    End If
+    Dim i, j
+    DMDFlush()
+    For i = 0 to 2
+        dLine(i) = Space(dCharsPerLine(i) )
+        deCount(i) = 0
+        deCountEnd(i) = 0
+        deBlinkCycle(i) = 0
+        dqTimeOn(i) = 0
+        dqbFlush(i) = True
+        dqSound(i) = ""
+    Next
+    For i = 0 to 2
+        For j = 0 to 64
+            dqText(i, j) = ""
+            dqEffect(i, j) = eNone
+        Next
+    Next
+    DMD dLine(0), dLine(1), dLine(2), eNone, eNone, eNone, 25, True, ""
+End Sub
+
+Sub DMDFlush()
+	Dim i
+	DMDTimer.Enabled = False
+	DMDEffectTimer.Enabled = False
+	dqHead = 0
+	dqTail = 0
+	For i = 0 to 2
+		deCount(i) = 0
+		deCountEnd(i) = 0
+		deBlinkCycle(i) = 0
+	Next
+End Sub
+
+Sub DMDScore()
+	Dim tmp, tmp1, tmp2
+	if(dqHead = dqTail) Then
+		tmp = RL(0, FormatScore(Score(Currentplayer)))
+		tmp1 = CL(1, "PLAYER " & CurrentPlayer & "	BALL " & Balls)
+		tmp2 = "bkborder"
+	End If
+	DMD tmp, tmp1, tmp2, eNone, eNone, eNone, 25, True, ""
+End Sub
+
+Sub DMDScoreNow
+	DMDFlush
+	DMDScore
+End Sub
+
+Sub DMD(Text0, Text1, Text2, Effect0, Effect1, Effect2, TimeOn, bFlush, Sound)
+	if(dqTail < dqSize) Then
+		if(Text0 = "_") Then
+			dqEffect(0, dqTail) = eNone
+			dqText(0, dqTail) = "_"
+		Else
+			dqEffect(0, dqTail) = Effect0
+			dqText(0, dqTail) = ExpandLine(Text0, 0)
+		End If
+		if(Text1 = "_") Then
+			dqEffect(1, dqTail) = eNone
+			dqText(1, dqTail) = "_"
+		Else
+			dqEffect(1, dqTail) = Effect1
+			dqText(1, dqTail) = ExpandLine(Text1, 1)
+		End If
+		if(Text2 = "_") Then
+			dqEffect(2, dqTail) = eNone
+			dqText(2, dqTail) = "_"
+		Else
+			dqEffect(2, dqTail) = Effect2
+			dqText(2, dqTail) = Text2 'it is always 1 letter in this table
+		End If
+		dqTimeOn(dqTail) = TimeOn
+		dqbFlush(dqTail) = bFlush
+		dqSound(dqTail) = Sound
+		dqTail = dqTail + 1
+		if(dqTail = 1) Then
+			DMDHead()
+		End If
+	End If
+End Sub
+
+Sub DMDHead()
+	Dim i
+	deCount(0) = 0
+	deCount(1) = 0
+	deCount(2) = 0
+	DMDEffectTimer.Interval = deSpeed
+	For i = 0 to 2
+		Select Case dqEffect(i, dqHead)
+			Case eNone:deCountEnd(i) = 1
+			Case eScrollLeft:deCountEnd(i) = Len(dqText(i, dqHead) )
+			Case eScrollRight:deCountEnd(i) = Len(dqText(i, dqHead) )
+			Case eBlink:deCountEnd(i) = int(dqTimeOn(dqHead) / deSpeed)
+				deBlinkCycle(i) = 0
+			Case eBlinkFast:deCountEnd(i) = int(dqTimeOn(dqHead) / deSpeed)
+				deBlinkCycle(i) = 0
+		End Select
+	Next
+	if(dqSound(dqHead) <> "") Then
+		PlaySound(dqSound(dqHead) )
+	End If
+	DMDEffectTimer.Enabled = True
+End Sub
+
+Sub DMDEffectTimer_Timer()
+	DMDEffectTimer.Enabled = False
+	DMDProcessEffectOn()
+End Sub
+
+Sub DMDTimer_Timer()
+	Dim Head
+	DMDTimer.Enabled = False
+	Head = dqHead
+	dqHead = dqHead + 1
+	if(dqHead = dqTail) Then
+		if(dqbFlush(Head) = True) Then
+			DMDScoreNow()
+		Else
+			dqHead = 0
+			DMDHead()
+		End If
+	Else
+		DMDHead()
+	End If
+End Sub
+
+Sub DMDProcessEffectOn()
+    Dim i
+    Dim BlinkEffect
+    Dim Temp
+    BlinkEffect = False
+    For i = 0 to 2
+        if(deCount(i) <> deCountEnd(i) ) Then
+            deCount(i) = deCount(i) + 1
+            select case(dqEffect(i, dqHead) )
+                case eNone:
+                    Temp = dqText(i, dqHead)
+                case eScrollLeft:
+                    Temp = Right(dLine(i), dCharsPerLine(i) - 1)
+                    Temp = Temp & Mid(dqText(i, dqHead), deCount(i), 1)
+                case eScrollRight:
+					Temp = Mid(dqText(i, dqHead), (dCharsPerLine(i) + 1) - deCount(i), 1)
+                    Temp = Temp & Left(dLine(i), dCharsPerLine(i) - 1)
+                case eBlink:
+                    BlinkEffect = True
+                    if((deCount(i) MOD deBlinkSlowRate) = 0) Then
+                        deBlinkCycle(i) = deBlinkCycle(i) xor 1
+                    End If
+                    if(deBlinkCycle(i) = 0) Then
+                        Temp = dqText(i, dqHead)
+                    Else
+                        Temp = Space(dCharsPerLine(i) )
+                    End If
+                case eBlinkFast:
+                    BlinkEffect = True
+                    if((deCount(i) MOD deBlinkFastRate) = 0) Then
+                        deBlinkCycle(i) = deBlinkCycle(i) xor 1
+                    End If
+                    if(deBlinkCycle(i) = 0) Then
+                        Temp = dqText(i, dqHead)
+                    Else
+                        Temp = Space(dCharsPerLine(i) )
+                    End If
+            End Select
+
+            if(dqText(i, dqHead) <> "_") Then
+                dLine(i) = Temp
+                DMDUpdate i
+            End If
+        End If
+    Next
+    if(deCount(0) = deCountEnd(0) ) and(deCount(1) = deCountEnd(1) ) and(deCount(2) = deCountEnd(2) ) Then
+        if(dqTimeOn(dqHead) = 0) Then
+            DMDFlush()
+        Else
+            if(BlinkEffect = True) Then
+                DMDTimer.Interval = 10
+            Else
+                DMDTimer.Interval = dqTimeOn(dqHead)
+            End If
+
+            DMDTimer.Enabled = True
+        End If
+    Else
+        DMDEffectTimer.Enabled = True
+    End If
+End Sub
+
+Function ExpandLine(TempStr, id) 'id is the number of the dmd line
+	If TempStr = "" Then
+		TempStr = Space(dCharsPerLine(id) )
+	Else
+		if(Len(TempStr)> Space(dCharsPerLine(id) ) ) Then
+			TempStr = Left(TempStr, Space(dCharsPerLine(id) ) )
+		Else
+			if(Len(TempStr) <dCharsPerLine(id) ) Then
+				TempStr = TempStr & Space(dCharsPerLine(id) - Len(TempStr) )
+			End If
+		End If
+	End If
+	ExpandLine = TempStr
+End Function
+
+Function FormatScore(ByVal Num) 'it returns a string with commas (as in Black's original font)
+	dim i
+	dim NumString
+
+	NumString = CStr(abs(Num) )
+
+	For i = Len(NumString) -3 to 1 step -3
+		if IsNumeric(mid(NumString, i, 1) ) then
+			NumString = left(NumString, i-1) & chr(asc(mid(NumString, i, 1) ) + 48) & right(NumString, Len(NumString) - i)
+		end if
+	Next
+	FormatScore = NumString
+End function
+
+Function CL(id, NumString)
+	Dim Temp, TempStr
+	Temp = (dCharsPerLine(id) - Len(NumString) ) \ 2
+	TempStr = Space(Temp) & NumString & Space(Temp)
+	CL = TempStr
+End Function
+
+Function RL(id, NumString)
+	Dim Temp, TempStr
+	Temp = dCharsPerLine(id) - Len(NumString)
+	TempStr = Space(Temp) & NumString
+	RL = TempStr
+End Function
+
+'**************
+' Update DMD
+'**************
+
+Sub DMDUpdate(id)
+	Dim digit, value
+	If UseFlexDMD Then FlexDMD.LockRenderThread
+	Select Case id
+		Case 0 'top text line
+			For digit = dCharsPerLine(1) to (dCharsPerLine(0) + dCharsPerLine(1) - 1)
+				DMDDisplayChar mid(dLine(0), digit - (dCharsPerLine(1) - 1), 1), digit
+			Next
+		Case 1 'bottom text line
+			For digit = 0 to dCharsPerLine(1) - 1
+				DMDDisplayChar mid(dLine(1), digit + 1, 1), digit
+			Next
+		Case 2 ' back image - back animations
+			If dLine(2) = "" OR dLine(2) = " " Then dLine(2) = "bkempty"
+			DigitsBack(0).ImageA = dLine(2)
+			If UseFlexDMD Then DMDScene.GetImage("Back").Bitmap = FlexDMD.NewImage("", "VPX." & dLine(2) & "&dmd=2").Bitmap
+	End Select
+	If UseFlexDMD Then FlexDMD.UnlockRenderThread
+End Sub
+
+Sub DMDDisplayChar(achar, adigit)
+	If achar = "" Then achar = " "
+	achar = ASC(achar)
+	Digits(adigit).ImageA = Chars(achar)
+	If UseFlexDMD Then DMDScene.GetImage("Dig" & adigit).Bitmap = FlexDMD.NewImage("", "VPX." & Chars(achar) & "&dmd=2&add").Bitmap
+End Sub
+
+'****************************
+' JP's new DMD using flashers
+'****************************
+
+Dim Digits, DigitsBack, Chars(255), Images(255)
+
+DMDInit
+
+Sub DMDInit()
+	Dim i
+	'If Table1.ShowDT = true then
+	Digits = Array(digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9, digit10, digit11,				  _
+		digit12, digit13, digit14, digit15, digit16, digit17, digit18, digit19, digit20, digit21, digit22, digit23, digit24, digit25, _
+		digit26, digit27, digit28, digit29, digit30, digit31, digit32, digit33, digit34, digit35)
+	DigitsBack = Array(digit36)
+	For i = 0 to 255
+		Chars(i)  = "dempty"
+	Next '= "dempty":Images(i) = "dempty":Next
+	Chars(32) = "dempty"
+'	 Chars(34) = '"
+'	 Chars(36) = '$
+'	 Chars(39) = ''
+'	 Chars(42) = '*
+'	 Chars(43) = '+
+'	 Chars(45) = '-
+'	 Chars(47) = '/
+	Chars(48) = "d0"	   '0
+	Chars(49) = "d1"	   '1
+	Chars(50) = "d2"	   '2
+	Chars(51) = "d3"	   '3
+	Chars(52) = "d4"	   '4
+	Chars(53) = "d5"	   '5
+	Chars(54) = "d6"	   '6
+	Chars(55) = "d7"	   '7
+	Chars(56) = "d8"	   '8
+	Chars(57) = "d9"	   '9
+	Chars(60) = "dless"	   '<
+	Chars(61) = "dequal"   '=
+	Chars(62) = "dgreater" '>
+'	Chars(64) = '@
+	Chars(65) = "da" 'A
+	Chars(66) = "db" 'B
+	Chars(67) = "dc" 'C
+	Chars(68) = "dd" 'D
+	Chars(69) = "de" 'E
+	Chars(70) = "df" 'F
+	Chars(71) = "dg" 'G
+	Chars(72) = "dh" 'H
+	Chars(73) = "di" 'I
+	Chars(74) = "dj" 'J
+	Chars(75) = "dk" 'K
+	Chars(76) = "dl" 'L
+	Chars(77) = "dm" 'M
+	Chars(78) = "dn" 'N
+	Chars(79) = "do" 'O
+	Chars(80) = "dp" 'P
+	Chars(81) = "dq" 'Q
+	Chars(82) = "dr" 'R
+	Chars(83) = "ds" 'S
+	Chars(84) = "dt" 'T
+	Chars(85) = "du" 'U
+	Chars(86) = "dv" 'V
+	Chars(87) = "dw" 'W
+	Chars(88) = "dx" 'X
+	Chars(89) = "dy" 'Y
+	Chars(90) = "dz" 'Z
+'	Chars(91) = '[
+'	Chars(92) = '|
+'	Chars(93) = ']
+'	Chars(94) = '^
+'	Chars(95) = '_
+	Chars(96) = "d0a"  '0.
+	Chars(97) = "d1a"  '1.
+	Chars(98) = "d2a"  '2.
+	Chars(99) = "d3a"  '3.
+	Chars(100) = "d4a" '4.
+	Chars(101) = "d5a" '5.
+	Chars(102) = "d6a" '6.
+	Chars(103) = "d7a" '7.
+	Chars(104) = "d8a" '8.
+	Chars(105) = "d9a" '9
+End Sub
+
+'********************************************************************************************
+' Only for VPX 10.2 and higher.
+' FlashForMs will blink light or a flasher for TotalPeriod(ms) at rate of BlinkPeriod(ms)
+' When TotalPeriod done, light or flasher will be set to FinalState value where
+' Final State values are:	0=Off, 1=On, 2=Return to previous State
+'********************************************************************************************
+
+Sub FlashForMs(MyLight, TotalPeriod, BlinkPeriod, FinalState) 'thanks gtxjoe for the first version
+
+	If TypeName(MyLight) = "Light" Then
+
+		If FinalState = 2 Then
+			FinalState = MyLight.State 'Keep the current light state
+		End If
+		MyLight.BlinkInterval = BlinkPeriod
+		MyLight.Duration 2, TotalPeriod, FinalState
+	ElseIf TypeName(MyLight) = "Flasher" Then
+
+		Dim steps
+
+		' Store all blink information
+		steps = Int(TotalPeriod / BlinkPeriod + .5) 'Number of ON/OFF steps to perform
+		If FinalState = 2 Then						'Keep the current flasher state
+			FinalState = ABS(MyLight.Visible)
+		End If
+		MyLight.UserValue = steps * 10 + FinalState 'Store # of blinks, and final state
+
+		' Start blink timer and create timer subroutine
+		MyLight.TimerInterval = BlinkPeriod
+		MyLight.TimerEnabled = 0
+		MyLight.TimerEnabled = 1
+		ExecuteGlobal "Sub " & MyLight.Name & "_Timer:" & "Dim tmp, steps, fstate:tmp=me.UserValue:fstate = tmp MOD 10:steps= tmp\10 -1:Me.Visible = steps MOD 2:me.UserValue = steps *10 + fstate:If Steps = 0 then Me.Visible = fstate:Me.TimerEnabled=0:End if:End Sub"
+	End If
+End Sub
+
+
+'***** Blink a Flupper Flasher *******
+'Example if you want to blink flasher number 1:
+'  BlinkFlasher 1,500,100
+ Sub BlinkFlasher(nr, TotalPeriod, BlinkPeriod)
+	objlight(nr).uservalue = CInt(TotalPeriod/BlinkPeriod)
+	objlight(nr).timerinterval = BlinkPeriod
+	objlight(nr).timerenabled = 1
+	ExecuteGlobal "Sub " & objlight(nr).Name & "_Timer:" & "Flash" & nr & " True: me.uservalue = me.uservalue - 1: If me.uservalue = 0 Then: me.timerenabled = 0: End If: End Sub"
+ End Sub
+
+' #####################################
+' ###### Flashers flupper #####
+' #####################################
+
+Dim TestFlashers, TableRef, FlasherLightIntensity, FlasherFlareIntensity, FlasherOffBrightness, FlasherBloomIntensity
+
+								' *********************************************************************
+TestFlashers = 0				' *** set this to 1 to check position of flasher object				***
+Set TableRef = Table1			' *** change this, if your table has another name					***
+FlasherLightIntensity = 0.1		' *** lower this, if the VPX lights are too bright (i.e. 0.1)		***
+FlasherFlareIntensity = 0.3		' *** lower this, if the flares are too bright (i.e. 0.1)			***
+FlasherBloomIntensity = 0.4		' *** lower this, if the blooms are too bright (i.e. 0.1)			***	
+FlasherOffBrightness = 0.5		' *** brightness of the flasher dome when switched off (range 0-2)	***
+								' *********************************************************************
+
+Dim ObjLevel(20), objbase(20), objlit(20), objflasher(20), objbloom(20), objlight(20)
+Dim tablewidth, tableheight : tablewidth = TableRef.width : tableheight = TableRef.height
+'initialise the flasher color, you can only choose from "green", "red", "purple", "blue", "white" and "yellow"
+InitFlasher 1, "orange" 
+InitFlasher 2, "orange" 
+InitFlasher 3, "orange"
+InitFlasher 4, "orange"
+InitFlasher 8, "yellow"
+InitFlasher 9, "yellow" 
+' rotate the flasher with the command below (first argument = flasher nr, second argument = angle in degrees)
+'RotateFlasher 4,17 : RotateFlasher 5,0 : RotateFlasher 6,90
+'RotateFlasher 7,0 : RotateFlasher 8,0 
+'RotateFlasher 9,-45 : RotateFlasher 10,90 : RotateFlasher 11,90
+
+Sub InitFlasher(nr, col)
+	' store all objects in an array for use in FlashFlasher subroutine
+	Set objbase(nr) = Eval("Flasherbase" & nr) : Set objlit(nr) = Eval("Flasherlit" & nr)
+	Set objflasher(nr) = Eval("Flasherflash" & nr) : Set objlight(nr) = Eval("Flasherlight" & nr)
+	Set objbloom(nr) = Eval("Flasherbloom" & nr)
+	' If the flasher is parallel to the playfield, rotate the VPX flasher object for POV and place it at the correct height
+	If objbase(nr).RotY = 0 Then
+		objbase(nr).ObjRotZ =  atn( (tablewidth/2 - objbase(nr).x) / (objbase(nr).y - tableheight*1.1)) * 180 / 3.14159
+		objflasher(nr).RotZ = objbase(nr).ObjRotZ : objflasher(nr).height = objbase(nr).z + 60
+	End If
+	' set all effects to invisible and move the lit primitive at the same position and rotation as the base primitive
+	objlight(nr).IntensityScale = 0 : objlit(nr).visible = 0 : objlit(nr).material = "Flashermaterial" & nr
+	objlit(nr).RotX = objbase(nr).RotX : objlit(nr).RotY = objbase(nr).RotY : objlit(nr).RotZ = objbase(nr).RotZ
+	objlit(nr).ObjRotX = objbase(nr).ObjRotX : objlit(nr).ObjRotY = objbase(nr).ObjRotY : objlit(nr).ObjRotZ = objbase(nr).ObjRotZ
+	objlit(nr).x = objbase(nr).x : objlit(nr).y = objbase(nr).y : objlit(nr).z = objbase(nr).z
+	objbase(nr).BlendDisableLighting = FlasherOffBrightness
+	' set the texture and color of all objects
+	select case objbase(nr).image
+		Case "dome2basewhite" : objbase(nr).image = "dome2base" & col : objlit(nr).image = "dome2lit" & col : 
+		Case "ronddomebasewhite" : objbase(nr).image = "ronddomebase" & col : objlit(nr).image = "ronddomelit" & col
+		Case "domeearbasewhite" : objbase(nr).image = "domeearbase" & col : objlit(nr).image = "domeearlit" & col
+	end select
+	If TestFlashers = 0 Then objflasher(nr).imageA = "domeflashwhite" : objflasher(nr).visible = 0 : End If
+	select case col
+		Case "blue" :   objlight(nr).color = RGB(4,120,255) : objflasher(nr).color = RGB(200,255,255) : objbloom(nr).color = RGB(4,120,255) : objlight(nr).intensity = 5000
+		Case "green" :  objlight(nr).color = RGB(12,255,4) : objflasher(nr).color = RGB(12,255,4) : objbloom(nr).color = RGB(12,255,4)
+		Case "red" :    objlight(nr).color = RGB(255,32,4) : objflasher(nr).color = RGB(255,32,4) : objbloom(nr).color = RGB(255,32,4)
+		Case "purple" : objlight(nr).color = RGB(230,49,255) : objflasher(nr).color = RGB(255,64,255) : objbloom(nr).color = RGB(230,49,255) 
+		Case "yellow" : objlight(nr).color = RGB(200,173,25) : objflasher(nr).color = RGB(255,200,50) : objbloom(nr).color = RGB(200,173,25)
+		Case "white" :  objlight(nr).color = RGB(255,240,150) : objflasher(nr).color = RGB(100,86,59) : objbloom(nr).color = RGB(255,240,150)
+		Case "orange" :  objlight(nr).color = RGB(255,70,0) : objflasher(nr).color = RGB(255,70,0) : objbloom(nr).color = RGB(255,70,0)
+	end select
+	objlight(nr).colorfull = objlight(nr).color
+	If TableRef.ShowDT and ObjFlasher(nr).RotX = -45 Then 
+		objflasher(nr).height = objflasher(nr).height - 20 * ObjFlasher(nr).y / tableheight
+		ObjFlasher(nr).y = ObjFlasher(nr).y + 10
+	End If
+End Sub
+
+Sub RotateFlasher(nr, angle) : angle = ((angle + 360 - objbase(nr).ObjRotZ) mod 180)/30 : objbase(nr).showframe(angle) : objlit(nr).showframe(angle) : End Sub
+
+Sub FlashFlasher(nr)
+	If not objflasher(nr).TimerEnabled Then objflasher(nr).TimerEnabled = True : objflasher(nr).visible = 1 : objbloom(nr).visible = 1 : objlit(nr).visible = 1 : End If
+	objflasher(nr).opacity = 1000 *	 FlasherFlareIntensity * ObjLevel(nr)^2.5
+	objbloom(nr).opacity = 100 *  FlasherBloomIntensity * ObjLevel(nr)^2.5
+	objlight(nr).IntensityScale = 0.5 * FlasherLightIntensity * ObjLevel(nr)^3
+	objbase(nr).BlendDisableLighting =	FlasherOffBrightness + 10 * ObjLevel(nr)^3	
+	objlit(nr).BlendDisableLighting = 10 * ObjLevel(nr)^2
+	UpdateMaterial "Flashermaterial" & nr,0,0,0,0,0,0,ObjLevel(nr),RGB(255,255,255),0,0,False,True,0,0,0,0 
+	ObjLevel(nr) = ObjLevel(nr) * 0.9 - 0.01
+	If ObjLevel(nr) < 0 Then objflasher(nr).TimerEnabled = False : objflasher(nr).visible = 0 : objbloom(nr).visible = 0 : objlit(nr).visible = 0 : End If
+End Sub
+
+Sub FlasherFlash1_Timer() : FlashFlasher(1) : End Sub 
+Sub FlasherFlash2_Timer() : FlashFlasher(2) : End Sub 
+Sub FlasherFlash3_Timer() : FlashFlasher(3) : End Sub 
+Sub FlasherFlash4_Timer() : FlashFlasher(4) : End Sub 
+Sub FlasherFlash5_Timer() : FlashFlasher(5) : End Sub 
+Sub FlasherFlash6_Timer() : FlashFlasher(6) : End Sub 
+Sub FlasherFlash7_Timer() : FlashFlasher(7) : End Sub
+Sub FlasherFlash8_Timer() : FlashFlasher(8) : End Sub
+Sub FlasherFlash9_Timer() : FlashFlasher(9) : End Sub
+Sub FlasherFlash10_Timer() : FlashFlasher(10) : End Sub
+Sub FlasherFlash11_Timer() : FlashFlasher(11) : End Sub
+
+
+ Sub Flash1(Enabled)
+	If Enabled Then
+		Objlevel(1) = 1 : FlasherFlash1_Timer
+	End If
+ End Sub
+
+
+ Sub Flash2(Enabled)
+	If Enabled Then
+		Objlevel(2) = 1 : FlasherFlash2_Timer
+	End If
+ End Sub
+
+
+ Sub Flash3(Enabled)
+	If Enabled Then
+		Objlevel(3) = 1 : FlasherFlash3_Timer
+	End If
+ End Sub
+
+
+ Sub Flash4(Enabled)
+	If Enabled Then
+		Objlevel(4) = 1 : FlasherFlash4_Timer
+	End If
+ End Sub
+
+
+ Sub Flash8(Enabled)
+	If Enabled Then
+		Objlevel(8) = 1 : FlasherFlash8_Timer
+	End If
+ End Sub
+
+ Sub Flash9(Enabled)
+	If Enabled Then
+		Objlevel(9) = 1 : FlasherFlash9_Timer
+	End If
+ End Sub
+
+' ********************************
+'	Table info & Attract Mode
+' ********************************
+
+Sub ShowTableInfo
+	Dim ii
+	'info goes in a loop only stopped by the credits and the startkey
+	If Score(1) Then
+		DMD CL(0, "LAST SCORE"), CL(1, "PLAYER 1" &FormatScore(Score(1) ) ), "", eNone, eNone, eNone, 3000, False, ""
+	End If
+	If Score(2) Then
+		DMD CL(0, "LAST SCORE"), CL(1, "PLAYER 2 " &FormatScore(Score(2) ) ), "", eNone, eNone, eNone, 3000, False, ""
+	End If
+	If Score(3) Then
+		DMD CL(0, "LAST SCORE"), CL(1, "PLAYER 3 " &FormatScore(Score(3) ) ), "", eNone, eNone, eNone, 3000, False, ""
+	End If
+	If Score(4) Then
+		DMD CL(0, "LAST SCORE"), CL(1, "PLAYER 4 " &FormatScore(Score(4) ) ), "", eNone, eNone, eNone, 3000, False, ""
+	End If
+		DMD CL(0, "GAME OVER"), CL(1, "TRY AGAIN"), "", eNone, eBlink, eNone, 2000, True, ""
+	If bFreePlay Then
+		DMD "", CL(1, "FREE PLAY"), "", eNone, eNone, eNone, 2000, False, ""
+	Else
+		If Credits> 0 Then
+			DMD CL(0, "CREDITS " & Credits), CL(1, "PRESS START"), "", eNone, eBlink, eNone, 2000, False, ""
+		Else
+			DMD CL(0, "CREDITS " & Credits), CL(1, "INSERT COIN"), "", eNone, eBlink, eNone, 2000, False, ""
+		End If
+	End If
+	DMD "", "", "dmdintro1", eNone, eNone, eNone, 2000, True, ""
+	DMD "", "", "dmdintro2", eNone, eNone, eNone, 1000, True, ""
+	DMD "", "", "dmdintrm1", eNone, eNone, eNone, 1000, True, ""
+	DMD "", "", "dmdintrm2", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm3", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm4", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm5", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm6", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm7", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm8", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm9", eNone, eNone, eNone, 100, True, ""
+	DMD "", "", "dmdintrm10", eNone, eNone, eNone, 500, True, ""
+	DMD "", "", "dmdintrm11", eNone, eNone, eNone, 200, True, ""
+	DMD "", "", "dmdintrm12", eNone, eNone, eNone, 200, True, ""
+	DMD "", "", "dmdintrm13", eNone, eNone, eNone, 1000, True, ""
+	DMD CL(0, "HIGHSCORES"), Space(dCharsPerLine(1) ), "", eScrollLeft, eScrollLeft, eNone, 20, False, ""
+	DMD CL(0, "HIGHSCORES"), "", "", eBlinkFast, eNone, eNone, 1000, False, ""
+	DMD CL(0, "HIGHSCORES"), "1> " &HighScoreName(0) & " " &FormatScore(HighScore(0) ), "", eNone, eScrollLeft, eNone, 2000, False, ""
+	DMD "_", "2> " &HighScoreName(1) & " " &FormatScore(HighScore(1) ), "", eNone, eScrollLeft, eNone, 2000, False, ""
+	DMD "_", "3> " &HighScoreName(2) & " " &FormatScore(HighScore(2) ), "", eNone, eScrollLeft, eNone, 2000, False, ""
+	DMD "_", "4> " &HighScoreName(3) & " " &FormatScore(HighScore(3) ), "", eNone, eScrollLeft, eNone, 2000, False, ""
+	DMD Space(dCharsPerLine(0) ), Space(dCharsPerLine(1) ), "", eScrollLeft, eScrollLeft, eNone, 500, False, ""
+End Sub
+
+Dim InAttract:InAttract = 0
+Sub StartAttractMode()
+	startB2S(1)
+	InAttract = 1
+	wheel1.Image = "AnticheatCRU2_2"
+	wheel2.Image = "AnticheatCRUkopiekopie2"
+	spinningwheel.enabled = 1
+	AttractTimer.Enabled = 1
+	ChangeSong()
+	StartLightSeq()
+	DMDFlush()
+	ShowTableInfo()
+End Sub
+
+Sub StopAttractMode
+	InAttract = 0
+	LightSeqAttract.StopPlay
+	AttractTimer.Enabled = 0
+	wheel1.Image = "Wheel1dark"
+	wheel2.Image = "Wheel2dark"
+	DMDScoreNow()
+End Sub
+
+Sub AttractTimer_Timer
+	Dim tmp
+	Randomize()
+	tmp = INT(RND * 8)
+	Select Case tmp
+		Case 0:PlaySound "attract01"
+		Case 1:PlaySound "attract02"
+		Case 2:PlaySound "attract03"
+		Case 3:PlaySound "attract04"
+		Case 4:PlaySound "attract05"
+		Case 5:PlaySound "attract06"
+		Case 6:PlaySound "attract07"
+		Case 7:PlaySound "attract08"
+	End Select
+End Sub
+
+Sub StartLightSeq()
+	'lights sequences
+	LightSeqAttract.UpdateInterval = 25
+	LightSeqAttract.Play SeqBlinking, , 5, 150
+	LightSeqAttract.Play SeqRandom, 40, , 4000
+	LightSeqAttract.Play SeqAllOff
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 50, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqCircleOutOn, 15, 2
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 10
+	LightSeqAttract.Play SeqCircleOutOn, 15, 3
+	LightSeqAttract.UpdateInterval = 5
+	LightSeqAttract.Play SeqRightOn, 50, 1
+	LightSeqAttract.UpdateInterval = 5
+	LightSeqAttract.Play SeqLeftOn, 50, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 50, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 50, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 40, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 40, 1
+	LightSeqAttract.UpdateInterval = 10
+	LightSeqAttract.Play SeqRightOn, 30, 1
+	LightSeqAttract.UpdateInterval = 10
+	LightSeqAttract.Play SeqLeftOn, 30, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 15, 1
+	LightSeqAttract.UpdateInterval = 10
+	LightSeqAttract.Play SeqCircleOutOn, 15, 3
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 5
+	LightSeqAttract.Play SeqStripe1VertOn, 50, 2
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqCircleOutOn, 15, 2
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqStripe1VertOn, 50, 3
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqCircleOutOn, 15, 2
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqStripe2VertOn, 50, 3
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 25, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqStripe1VertOn, 25, 3
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqStripe2VertOn, 25, 3
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqUpOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqDownOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqRightOn, 15, 1
+	LightSeqAttract.UpdateInterval = 8
+	LightSeqAttract.Play SeqLeftOn, 15, 1
+End Sub
+
+Sub LightSeqAttract_PlayDone()
+	StartLightSeq()
+End Sub
+
+Sub LightSeqTilt_PlayDone()
+	LightSeqTilt.Play SeqAllOff
+End Sub
+
+'***********************************************************************
+' *********************************************************************
+'					  Table Specific Script Starts Here
+' *********************************************************************
+'***********************************************************************
+
+' droptargets, animations, etc
+Sub VPObjects_Init
+End Sub
+
+' tables variables and Mode init
+Dim HoleBonus, BumperBonus, ALLRampBonus, RampBonus1, RampBonus2, RampBonus3, MulitballBonus, TargetBonus	 
+
+Sub Game_Init() 'called at the start of a new game
+	Dim i, j
+	ChangeSong()
+	TargetBonus = 0
+	'bumperHits = 100
+	BumperBonus = 0
+	ALLRampBonus = 0
+	RampBonus1 = 0
+	RampBonus2 = 0
+	RampBonus3 =0
+	MulitballBonus = 0
+	'BallInHole = 0
+	TurnOffPlayfieldLights()
+	Status = "Normal"
+	in_ = "**"
+	su_ = "**"
+	lt_ = "**"
+	SpittingDistance(1) = 40
+	NextSpitKey = 1
+	BuildSpit = 0
+	Ramp010.Collidable = 1
+	MoveHead 180, 3
+	MonkeyHeadCounter = 0
+	LockCounter = 0
+End Sub
+
+Sub StopEndOfBallMode()		'this sub is called after the last ball is drained
+	
+End Sub
+
+Sub ResetNewBallVariables() 'reset variables for a new ball or player
+	Dim i
+	TargetBonus = 0
+	bBallSaverReady = True
+End Sub
+
+Sub ResetNewBallLights()	'turn on or off the needed lights before a new ball is released
+	if voodoounlocked = 0 then
+		li047.state = 1 
+		li011.state = 0
+	end if
+	if barunlocked = 0 then
+		li048.state = 1
+		li007.state = 0
+	end if
+	if trytoescape = 1 then 
+	PlaySong "escapemusic"
+	end if
+	gi1.state = 1
+	gi2.state = 1
+	gi3.state = 1
+	gi4.state = 1
+End Sub
+
+Sub TurnOffPlayfieldLights()
+	Dim a
+	For each a in aLights
+		a.State = 0
+	Next
+End Sub
+
+' *********************************************************************
+'						 Table Object Hit Events
+'
+' Any target hit Sub should do something like this:
+' - play a sound
+' - do some physical movement
+' - add a score, bonus
+' - check some variables/Mode this trigger is a member of
+' - set the "LastSwitchHit" variable in case it is needed later
+' *********************************************************************
+
+'************
+' Slingshots
+'************
+
+Dim RStep, Lstep
+
+Sub RightSlingShot_Slingshot
+
+	PlaySound SoundFXDOF("rightslingy", 105, DOFPulse,DOFContactors), 0,1, 0.05,0.05 '0,1, AudioPan(RightSlingShot), 0.05,0,0,1,AudioFade(RightSlingShot)
+	RSling.Visible = 0:RSling1.Visible = 1
+	sling1.rotx = 20
+	RStep = 0
+	RightSlingShot.TimerEnabled = 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (210*PFMultiplier)
+	gi1.State = 0
+	Gi2.State = 0	
+End Sub
+
+Sub RightSlingShot_Timer
+	Select Case RStep
+		Case 1:RSLing1.Visible = 0:RSLing2.Visible = 1:sling1.rotx = 10:gi1.State = 0:Gi2.State = 0
+		Case 1:RSLing1.Visible = 0:RSLing2.Visible = 1:sling1.rotx = 5:gi1.State = 0:Gi2.State = 0
+		Case 2:RSLing2.Visible = 0:RSLing.Visible = 1:sling1.rotx = 0:gi1.State = 1:Gi2.State = 1:RightSlingShot.TimerEnabled = False
+	End Select
+	RStep = RStep + 1
+End Sub
+
+Sub LeftSlingShot_Slingshot
+	PlaySound SoundFXDOF("leftslingy", 103, DOFPulse,DOFContactors), 0,1, -0.05,0.05 '0,1, AudioPan(LeftSlingShot), 0.05,0,0,1,AudioFade(LeftSlingShot)
+	LSling.Visible = 0:LSling1.Visible = 1
+	sling2.rotx = 20
+	 LStep = 0
+	LeftSlingShot.TimerEnabled = 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	gi3.State = 0
+	Gi4.State = 0
+End Sub
+
+Sub LeftSlingShot_Timer
+	Select Case LStep
+		Case 1:LSLing1.Visible = 0:LSLing2.Visible = 1:sling2.rotx = 10:gi3.State = 0:Gi4.State = 0
+		Case 2:LSLing1.Visible = 0:LSLing2.Visible = 1:sling2.rotx = 5:gi3.State = 0:Gi4.State = 0
+		Case 3:LSLing2.Visible = 0:LSLing.Visible = 1:sling2.rotx = 0:gi3.State = 1:Gi4.State = 1:LeftSlingShot.TimerEnabled = False
+	End Select
+	LStep = LStep + 1
+End Sub
+
+'*****************
+'Spinners
+'*****************
+
+Sub Spinner001_Spin()
+	PlaySound "tin can"
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (500*PFMultiplier)
+DOF 115, DOFPulse
+End Sub
+
+'*****************
+'triggers
+'*****************
+Dim LeftOrbitStart:LeftOrbitStart = 0
+Dim RightOrbitStart:RightOrbitStart = 0
+Dim GrogCounter:GrogCounter = 0
+Dim GrogEnabled:GrogEnabled = 1
+
+Sub TrRightOrbit_Hit()
+	If Status = "Duels" Then
+		ProcessDuels(7)
+		Exit Sub
+	End If
+	If KiGrog.Enabled = 1 Then
+		Exit Sub
+	End If
+	If RightOrbitStart = 1 Then
+		'Play Some Sound that you didn't make it
+		RightOrbitStart = 0
+		DMDFlush()
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
+		Exit Sub
+	End If
+	If LeftOrbitStart = 2 Then
+		LeftOrbitStart = 0
+		Exit Sub
+	End If
+	If RightOrbitStart = 0 Then
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eScrollLeft, eNone, 1, False, ""
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		RightOrbitStart = 1
+		LSOrbit.Play SeqRadarLeftOn, 10
+	End If
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (100*PFMultiplier)
+	vpmTimer.AddTimer 2000, "RightOrbitStart = 0 '"
+	vpmTimer.AddTimer 2100, "DMDScoreNow() '"
+End Sub
+
+Sub TrRightOrbitMake_Hit()
+	If RightOrbitStart = 1 Then
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (900*PFMultiplier)
+		'Play Some Sound for making a right orbit
+		'Maybe some lighting effect
+		DMD "_", CL(1, "RIGHT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
+		GrogCounter = GrogCounter + 1
+		RightOrbitStart = 2
+		If GrogCounter >= 3 Then
+			GrogEnabled = 1
+'			KiGrog.Enabled = 1
+		End If
+	End If
+End Sub
+
+Sub TrLeftOrbit_Hit()
+	If Status = "Duels" Then
+		ProcessDuels(0)
+		Exit Sub
+	End If
+	If LeftOrbitStart = 1 Then
+		'Play Some Sound that you didn't make it
+		LeftOrbitStart = 0
+		DMDFlush()
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollLeft, eNone, 1, True, ""
+		Exit Sub
+	End If 
+	If RightOrbitStart = 2 Then
+		RightOrbitStart = 0
+		Exit Sub
+	End If
+	If LeftOrbitStart = 0 Then
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eScrollRight, eNone, 1, False, ""
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		LeftOrbitStart = 1
+		LSOrbit.Play SeqRadarRightOn, 10
+	End If
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (100*PFMultiplier)
+	vpmTimer.AddTimer 2000, "LeftOrbitStart = 0 '"
+	vpmTimer.AddTimer 2100, "DMDScoreNow() '"
+End Sub
+
+Sub TrLeftOrbitMake_Hit()
+	If LeftOrbitStart = 1 Then
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (900*PFMultiplier)
+		'Play Some Sound for making a left orbit
+		'Maybe some lighting effect
+		LeftOrbitStart = 2
+		DMD "_", CL(1, "LEFT LANE"), "_", eNone, eNone, eNone, 1, False, ""
+		DMD "_", CL(1, "_"), "_", eNone, eScrollRight, eNone, 1, True, ""
+	End If
+End Sub
+
+'**********************Bananas b2s bonus *********************
+
+sub itemrotytimer001_timer
+   banaan001.RotY = banaan001.RotY + 1
+   if banaan001.RotY > 360 then
+	   banaan001.RotY = 1
+   end if
+   banaan002.RotY = banaan002.RotY + 1
+   if banaan002.RotY > 360 then
+	   banaan002.RotY = 1
+   end if
+end sub
+
+sub banaany1()
+	tbanaan001.enabled = 1
+	tbanaan002.enabled = 0
+	banaan001.Visible = 1
+	banaan002.Visible = 0
+end sub
+
+sub banaany2()
+	tbanaan001.enabled = 0
+	tbanaan002.enabled = 1
+	banaan001.Visible = 0
+	banaan002.Visible = 1
+end sub
+
+sub tbanaan001_hit()
+	playsound "haveabanana"
+	banaany2()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+	bananasearned = bananasearned + 1
+	Updatebananascountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub tbanaan002_hit()
+	playsound "bananashurt"
+	banaany1()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+	bananasearned = bananasearned + 1
+	Updatebananascountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub disablebanana()
+	itemrotytimer001.enabled = 0
+	banaan002.Visible = 0
+	banaan001.Visible = 0
+	tbanaan002.enabled = 0
+	tbanaan001.enabled = 0
+end sub
+
+'**********************murray cave*********************
+
+Sub tmurray_Hit
+	startB2S(6)
+	PlayMurrayQuote()
+	vpmTimer.AddTimer 2000, "Ramp010.Collidable = 0 :DOF 132, DOFPulse '"
+	vpmTimer.AddTimer 2250, "Ramp010.Collidable = 1 '"
+End Sub
+
+'**********************inner/outerlane*********************
+
+Sub TLeftInlane_Hit
+	'FlashForMs Flasher011, 1000, 50, 0
+	BlinkFlasher 1,450,150
+	LeftInlane.State = 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	PlaySound "doorclose"
+	DMD "", "", "10k", eNone, eNone, eNone, 500, True, ""
+	Checkbgrog
+End Sub
+
+Sub TLeftOutlane_Hit
+	Flash8 True
+	'FlashForMs Flasher011, 1000, 50, 0
+	BlinkFlasher 1,450,150
+	LeftOutlane.State = 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+	PlaySound "wallop"
+	DMD "", "", "50k", eNone, eNone, eNone, 500, True, ""
+	Checkbgrog
+End Sub
+
+Sub TRightInlane_Hit
+	'FlashForMs Flasher012, 1000, 50, 0
+	BlinkFlasher 2,450,150
+	RightInlane.State = 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	PlaySound "doorclose"
+	DMD "", "", "10k", eNone, eNone, eNone, 500, True, ""
+	Checkbgrog
+End Sub
+
+Sub TRightOutlane_Hit
+	Flash9 True
+	'FlashForMs Flasher012, 1000, 50, 0
+	BlinkFlasher 2,450,150
+	RightOutlane.State = 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+	PlaySound "wallop"
+	DMD "", "", "50k", eNone, eNone, eNone, 500, True, ""
+	Checkbgrog
+End Sub
+
+Sub Checkbgrog
+	If(LeftInlane.State = 1) And(LeftOutlane.State = 1) And(RightInlane.State = 1) And(RightOutlane.State = 1) Then
+	DMD "", "", "dmdgrog", eNone, eNone, eNone, 1000, True, "grog"
+	AddScore 100000
+	LeftInlane.State=0
+	LeftOutlane.State=0
+	RightInlane.State=0
+	RightOutlane.State=0	  
+	End If
+End Sub
+
+'**********************other way to add bonus*********************
+
+Sub Bonuschecker_Hit
+	Flash9 True
+	Flash8 True
+	FlashForMs Flasher001, 1000, 50, 0
+	FlashForMs Flasher002, 1000, 50, 0
+	FlashForMs Flasher003, 1000, 50, 0
+	FlashForMs Flasher004, 1000, 50, 0
+	FlashForMs Flasher005, 1000, 50, 0
+	FlashForMs Flasher006, 1000, 50, 0
+	FlashForMs Flasher007, 1000, 50, 0
+	FlashForMs Flasher008, 1000, 50, 0
+	FlashForMs Flasher009, 1000, 50, 0
+	'FlashForMs Flasher011, 1000, 50, 0
+	BlinkFlasher 1,450,150
+	'FlashForMs Flasher012, 1000, 50, 0
+	BlinkFlasher 2,450,150
+	'FlashForMs Flasher020, 1000, 50, 0
+	BlinkFlasher 3,450,150
+	'FlashForMs Flasher019, 1000, 50, 0
+	BlinkFlasher 4,450,150
+End Sub
+
+'**********************grevediggers*********************
+sub gravetrigger_hit
+Score(CurrentPlayer) = Score(CurrentPlayer) + (50000*PFMultiplier)
+DMD "", "", "dmddigg", eNone, eNone, eNone, 1000, True, ""
+gravediggers = gravediggers + 1
+checkgravecomplete
+end sub
+
+sub checkgravecomplete
+if gravediggers = 3 Then
+DMD "", "", "dmddiggc", eNone, eNone, eNone, 1000, True, ""
+PlaySound "landliving"
+li043.state = 1
+escapeMI = escapeMI + 1
+checktoescape
+Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 6 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 9 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (300000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 12 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (400000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 15 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (500000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 18 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (600000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 21 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (700000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 24 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (800000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 27 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (900000*PFMultiplier)
+exit sub
+end if
+if gravediggers = 30 Then
+PlaySound "landliving"
+Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+exit sub
+end if
+PlaySound "Spooky"
+end sub
+
+'************************** 
+'Bumpers 
+'************************** 
+
+sub scorebumpers
+	PlaySound "shakegrog"
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (2500*PFMultiplier)
+end sub	
+
+Sub Bumper001_hit()
+bumperHits = bumperHits + 1
+	DMDFlush
+	DMD CL(0, FormatScore(Score(Currentplayer) ) ), CL(1, bumperHits& " BARRELS HIT"), "_", eNone, eNone, eNone, 300, True, ""
+	Flash9 True
+	Flash8 True
+	PlaySound "BlockHi"
+    DOF 108, DOFPulse
+	Bumper001tim.Enabled = 1
+'	Me.TimerEnabled = 1
+	TipFull1 = 8
+	HasJumped1 = 0
+	scorebumpers
+End sub
+' Bumper Bonus
+' 100000 i bonus after each 100 hits
+
+Dim Tip1, TipFull1, Jump1, HasJumped1, JumpSpeed
+Jumpspeed = 1
+Jump1 = 1
+Tip1 = 1
+TipFull1 = 8
+Sub Bumper001tim_Timer()
+	If HasJumped1 = 0 Then
+		barrel001.Z = dSin(Jump1)*30 + 100
+		Jump1 = Jump1 + 1
+		If Jump1 >= 180 Then
+			Jump1 = 1
+			HasJumped1 = 1
+		End If
+	End If
+	If HasJumped1 = 1 Then
+		barrel001.RotY = dSin(Tip1)*TipFull1
+		barrel001.ObjRotZ = barrel001.ObjRotZ + 0.1
+		If barrel001.ObjRotZ >= 360 Then barrel001.ObjRotZ = 0
+		Tip1 = Tip1 + 1
+		If Tip1 > 360 Then
+			Tip1 = 1
+			TipFull1 = TipFull1 - 1
+		End If
+		If TipFull1 <= 0 Then Bumper001tim.Enabled = 0
+	End If
+End Sub
+
+Sub Bumper002_hit()
+bumperHits = bumperHits + 1
+	DMDFlush
+	DMD CL(0, FormatScore(Score(Currentplayer) ) ), CL(1, bumperHits& " BARRELS HIT"), "_", eNone, eNone, eNone, 300, True, ""
+	Flash9 True
+	Flash8 True
+	PlaySound "BlockMid"
+    DOF 109, DOFPulse
+	Bumper002tim.Enabled = 1
+'	Me.TimerEnabled = 1
+	TipFull2 = 8
+	HasJumped2 = 0
+	scorebumpers
+End sub
+' Bumper Bonus
+' 100000 i bonus after each 100 hits
+
+Dim Tip2, TipFull2, Jump2, HasJumped2
+Jump2 = 1
+Tip2 = 1
+TipFull2 = 8
+Sub Bumper002tim_Timer()
+	If HasJumped2 = 0 Then
+		barrel002.Z = dSin(Jump2)*30 + 100
+		Jump2 = Jump2 + 1
+		If Jump2 >= 180 Then
+			Jump2 = 1
+			HasJumped2 = 1
+		End If
+	End If
+	If HasJumped2 = 1 Then
+		barrel002.RotY = dSin(Tip2)*TipFull2
+		barrel002.ObjRotZ = barrel002.ObjRotZ + 0.1
+		If barrel002.ObjRotZ >= 360 Then barrel002.ObjRotZ = 0
+		Tip2 = Tip2 + 1
+		If Tip2 > 360 Then
+			Tip2 = 1
+			TipFull2 = TipFull2 - 1
+		End If
+		If TipFull2 <= 0 Then Bumper002tim.Enabled = 0
+	End If
+End Sub
+
+Sub Bumper003_hit()
+bumperHits = bumperHits + 1
+	DMDFlush
+	DMD CL(0, FormatScore(Score(Currentplayer) ) ), CL(1, bumperHits& " BARRELS HIT"), "_", eNone, eNone, eNone, 300, True, ""
+	Flash9 True
+	Flash8 True
+	PlaySound "BlockLo"
+    DOF 107, DOFPulse
+	Bumper003tim.Enabled = 1
+'	Me.TimerEnabled = 1
+	TipFull3 = 8
+	HasJumped3 = 0
+	scorebumpers
+End sub
+' Bumper Bonus
+' 100000 i bonus after each 100 hits
+
+Dim Tip3, TipFull3, Jump3, HasJumped3
+Jump3 = 1
+Tip3 = 1
+TipFull3 = 8
+Sub Bumper003tim_Timer()
+	If HasJumped3 = 0 Then
+		barrel003.Z = dSin(Jump3)*30 + 100
+		Jump3 = Jump3 + 1
+		If Jump3 >= 180 Then
+			Jump3 = 1
+			HasJumped3 = 1
+		End If
+	End If
+	If HasJumped3 = 1 Then
+		barrel003.RotY = dSin(Tip3)*TipFull3
+		barrel003.ObjRotZ = barrel003.ObjRotZ + 0.1
+		If barrel003.ObjRotZ >= 360 Then barrel003.ObjRotZ = 0
+		Tip3 = Tip3 + 1
+		If Tip3 > 360 Then
+			Tip3 = 1
+			TipFull3 = TipFull3 - 1
+		End If
+		If TipFull3 <= 0 Then Bumper003tim.Enabled = 0
+	End If
+End Sub
+
+'*****************
+'Targets
+'*****************
+
+'*****************
+'ball saved
+'*****************
+Dim SafeBall:SafeBall = 0
+sub Target008_hit()
+	PlaySound "fx_target"
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	SafeBall = SafeBall OR 1	'Set SafeBall to the right being hit
+	Select Case SafeBall
+		Case 1	'I've already been hit...
+			li049.state = 2	'Set the light to blinking
+			Exit Sub	'and don't do anything more
+		Case 3	'The left target was hit already
+			li049.state = 1	'Set the light to be on
+			balltosafty.enabled = false		'reset the timer, in case it's already on
+			balltosafty.enabled = true
+'			EnableBallSaver 30
+			SafeBall = 0
+		Case Else	'EP- Should never get here, something's wrong... probably my coding
+			'PlaySound "Knocker"
+	End Select
+end Sub
+
+sub Target009_hit()
+	PlaySound "fx_target"
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	SafeBall = SafeBall OR 2	'Set SafeBall to the left being hit
+	Select Case SafeBall
+		Case 2	'I've already been hit...
+			li049.state = 2	'Set the light to blinking
+			Exit Sub	'and don't do anything more
+		Case 3	'The right target was hit already
+			li049.state = 1	'Set the light to be on
+			balltosafty.enabled = false		'reset the timer, in case it's already on
+			balltosafty.enabled = true
+'			EnableBallSaver 30
+			SafeBall = 0
+		Case Else	'EP- Should never get here, something's wrong... probably my coding
+			Exit Sub
+	End Select
+end Sub
+
+sub balltosafty_timer
+	li049.state = 0
+	balltosafty.enabled = 0
+end sub
+
+'*****************
+'INSULT
+'*****************
+Dim in_, su_, lt_
+Sub Target005_hit()	'IN target
+	If Status = "Normal" AND VoodooSlot <> 31 Then
+		li037.state = 1
+		li038.state = 1
+		in_ = "IN"
+		PlayQuoteInsult()
+		DMD CL(0, "" & in_ & su_ & lt_), CL(1, "SPELL INSULT"),"",0,0,0,1000,True,""
+		CheckInsult()
+	End If
+	PlaySound "fx_target", 0, 0.2, Pan(ActiveBall) * 10
+	TargetBonus = TargetBonus + 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	LSIns001.Play SeqCircleOutOn, 10
+End Sub
+
+Sub Target007_hit()
+	If Status = "Normal" AND VoodooSlot <> 31 Then
+		li039.state = 1
+		li040.state = 1
+		PlayQuoteInsult()
+		su_ = "SU"
+		DMD CL(0, "" & in_ & su_ & lt_), CL(1, "SPELL INSULT"),"",0,0,0,1000,True,""	
+		CheckInsult()
+	End If
+	PlaySound "fx_target", 0, 0.2, Pan(ActiveBall) * 100
+	TargetBonus = TargetBonus + 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	LSIns002.Play SeqCircleOutOn, 10
+
+End Sub
+
+Sub Target006_hit()
+	if Status = "Normal" AND VoodooSlot <> 31 Then
+		li041.state = 1
+		li042.state = 1
+		PlayQuoteInsult()
+		lt_ = "LT"
+		DMD CL(0, "" & in_ & su_ & lt_), CL(1, "SPELL INSULT"),"",0,0,0,1000,True,""
+		CheckInsult()
+	End If
+	PlaySound "fx_target", 0, 0.2, Pan(ActiveBall) * 100
+	TargetBonus = TargetBonus + 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	LSIns003.Play SeqCircleOutOn, 10
+End Sub
+
+Sub CheckInsult()
+	if (in_ = "IN") And (su_ = "SU") And (lt_ = "LT") Then 
+		if voodoounlocked = 0 Then
+			playsound "Unlock"
+			Score(CurrentPlayer) = Score(CurrentPlayer) + (75000*PFMultiplier)
+		end if
+		voodoounlocked = 1
+		DMDFlush()
+		DMD "", "", "dmdinsult", eNone, eNone, eNone, 1000, True, ""
+		li047.state = 0
+		li037.state = 2
+		li038.state = 2
+		li039.state = 2
+		li040.state = 2
+		li041.state = 2
+		li042.state = 2
+		If Status = "Normal" Then li011.state = 2
+	Else
+		DMD CL(0, "SPELL INSULT"), CL(1, "TO UNLOCK DEEP GUT"), "", eScrollLeft, eScrollRight, eNone, 1500, True, ""
+	End if
+End Sub
+
+'*****************
+'monkey battles
+'*****************
+Dim Monkey3Hit:Monkey3Hit = 0
+sub Target003_hit()		'Left Monkey
+	'Updatemonkeycountr
+	plank3Shaker()
+	TargetBonus = TargetBonus + 1
+	PlaySound "monkeyhit"
+  DOF 124, DOFPulse
+	'Play the angry animation on the monkey
+	Monkey3Hit = 1
+	'change the animation speed since being angry is faster... ?
+	FrameNext3 = FrameRate3b
+	'make the next frame to be played the first angry frame
+	Monkey3Frame = 11
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	li003.state = 1
+	CheckMonkeyBattle()
+	Monkey3JumpsMax = 1
+	Wall014.TimerEnabled = 1
+end sub
+
+Dim Monkey2Hit:Monkey2Hit = 0
+sub Target002_hit()		'Right Monkey
+	'Updatemonkeycountr
+	plank2Shaker()
+	TargetBonus = TargetBonus + 1
+	PlaySound "monkeyhit"
+  DOF 128, DOFPulse
+	Monkey2Hit = 1
+	FrameNext2 = FrameRate2b
+	Monkey2Frame = 11
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	li005.state = 1
+	CheckMonkeyBattle()
+	Monkey2JumpsMax = 1
+	Wall015.TimerEnabled = 1
+end sub
+
+Dim Monkey1Hit:Monkey1Hit = 0
+sub Target001_hit()		'Center Monkey
+	'Updatemonkeycountr
+	plank1Shaker()
+	TargetBonus = TargetBonus + 1
+	PlaySound "monkeyhit"
+  DOF 126, DOFPulse
+	Monkey1Hit = 1
+	FrameNext1 = FrameRate1b
+	Monkey1Frame = 11
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	li004.state = 1
+	CheckMonkeyBattle()
+	Monkey1JumpsMax = 1
+	Wall020.TimerEnabled = 1
+end sub
+
+Sub CheckMonkeyBattle()
+	If(li003.State = 1) And(li004.State = 1) And(li005.State = 1) Then
+	'Playsound "po_fanfare5"
+	AddScore 25000
+	li004.State=0
+	li005.state=0
+	li003.state=0
+	monkeybattle = monkeybattle + 1
+	Updatemonkeycountr
+	vpmtimer.addtimer 250, "startB2S(3) '"
+	End If
+End Sub
+
+'***********plank shakers*************
+'Dim plank1Shake
+Dim plank2Shake
+Dim plank3Shake
+
+Sub plank1Shaker()
+'	 plank1Shake = 6
+	plank1Timer.Enabled = True
+End Sub
+
+'A number between 1 and 360 to calculate Sin on
+Dim PlankShake1:PlankShake1 = 1
+'How far to move the plank; bigger numbers will increase how far away from the center it moves, smaller numbers means smaller movement
+'We could get the velocity of the ball when it hits the plank to dynamically change this.  Harder hits = bigger shakes (and longer since it has to move farther)
+Dim PlankShakeDist1:PlankShakeDist1 = 12
+'How fast the plank shakes; bigger numbers will make it vibrate, smaller numbers will make it move in slow motion
+Dim PlankShakeSpeed1:PlankShakeSpeed1 = 4
+'How stiff the plank is; bigger numbers will make it wobble less as if it were connect to stiff rod, smaller numbers make it wobble longer like it was on a loose spring
+Dim PlankStiff1:PlankStiff1 = 0.5
+Sub plank1Timer_Timer()
+	me.Interval = 1
+	'Use the same math as on the barrells to shake the planks
+	plank1.TransZ = dSin(PlankShake1)*PlankShakeDist1
+	'Increase the number the math does work on at a rate we have control over
+	PlankShake1 = PlankShake1 + PlankShakeSpeed1
+	'We don't want this number to increment indefinitely since 361 is the same as 1 when it comes to calculating Sin
+	If PlankShake1 > 360 Then
+		PlankShake1 = 1
+		'Decrease the distance it moves from center each time it moves left and right so the next time it moves left and right, it doesn't move as far
+		PlankShakeDist1 = PlankShakeDist1 - PlankStiff1
+	End If
+	'If it's shaken back and forth the specified number of times (PlankShakeDist1), then we're done
+	If PlankShakeDist1 <= 0 Then
+		'Turn off the animation
+		me.Enabled = 0
+		'Reset the shake amount for next time
+		PlankShakeDist1 = 12
+	End If
+End Sub
+
+Sub plank2Shaker()
+	plank2Shake = 6
+	plank2Timer.Enabled = True
+End Sub
+
+Dim PlankShake2:PlankShake2 = 1
+Dim PlankShakeDist2:PlankShakeDist2 = 12
+Dim PlankShakeSpeed2:PlankShakeSpeed2 = 4
+Dim PlankStiff2:PlankStiff2 = 0.5
+Sub plank2Timer_Timer()
+	me.Interval = 1
+	plank2.TransZ = dSin(PlankShake2)*PlankShakeDist2
+	PlankShake2 = PlankShake2 + PlankShakeSpeed2
+	If PlankShake2 > 360 Then
+		PlankShake2 = 1
+		PlankShakeDist2 = PlankShakeDist2 - PlankStiff2
+	End If
+	If PlankShakeDist2 <= 0 Then
+		me.Enabled = 0
+		PlankShakeDist2 = 12
+	End If
+End Sub
+
+Sub plank3Shaker()
+	plank3Shake = 6
+	plank3Timer.Enabled = True
+End Sub
+
+Dim PlankShake3:PlankShake3 = 1
+Dim PlankShakeDist3:PlankShakeDist3 = 12
+Dim PlankShakeSpeed3:PlankShakeSpeed3 = 4
+Dim PlankStiff3:PlankStiff3 = 0.5
+Sub plank3Timer_Timer()
+	me.Interval = 1
+	plank3.TransZ = dSin(PlankShake3)*PlankShakeDist3
+	PlankShake3 = PlankShake3 + PlankShakeSpeed3
+	If PlankShake3 > 360 Then
+		PlankShake3 = 1
+		PlankShakeDist3 = PlankShakeDist3 - PlankStiff3
+	End If
+	If PlankShakeDist3 <= 0 Then
+		me.Enabled = 0
+		PlankShakeDist3 = 12
+	End If
+End Sub
+
+'*****************
+'Gates
+'*****************
+sub Gate_Hit()
+	Playsound "gate1"
+	LightSeq002.StopPlay
+	BlinkFlasher 3,450,150
+	BlinkFlasher 4,450,150
+	startB2S(3)
+	If PFMultiplier > 1 then exit sub
+	LightSeq001.Play SeqRightOn, 25, 1000
+End Sub
+
+sub Gate003_Hit()
+	Playsound "dock"
+End Sub
+
+sub Gate001_Hit()
+	Playsound "gate004"
+	movegraves
+End Sub
+
+sub movegraves
+	Playsound "monkeytargup"
+	grave001.ObjRotx = 20
+	grave002.ObjRotx = 20
+	grave003.ObjRotx = 20
+	vpmTimer.AddTimer 500, "gravesnormal '" 
+end sub
+
+sub gravesnormal
+	Playsound "monkeytargup"
+	grave001.ObjRotx = 0
+	grave002.ObjRotx = 0
+	grave003.ObjRotx = 0
+end sub
+
+'*****************
+'Kickers
+'*****************
+Dim dBall
+
+'*****************Lechuck**************************
+Dim LeChuckHits:LeChuckHits = 0
+
+sub Kicker001_hit()
+	if bMultiBallMode = true Then
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	Flash8 True
+	PlayLechuckQuote()
+	Set dBall = ActiveBall
+	MyTroughLeChuckAdd(dBall)
+	StartLeChuckSlotMachineLechuck()
+	exit sub
+	end if
+	If LeChuckHits = 2 AND Status = "Normal" AND LeChuckSlot <> 255 Then
+	LightSeq004.Play SeqDownOn, 25, 500
+	li009.State = 2
+	end if 
+	If LeChuckHits >= 3 AND Status = "Normal"  AND LeChuckSlot <> 255 Then
+		Set dBall = ActiveBall
+		MyTroughLeChuckAdd(dBall)
+		StartLechuckItemsSlotmachine()
+		Exit Sub
+	End If
+	If Status = "Normal" AND LeChuckSlot <> 255 Then
+		LeChuckHits = LeChuckHits + 1
+		If LeChuckHits >= 3 Then li009.State = 2
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	End If
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	Flash8 True
+	PlayLechuckQuote()
+	Set dBall = ActiveBall
+	MyTroughLeChuckAdd(dBall)
+	StartLeChuckSlotMachineLechuck()
+end sub
+
+'***************** Vulcano**************************
+sub Kicker004_hit()
+	if bMultiBallMode = true Then
+	vulcanokick()
+	exit sub
+	end if
+	greatdive = greatdive + 1
+'	FlashForMs Flasher019, 1000, 50, 0
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	checkgreatdive
+end sub
+ 
+sub checkgreatdive
+	if greatdive = 3 Then
+	startdiving
+	exit sub
+	end if
+	vpmTimer.addTimer 1000, "vulcanokick '"
+end sub
+ 
+sub vulcanokick()
+	Playsound SoundFXDOF( "LavaBall", 112, DOFPulse,DOFContactors)
+	Kicker004.Kick 0,35,1.56
+end sub
+ 
+'*****************diving**************************
+sub startdiving
+Kicker004.DestroyBall
+greatdive = 0
+Playsound "LavaBall"
+StartDivingSlotMachine
+end sub
+ 
+'**************
+' SlotMachine diving
+'**************
+ 
+Dim SlotAward4, SlotValue4
+SlotAward4 = Array("dmdgd", "dmdbd")
+Sub StartDivingSlotMachine()
+	'startB2S(9)
+	Dim i
+	DMDFlush
+	For i = 0 to 1
+		DMD "", "", SlotAward4(i), eNone, eNone, eNone, 100, False, ""
+	Next
+	vpmtimer.AddTimer 2000, "GiveSlotAwardDiving '"
+End Sub
+ 
+Sub GiveSlotAwardDiving()
+	DMDFlush()
+	Randomize()
+	SlotValue4 = INT(RND * 2)
+	DMD "", "", SlotAward4(SlotValue4), eNone, eNone, eNone, 500, True, ""
+	Select Case SlotValue4
+		Case 0:diveG
+		Case 1:diveB
+	End Select
+End Sub
+ 
+sub diveG
+li045.state = 1
+playsound "nicedive2"
+escapeMI = escapeMI + 1
+checktoescape
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		Kicker004.CreateSizedBall(BallSize / 2)
+	vpmTimer.addTimer 1300, "vulcanokick '"
+end sub
+ 
+sub diveB
+playsound "diveagainstyou"
+		Kicker004.CreateSizedBall(BallSize / 2)
+	vpmTimer.addTimer 1600, "vulcanokick '"
+end sub
+
+'*****************Bar kicker**************************
+Dim eBall
+
+sub Kicker006_hit()
+		If (barunlocked = 0) and (playtreasure = 1) Then
+		'Me.TimerEnabled = 0
+Set eBall = ActiveBall
+		'Kicker006.DestroyBall
+		Treasure
+		Exit Sub	
+	end if
+	playsound "balldropy"
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	Set eBall = ActiveBall
+	Me.TimerEnabled = 1
+end sub
+
+Sub Kicker006_Timer()
+	If eBall.Z > 0 Then
+		eBall.Z = eBall.Z - 5
+		Exit Sub
+	End If
+	If Status = "Duels" Then
+		Me.TimerEnabled = 0
+		ProcessDuels(1)
+		Exit Sub
+	End If 
+	if (barunlocked = 0) or (Status <> "Normal") or (bMultiBallMode = true) Then
+		MyTroughLRAdd(eBall)
+		Me.DestroyBall
+		startB2S(4)
+		LowerTarget013()
+		LrKickout 1000, 290, 7, 0
+	Else
+		StartBarSlotmachine()
+	End If
+	Me.TimerEnabled = 0
+End Sub
+
+'*****************Voodoo kicker**************************
+Dim cBall
+
+sub Kicker005_hit()
+	FlashForMs Flasher001, 1000, 50, 0
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	'Animate the ball going down
+	Set cBall = ActiveBall
+	Me.TimerEnabled = 1
+end sub
+
+Sub Kicker005_Timer()
+	'Lower the ball
+	If cBall.Z > 0 Then
+		cBall.Z = cBall.Z - 5
+		Exit Sub
+	End If
+	If Status = "Duels" Then
+		Me.TimerEnabled = 0
+		ProcessDuels(5)
+		Exit Sub
+	End If
+	'If voodoo is locked, you're in a quest, or in a multiball mode, then kickout from the right
+	if (voodoounlocked = 0) or (Status <> "Normal") or (bMultiBallMode = true) Then
+		MyTroughLRAdd(cBall)
+		'When it's all the way down
+		Me.DestroyBall
+		startB2S(4)
+		LowerTarget013()
+		LRKickout 1000, 290, 7, 0
+	'Otherwise, Do something based on the mode we're in
+	Else
+		StartVoodooSlotmachine()
+	end if
+	Me.TimerEnabled = 0
+End Sub
+
+'******************* Monkey Head Kicker **********
+Dim MonkeyHeadCounter:MonkeyHeadCounter = 0
+Dim LockCounter:LockCounter = 0
+Dim mBall
+
+Sub Wall030_Hit
+	MonkeyHeadCounter = MonkeyHeadCounter + 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (500*PFMultiplier)
+	Select Case MonkeyHeadCounter
+		Case 1
+			li010.state = 2
+			MoveHead 120, 0.5
+			PlaySound "aapmonkey3"
+			PlaySound "StoneScrape1"
+			DMDFlush()
+DMD "", "", "mh3", eNone, eNone, eNone, 1500, True, ""
+DMD "", "", "dmdopenmouth2", eNone, eNone, eNone, 1500, True, ""
+		Case 2
+			MoveHead 60, 0.5
+			PlaySound "aapmonkey3"
+			PlaySound "StoneScrape1"
+			DMDFlush()
+DMD "", "", "mh2", eNone, eNone, eNone, 1500, True, ""
+DMD "", "", "dmdopenmouth2", eNone, eNone, eNone, 1500, True, ""
+		Case 3
+			MoveHead 10, 0.5
+			vpmTimer.AddTimer 2000, "Wall030.IsDropped = 1 '"
+			vpmTimer.AddTimer 2000, "MoveMouth 1, 0.5 '"
+			vpmTimer.AddTimer 2000, "KiHead.Enabled = 1 '"
+			PlaySound "aapmonkey3"
+			PlaySound "StoneScrape1"
+			DMDFlush()
+	DMD "", "", "dmdfeed", eNone, eNone, eNone, 1500, True, ""
+	DMD "", "", "dmdstartmulti", eNone, eNone, eNone, 1500, True, ""
+	End Select
+		
+End Sub
+
+Sub KiHead_Hit()
+	If LockCounter = 3 then 'Status = "MonkeyMB" Then
+		monkeykeepball = 1
+		PlaySound "SecondBiggest"
+		vpmTimer.AddTimer 1500, "MoveMouth 1, 8 '"
+		vpmTimer.AddTimer 2000, "kickmonkeymbheadys '"
+		DMD "", "", "dmdjack", eNone, eNone, eNone, 1000, True, ""
+		DMD "", "", "1000K", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+		exit sub
+	End If
+	MoveMouth 0, 5
+	vpmTimer.AddTimer 200, "MoveMouth 1, 8 '"
+	vpmTimer.AddTimer 400, "MoveMouth 0, 8 '"
+	vpmTimer.AddTimer 600, "MoveMouth 1, 8 '"
+	vpmTimer.AddTimer 800, "MoveMouth 0, 8 '"
+	Set mBall = ActiveBall
+	LockCounter = LockCounter + 1
+	Select Case LockCounter
+		Case 1	
+		PlaySound "aapmonkey2"
+		DMD "", "", "bl", eNone, eNone, eNone, 1500, True, ""
+		MyTroughLRAdd(mBall)
+		Me.DestroyBall
+		startB2S(4)
+		LowerTarget013()
+		LRKickout 1000, 290, 7, 0
+		vpmTimer.AddTimer 1000, "MoveMouth 1, 0.5 '"
+		case 2
+		PlaySound "aapmonkey2"
+		DMD "", "", "bl", eNone, eNone, eNone, 1500, True, ""
+		MyTroughLRAdd(mBall)
+		Me.DestroyBall
+		startB2S(4)
+		LowerTarget013()
+		LRKickout 1000, 290, 7, 0
+		vpmTimer.AddTimer 1000, "MoveMouth 1, 0.5 '"
+		case 3
+		StartMonkeyMB()
+	end select
+End Sub
+
+sub kickmonkeymbheadys
+PlaySound "fx_popper"
+KiHead.Kick 180, 7, 0
+monkeykeepball = 0
+end sub
+'******************* Trough stuff ****************
+
+'We have to do it this way so that newly entering balls don't trigger ball creating immediately; ball creation should only happen 1 second after a ball is kicked out
+Kicker002.UserValue = 0
+Sub LRKickout(wait, tAngle, tForce, tZ)
+	'If there are balls in the trough
+	If UBound(MyTroughLR) >= 0 Then
+		'If the kicker is ready to kick...
+		If Kicker002.UserValue = 0 Then
+			'Make the kicker not ready to kick
+			Kicker002.userValue = 1
+			FlashForMs Flasher009, 1000, 50, 0
+			'And kick the ball after the desire wait
+			vpmTimer.AddTimer wait, "LRKickout2 " & tAngle & ", " & tForce & ", " & tz & " '"
+		End If
+	End If
+End Sub
+
+sub LRKickout2(tAngle, tForce, tZ)
+	'Create the ball
+	Kicker002.CreateSizedBall(BallSize/2).UserValue = MyTroughLR(0)
+	'Kick it
+	Kicker002.Kick tAngle, tForce, tZ
+	PlaySound SoundFXDOF("fx_popper", 113, DOFPulse,DOFContactors)
+	'Remove the ball from the trough
+	MyTroughLRRemove()
+	'Show that the kicker is ready
+	Kicker002.userValue = 0
+	'Call LRKickout in case there are more balls in the trough
+	LRKickout 1000, 290, 7, 0
+	'If the trough is empty, close the door, otherwise keep it open
+	If UBound(MyTroughLR) < 0 Then vpmTimer.Addtimer 500, "ResetTarget013 '"
+End Sub
+
+Sub BarKickout(wait, tAngle, tForce, tZ)
+	If UBound(MyTroughTreasure) >= 0 Then
+		BarKickout2 tAngle, tForce, tz
+	End If
+End Sub
+
+sub BarKickout2(tAngle, tForce, tZ)
+	Kicker006.CreateSizedBall(BallSize/2).UserValue = MyTroughTreasure(0)
+	Kicker006.Kick tAngle, tForce, tZ
+	Set rBall = Nothing
+	PlaySound SoundFXDOF("fx_popper", 114, DOFPulse,DOFContactors)
+	MyTroughTreasureRemove()
+	BarKickout 1000, 290, 7, 0
+End Sub
+
+Sub LeChuckKickout(wait, tAngle, tForce, tZ)
+	If UBound(MyTroughLeChuck) >= 0 Then
+		vpmTimer.AddTimer wait, "LeChuckKickout2 " & tAngle & ", " & tForce & ", " & tz & " '"
+	End If
+End Sub
+
+sub LeChuckKickout2(tAngle, tForce, tZ)
+	Set dBall = Nothing
+	Kicker001.DestroyBall
+	Kicker003.CreateSizedBall(BallSize/2).UserValue = MyTroughLeChuck(0)
+	Kicker003.Kick tAngle, tForce, tZ
+	PlaySound SoundFXDOF("fx_popper", 111, DOFPulse,DOFContactors)
+	MyTroughLeChuckRemove()
+	LeChuckKickout 1000, 290, 7, 0
+End Sub
+
+Sub TreasureKickout(wait, tAngle, tForce, tZ)
+	If UBound(MyTroughTreasure) >= 0 Then
+		vpmTimer.AddTimer wait, "TreasureKickout2 " & tAngle & ", " & tForce & ", " & tz & " '"
+	End If
+End Sub
+
+sub TreasureKickout2(tAngle, tForce, tZ)
+	Kicker007.CreateSizedBall(BallSize/2).UserValue = MyTroughTreasure(0)
+	Kicker007.Kick tAngle, tForce, tZ
+	PlaySound "fx_popper"
+	MyTroughTreasureRemove()
+	TreasureKickout 1000, 290, 7, 0
+End Sub
+
+Sub MyTroughLRAdd(tBall)
+	'Increase the size of the array
+	ReDim Preserve MyTroughLR(UBound(MyTroughLR) + 1)
+	'Set the end of the array equal to the ball id that just entered
+	MyTroughLR(UBound(MyTroughLR)) = tBall.UserValue
+	'Free up the object that was the ball
+	Set tBall = Nothing
+End Sub
+
+Sub MyTroughTreasureAdd(tBall)
+	ReDim Preserve MyTroughTreasure(UBound(MyTroughTreasure) + 1)
+	MyTroughTreasure(Ubound(MyTroughTreasure)) = tBall.UserValue
+	Set tBall = Nothing
+End Sub
+
+Sub MyTroughLeChuckAdd(tBall)
+	ReDim Preserve MyTroughLeChuck(UBound(MyTroughLeChuck) + 1)
+	MyTroughLeChuck(Ubound(MyTroughLeChuck)) = tBall.UserValue
+	Set tBall = Nothing
+End Sub
+
+Sub MyTroughLRRemove()
+	Dim x
+	'Clear the ball that just got kicked
+	'MyTroughLR(0) = 0
+	'For every other ball in array, "move" each ball over
+	For X = 1 to UBound(MyTroughLR)
+		MyTroughLR(X - 1) = MyTroughLR(X)
+	Next
+	'And shrink the array
+	ReDim Preserve MyTroughLR(UBound(MyTroughLR)-1)
+End Sub
+
+Sub MyTroughTreasureRemove()
+	Dim X
+	MyTroughTreasure(0) = 0
+	For X = 1 to UBound(MyTroughTreasure)
+		MyTroughTreasure(X - 1) = MyTroughTreasure(X)
+	Next
+	ReDim Preserve MyTroughTreasure(UBound(MyTroughTreasure) - 1)
+End Sub
+
+Sub MyTroughLeChuckRemove()
+	Dim X
+	MyTroughLeChuck(0) = 0
+	For X = 1 to UBound(MyTroughLeChuck)
+		MyTroughLeChuck(X - 1) = MyTroughLeChuck(X)
+	Next
+	ReDim Preserve MyTroughLeChuck(UBound(MyTroughLeChuck) - 1)
+End Sub
+
+'*****************right lower kicker/drop target**************************
+Dim fBall
+sub Kicker002_hit()
+	FlashForMs Flasher009, 1000, 50, 0
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (5000*PFMultiplier)
+	Set fBall = ActiveBall
+	Kicker002.TimerEnabled = 1
+end sub
+
+Sub Kicker002_Timer()
+	If fBall.Z > 0 Then
+		fBall.Z = fBall.Z - 5
+		Exit Sub
+	End If
+	MyTroughLRAdd(fBall)
+	Me.DestroyBall
+	startB2S(4)
+	LowerTarget013()
+	LRKickout 1000, 290, 7, 0
+	Me.TimerEnabled = 0
+End Sub
+
+Sub Target013_Hit()
+	If Tilted Then Exit Sub
+	LowerTarget013()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000*PFMultiplier)
+	TargetBonus = TargetBonus + 1
+	vpmtimer.addtimer 2000, "ResetTarget013 '"
+End Sub
+
+sub ResetTarget013()
+	If Target013.IsDropped = 1 Then	PlaySound "dropclose"
+	Target013.IsDropped = 0
+end sub
+
+Sub LowerTarget013()
+	If Target013.IsDropped = 0 Then PlaySound "dropopen"
+	Target013.IsDropped = 1
+End Sub
+
+Sub KiGrog_Hit()
+	'Do stuff to start Grog modes
+End Sub
+
+'*****************
+'lava animation
+'*****************
+Dim Fire1Pos,Flames
+Flames = Array("lava000", "lava001", "lava002", "lava003", "lava004", "lava005", "lava006", "lava007", "lava008", "lava009", "lava010", "lava011", "lava012", "lava013", "lava014", "lava015", "lava016",_														   
+"lava017", "lava018", "lava019", "lava020", "lava021", "lava022", "lava023", "lava024", "lava025", "lava026", "lava027", "lava028", "lava029", "lava030", "lava031", "lava032", "lava033",_												 
+"lava034", "lava035", "lava036", "lava037", "lava038", "lava039", "lava040", "lava041", "lava042", "lava043", "lava044", "lava045", "lava046", "lava047", "lava048", "lava049", "lava050",_															  
+"lava051", "lava052", "lava053", "lava054", "lava055", "lava056", "lava057", "lava058", "lava059", "lava060", "lava061", "lava062", "lava063", "lava064", "lava065", "lava066", "lava067",_														   
+"lava068", "lava069", "lava070", "lava071", "lava072", "lava073", "lava074", "lava075", "lava076", "lava077", "lava078", "lava079", "lava080", "lava081", "lava082", "lava083", "lava084",_															  
+"lava085", "lava086", "lava087", "lava088", "lava089", "lava090", "lava091", "lava092", "lava093", "lava094", "lava095", "lava096", "lava097", "lava098", "lava099", "lava100", "lava101")
+
+Sub StartFire()
+	Fire1Pos = 0
+	FireTimer.Enabled = 1
+End Sub
+
+Sub FireTimer_Timer()
+	lava.ImageA = Flames(Fire1Pos)
+	Fire1Pos = (Fire1Pos + 1) MOD 102
+End Sub
+
+Dim Fire2Pos,Flames2
+Flames2 = Array("magma00", "magma01", "magma02", "magma03", "magma04", "magma05", "magma06", "magma07", "magma08", "magma09", "magma10", "magma11", "magma12", "magma13", "magma14", "magma15", "magma16",_
+"magma17", "magma18", "magma19", "magma20", "magma21", "magma22", "magma23", "magma24", "magma25", "magma26", "magma27", "magma28", "magma29", "magma30", "magma31")
+
+Sub StartFire2()
+	Fire2Pos = 0
+	FireTimer2.Enabled = 1
+End Sub
+
+Sub FireTimer2_Timer()
+	magma.ImageA = Flames2(Fire2Pos)
+	Fire2Pos = (Fire2Pos + 1) MOD 32
+End Sub
+
+'*****************
+'Dail a pirate
+'*****************
+Dim WheelSpeed : WheelSpeed = 0.10
+Dim SlowSpeed : SlowSpeed = 0.0005
+Sub spinningwheel_Timer
+	Select Case InAttract
+		Case 1
+			Me.Interval = 1
+			Wheel1.Rotz = (Wheel1.Rotz + WheelSpeed)
+			WheelSpeed = WheelSpeed - SlowSpeed
+			If WheelSpeed <= 0.10 Then WheelSpeed = 0.10
+			If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
+		Case 0
+			Me.Interval = 1
+			Wheel1.Rotz = (Wheel1.Rotz + WheelSpeed)
+			If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
+			WheelSpeed = WheelSpeed - SlowSpeed
+			If WheelSpeed <= 0.005 Then
+				Me.Enabled = False
+				Select Case True
+					Case (Wheel1.Rotz <= 36 AND Wheel1.Rotz > 12)
+						Wheel1.Rotz = 24
+					Case (Wheel1.Rotz <= 60 AND Wheel1.Rotz > 36)
+						Wheel1.Rotz = 48
+					Case (Wheel1.Rotz <= 84 AND Wheel1.Rotz > 60)
+						Wheel1.Rotz = 72
+					Case (Wheel1.Rotz <= 108 AND Wheel1.Rotz > 84)
+						Wheel1.Rotz = 98
+					Case (Wheel1.Rotz <= 132 AND Wheel1.Rotz > 108)
+						Wheel1.Rotz = 128
+					Case (Wheel1.Rotz <= 156 AND Wheel1.Rotz > 132)
+						Wheel1.Rotz = 146
+					Case (Wheel1.Rotz <= 180 AND Wheel1.Rotz > 156)
+						Wheel1.Rotz = 168
+					Case (Wheel1.Rotz <= 204 AND Wheel1.Rotz > 180)
+						Wheel1.Rotz = 192
+					Case (Wheel1.Rotz <= 228 AND Wheel1.Rotz > 204)
+						Wheel1.Rotz = 216
+					Case (Wheel1.Rotz <= 252 AND Wheel1.Rotz > 228)
+						Wheel1.Rotz = 240
+					Case (Wheel1.Rotz <= 276 AND Wheel1.Rotz > 252)
+						Wheel1.Rotz = 264
+					Case (Wheel1.Rotz <= 300 AND Wheel1.Rotz > 276)
+						Wheel1.Rotz = 288
+					Case (Wheel1.Rotz <= 324 AND Wheel1.Rotz > 300)
+						Wheel1.Rotz = 312
+					Case (Wheel1.Rotz <= 348 AND Wheel1.Rotz > 324)
+						Wheel1.Rotz = 336
+					Case (Wheel1.Rotz <= 12 AND Wheel1.Rotz > 348)
+						Wheel1.Rotz = 0
+				End Select
+			End If
+	End Select
+End Sub
+
+Dim CounterWheel2
+Dim speedup
+
+Sub StartRandomWheel
+	StopSong()
+	PlaySong "stan"
+	wheel1.Image = "AnticheatCRU2_2"
+	wheel2.Image = "AnticheatCRUkopiekopie2"
+	WheelSpeed=0.10
+	Speedup=140 + int(rnd(1)*40)
+	Counterwheel2 = 0
+	spinningwheel2.enabled=True
+End sub
+
+Sub spinningwheel2_Timer
+	Select Case CounterWheel2
+		Case 0
+			Me.Interval = 1
+			Wheel1.Rotz = (Wheel1.Rotz + WheelSpeed)
+			WheelSpeed = WheelSpeed + 0.012
+			Speedup=Speedup-1
+			If Wheel1.Rotz > 360 Then Wheel1.Rotz = 1
+				Select Case int(Wheel1.Rotz)
+					Case 36
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "5.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 60
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "10.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 84
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "15.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 108
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "20.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 132
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "25.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 156
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "35.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 180
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "40.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 204
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "45.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 228
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "50.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 252
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "75.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 276
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "100.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 300
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "250.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 324
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "500.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 348
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "1.000.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 12
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "EXTRA BALL"), "", eNone, eNone, eNone, 1, False, ""
+				End Select
+			If speedup=0 Then CounterWheel2=1
+
+		Case 1
+			Me.Interval = 1
+			Wheel1.Rotz = (Wheel1.Rotz + WheelSpeed)
+			If Wheel1.Rotz >= 360 Then Wheel1.Rotz = 1
+			WheelSpeed = WheelSpeed - SlowSpeed
+				Select Case int(Wheel1.Rotz)
+					Case 36
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "5.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 60
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "10.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 84
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "15.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 108
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "20.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 132
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "25.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 156
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "35.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 180
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "40.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 204
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "45.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 228
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "50.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 252
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "75.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 276
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "100.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 300
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "250.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 324
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "500.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 348
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "1.000.000"), "", eNone, eNone, eNone, 1, False, ""
+					Case 12
+						DMDflush()
+						DMD CL(0, "DIAL A PIRATE"), CL(1, "EXTRA BALL"), "", eNone, eNone, eNone, 1, False, ""
+				End Select
+
+			If WheelSpeed <= 0.01 Then
+				Me.Enabled = False
+				Select Case True
+					Case (Wheel1.Rotz <= 36 AND Wheel1.Rotz > 12)
+						Wheel1.Rotz = 24 : addscore 5000
+					Case (Wheel1.Rotz <= 60 AND Wheel1.Rotz > 36)
+						Wheel1.Rotz = 48 : addscore 10000
+					Case (Wheel1.Rotz <= 84 AND Wheel1.Rotz > 60)
+						Wheel1.Rotz = 72 : addscore 15000
+					Case (Wheel1.Rotz <= 108 AND Wheel1.Rotz > 84)
+						Wheel1.Rotz = 98 : addscore 20000
+					Case (Wheel1.Rotz <= 132 AND Wheel1.Rotz > 108)
+						Wheel1.Rotz = 128 : addscore 25000
+					Case (Wheel1.Rotz <= 156 AND Wheel1.Rotz > 132)
+						Wheel1.Rotz = 146 : addscore 35000
+					Case (Wheel1.Rotz <= 180 AND Wheel1.Rotz > 156)
+						Wheel1.Rotz = 168 : addscore 40000
+					Case (Wheel1.Rotz <= 204 AND Wheel1.Rotz > 180)
+						Wheel1.Rotz = 192 : addscore 45000
+					Case (Wheel1.Rotz <= 228 AND Wheel1.Rotz > 204)
+						Wheel1.Rotz = 216 : addscore 50000
+					Case (Wheel1.Rotz <= 252 AND Wheel1.Rotz > 228)
+						Wheel1.Rotz = 240 : addscore 75000
+					Case (Wheel1.Rotz <= 276 AND Wheel1.Rotz > 252)
+						Wheel1.Rotz = 264 : addscore 100000
+					Case (Wheel1.Rotz <= 300 AND Wheel1.Rotz > 276)
+						Wheel1.Rotz = 288 : addscore 250000
+					Case (Wheel1.Rotz <= 324 AND Wheel1.Rotz > 300)
+						Wheel1.Rotz = 312 : addscore 500000
+					Case (Wheel1.Rotz <= 348 AND Wheel1.Rotz > 324)
+						Wheel1.Rotz = 336 : addscore 1000000
+					Case (Wheel1.Rotz <= 12 AND Wheel1.Rotz > 348)
+						Wheel1.Rotz = 0 : AddMultiball 1
+				End Select
+					wheel1.Image = "Wheel1dark"
+					wheel2.Image = "Wheel2dark"
+				If Not Wheel1.Rotz = 0 Then
+					StopSong()
+					PlaySound ""
+					'vp	mtimer.addtimer 3000, "ChangeSong '"
+					' S	how the end of ball animation
+					' and continue with the end of ball
+					' DMD something?
+					StopEndOfBallMode()
+					vpmtimer.addtimer 1000, "EndOfBall '" 'the delay is depending of the animation of the end of ball, since there is no animation then move to the end of ball
+				End If
+			End If
+	End Select
+End Sub
+
+'*****************
+'smoke animation
+'*****************
+Dim CanonSmokeAnim:CanonSmokeAnim = Array("smoke1", "smoke2", "smoke3", "smoke4", "smoke5", "smoke6", "smoke6", "smoke7", "smoke8", "smoke9", "smoke10", "smoke11", "smoke12", "smoke13", "smoke14", "smoke15""smoke16")
+Dim CanonSmokeAnimKey:CanonSmokeAnimKey = 0
+Dim SmokePositionYOrig:SmokePositionYOrig = canonsmoke.y
+Dim FadeAmount:FadeAmount = 1/UBound(CanonSmokeAnim)
+Sub smokeytimer_Timer()
+	canonsmoke.visible = 1
+	canonsmoke.ImageA = CanonSmokeAnim(CanonSmokeAnimKey)
+	CanonSmokeAnimKey = CanonSmokeAnimKey + 1
+	canonsmoke.height = canonsmoke.height + 5
+	canonsmoke.y = canonsmoke.y - 2
+	canonsmoke.IntensityScale = canonsmoke.IntensityScale - FadeAmount
+	If CanonSmokeAnimKey > UBound(CanonSmokeAnim) Then
+		ResetSmoke()
+	End If
+End Sub
+
+sub resetsmoke()
+	smokeytimer.enabled = False
+	canonsmoke.visible = 0
+	CanonSmokeAnimKey = 0
+	canonsmoke.height = 200
+	canonsmoke.y = SmokePositionYOrig
+	canonsmoke.IntensityScale = 1
+end sub
+
+'*****************
+'beard and palmtrees
+'*****************
+Dim Sway
+
+sub beardtreetimer_Timer()
+'Palm Trees
+	tree001.RotY = dSin(Sway)*2
+	tree002.RotY = tree001.RotY
+	tree003.RotY = tree001.RotY
+	tree004.RotY = tree001.RotY
+	tree005.RotY = tree001.RotY
+	tree006.RotY = tree001.RotY
+	tree007.RotY = tree001.RotY
+	tree008.RotY = tree001.RotY
+	Leaves001.RotY = tree001.RotY
+	Leaves002.RotY = tree001.RotY
+	Leaves003.RotY = tree001.RotY
+	Leaves004.RotY = tree001.RotY
+	Leaves005.RotY = tree001.RotY
+	Leaves006.RotY = tree001.RotY
+	Leaves007.RotY = tree001.RotY
+	Leaves008.RotY = tree001.RotY
+	Sway = Sway + 0.05
+	If Sway > 360 Then Sway = Sway - 360
+	'******
+	'Le chuck's Beard matches the gate
+	Beard.RotX = -Gate002.CurrentAngle
+	'******
+end sub
+
+Sub Gate002_hit
+DOF 131, DOFPulse
+End sub
+
+'*****************
+'Monkey Head
+'*****************
+Dim HeadTarget, HeadSpeed, HeadDir, MouthDir
+
+Sub MoveHead(whereto, whatspeed)
+	HeadTarget = WhereTo
+	HeadSpeed = WhatSpeed
+	Wall007.TimerInterval = 20
+	Wall007.TimerEnabled = 1
+End Sub
+
+Sub Wall007_timer()
+	If PrMonkeyHead.RotZ < HeadTarget Then HeadDir = 1
+	If PrMonkeyHead.RotZ > HeadTarget Then HeadDir = -1
+	PrMonkeyHead.RotZ = PrMonkeyHead.RotZ + (HeadSpeed * HeadDir)
+	PrMonkeyMouth.X = PrMonkeyHead.X + dCos(PrMonkeyhead.RotZ+90) * 68
+	PrMonkeyMouth.Y = PrMonkeyHead.Y + dSin(PrMonkeyhead.RotZ+90) * 68
+	PrMonkeyMouth.ObjRotZ = PrMonkeyHead.RotZ
+	If (PrMonkeyHead.RotZ >= HeadTarget AND HeadDir = 1) OR (PrMonkeyHead.RotZ <= HeadTarget AND HeadDir = -1) Then
+		me.TimerEnabled = 0
+		PrMonkeyHead.RotZ = HeadTarget
+	End If
+End Sub
+
+Sub MoveMouth(OpenClose, Speed)
+	Wall008.TimerInterval = 20 
+	Wall008.TimerEnabled = 1
+	MouthSpeed = Speed
+	Select Case OpenClose
+		Case 0		'Close
+			MouthDir = 1
+		Case 1		'Open
+			MouthDir = -1
+	end Select
+End Sub
+
+Dim MouthSpeed:MouthSpeed = 0.5
+
+Sub Wall008_timer()
+	PrMonkeyMouth.ObjRotX = PrMonkeyMouth.ObjRotX + (MouthSpeed * MouthDir)
+	If PrMonkeyMouth.ObjRotX < -45 Then
+		PrMonkeyMouth.ObjRotX = -45
+		Me.TimerEnabled = 0
+	ElseIf PrMonkeyMouth.ObjRotX > 0 Then
+		PrMonkeyMouth.ObjRotX = 0
+		Me.TimerEnabled = 0
+	End If
+End Sub
+
+
+'*****************
+'* Maths
+'*****************
+Dim Pi
+Pi = Round(4 * Atn(1), 6)
+Function dSin(degrees)
+	dsin = sin(degrees * Pi/180)
+	if ABS(dSin) < 0.000001 Then dSin = 0
+	if ABS(dSin) > 0.999999 Then dSin = 1 * sgn(dSin)
+End Function
+
+Function dCos(degrees)
+	dcos = cos(degrees * Pi/180)
+	if ABS(dCos) < 0.000001 Then dCos = 0
+	if ABS(dCos) > 0.999999 Then dCos = 1 * sgn(dCos)
+End Function
+
+'*****************
+' pirateship animation
+'*****************
+dim SkillshotNORESTART
+Dim pirateshipDir, SinkPirateShip, SinkSpeed, ShipSpeed, ShipTip, ShipAngle, ShipAngleSpeed, ShipHeight, ShipReset
+Dim ShipOrigX, ShipOrigY, ShipOrigZ
+ShipSpeed = 6
+pirateshipDir = ShipSpeed 'this is the direction, if + goes up, if - goes down
+SinkPirateShip = 0
+SinkSpeed = 0.5
+ShipTip = 15
+ShipAngle = 180
+SkillshotNORESTART= true
+ShipAngleSpeed = 2.5
+ShipHeight = 25
+ShipOrigX = PirateShip.X
+ShipOrigY = PirateShip.Y
+ShipOrigZ = PirateShip.Z
+ShipReset = 1
+
+Sub PirateShipTimer_Timer
+	Select Case SinkPirateShip
+		'Ship is moving back and forth
+		Case 0
+			PirateShip.Y = ShipOrigY + dCos(ShipAngle*0.25+135) * 300 + 300
+			PirateShip.Z = dCos(ShipAngle) * ShipHeight + ShipHeight + 55
+			ShipAngle = ShipAngle + ShipAngleSpeed * ShipReset
+			PirateShip.RotZ = dSin(ShipAngle) * ShipTip
+			If ShipAngle > 1440 Then ShipAngle = ShipAngle - 1440
+			If ShipAngle < 0 Then ShipAngle = ShipAngle + 1440
+			If ShipAngle < 180 AND ShipAngle > 170 AND ShipReset = -1 Then
+				ShipReset = 1
+				SinkPirateShip = 0
+				ShipAngle = 180
+				me.enabled = 0
+				ShipAngleSpeed = 2.5
+			End If
+		Case 1
+			'Ship got hit, so start the sinking animation
+			Select Case true
+				Case pirateship.RotZ < 90
+					pirateship.RotZ = pirateship.RotZ + SinkSpeed * 1.5
+				Case pirateship.RotZ >= 90
+					Pirateship.Z = Pirateship.Z - SinkSpeed * 1.5
+					If pirateship.Z <= -250 Then
+						SinkPirateShip = 2
+						pirateship.Y = 1167.221
+						pirateship.RotZ = 0
+					End If
+			End Select
+		Case 2
+			pirateship.z = pirateship.z + SinkSpeed * 1.5
+			If pirateship.z >= 55 Then
+				SinkPirateShip = 0
+				ShipAngle = 180
+				me.enabled = 0
+			End If
+	End Select
+	FlShipShadow.X = PirateShip.X
+	FlShipShadow.Y = PirateShip.Y
+End Sub
+
+'**************
+' SlotMachine le chuck items
+'**************
+Dim SlotAward3, SlotValue3
+
+SlotAward3 = Array("itm1", "itm2", "itm3", "itm4", "itm5", "itm6", "itm7", "itm8" )
+
+Sub StartLechuckItemsSlotmachine()
+	startB2S(9)
+	Dim i
+	DMDFlush()
+	For i = 0 to 7
+		DMD "", "", SlotAward3(i), eNone, eNone, eNone, 50, False, "fx_spinner"
+	Next
+	vpmtimer.AddTimer 500, "GiveSlotAwardItemLeChuck '"
+End Sub
+
+Dim LeChuckSlot:LeChuckSlot = 0
+Sub GiveSlotAwardItemLeChuck()
+	'LightSeq001.StopPlay
+	DMDFlush()
+	Randomize()
+	SlotValue3 = INT(RND * 8 + 1)
+	DMD "", "", SlotAward3(SlotValue3 - 1), eNone, eNone, eNone, 1000, True, ""
+	Select Case SlotValue3
+		Case 3
+			SlotValue3 = 4
+		Case 4
+			SlotValue3 = 8
+		Case 5
+			SlotValue3 = 16
+		Case 6
+			SlotValue3 = 32
+		Case 7
+			SlotValue3 = 64
+		Case 8
+			SlotValue3 = 128
+	End Select
+	'Check if this mode has already been played
+	Do While (SlotValue3 AND LeChuckSlot) > 0	'We've already done this mode So keep randomly picking one until we get a mode we haven't done yet
+		SlotValue3 = INT(RND * 8 + 1)
+		DMDFlush()
+		DMD "", "", SlotAward3(SlotValue3-1), eNone, eNone, eNone, 500, True, ""
+		Select Case SlotValue3
+			Case 3
+				SlotValue3 = 4
+			Case 4
+				SlotValue3 = 8
+			Case 5
+				SlotValue3 = 16
+			Case 6
+				SlotValue3 = 32
+			Case 7
+				SlotValue3 = 64
+			Case 8
+				SlotValue3 = 128
+		End Select
+	Loop
+	Select Case SlotValue3
+		Case 1:Lechuck_item1()		'Bone
+		Case 2:Lechuck_item2()		'Book
+		Case 4:Lechuck_item3()		'Skull
+		Case 8:Lechuck_item4()		'Sword
+		Case 16:Lechuck_item5()		'Mok
+		Case 32:Lechuck_item6()		'Map
+		Case 64:Lechuck_item7()		'Compass
+		Case 128:Lechuck_item8()	'Keys
+	End Select
+	li007.state = 0
+	li009.state = 0
+	li011.state = 0
+	li037.state = 0
+	li038.state = 0
+	li039.state = 0
+	li040.state = 0
+	li041.state = 0
+	li042.state = 0
+End Sub
+
+'********Item 1***************
+sub Lechuck_item1
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	titem001.enabled = 1
+	bone.Visible = 1
+	li014.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	status = "Bone"
+end Sub
+
+sub titem001_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li014.state = 1
+	bone.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem001.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 1
+	checkitemscomplete()
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 2***************
+sub Lechuck_item2
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotztimer.Enabled = 1
+	titem002.enabled = 1
+	book.Visible = 1
+	li015.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Book"
+end Sub
+
+sub titem002_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li015.state = 1
+	book.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem002.enabled = 0
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 2
+	checkitemscomplete()
+	Status = "Normal"
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 3***************
+sub Lechuck_item3
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	titem003.enabled = 1
+	skully.Visible = 1
+	li016.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Skully"
+end Sub
+
+sub titem003_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li016.state = 1
+	skully.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem003.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 4
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	checkitemscomplete()
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 4***************
+sub Lechuck_item4
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotztimer.Enabled = 1
+	titem004.enabled = 1
+	sword001.Visible = 1
+	li017.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Sword"
+end Sub
+
+sub titem004_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li017.state = 1
+	sword001.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem004.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 8
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	checkitemscomplete()
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 5***************
+sub Lechuck_item5
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	titem005.enabled = 1
+	mok.Visible = 1
+	li018.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Mok"
+end Sub
+
+sub titem005_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li018.state = 1
+	mok.Visible = 0
+	playsound "won"
+	StopmodeEndofBall
+	titem005.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 16
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	checkitemscomplete()
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 6***************
+sub Lechuck_item6
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	titem006.enabled = 1
+	Map.Visible = 1
+	li019.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Map"
+end Sub
+
+sub titem006_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li019.state = 1
+	Map.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem006.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 32
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	checkitemscomplete()
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 7***************
+sub Lechuck_item7
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	titem007.enabled = 1
+	compas.Visible = 1
+	li020.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Compass"
+end Sub
+
+sub titem007_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li020.state = 1
+	compas.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem007.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 64
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	checkitemscomplete()
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+'********Item 8***************
+sub Lechuck_item8
+	StopSong()
+	PlaySong "lechuckitems" 
+	mode1TimerCount = 60
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	titem008.enabled = 1
+	keysitem.Visible = 1
+	li021.state = 2
+	LeChuckKickout 1000, 270, 7, 0
+	Status = "Keys"
+end Sub
+
+sub titem008_hit()
+	DMD "", "", "200k", eNone, eNone, eNone, 1000, True, ""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (200000*PFMultiplier)
+	li021.state = 1
+	keysitem.Visible = 0
+	playsound "won"
+	StopmodeEndofBall()
+	titem008.enabled = 0
+	Status = "Normal"
+	ChangeSong()
+	LeChuckSlot = LeChuckSlot OR 128
+	LeChuckHits = 0
+	LightSeq004.StopPlay
+	li009.State = 0
+	checkitemscomplete()
+	CheckBar()
+	CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+End sub
+
+sub checkitemscomplete()
+	If LeChuckHits >= 3 Then li009.State = 2
+	If LeChuckSlot = 255 Then
+		DMD "", "", "dmditmcomplete", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+		li009.state = 0
+	end if
+end sub
+
+'**************
+' SlotMachine le chuck
+'**************
+
+Dim SlotAward, SlotValue
+SlotAward = Array("lc2", "lc1")
+Sub StartLeChuckSlotMachineLechuck()
+	startB2S(9)
+	Dim i
+	DMDFlush
+	For i = 0 to 1
+		DMD "", "", SlotAward(i), eNone, eNone, eNone, 100, False, ""
+	Next
+	vpmtimer.AddTimer 2000, "GiveSlotAwardLeChuck '"
+End Sub
+
+Sub GiveSlotAwardLeChuck()
+	DMDFlush()
+	Randomize()
+	SlotValue = INT(RND * 2)
+	DMD "", "", SlotAward(SlotValue), eNone, eNone, eNone, 500, True, ""
+	Select Case SlotValue
+		Case 0:LeChuckKickout 20, 270, 7, 0
+		Case 1:LeChuckKickout 20, 90, 7, 0
+	End Select
+End Sub
+
+'**************
+' SlotMachine Bar
+'**************
+
+Dim SlotAward1, SlotValue1
+
+SlotAward1 = Array("b1", "b2", "b3", "b4", "b5")
+
+Sub StartBarSlotmachine()
+	startB2S(8)
+	playsound "bartalk"
+	Dim i
+	DMDFlush
+	For i = 0 to 4
+		DMD "", "", SlotAward1(i), eNone, eNone, eNone, 50, False, "fx_spinner"
+	Next
+	vpmtimer.AddTimer 2000, "GiveSlotAwardBar '"
+	li007.state = 0
+	li009.state = 0
+	li011.state = 0
+	li037.state = 0
+	li038.state = 0
+	li039.state = 0
+	li040.state = 0
+	li041.state = 0
+	li042.state = 0
+End Sub
+
+Dim BarSlot:BarSlot = 0
+Sub GiveSlotAwardBar()
+	DMDFlush()
+	Randomize()
+	SlotValue1 = INT(RND * 5) + 1
+	DMD "", "", SlotAward1(SlotValue1 - 1), eNone, eNone, eNone, 500, True, ""
+	Select Case SlotValue1
+		Case 1
+			SlotValue1 = 1	'Spitting
+		Case 2
+			SlotValue1 = 2	'Treasure
+		Case 3
+			SlotValue1 = 4	'Bar Fight
+		Case 4
+			SlotValue1 = 8	'Coin Frenzy
+		Case 5
+			SlotValue1 = 16	'Duels
+	End Select
+	Do while (SlotValue1 AND BarSlot) > 0
+		SlotValue1 = Int(RND * 5 + 1)
+		DMDFlush()
+		DMD "", "", SlotAward1(SlotValue1-1), eNone, eNone, eNone, 500, True, ""
+		Select Case SlotValue1
+			Case 1
+				SlotValue1 = 1	'Spitting
+			Case 2
+				SlotValue1 = 2	'Treasure
+			Case 3
+				SlotValue1 = 4	'Bar Fight
+			Case 4
+				SlotValue1 = 8	'Coin Frenzy
+			Case 5
+				SlotValue1 = 16	'Duels
+		End Select
+	Loop
+	Select Case SlotValue1
+		Case 1
+			BSBarToBar.AddBall Kicker006
+			vpmTimer.AddTimer 1000, "Spitting '"		'Spitting
+		Case 2
+			vpmTimer.AddTimer 1000, "Treasure '"		'Treasure
+		Case 4
+			BSBarToBar.AddBall Kicker006
+			FlashForMs Flasher002, 1000, 50, 0
+			vpmTimer.AddTimer 1000, "BarFight '"		'BarFight
+		Case 8
+			BSBarToBar.AddBall Kicker006
+			FlashForMs Flasher002, 1000, 50, 0
+			vpmTimer.AddTimer 1000, "CoinFrenzy '"		'CoinFrenzy
+		Case 16
+			BSBarToBar.AddBall Kicker006
+			FlashForMs Flasher002, 1000, 50, 0
+			vpmTimer.AddTimer 1000, "Duels '"			'Duels
+	End Select
+End Sub
+
+'********bar pitting mode***************
+Dim NextSpitDistance, SpittingDistance(5), BuildSpit, SpitPower, SpitPic, SpitCount, SpitPos(13), NextSpitKey
+SpitPos(1)  = "            MAX "
+SpitPos(2)  = "=           MAX "
+SpitPos(3)  = "==          MAX "
+SpitPos(4)  = "===         MAX "
+SpitPos(5)  = "====        MAX "
+SpitPos(6)  = "=====       MAX "
+SpitPos(7)  = "======      MAX "
+SpitPos(8)  = "=======     MAX "
+SpitPos(9)  = "========    MAX "
+SpitPos(10) = "=========   MAX "
+SpitPos(11) = "==========  MAX "
+SpitPos(12) = "=========== MAX "
+SpitPos(13) = "============MAX "
+
+sub Spitting()
+	li032.state = 2
+	NextSpitDistance=SpittingDistance(1)
+	Status = "Spitting"
+	SpitPower = 1
+	SpitCount = 0
+	DMDFlush()
+	DMD CL(0, "SPITTING"), CL(1, "COMPETITION "),"",eBlink,eBlink,0,1500,False,""
+	DMD CL(0, "ALT FLIPPERS"), CL(1, "FOR SPIT POWER"),"",eBlink,eBlink,0,2000,False,""
+	DMD CL(0, " TARGET IS ="), CL(1, "AT LEAST "&NextSpitDistance&" FT"),"",0,0,0,1000,False,""
+	DMD CL(0, " READY"), CL(1, " READY"),"",eScrollLeft,eScrollRight,0,1000,False,""
+	DMD CL(0, "STEADY"), CL(1, "STEADY"),"",eScrollRight,eScrollLeft,0,1000,False,""
+	DMD CL(0, "GO"), CL(1, "GO"),"",eBlinkFast,eBlinkFast,0,1000,False,""
+	DMD "_", "_", "_", eNone, eNone, eNone, 5000, False, ""
+	Wall016.TimerInterval = 160
+	vpmTimer.AddTimer 12000, "Wall016.TimerEnabled = 1 '"
+	vpmTimer.AddTimer 12000, "BuildSpit = 1 '"
+	li007.state = 0
+	li011.state = 0
+	StopSong()
+	PlaySong "barquest2"
+end sub
+
+Sub SpitProcessKey(WhichFlipper)
+	If BuildSpit = 1 Then
+		Select Case (WhichFlipper)
+			Case LeftFlipperKey
+				If NextSpitKey = 0 Then
+					SpitPower = SpitPower + 1
+					'Play a Sound
+				End If
+				NextSpitKey = 1
+			Case RightFlipperKey
+				If NextSpitKey = 1 Then
+					SpitPower = SpitPower + 1
+					'Play a sound
+				End If
+				NextSpitKey = 0
+		End Select
+	End If
+End Sub
+
+Sub Wall016_timer()
+	Wall016.TimerEnabled = 0
+	SpitPic = ABS(Int(SpitPower/5))
+	If SpitPic < 1 Then SpitPic = 1
+	If SpitPic > 13 Then SpitPic = 13
+	DMDFlush()
+	DMD CL(0, "POWER = " & Int(SpitPower)), CL(1, SpitPos(SpitPic)),"",0,0,0,Wall016.TimerInterval,False,""
+	SpitPower = SpitPower - 0.5
+	If SpitPower < 1 Then SpitPower = 1
+	If SpitPower > 130 Then SpitPower = 130
+	Spitcount = SpitCount + 1
+	If SpitCount = 30 Then
+		DMDFlush()
+		DMD CL(0, "READY FOR"), CL(1, SpitPower & " FEET"),"",0,0,0,1000,False,""
+		If SpitPic > 12 Then SpitPic=12
+		vpmTimer.AddTimer 1000, "FinishSpit '"
+		BuildSpit = 0
+	Else
+		Me.TimerEnabled = 1
+	End If
+End Sub
+
+Sub FinishSpit()
+	'Play Some Sound
+	Wall016.TimerEnabled = 0
+	DMDFlush()
+	DMD CL(0, " = PHTOOEY ="), "<>                  ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<  >                ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<    >              ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<      >            ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<        >          ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<          >        ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<            >      ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<              >    ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<                >  ","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "<                  >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "  <                >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "    <              >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "      <            >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "        <          >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "          <        >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "            <      >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "              <    >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "                <  >","",0,0,0,20,False,""
+	DMD CL(0, " = PHTOOEY ="), "                  <>","",0,0,0,20,False,"knocker"
+	DMD "_","_","_",0,0,0,1000,False,""
+	vpmTimer.AddTimer 1700, "TestSpit '"
+End Sub
+
+Sub TestSpit()
+	DMDFlush()
+	DMD CL(0, "LETS   SEE"), CL(1, "HOW  YA  DID"),"",2,2,0,1000,False,""
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (SpitPower*2000*PFMultiplier)
+	If SpitPower >= NextSpitDistance Then
+		vpmTimer.AddTimer 1000, "GoSpitAward '"
+	Else
+		DMD CL(0, "NICE   TRY"), CL(1, "GUYBRUSH"),"",3,3,0,1000,True,"lost"
+		li032.state = 0
+		FlashForMs Flasher002, 1500, 50, 0
+		vpmTimer.AddTimer 1400, "eBall.Z = 25 '"
+		vpmTimer.AddTimer 1500, "BSBarToBar.ExitSol_On '"
+		Stopmode1()
+	End If
+	Status = "Normal"
+	CheckBar()
+End Sub
+
+Sub GoSpitAward()
+	DMDFlush()
+	BarSlot = BarSlot OR 1
+	DMD CL(0, "COMPETITION"), CL(1, "WINNER"),"",1,1,0,1000,False,"won"
+	li032.State = 1
+	DMD CL(0, "YOU ARE AWARDED"), CL(1, (SpitPower*2000*PFMultiplier) & "POINTS"), "", eNone, eNone, eNone, 1000, True, ""
+	vpmtimer.addtimer 250, "startB2S(3) '"
+	FlashForMs Flasher002, 1200, 50, 0
+	StopmodeEndofBall()
+	ChangeSong()
+	vpmTimer.AddTimer 1100, "eBall.Z = 25 '"
+	vpmTimer.AddTimer 1200, "BSBarToBar.ExitSol_On '"
+escapeMI = escapeMI + 1
+checktoescape
+End Sub
+
+'********bar treasure hunt mode***************
+dim rBall
+dim BallInHole4
+Dim SchatkistShake
+
+sub Treasure()
+	treasurfindy = 0
+	countr6 = 0
+	UpdateChest()
+	bringChestdown()
+	StopSong()
+	playsound "dig"
+	PlaySong "barquest2" 
+	vpmtimer.addtimer 1050, "kickbonus '"
+	li033.state = 2
+	Status = "Treasure"
+end sub
+
+sub bringChestdown()
+	duuus()
+	ChestDir = 1
+	ChestdownTimer.enabled = 1
+end sub
+
+Sub kickbonus()
+	LowerFlippersActive = True
+	bonustime = 1
+	mode2Timercount = 7
+	mode2timer.Enabled = 10
+end sub
+
+sub Kicker007_hit()
+	if bonustime = 1 then
+		vpmtimer.AddTimer 500, "continuebonus '"
+		exit Sub
+	end if
+	Set rBall = ActiveBall
+	MyTroughTreasureAdd(rball)
+	Me.TimerEnabled = 1
+	LowerFlippersActive = False
+	duuus()
+	ChestDir = 1
+	ChestupTimer.enabled = 1
+end sub
+
+sub continuebonus()
+	BSTreasure.AddBall Kicker007
+	BSTreasure.ExitSol_On
+end sub
+
+Sub BackToPlayfield()
+	LowerFlippersActive = False
+'	DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+'	addscore 100000
+	BarKickout 50, 160, 7, 0
+	vpmtimer.addtimer 1100, "startB2S(3) '"
+End Sub
+
+Sub Kicker007_Timer
+	Do While rBall.Z > 0
+		rBall.Z = rBall.Z -5
+		Exit Sub
+	Loop
+	Me.TimerEnabled = 0
+	Me.Enabled = 1
+	Me.DestroyBall
+	FlashForMs Flasher002, 1000, 50, 0
+	vpmtimer.addtimer 1100, "BackToPlayfield '" 
+End Sub
+
+sub Target004_hit()
+	playsound "hitmining"
+	schatkistshaker()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	treasurfindy = treasurfindy	 + 1
+	countr6 = countr6 + 1
+	Updatechest()
+	checktreasurecomplete()
+end sub
+
+Sub SchatkistShaker()
+	SchatkistShake = 3
+	SchatkistTimer.Enabled = True
+End Sub
+
+Sub SchatkistTimer_Timer()
+	schatkistbelow.Transz = SchatkistShake / 2
+	If SchatkistShake = 0 Then Me.Enabled = False:Exit Sub
+	If SchatkistShake <0 Then
+		SchatkistShake = ABS(SchatkistShake)- 0.1
+	Else
+		SchatkistShake = - SchatkistShake + 0.1
+	End If
+End Sub
+
+sub checktreasurecomplete()
+	If treasurfindy = 6 then
+		RightFlipper001.RotatetoStart
+		LeftFlipper001.RotatetoStart
+		LowerFlippersActive = False
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "treasurecomplete"
+		StopmodeEndofBall()
+		li033.state = 1
+		treasurfindy = 0
+		Status = "Normal"
+		countr6 = 0
+		Updatechest()
+		ChangeSong()
+		treasuresfound = treasuresfound + 1
+		Updatetreasurecountr()
+		vpmtimer.addtimer 250, "startB2S(3) '"
+		BarSlot = BarSlot OR 2
+		CheckBar()
+	if playtreasure = 1 then exit sub
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		escapeMI = escapeMI + 1
+		checktoescape
+	end if
+end sub
+
+Sub Updatechest()
+	For Each Schat in CoSchatKist
+		Schat.Visible = 0
+	Next
+	select case countr6
+		case 0 : schatkist001.Visible=1
+		case 1 : schatkist002.Visible=1
+		case 2 : schatkist003.Visible=1
+		case 3 : schatkist004.Visible=1
+		case 4 : schatkist005.Visible=1
+		case 5 : schatkist006.Visible=1
+		case 6 : schatkist007.Visible=1:addimagechest()
+	end Select
+End Sub
+
+sub addimagechest()
+	imagechest = imagechest + 1
+	updateimagechest()
+End Sub
+
+sub updateimagechest()
+	select case imagechest
+		case 0 :chestimage1
+		case 1 :chestimage2
+		case 2 :chestimage3
+		case 3 :chestimage4
+		case 4 :chestimage5
+		case 5 :chestimage6
+		case 6 :chestimage7
+	end Select
+End Sub
+
+Dim Schat
+sub chestimage1()
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist5"
+	Next
+end sub
+
+sub chestimage2
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist6"
+	Next
+end sub
+
+sub chestimage3
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist7"
+	Next
+end sub
+
+sub chestimage4
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist8"
+	Next
+end sub
+
+sub chestimage5
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist9"
+	Next
+end sub
+
+sub chestimage6
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist10"
+	Next
+end sub
+
+sub chestimage7
+	For Each Schat in CoSchatKist
+		Schat.Image = "schatkist5"
+	Next
+	imagechest = 0
+end sub
+
+'********bar fight mode***************
+
+Dim mFist
+sub BarFight()
+	mFist = 0
+	StopSong()
+	PlaySong "barquest2" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	itemrotztimer.Enabled = 1
+	enablefists()
+	eBall.Z = 25
+	BSBarToBar.ExitSol_On
+	li034.state = 2
+	Status = "Fight"
+end sub
+
+sub enablefists()
+	Dim X
+	tfist001.Enabled = 1
+	tfist002.Enabled = 1
+	tfist003.Enabled = 1
+	tfist004.Enabled = 1
+	tfist005.Enabled = 1
+	For Each X in Fists
+		X.Visible = 1
+	Next
+end sub
+
+Sub tfist001_Hit()
+	tfist001.enabled = 0
+	movefistdown(1)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "fisthurt"
+	mfist = mfist + 1
+	addextratime()
+	checkbonusfist()
+end sub
+
+sub movefistdown(which)
+	Select Case which
+		Case 1
+			fist001.Visible = 0
+		Case 2
+			fist002.Visible = 0
+		Case 3
+			fist003.Visible = 0
+		Case 4
+			fist004.Visible = 0
+		Case 5
+			fist005.Visible = 0
+	End Select
+end sub
+
+Sub tfist002_Hit()
+	tfist002.enabled = 0
+	movefistdown(2)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "fisthurt"
+	mfist = mfist + 1
+	addextratime()
+	checkbonusfist()
+end sub
+
+Sub tfist003_Hit()
+	tfist003.enabled = 0
+	movefistdown(3)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "fisthurt"
+	mfist = mfist + 1
+	addextratime()
+	checkbonusfist()
+end sub
+
+Sub tfist004_Hit()
+	tfist004.enabled = 0
+	movefistdown(4)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "fisthurt"
+	mfist = mfist + 1
+	addextratime()
+	checkbonusfist()
+end sub
+
+Sub tfist005_Hit()
+	tfist005.enabled = 0
+	movefistdown(5)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "fisthurt"
+	mfist = mfist + 1
+	addextratime()
+	checkbonusfist()
+end sub
+
+sub checkbonusfist()
+	If mfist = 5 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li034.state = 1
+		mfist = 0
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		BarSlot = BarSlot OR 4
+		CheckBar()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+'********bar coinfrenzy mode***************
+
+Dim mCoin
+sub CoinFrenzy()
+	mCoin = 0
+	StopSong()
+	PlaySong "barquest2" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	itemrotztimer.Enabled = 1
+	enablecoins()
+	eBall.Z = 25
+	BSBarToBar.ExitSol_On
+	li007.state = 0
+	li035.state = 2
+	Status = "Coin"
+end sub
+
+sub enablecoins()
+	Dim X
+	tcoin001.Enabled = 1
+	tcoin002.Enabled = 1
+	tcoin003.Enabled = 1
+	tcoin004.Enabled = 1
+	tcoin005.Enabled = 1
+	For Each X in Coins
+		X.Visible = 1
+	Next
+end sub
+
+Sub tcoin001_Hit()
+	tcoin001.enabled = 0
+	mcoin = mcoin + 1
+	movecoindown(1)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "coinhurt"
+	addextratime()
+	checkbonuscoin()
+	coinsearned = coinsearned + 1
+	Updatecoinscountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub movecoindown(which)
+	Select Case which
+		Case 1
+			coin001.Visible = 0
+		Case 2
+			coin002.Visible = 0
+		Case 3
+			coin003.Visible = 0
+		Case 4
+			coin004.Visible = 0
+		Case 5
+			coin005.Visible = 0
+	End Select
+end sub
+
+Sub tcoin002_Hit()
+	tcoin002.enabled = 0
+	mcoin = mcoin + 1
+	movecoindown(2)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "coinhurt"
+	addextratime()
+	checkbonuscoin()
+	coinsearned = coinsearned + 1
+	Updatecoinscountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+Sub tcoin003_Hit()
+	tcoin003.enabled = 0
+	mcoin = mcoin + 1
+	movecoindown(3)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "coinhurt"
+	addextratime()
+	checkbonuscoin()
+	coinsearned = coinsearned + 1
+	Updatecoinscountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+Sub tcoin004_Hit()
+	tcoin004.enabled = 0
+	mcoin = mcoin + 1
+	movecoindown(4)
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "coinhurt"
+	addextratime()
+	checkbonuscoin()
+	coinsearned = coinsearned + 1
+	Updatecoinscountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+Sub tcoin005_Hit()
+	tcoin005.enabled = 0
+	movecoindown(5)
+	mcoin = mcoin + 1
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "coinhurt"
+	addextratime()
+	checkbonuscoin()
+	coinsearned = coinsearned + 1
+	Updatecoinscountr()
+	vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub checkbonuscoin()
+	If mcoin = 5 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li035.state = 1
+		mcoin = 0
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		BarSlot = BarSlot OR 8
+		CheckBar()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+'********bar duels mode***************
+Dim DuelsCounter, DuelsPointer, Randy
+Randy = 9
+DuelsCounter = 0
+
+sub Duels()
+	DuelsCounter = 0
+	Wall018.TimerInterval = 5000
+'	Wall018.TimerEnabled = 1
+	Wall018_Timer()
+	li036.state = 2
+	DMDFlush()
+	DMD CL(0, "DUEL!!"), CL(1, ">                  <"),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, " >                < "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "  >              <  "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "   >            <   "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "    >          <    "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "     >        <     "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "      >      <      "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "       >    <       "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "        >  <        "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "         ><         "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "        >  <        "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "       >    <       "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "      >      <      "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "     >        <     "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "    >          <    "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "   >            <   "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, "  >              <  "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, " >                < "),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "DUEL!!"), CL(1, ">                  <"),"",eBlinkFast,eNone,0,10,False,""
+	DMD CL(0, "SHOOT"), CL(1, "MOVING SHOT"),"",eNone,eNone,0,2000,True,""
+	DMD CL(0, "FIGHT!!"), CL(1, "FIGHT!!"),"",eBlinkFast,eBlink,0,1000,True,""
+	Status = "Duels"
+	vpmTimer.AddTimer 3900, "eBall.Z = 25 '"
+	vpmTimer.AddTimer 4000, "BSBarToBar.ExitSol_On '"
+	vpmTimer.AddTimer 4000, "mode1TimerCount = 90 '"
+	vpmTimer.AddTimer 4000, "mode1timer.Enabled = 1 '"
+	StopSong()
+	PlaySong "barquest2"
+end sub
+
+Sub Wall018_Timer()
+	Dim RandyOld, X
+	RandyOld = Randy
+	Randomize()
+	Do While Randy = RandyOld
+		Randy = INT(RND * 8)
+	Loop
+	For Each X in ShotsInserts
+		X.State = 0
+		X.BlinkInterval = 50
+		X.BlinkPattern = 100000001010
+	Next
+	Select Case Randy
+		Case 0
+			li006.State = 2
+			DuelsPointer = 0
+		Case 1
+			li007.State = 2
+			DuelsPointer = 1
+		Case 2
+			li008.State = 2
+			DuelsPointer = 2
+		Case 3
+			li009.State = 2
+			DuelsPointer = 3
+		Case 4
+			li010.State = 2
+			DuelsPointer = 4
+		Case 5
+			li011.State = 2
+			DuelsPointer = 5
+		Case 6
+			li012.State = 2
+			DuelsPointer = 6
+		Case 7
+			li013.State = 2
+			DuelsPointer = 7
+	End Select
+End Sub
+
+Sub ProcessDuels(Shot)
+	Dim TempBalls, X
+	If Shot = DuelsPointer Then
+		If DuelsCounter < 3 Then PlaySound "INS_12"
+		DuelsCounter = DuelsCounter + 1
+		If Shot = 1 Then
+			MyTroughLRAdd(eBall)
+			Kicker006.DestroyBall
+			startB2S(4)
+			LowerTarget013()
+			LrKickout 1000, 290, 7, 0
+		End If
+		If Shot = 5 Then
+			MyTroughLRAdd(cBall)
+			Kicker005.DestroyBall
+			startB2S(4)
+			LowerTarget013()
+			LrKickout 1000, 290, 7, 0
+		End If
+	Else
+		PlaySound "Hey"
+		TempBalls = GetBalls
+		For Each X in TempBalls
+			X.VelX = 0
+			X.VelY = 0
+			X.VelZ = 0
+		Next
+		If Shot = 1 Then
+			BSBarToBar.AddBall Kicker006
+			eBall.Z = 25
+			BSBarToBar.ExitSol_On
+		End If
+		If Shot = 5 Then
+			BSVoodooToVoodoo.AddBall Kicker005
+			cBall.Z = 25
+			BSVoodooToVoodoo.ExitSol_On
+		End If
+	End If
+'	Wall018.TimerEnabled = 0
+'	Wall018.TimerEnabled = 1
+	Wall018_Timer()
+	If DuelsCounter > 2 Then EndDuels()
+End Sub
+
+Sub EndDuels()
+	PlaySound "Won"
+	Dim X
+	For Each X in ShotsInserts
+		X.State = 0
+		X.BlinkInterval = 125
+		X.BlinkPattern = 10
+	Next
+	Status = "Normal"
+	Wall018.TimerEnabled = 0
+	li036.state = 1
+	BarSlot = BarSlot OR 16
+	StopmodeEndofBall()
+	ChangeSong()
+escapeMI = escapeMI + 1
+checktoescape
+End Sub
+
+Sub TrLeftRamp_Hit()
+	If Status = "Duels" Then
+		ProcessDuels(2)
+	End If
+End Sub
+
+Sub TrMonkeyRamp_Hit()
+	If Status = "Duels" Then
+		ProcessDuels(4)
+	End If
+End Sub
+
+Sub TrBananaRamp_Hit()
+	If Status = "Duels" Then
+		ProcessDuels(6)
+	End If
+End Sub
+
+Sub TrLeChuck_Hit()
+	If Status = "Duels" Then
+		ProcessDuels(3)
+	End If
+End Sub
+
+'**************
+' SlotMachine Voodoo Lady
+'**************
+'Dim TempBall
+Dim SlotAward2, SlotValue2
+SlotValue2 = 0
+
+SlotAward2 = Array("v1", "v2", "v3", "v4", "v5")
+
+Sub StartVoodooSlotmachine()
+	startB2S(7)
+	PlayQuoteVoodoo()
+	Dim i
+	DMDFlush()
+	For i = 0 to 4
+		DMD "", "", SlotAward2(i), eNone, eNone, eNone, 50, False, "fx_spinner"
+	Next
+	vpmtimer.AddTimer 2000, "GiveSlotAwardVoodoo '"
+	'Stop the lights blinking and reset the INSULT variables
+	li047.state = 0
+	li037.state = 0
+	li038.state = 0
+	li039.state = 0
+	li040.state = 0
+	li041.state = 0
+	li042.state = 0
+	li011.state = 0
+	li007.state = 0
+	li009.state = 0
+	StopSong()
+	BSVoodooToVoodoo.AddBall Kicker005
+End Sub
+
+Dim VoodooSlot:VoodooSlot = 0
+Sub GiveSlotAwardVoodoo()
+	DMDFlush()
+	Randomize()
+	SlotValue2 = INT(RND * 5 + 1)	'randomly pick a mode
+	DMD "", "", SlotAward2(SlotValue2-1), eNone, eNone, eNone, 500, True, ""
+	Select Case SlotValue2
+		Case 1
+			SlotValue2 = 1	'VoodooMagic
+		Case 2
+			SlotValue2 = 2	'Chicken
+		Case 3
+			SlotValue2 = 4	'Mushroom
+		Case 4
+			SlotValue2 = 8	'Dolls
+		Case 5
+			SlotValue2 = 16	'Ears
+	End Select
+	'Check if this mode has already been played
+	Do While (SlotValue2 AND VoodooSlot) > 0	'We've already done this mode So keep randomly picking one until we get a mode we haven't done yet
+		SlotValue2 = INT(RND * 5 + 1)
+		DMDFlush()
+		DMD "", "", SlotAward2(SlotValue2-1), eNone, eNone, eNone, 500, True, ""
+		Select Case SlotValue2
+			Case 1
+				SlotValue2 = 1	'VoodooMagic
+			Case 2
+				SlotValue2 = 2	'Chicken
+			Case 3
+				SlotValue2 = 4	'Mushroom
+			Case 4
+				SlotValue2 = 8	'Dolls
+			Case 5
+				SlotValue2 = 16	'Ears
+		End Select
+	Loop
+	Select Case SlotValue2
+		Case 1
+			vpmTimer.AddTimer 1000, "VoodooMagic() '"		'VoodooMagic()
+		Case 2
+			vpmTimer.AddTimer 1000, "VoodooChicken() '"		'VoodooChicken()
+		Case 4
+			vpmTimer.AddTimer 1000, "VoodooMushroom() '"	'VoodooMushroom()
+		Case 8
+			vpmTimer.AddTimer 1000, "VoodooDolls() '"		'VoodooDolls()
+		Case 16
+			vpmTimer.AddTimer 1000, "VoodooEars() '"		'VoodooEars()
+	End Select
+End Sub
+
+Sub VoodooPicker()
+	Randomize()
+	WheelSpeed = Int(2.5*Rnd+1)
+	SpinningWheel.enabled = 1
+End Sub
+
+Sub CheckVoodoo()
+	if voodoounlocked = 1 then
+		li047.state = 0 
+		li011.state = 2
+	end if
+	if barunlocked = 1 then
+		li048.state = 0
+		li007.state = 2
+	end if
+	If VoodooSlot = 31 Then
+		VoodooUnlocked = 0
+		li047.state = 1
+		li011.state = 0
+	End If
+	If LeChuckHits >= 3 AND LeChuckSlot < 255 Then li009.State = 2
+End Sub
+
+'********voodoo Magic mode***************
+
+sub VoodooMagic()
+	Status = "Magic"
+	StopSong()
+	PlaySong "voodooquests" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	enableMagics()
+	cBall.Z = 25
+	BSVoodooToVoodoo.ExitSol_On
+	itemrotytimer.Enabled = 1
+	li002.state = 2
+	MagicChecker = 0
+end sub
+
+Dim WhichMagic, MagicChecker
+WhichMagic = 0
+MagicChecker = 0
+sub enableMagics()
+	If MagicChecker = 31 Then
+		CheckBonusMagic()
+		Exit Sub
+	End If
+	Randomize()
+	WhichMagic = INT(RND * 5) + 1
+	Select Case WhichMagic
+		Case 3
+			WhichMagic = 4
+		Case 4
+			WhichMagic = 8
+		Case 5
+			WhichMagic = 16
+	End Select
+	Do While (WhichMagic AND MagicChecker) > 0
+		WhichMagic = INT(RND * 5) + 1
+		Select Case WhichMagic
+			Case 3
+				WhichMagic = 4
+			Case 4
+				WhichMagic = 8
+			Case 5
+				WhichMagic = 16
+		End Select
+	Loop
+	Select Case WhichMagic
+		Case 1
+			tMagic001.enabled = 1
+			Magic001.Visible = 1
+			Magic001.X = tMagic001.X
+			Magic001.Y = tMagic001.Y
+			Magic001.RotY = -30
+		Case 2
+			tMagic002.enabled = 1
+			Magic001.Visible = 1
+			Magic001.X = tMagic002.X
+			Magic001.Y = tMagic002.Y
+			Magic001.RotY = 0
+		Case 4
+			tMagic003.enabled = 1
+			Magic001.Visible = 1
+			Magic001.X = tMagic003.X
+			Magic001.Y = tMagic003.Y
+			Magic001.RotY = 35
+		Case 8
+			tMagic004.enabled = 1
+			Magic001.Visible = 1
+			Magic001.X = tMagic004.X
+			Magic001.Y = tMagic004.Y
+			Magic001.RotY = 0
+		Case 16
+			tMagic005.enabled = 1
+			Magic001.Visible = 1
+			Magic001.X = tMagic005.X
+			Magic001.Y = tMagic005.Y
+			Magic001.RotY = 40
+	End Select
+end sub
+
+sub moveMagicdown()
+	Dim X
+	For Each X in Magics
+		X.Visible = 0
+	Next
+end sub
+
+Sub tMagic001_Hit()
+	tMagic001.enabled = 0
+	moveMagicdown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "Magichurt"
+	addextratime()
+	MagicChecker = (MagicChecker OR 1)
+	EnableMagics()
+end sub
+
+Sub tMagic002_Hit()
+	tMagic002.enabled = 0
+	moveMagicdown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "Magichurt"
+	addextratime()
+	MagicChecker = (MagicChecker OR 2)
+	EnableMagics()
+end sub
+
+Sub tMagic003_Hit()
+	tMagic003.enabled = 0
+	moveMagicdown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "Magichurt"
+	addextratime()
+	MagicChecker = (MagicChecker OR 4)
+	EnableMagics()
+end sub
+
+Sub tMagic004_Hit()
+	tMagic004.enabled = 0
+	moveMagicdown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "Magichurt"
+	addextratime()
+	MagicChecker = (MagicChecker OR 8)
+	EnableMagics()
+end sub
+
+Sub tMagic005_Hit()
+	tMagic005.enabled = 0
+	moveMagicdown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "Magichurt"
+	addextratime()
+	MagicChecker = (MagicChecker OR 16)
+	EnableMagics()
+end sub
+
+sub checkbonusMagic()
+	If MagicChecker = 31 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li002.state = 1
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		MagicChecker = 0
+		VoodooSlot = VoodooSlot OR 1
+		CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+'********voodoo chicken mode***************
+
+sub VoodooChicken()
+	Status = "Chicken"
+	StopSong()
+	PlaySong "voodooquests" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	enablechickens()
+	cBall.Z = 25
+	BSVoodooToVoodoo.ExitSol_On
+	TiChickenDance.Enabled = 1
+	li028.state = 2
+	ChickenChecker = 0
+end sub
+
+Dim WhichChicken, ChickenChecker
+WhichChicken = 0
+ChickenChecker = 0
+sub enablechickens()
+	If ChickenChecker = 31 Then
+		CheckBonusChicken()
+		Exit Sub
+	End If
+	Randomize()
+	WhichChicken = INT(RND * 5) + 1
+	Select Case WhichChicken
+		Case 3
+			WhichChicken = 4
+		Case 4
+			WhichChicken = 8
+		Case 5
+			WhichChicken = 16
+	End Select
+	Do While (WhichChicken AND ChickenChecker) > 0
+		WhichChicken = INT(RND * 5) + 1
+		Select Case WhichChicken
+			Case 3
+				WhichChicken = 4
+			Case 4
+				WhichChicken = 8
+			Case 5
+				WhichChicken = 16
+		End Select
+	Loop
+	Select Case WhichChicken
+		Case 1
+			tchicken001.enabled = 1
+			chicken001.Visible = 1
+			chicken001.X = tchicken001.X
+			chicken001.Y = tchicken001.Y
+			Chicken001.RotY = -30
+		Case 2
+			tchicken002.enabled = 1
+			chicken001.Visible = 1
+			chicken001.X = tchicken002.X
+			chicken001.Y = tchicken002.Y
+			Chicken001.RotY = 0
+		Case 4
+			tchicken003.enabled = 1
+			chicken001.Visible = 1
+			chicken001.X = tchicken003.X
+			chicken001.Y = tchicken003.Y
+			Chicken001.RotY = 35
+		Case 8
+			tchicken004.enabled = 1
+			chicken001.Visible = 1
+			chicken001.X = tchicken004.X
+			chicken001.Y = tchicken004.Y
+			Chicken001.RotY = 0
+		Case 16
+			tchicken005.enabled = 1
+			chicken001.Visible = 1
+			chicken001.X = tchicken005.X
+			chicken001.Y = tchicken005.Y
+			Chicken001.RotY = 40
+	End Select
+end sub
+
+sub movechickendown()
+	Dim X
+	For Each X in Chickens
+		X.Visible = 0
+	Next
+end sub
+
+Sub tchicken001_Hit()
+	tchicken001.enabled = 0
+	movechickendown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "chickenhurt"
+	addextratime()
+	ChickenChecker = (ChickenChecker OR 1)
+	EnableChickens()
+end sub
+
+Sub tchicken002_Hit()
+	tchicken002.enabled = 0
+	movechickendown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "chickenhurt"
+	addextratime()
+	ChickenChecker = (ChickenChecker OR 2)
+	EnableChickens()
+end sub
+
+Sub tchicken003_Hit()
+	tchicken003.enabled = 0
+	movechickendown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "chickenhurt"
+	addextratime()
+	ChickenChecker = (ChickenChecker OR 4)
+	EnableChickens()
+end sub
+
+Sub tchicken004_Hit()
+	tchicken004.enabled = 0
+	movechickendown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "chickenhurt"
+	addextratime()
+	ChickenChecker = (ChickenChecker OR 8)
+	EnableChickens()
+end sub
+
+Sub tchicken005_Hit()
+	tchicken005.enabled = 0
+	movechickendown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "chickenhurt"
+	addextratime()
+	ChickenChecker = (ChickenChecker OR 16)
+	EnableChickens()
+end sub
+
+sub checkbonuschicken()
+	If ChickenChecker = 31 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li028.state = 1
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		ChickenChecker = 0
+		VoodooSlot = VoodooSlot OR 2
+		TiChickenDance.Enabled = 0
+		CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+Dim ChickenAngle, ChickenHeight, ChickenSpeed, ChickenLean
+ChickenAngle = 0
+ChickenHeight = 20
+ChickenSpeed = 3
+ChickenLean = 20
+Sub TiChickenDance_Timer()
+	Chicken001.Z = ABS(dSin(ChickenAngle) * ChickenHeight) + 10
+	Chicken001.RotZ = dCos(ChickenAngle) * ChickenLean
+	ChickenAngle = ChickenAngle + ChickenSpeed
+	If ChickenAngle >=360 Then ChickenAngle = ChickenAngle - 360
+End Sub
+
+'********voodoo mushroom mode***************
+
+sub VoodooMushroom()
+	Status = "Mushroom"
+	StopSong()
+	PlaySong "voodooquests" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	enablemushrooms()
+	cBall.Z = 25
+	BSVoodooToVoodoo.ExitSol_On
+	li029.state = 2
+	MushroomChecker = 0
+end sub
+
+Dim WhichMushroom, MushroomChecker
+WhichMushroom = 0
+MushroomChecker = 0
+sub enablemushrooms()
+	If MushroomChecker = 31 Then
+		CheckBonusMushroom()
+		Exit Sub
+	End If
+	Randomize()
+	WhichMushroom = INT(RND * 5) + 1
+	Select Case WhichMushroom
+		Case 3
+			WhichMushroom = 4
+		Case 4
+			WhichMushroom = 8
+		Case 5
+			WhichMushroom = 16
+	End Select
+	Do While (WhichMushroom AND MushroomChecker) > 0
+		WhichMushroom = INT(RND * 5) + 1
+		Select Case WhichMushroom
+			Case 3
+				WhichMushroom = 4
+			Case 4
+				WhichMushroom = 8
+			Case 5
+				WhichMushroom = 16
+		End Select
+	Loop
+	Select Case WhichMushroom
+		Case 1
+			tmushroom001.enabled = 1
+			Mushroom001.Visible = 1
+			Mushroom001.X = tmushroom001.X
+			Mushroom001.Y = tmushroom001.Y
+			Mushroom001.Z = 30
+		Case 2
+			tmushroom002.enabled = 1
+			Mushroom001.Visible = 1
+			Mushroom001.X = tmushroom002.X
+			Mushroom001.Y = tmushroom002.Y
+			Mushroom001.Z = 130
+		Case 4
+			tmushroom003.enabled = 1
+			Mushroom001.Visible = 1
+			Mushroom001.X = tmushroom003.X
+			Mushroom001.Y = tmushroom003.Y
+			Mushroom001.Z = 30
+		Case 8
+			tmushroom004.enabled = 1
+			Mushroom001.Visible = 1
+			Mushroom001.X = tmushroom004.X
+			Mushroom001.Y = tmushroom004.Y
+			Mushroom001.Z = 30
+		Case 16
+			tmushroom005.enabled = 1
+			Mushroom001.Visible = 1
+			Mushroom001.X = tmushroom005.X
+			Mushroom001.Y = tmushroom005.Y
+			Mushroom001.Z = 30
+	End Select
+end sub
+
+Sub tmushroom001_Hit()
+	tmushroom001.enabled = 0
+	movemushroomdown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "mushroomhurt"
+	addextratime()
+	MushroomChecker = (MushroomChecker OR 1)
+	EnableMushrooms()
+end sub
+
+sub MoveMushroomDown()
+	Dim X
+	For Each X in Mushrooms
+		X.Visible = 0
+	Next
+end sub
+
+Sub tmushroom002_Hit()
+	tmushroom002.enabled = 0
+	MoveMushroomDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "mushroomhurt"
+	addextratime()
+	MushroomChecker = (MushroomChecker OR 2)
+	EnableMushrooms()
+end sub
+
+Sub tmushroom003_Hit()
+	tmushroom003.enabled = 0
+	MoveMushroomDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "mushroomhurt"
+	addextratime()
+	MushroomChecker = (MushroomChecker OR 4)
+	EnableMushrooms()
+end sub
+
+Sub tmushroom004_Hit()
+	tmushroom004.enabled = 0
+	MoveMushroomDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "mushroomhurt"
+	addextratime()
+	MushroomChecker = (MushroomChecker OR 8)
+	EnableMushrooms()
+end sub
+
+Sub tmushroom005_Hit()
+	tmushroom005.enabled = 0
+	MoveMushroomDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "mushroomhurt"
+	addextratime()
+	MushroomChecker = (MushroomChecker OR 16)
+	EnableMushrooms()
+end sub
+
+sub checkbonusmushroom()
+	If MushroomChecker = 31 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li029.state = 1
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		MushroomChecker = 0
+		VoodooSlot = VoodooSlot OR 4
+		CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+'********voodoo dolls mode***************
+
+sub VoodooDolls()
+	Status = "Dolls"
+	StopSong
+	PlaySong "voodooquests" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	enablevoodoodolls()
+	cBall.Z = 25
+	BSVoodooToVoodoo.ExitSol_On
+	li030.state = 2
+	DollChecker = 0
+end sub
+
+Dim WhichDoll, DollChecker
+WhichDoll = 0
+DollChecker = 0
+sub EnableVoodooDolls()
+	If DollChecker = 31 Then
+		CheckBonusVoodooDoll()
+		Exit Sub
+	End If
+	Randomize()
+	WhichDoll = INT(RND * 5) + 1
+	Select Case WhichDoll
+		Case 3
+			WhichDoll = 4
+		Case 4
+			WhichDoll = 8
+		Case 5
+			WhichDoll = 16
+	End Select
+	Do While (WhichDoll AND DollChecker) > 0
+		WhichDoll = INT(RND * 5) + 1
+		Select Case WhichDoll
+			Case 3
+				WhichDoll = 4
+			Case 4
+				WhichDoll = 8
+			Case 5
+				WhichDoll = 16
+		End Select
+	Loop
+	Select Case WhichDoll
+		Case 1
+			tvoodoodoll001.enabled = 1
+			VoodooDoll001.Visible = 1
+			VoodooDoll001.X = tvoodoodoll001.X
+			VoodooDoll001.Y = tvoodoodoll001.Y
+		Case 2
+			tvoodoodoll002.enabled = 1
+			VoodooDoll001.Visible = 1
+			VoodooDoll001.X = tvoodoodoll002.X
+			VoodooDoll001.Y = tvoodoodoll002.Y
+		Case 4
+			tvoodoodoll003.enabled = 1
+			VoodooDoll001.Visible = 1
+			VoodooDoll001.X = tvoodoodoll003.X
+			VoodooDoll001.Y = tvoodoodoll003.Y
+		Case 8
+			tvoodoodoll004.enabled = 1
+			VoodooDoll001.Visible = 1
+			VoodooDoll001.X = tvoodoodoll004.X
+			VoodooDoll001.Y = tvoodoodoll004.Y
+		Case 16
+			tvoodoodoll005.enabled = 1
+			VoodooDoll001.Visible = 1
+			VoodooDoll001.X = tvoodoodoll005.X
+			VoodooDoll001.Y = tvoodoodoll005.Y
+	End Select
+end sub
+
+Sub tvoodoodoll001_Hit()
+	tvoodoodoll001.enabled = 0
+	MoveVoodooDollDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "voodoodollhurt"
+	addextratime()
+	DollChecker = (DollChecker OR 1)
+	EnableVoodooDolls()
+end sub
+
+sub MoveVoodooDollDown()
+	VoodooDoll001.Visible = 0
+end sub
+
+Sub tvoodoodoll002_Hit()
+	tvoodoodoll002.enabled = 0
+	MoveVoodooDollDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "voodoodollhurt"
+	addextratime()
+	DollChecker = (DollChecker OR 2)
+	EnableVoodooDolls()
+end sub
+
+Sub tvoodoodoll003_Hit()
+	tvoodoodoll003.enabled = 0
+	MoveVoodooDollDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "voodoodollhurt"
+	addextratime()
+	DollChecker = (DollChecker OR 4)
+	EnableVoodooDolls()
+end sub
+
+Sub tvoodoodoll004_Hit()
+	tvoodoodoll004.enabled = 0
+	MoveVoodooDollDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "voodoodollhurt"
+	addextratime()
+	DollChecker = (DollChecker OR 8)
+	EnableVoodooDolls()
+end sub
+
+Sub tvoodoodoll005_Hit()
+	tvoodoodoll005.enabled = 0
+	MoveVoodooDollDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "voodoodollhurt"
+	addextratime()
+	DollChecker = (DollChecker OR 16)
+	EnableVoodooDolls()
+end sub
+
+sub CheckBonusVoodooDoll()
+	If DollChecker = 31 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li030.state = 1
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		DollChecker = 0
+		VoodooSlot = VoodooSlot OR 8
+		CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+'********voodoo ears mode***************
+
+sub VoodooEars()
+	Status = "Ears"
+	StopSong()
+	PlaySong "voodooquests" 
+	mode1TimerCount = 90
+	mode1timer.Enabled = 1
+	itemrotytimer.Enabled = 1
+	EnableEars()
+	cBall.Z = 25
+	BSVoodooToVoodoo.ExitSol_On
+	li031.state = 2
+	EarChecker = 0
+end sub
+
+Dim WhichEar, EarChecker
+WhichEar = 0
+EarChecker = 0
+sub EnableEars()
+	If EarChecker = 31 Then
+		CheckBonusEar()
+		Exit Sub
+	End If
+	Randomize()
+	WhichEar = INT(RND * 5) + 1
+	Select Case WhichEar
+		Case 3
+			WhichEar = 4
+		Case 4
+			WhichEar = 8
+		Case 5
+			WhichEar = 16
+	End Select
+	Do While (WhichEar AND EarChecker) > 0
+		WhichEar = INT(RND * 5) + 1
+		Select Case WhichEar
+			Case 3
+				WhichEar = 4
+			Case 4
+				WhichEar = 8
+			Case 5
+				WhichEar = 16
+		End Select
+	Loop
+	Select Case WhichEar
+		Case 1
+			TEar001.enabled = 1
+			Ear001.Visible = 1
+			Ear001.X = TEar001.X
+			Ear001.Y = TEar001.Y
+		Case 2
+			TEar002.enabled = 1
+			Ear001.Visible = 1
+			Ear001.X = TEar002.X
+			Ear001.Y = TEar002.Y
+		Case 4
+			TEar003.enabled = 1
+			Ear001.Visible = 1
+			Ear001.X = TEar003.X
+			Ear001.Y = TEar003.Y
+		Case 8
+			TEar004.enabled = 1
+			Ear001.Visible = 1
+			Ear001.X = TEar004.X
+			Ear001.Y = TEar004.Y
+		Case 16
+			TEar005.enabled = 1
+			Ear001.Visible = 1
+			Ear001.X = TEar005.X
+			Ear001.Y = TEar005.Y
+	End Select
+end sub
+
+Sub tear001_Hit()
+	tear001.enabled = 0
+	MoveEarDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "earhurt"
+	addextratime()
+	EarChecker = (EarChecker OR 1)
+	EnableEars()
+end sub
+
+sub MoveEarDown()
+	Dim X
+	For Each X in Ears
+		X.Visible = 0
+	Next
+end sub
+
+Sub tear002_Hit()
+	tear002.enabled = 0
+	MoveEarDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "earhurt"
+	addextratime()
+	EarChecker = (EarChecker OR 2)
+	EnableEars()
+end sub
+
+Sub tear003_Hit()
+	tear003.enabled = 0
+	MoveEarDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "earhurt"
+	addextratime()
+	EarChecker = (EarChecker OR 4)
+	EnableEars()
+end sub
+
+Sub tear004_Hit()
+	tear004.enabled = 0
+	MoveEarDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "earhurt"
+	addextratime()
+	EarChecker = (EarChecker OR 8)
+	EnableEars()
+end sub
+
+Sub tear005_Hit()
+	tear005.enabled = 0
+	MoveEarDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+	Playsound "earhurt"
+	addextratime()
+	EarChecker = (EarChecker OR 16)
+	EnableEars()
+end sub
+
+sub checkbonusear()
+	If EarChecker = 31 then
+		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (100000*PFMultiplier)
+		playsound "won"
+		StopmodeEndofBall()
+		li031.state = 1
+		AddMultiball 1
+		countr41 = 1
+		TMBcoinys.enabled = 1
+		Status = "Normal"
+		ChangeSong()
+		EarChecker = 0
+		VoodooSlot = VoodooSlot OR 16
+		CheckVoodoo()
+escapeMI = escapeMI + 1
+checktoescape
+	end if
+end sub
+
+'*******************************************
+'*		Monkey MultiBall
+'*******************************************
+Dim MHTimer:MHTimer = 0
+Sub vpmFastTimer_Timer()
+	MHTimer = MHTimer + 1
+	Select Case MHTimer
+		'Open Mouth at these times ticks
+		Case 37, 63, 84, 98, 114, 200, 218, 259, 276, 486, 563, 624, 690, 742, 807, 869, 943, 1076, 1172, 1720, 1784, 1950
+			MoveMouth 1, 8
+		'Close Mouth at these time ticks
+		Case 49, 74, 94, 111, 129, 205, 230, 266, 325, 549, 610, 671, 716, 779, 844, 920, 987, 1120, 1276, 1760, 1850
+			MoveMouth 0, 8
+		'Move Head to point down at these ticks
+		Case 38, 85, 115, 219, 277, 563, 583, 603, 623, 643, 663, 683, 703, 723, 743, 763, 783, 803, 823, 843, 863, 883, 903, 923, 943, 963, 983, 1003, 1023, 1043, 1063, 1083, 1103, 1143, 1203, 1263, 1323, 1383, 1443, 1503, 1563, 1623, 1683
+			MoveHead 1, 4
+		'Move Head to the 15 degrees to the left at the ticks
+		Case 64, 99, 201, 260, 487, 573, 593, 613, 633, 653, 673, 693, 713, 733, 753, 773, 793, 813, 833, 853, 873, 893, 913, 933, 953, 973, 993, 1013, 1033, 1053, 1073, 1093, 1113, 1173, 1233, 1293, 1353, 1413, 1473, 1533, 1593, 1653
+			Movehead 15, 5
+		'Reset head at end of MB intro
+		Case 1690
+			MoveHead 10, 0.5
+		Case 400
+			Monkey1Hit = 1
+			Repeat1 = 99
+			FrameNext1 = FrameRate1b
+			Monkey1Frame = 11
+			Monkey1JumpsMax = 99
+			Wall020.TimerEnabled = 1
+		Case 800
+			Monkey3Hit = 1
+			Repeat3 = 99
+			FrameNext3 = FrameRate3b
+			Monkey3Frame = 11
+			Monkey3JumpsMax = 99
+			Wall014.TimerEnabled = 1
+		Case 1200
+			Monkey2Hit = 1
+			Repeat2 = 99
+			FrameNext2 = FrameRate2b
+			Monkey2Frame = 11
+			Monkey2JumpsMax = 99
+			Wall015.TimerEnabled = 1
+		Case 2000
+			Me.Enabled = 0
+			FrameNext1 = FrameRate1c
+			Monkey1Frame = 1
+			Monkey1Hit = 0
+			Monkey1HitRepeat = 0
+			Repeat1 = 1
+			Monkey1JumpsMax = 1
+			FrameNext2 = FrameRate2c
+			Monkey2Frame = 1
+			Monkey2Hit = 0
+			Monkey2HitRepeat = 0
+			Repeat2 = 1
+			Monkey2JumpsMax = 1
+			FrameNext3 = FrameRate3c
+			Monkey3Frame = 1
+			Monkey3Hit = 0
+			Monkey3HitRepeat = 0
+			Repeat3 = 1
+			Monkey3JumpsMax = 1
+			vpmTimer.AddTimer 200, "PlaySong ""Monkey_multi1"" '"														
+			vpmTimer.AddTimer 200, "startmonkeymultiheadbalz '"
+			vpmTimer.AddTimer 1000, "AddMultiBall 1 '"
+			vpmTimer.AddTimer 3000, "AddMultiBall 1 '"
+			vpmTimer.AddTimer 3000, "changemonkeyheadvalueback '"
+			countr41 = 1
+			TMBcoinys.enabled = 1
+			'EnableBallSaver BallSaverTime
+			MHTimer = 0									  
+	End Select
+End Sub
+
+sub startmonkeymultiheadbalz
+PlaySound "fx_popper"
+KiHead.Kick 180, 7, 0
+   DOF 129, DOFPulse
+DOF 119,0
+DOF 130,1
+end sub
+
+
+sub changemonkeyheadvalueback
+monkeykeepball = 0
+end sub
+
+Sub StartMonkeyMB()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (500*PFMultiplier)
+	monkeykeepball = 1
+	'Status = "MonkeyMB"
+	StopSong()
+	PlaySound "themonlist"
+	vpmFastTimer.Enabled = 1
+	'PFMultiplier = 4
+	'li023.state = 1	
+	'End If	
+DOF 119,1
+	
+End Sub
+
+Dim Monkey1Speed, Monkey1Angle, Monkey1AngleSpeed, Monkey1Height, Monkey1Jumps, Monkey1JumpsMax
+Monkey1Speed = 0
+Monkey1Angle = 0
+Monkey1AngleSpeed = 1
+Monkey1Height = Monkey1.Z
+Monkey1Jumps = 0
+Monkey1JumpsMax = 1
+Sub Wall020_Timer()		'Monkey1
+	Monkey1Angle = Monkey1Angle + Monkey1AngleSpeed
+	Monkey1.Z = dSin(Monkey1Angle) * Monkey1Height + Monkey1Height
+	If Monkey1Angle > 180 Then
+		Monkey1Angle = Monkey1Angle - 180
+		Monkey1Jumps = Monkey1Jumps + 1
+	End If
+	If Monkey1Jumps >= Monkey1JumpsMax Then
+		Me.TimerEnabled = 0
+		Monkey1Jumps = 0
+		Monkey1.Z = Monkey1Height
+	End If
+End Sub
+
+Dim Monkey3Speed, Monkey3Angle, Monkey3AngleSpeed, Monkey3Height, Monkey3Jumps, Monkey3JumpsMax
+Monkey3Speed = 0
+Monkey3Angle = 0
+Monkey3AngleSpeed = 1
+Monkey3Height = Monkey3.Z
+Monkey3Jumps = 0
+Monkey3JumpsMax = 1
+Sub Wall014_Timer()		'Monkey3
+	Monkey3Angle = Monkey3Angle + Monkey3AngleSpeed
+	Monkey3.Z = dSin(Monkey3Angle) * Monkey3Height + Monkey3Height
+	If Monkey3Angle > 180 Then
+		Monkey3Angle = Monkey3Angle - 180
+		Monkey3Jumps = Monkey3Jumps + 1
+	End If
+	If Monkey3Jumps >= Monkey3JumpsMax Then
+		Me.TimerEnabled = 0
+		Monkey3Jumps = 0
+		Monkey3.Z = Monkey3Height
+	End If
+End Sub
+
+Dim Monkey2Speed, Monkey2Angle, Monkey2AngleSpeed, Monkey2Height, Monkey2Jumps, Monkey2JumpsMax
+Monkey2Speed = 0
+Monkey2Angle = 0
+Monkey2AngleSpeed = 1
+Monkey2Height = Monkey1.Z
+Monkey2Jumps = 0
+Monkey2JumpsMax = 1
+Sub Wall015_Timer()		'Monkey2
+	Monkey2Angle = Monkey2Angle + Monkey2AngleSpeed
+	Monkey2.Z = dSin(Monkey2Angle) * Monkey2Height + Monkey2Height
+	If Monkey2Angle > 180 Then
+		Monkey2Angle = Monkey2Angle - 180
+		Monkey2Jumps = Monkey2Jumps + 1
+	End If
+	If Monkey2Jumps >= Monkey2JumpsMax Then
+		Me.TimerEnabled = 0
+		Monkey2Jumps = 0
+		Monkey2.Z = Monkey2Height
+	End If
+End Sub
+
+'********end of ball stop missions + add time ***************
+sub stopquests()
+	Dim X
+	itemrotytimer.Enabled = 0
+	itemrotztimer.Enabled = 0
+	Status = "Normal"
+	bonustime = 0
+	tchicken001.enabled = 0
+	tchicken002.enabled = 0
+	tchicken003.enabled = 0
+	tchicken004.enabled = 0
+	tchicken005.enabled = 0
+	tear001.enabled = 0
+	tear002.enabled = 0
+	tear003.enabled = 0
+	tear004.enabled = 0
+	tear005.enabled = 0
+	tmushroom001.enabled = 0
+	tmushroom002.enabled = 0
+	tmushroom003.enabled = 0
+	tmushroom004.enabled = 0
+	tmushroom005.enabled = 0
+	tvoodoodoll001.enabled = 0
+	tvoodoodoll002.enabled = 0
+	tvoodoodoll003.enabled = 0
+	tvoodoodoll004.enabled = 0
+	tvoodoodoll005.enabled = 0
+	tcoin001.Enabled = 0
+	tcoin002.Enabled = 0
+	tcoin003.Enabled = 0
+	tcoin004.Enabled = 0
+	tcoin005.Enabled = 0
+	tfist001.Enabled = 0
+	tfist002.Enabled = 0
+	tfist003.Enabled = 0
+	tfist004.Enabled = 0
+	tfist005.Enabled = 0
+	tMagic001.enabled = 0
+	tMagic002.enabled = 0
+	tMagic003.enabled = 0
+	tMagic004.enabled = 0
+	tMagic005.enabled = 0
+	titem001.enabled = 0
+	bone.Visible = 0
+	titem002.enabled = 0
+	book.Visible = 0
+	titem003.enabled = 0
+	skully.Visible = 0
+	titem004.enabled = 0
+	sword001.Visible = 0
+	titem005.enabled = 0
+	mok.Visible = 0
+	titem006.enabled = 0
+	Map.Visible = 0
+	titem007.enabled = 0
+	compas.Visible = 0
+	titem008.enabled = 0
+	keysitem.Visible = 0
+	For Each X in QuestLights
+		If X.State = 2 Then X.State = 0
+	Next
+	For Each X in Fists
+		X.Visible = 0
+	Next
+	For Each X in Coins
+		X.Visible = 0
+	Next
+	For Each X in Chickens
+		X.Visible = 0
+	Next
+	For Each X in Mushrooms
+		X.Visible = 0
+	Next
+	For Each X in Ears
+		X.Visible = 0
+	Next
+	For Each X in Dolls
+		X.Visible = 0
+	Next
+	For Each X in Magics
+		X.Visible = 0
+	Next
+end sub
+
+sub addextratime()
+	if mode1TimerCount > 90 then exit sub
+	mode1TimerCount = mode1TimerCount + 5
+end sub
+
+Sub tim001_Hit()
+	if mode1TimerCount > 90 then exit sub
+	mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim002_Hit()
+	if mode1TimerCount > 90 then exit sub
+	mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim003_Hit()
+	if mode1TimerCount > 90 then exit sub
+	mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim004_Hit()
+	if mode1TimerCount > 90 then exit sub
+	mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim005_Hit()
+	if mode1TimerCount > 90 then exit sub
+	mode1TimerCount = mode1TimerCount + 2
+end sub
+
+Sub tim006_Hit()
+	if mode1TimerCount > 90 then exit sub 
+	mode1TimerCount = mode1TimerCount + 2
+end sub
+
+'********************************
+'		 Digital clock
+'********************************
+
+Dim ClockDigits(4), ClockChars(10)
+
+ClockDigits(0) = Array(a00, a02, a05, a06, a04, a01, a03) 'clock left digit
+ClockDigits(1) = Array(a10, a12, a15, a16, a14, a11, a13)
+ClockChars(0) = Array(1, 1, 1, 1, 1, 1, 0)				  '0
+ClockChars(1) = Array(0, 1, 1, 0, 0, 0, 0)				  '1
+ClockChars(2) = Array(1, 1, 0, 1, 1, 0, 1)				  '2
+ClockChars(3) = Array(1, 1, 1, 1, 0, 0, 1)				  '3
+ClockChars(4) = Array(0, 1, 1, 0, 0, 1, 1)				  '4
+ClockChars(5) = Array(1, 0, 1, 1, 0, 1, 1)				  '5
+ClockChars(6) = Array(1, 0, 1, 1, 1, 1, 1)				  '6
+ClockChars(7) = Array(1, 1, 1, 0, 0, 0, 0)				  '7
+ClockChars(8) = Array(1, 1, 1, 1, 1, 1, 1)				  '8
+ClockChars(9) = Array(1, 1, 1, 1, 0, 1, 1)				  '9
+
+Sub UpdateClock(myTime)
+	Dim a, b, i
+	a = myTime \ 10
+	b = myTime MOD 10
+	For i = 0 to 6
+		ClockDigits(0)(i).State = ClockChars(a)(i)
+		ClockDigits(1)(i).State = ClockChars(b)(i)
+	Next
+End Sub
+
+Sub TurnOffClock
+	Dim i
+	For i = 0 to 6
+		ClockDigits(0)(i).State = 0
+		ClockDigits(1)(i).State = 0
+	Next
+End Sub
+
+'clocktimer
+Sub mode1timer_Timer
+	mode1TimerCount = mode1TimerCount - 1
+	UpdateClock mode1TimerCount
+	If mode1TimerCount = 30 Then PlaySound "30s"
+	If mode1TimerCount = 10 Then PlaySound "10s"
+	If mode1TimerCount = 0 Then
+		DMD "", "", "if", eNone, eNone, eNone, 1000, True, "lost"
+		Stopmode1()
+	End If
+End Sub
+
+Sub mode2timer_Timer
+	mode2TimerCount = mode2TimerCount - 1
+	UpdateClock mode2TimerCount
+	If mode2TimerCount = 0 Then
+	DMD "", "", "tf", eNone, eNone, eNone, 1000, True, "treasurefailed"
+		Stopmode2()
+	End If
+End Sub
+
+Sub Stopmode1()
+	mode1timer.Enabled = 0
+	stopquests()
+	StopSong()
+	UpdateMusicNow()
+	TurnOffClock()
+	Wall016.TimerEnabled = 0
+	Wall018.TimerEnabled = 0
+	Dim X
+	For Each X in ShotsInserts
+		X.State = 0
+		X.BlinkInterval = 125
+		X.BlinkPattern = 10
+	Next
+	CheckBar()
+	CheckVoodoo()
+End Sub
+
+Sub Stopmode2()
+	RightFlipper001.RotatetoStart
+	LeftFlipper001.RotatetoStart
+	LowerFlippersActive = False
+	mode2timer.Enabled = 0
+	stopquests()
+	StopSong()
+	UpdateMusicNow()
+	TurnOffClock()
+	CheckBar()
+	CheckVoodoo()
+End Sub
+
+Sub StopmodeEndofBall()
+	mode1timer.Enabled = 0
+	mode2timer.Enabled = 0
+	StopSong()
+	itemrotytimer.Enabled = 0
+	itemrotztimer.Enabled = 0
+	'UpdateMusicNow
+	TurnOffClock()
+	stopquests()
+	Status = "Normal"
+	CheckBar()
+	CheckVoodoo()
+End Sub
+
+'************************************************
+'**************schatkist Animation*****************
+'************************************************
+Dim ChestDir, ChestPos
+
+sub ChestdownTimer_Timer
+	ChestupTimer.enabled = 0
+	If treasurechest1.RotX < 75 Then treasurechest1.RotX = TreasureChest1.RotX + 4	
+	If treasurechest1.RotX > 75 then 
+		treasurechest1.RotX = 75
+		Me.Enabled = 0
+	End If
+	If Not (eBall Is Nothing) Then
+		MyTroughTreasureAdd(eBall)
+		Set eBall = Nothing
+		Kicker006.DestroyBall
+		TreasureKickout 1050, 8, 38, 0
+	End If
+end sub
+
+sub ChestupTimer_Timer
+	ChestdownTimer.enabled = 0
+	If treasurechest1.RotX > 0 Then treasurechest1.RotX = TreasureChest1.RotX - 4
+	If treasurechest1.RotX < 0 Then
+		Treasurechest1.RotX = 0
+		Me.Enabled = 0
+	End If
+end sub
+
+sub duuus()
+	playsound "LIFT2"
+end sub
+
+'************************************************
+'***************turning objects******************
+'************************************************
+Sub itemrotztimer_Timer
+   coin001.Rotz = coin001.Rotz + 1
+   if coin001.Rotz > 360 then
+	   coin001.Rotz = 1
+   end if
+   coin002.Rotz = coin002.Rotz + 1
+   if coin002.Rotz > 360 then
+	   coin002.Rotz = 1
+   end if
+   coin003.Rotz = coin003.Rotz + 1
+   if coin003.Rotz > 360 then
+	   coin003.Rotz = 1
+   end if
+   coin004.Rotz = coin004.Rotz + 1
+   if coin004.Rotz > 360 then
+	   coin004.Rotz = 1
+   end if
+   coin005.Rotz = coin005.Rotz + 1
+   if coin005.Rotz > 360 then
+	   coin005.Rotz = 1
+   end if
+   fist001.Rotz = fist001.Rotz + 1
+   if fist001.Rotz > 360 then
+	   fist001.Rotz = 1
+   end if
+   fist002.Rotz = fist002.Rotz + 1
+   if fist002.Rotz > 360 then
+	   fist002.Rotz = 1
+   end if
+   fist003.Rotz = fist003.Rotz + 1
+   if fist003.Rotz > 360 then
+	   fist003.Rotz = 1
+   end if
+   fist004.Rotz = fist004.Rotz + 1
+   if fist004.Rotz > 360 then
+	   fist004.Rotz = 1
+   end if
+   fist005.Rotz = fist005.Rotz + 1
+   if fist005.Rotz > 360 then
+	   fist005.Rotz = 1
+   end if
+   sword001.Rotz = sword001.Rotz + 1
+   if sword001.Rotz > 360 then
+	   sword001.Rotz = 1
+   end if
+   book.Rotz = book.Rotz + 1
+   if book.Rotz > 360 then
+	   book.Rotz = 1
+   end if
+end sub
+
+Dim RotSpeed:RotSpeed = 1
+Sub itemrotytimer_Timer()
+	Dim X
+	For Each X in Dolls
+		X.RotY = X.RotY + RotSpeed
+		If X.RotY > 360 Then X.RotY = X.RotY - 360
+	Next
+	For Each X in Ears
+		X.RotY = X.RotY + RotSpeed
+		If X.RotY > 360 Then X.RotY = X.RotY - 360
+	Next
+	For Each X in Mushrooms
+		X.RotY = X.RotY + RotSpeed
+		If X.RotY > 360 Then X.RotY = X.RotY - 360
+	Next
+	Map.RotY = Map.RotY + 1
+	if Map.RotY > 360 then
+		Map.RotY = 1
+	end if
+	compas.RotY = compas.RotY + 1
+	if compas.RotY > 360 then
+		compas.RotY = 1
+	end if
+	bone.RotY = bone.RotY + 1
+	if bone.RotY > 360 then
+		bone.RotY = 1
+	end if
+	mok.RotY = mok.RotY + 1
+	if mok.RotY > 360 then
+		mok.RotY = 1
+	end if
+	keysitem.RotY = keysitem.RotY + 1
+	if keysitem.RotY > 360 then
+		keysitem.RotY = 1
+	end if
+	skully.RotY = skully.RotY + 1
+	if skully.RotY > 360 then
+		skully.RotY = 1
+	end if
+	Magic001.RotY = Magic001.RotY + 1
+	if Magic001.RotY > 360 then
+		Magic001.RotY = 1
+	end if
+end sub
+
+'************************************************
+'**************3d animations*****************
+'************************************************
+
+'Moved to the gametimer since the monkey animations are always moving
+
+'************************************************
+'**************Escape monkey island*****************
+'************************************************
+sub checktoescape
+if escapeMI = 22 Then
+vpmTimer.AddTimer 200, "PlaySong ""escapemusic"" '"
+li001.state = 2
+trytoescape = 1
+Tescaper001.Enabled = true
+StartExitMI
+end if
+end sub
+
+Sub StartExitMI
+EnableExitMIs()
+end Sub
+
+Dim WhichExitMI, ExitMIChecker
+WhichExitMI = 0
+ExitMIChecker = 0
+sub EnableExitMIs()
+	If ExitMIChecker = 31 Then
+		CheckBonusExitMI()
+		Exit Sub
+	End If
+	Randomize()
+	WhichExitMI = INT(RND * 5) + 1
+	Select Case WhichExitMI
+		Case 3
+			WhichExitMI = 4
+		Case 4
+			WhichExitMI = 8
+		Case 5
+			WhichExitMI = 16
+	End Select
+	Do While (WhichExitMI AND ExitMIChecker) > 0
+		WhichExitMI = INT(RND * 5) + 1
+		Select Case WhichExitMI
+			Case 3
+				WhichExitMI = 4
+			Case 4
+				WhichExitMI = 8
+			Case 5
+				WhichExitMI = 16
+		End Select
+	Loop
+	Select Case WhichExitMI
+		Case 1
+			ts9item001.enabled = 1
+			ExitMI001.Visible = 1
+			ExitMI001.X = ts9item001.X
+			ExitMI001.Y = ts9item001.Y
+		Case 2
+			ts9item002.enabled = 1
+			ExitMI001.Visible = 1
+			ExitMI001.X = ts9item002.X
+			ExitMI001.Y = ts9item002.Y
+		Case 4
+			ts9item003.enabled = 1
+			ExitMI001.Visible = 1
+			ExitMI001.X = ts9item003.X
+			ExitMI001.Y = ts9item003.Y
+		Case 8
+			ts9item004.enabled = 1
+			ExitMI001.Visible = 1
+			ExitMI001.X = ts9item004.X
+			ExitMI001.Y = ts9item004.Y
+		Case 16
+			ts9item005.enabled = 1
+			ExitMI001.Visible = 1
+			ExitMI001.X = ts9item005.X
+			ExitMI001.Y = ts9item005.Y
+	End Select
+end sub
+
+
+sub ts9item001_hit()
+	ts9item001.enabled = 0
+	MoveExitMIDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+	Playsound "ExitMIhitt"
+	addextratime()
+	ExitMIChecker = (ExitMIChecker OR 1)
+	EnableExitMIs()
+end sub
+
+sub MoveExitMIDown()
+	Dim X
+	For Each X in ExitMIs
+		X.Visible = 0
+	Next
+end sub
+
+sub ts9item002_hit()
+	ts9item002.enabled = 0
+	MoveExitMIDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+	Playsound "ExitMIhitt"
+	addextratime()
+	ExitMIChecker = (ExitMIChecker OR 2)
+	EnableExitMIs()
+end sub
+
+sub ts9item003_hit()
+	ts9item003.enabled = 0
+	MoveExitMIDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+	Playsound "ExitMIhitt"
+	addextratime()
+	ExitMIChecker = (ExitMIChecker OR 4)
+	EnableExitMIs()
+end sub
+
+sub ts9item004_hit()
+	ts9item004.enabled = 0
+	MoveExitMIDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+	Playsound "ExitMIhitt"
+	addextratime()
+	ExitMIChecker = (ExitMIChecker OR 8)
+	EnableExitMIs()
+end sub
+
+sub ts9item005_hit()
+	ts9item005.enabled = 0
+	MoveExitMIDown()
+	Score(CurrentPlayer) = Score(CurrentPlayer) + (1000000*PFMultiplier)
+	Playsound "ExitMIhitt"
+	addextratime()
+	ExitMIChecker = (ExitMIChecker OR 16)
+	EnableExitMIs()
+end sub
+
+sub CheckBonusExitMI()
+	If ExitMIChecker = 31 then
+'		DMD "", "", "100k", eNone, eNone, eNone, 1000, True, ""
+		Score(CurrentPlayer) = Score(CurrentPlayer) + (10000000*PFMultiplier)
+		playsound ""
+		ExitMIChecker = 0
+		changeback2begin
+	end if
+end sub
+
+sub changeback2begin
+	baropen = 0
+	barunlocked = 0
+	voodoounlocked = 0
+	bonustime = 0
+	greatdive = 0
+	gravediggers = 0
+	playtreasure = 0
+	findcrewDL = 0
+	LvLSwordM = 0
+	imagechest = 0
+	Prpirate001.Visible = false
+	Prpirate002.Visible = false
+	Prpirate003.Visible = false
+	Prpirate004.Visible = false
+	Prpirate005.Visible = false
+	PrScumm.Image = "Scumm Bar Off"
+	disablebanana
+	countr6 = 0
+	Updatechest()
+	updateimagechest()
+	LeftOrbitStart = 0
+	RightOrbitStart = 0
+	GrogCounter = 0
+	LeChuckHits = 0
+	KiGrog.Enabled = 0
+	UpdateMusicNow
+	li001.state = 1
+	li048.state = 1
+	li047.state = 1
+	Tescaper001.Enabled = false
+	escapeMI = 0
+	trytoescape = 0
+li002.state=0
+li028.state=0
+li029.state=0
+li030.state=0
+li031.state=0
+li032.state=0
+li033.state=0
+li034.state=0
+li035.state=0
+li036.state=0
+li014.state=0
+li015.state=0
+li016.state=0
+li017.state=0
+li018.state=0
+li019.state=0
+li020.state=0
+li021.state=0
+li046.state=0
+li045.state=0
+li044.state=0
+li043.state=0
+BarSlot = 0
+VoodooSlot = 0
+LeChuckSlot = 0
+end sub
+
+sub Tescaper001_timer
+   ExitMI001.RotY= ExitMI001.RotY+ 1
+   if ExitMI001.RotY> 360 then
+	   ExitMI001.RotY= 1
+end if
+end sub
+
+'************************************************
+'*************coin's multiball******************
+'************************************************
+Sub TMBcoinys_Timer
+UpdateMultiCoiny
+TMBcoinysUC.enabled = true
+end sub
+
+sub TMBcoinysUC_timer
+coin006.Rotz = coin006.Rotz + 1
+if coin006.Rotz > 360 then
+coin006.Rotz = 1
+end if
+end sub
+		
+Sub UpdateMultiCoiny
+select case countr41
+				case 1:
+				Tmballc001.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc001.X
+				coin006.Y = Tmballc001.Y
+				case 2:
+				Tmballc002.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc002.X
+				coin006.Y = Tmballc002.Y
+				case 3:
+				Tmballc003.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc003.X
+				coin006.Y = Tmballc003.Y
+				case 4:
+				Tmballc004.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc004.X
+				coin006.Y = Tmballc004.Y
+				case 5:
+				Tmballc005.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc005.X
+				coin006.Y = Tmballc005.Y
+				case 6:
+				Tmballc006.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc006.X
+				coin006.Y = Tmballc006.Y
+				case 7:
+				Tmballc007.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc007.X
+				coin006.Y = Tmballc007.Y
+				case 8:
+				Tmballc008.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc008.X
+				coin006.Y = Tmballc008.Y
+				case 9:
+				Tmballc009.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc009.X
+				coin006.Y = Tmballc009.Y
+				case 10:
+				Tmballc010.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc010.X
+				coin006.Y = Tmballc010.Y
+				case 11:
+				Tmballc011.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc011.X
+				coin006.Y = Tmballc011.Y
+				case 12:
+				Tmballc012.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc012.X
+				coin006.Y = Tmballc012.Y
+				case 13:
+				Tmballc013.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc013.X
+				coin006.Y = Tmballc013.Y
+				case 14:
+				Tmballc014.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc014.X
+				coin006.Y = Tmballc014.Y
+				case 15:
+				Tmballc015.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc015.X
+				coin006.Y = Tmballc015.Y
+				case 16:
+				Tmballc016.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc016.X
+				coin006.Y = Tmballc016.Y
+				case 17:
+				Tmballc017.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc017.X
+				coin006.Y = Tmballc017.Y
+				case 18:
+				Tmballc018.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc018.X
+				coin006.Y = Tmballc018.Y
+				case 19:
+				Tmballc019.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc019.X
+				coin006.Y = Tmballc019.Y
+				case 20:
+				Tmballc020.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc020.X
+				coin006.Y = Tmballc020.Y
+				case 21:
+				Tmballc021.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc021.X
+				coin006.Y = Tmballc021.Y
+				case 22:
+				Tmballc022.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc022.X
+				coin006.Y = Tmballc022.Y
+				case 23:
+				Tmballc023.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc023.X
+				coin006.Y = Tmballc023.Y
+				case 24:
+				Tmballc024.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc024.X
+				coin006.Y = Tmballc024.Y
+				case 25:
+				Tmballc025.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc025.X
+				coin006.Y = Tmballc025.Y
+				case 26:
+				Tmballc026.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc026.X
+				coin006.Y = Tmballc026.Y
+				case 27:
+				Tmballc027.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc027.X
+				coin006.Y = Tmballc027.Y
+				case 28:
+				Tmballc028.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc028.X
+				coin006.Y = Tmballc028.Y
+				case 29:
+				Tmballc029.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc029.X
+				coin006.Y = Tmballc029.Y
+				case 30:
+				Tmballc030.enabled = 1
+				coin006.Visible = 1
+				coin006.X = Tmballc030.X
+				coin006.Y = Tmballc030.Y
+			end Select
+End Sub				
+			
+sub Tmballc001_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc001.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub MoveMBcoinDown()
+	Dim X
+	For Each X in MultiBcoins
+		X.Visible = 0
+	Next
+end sub
+
+sub Tmballc002_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc002.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc003_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc003.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc004_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc004.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc005_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc005.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc006_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc006.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc007_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc007.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc008_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc008.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc009_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc009.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc010_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc010.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc011_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc011.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc012_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc012.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc013_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc013.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc014_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc014.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc015_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc015.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc016_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc016.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc017_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc017.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc018_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc018.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc019_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc019.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc020_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc020.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc021_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc021.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc022_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc022.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc023_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc023.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc024_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc024.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc025_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc025.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc026_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc026.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc027_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc027.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc028_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc028.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc029_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc029.enabled = 0
+MoveMBcoinDown()
+countr41 = countr41 + 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub Tmballc030_hit()
+Score(CurrentPlayer) = Score(CurrentPlayer) + (10000*PFMultiplier)
+Playsound "coinhurt"
+Tmballc030.enabled = 0
+MoveMBcoinDown()
+countr41 = 1
+UpdateMultiCoiny
+coinsearned = coinsearned + 1
+Updatecoinscountr()
+vpmtimer.addtimer 250, "startB2S(3) '"
+end sub
+
+sub resetMBcoin
+MoveMBcoinDown()
+TMBcoinysUC.enabled = 0
+TMBcoinys.enabled = 0
+Tmballc001.enabled = 0
+Tmballc002.enabled = 0
+Tmballc003.enabled = 0
+Tmballc004.enabled = 0
+Tmballc005.enabled = 0
+Tmballc006.enabled = 0
+Tmballc007.enabled = 0
+Tmballc008.enabled = 0
+Tmballc009.enabled = 0
+Tmballc010.enabled = 0
+Tmballc011.enabled = 0
+Tmballc012.enabled = 0
+Tmballc013.enabled = 0
+Tmballc014.enabled = 0
+Tmballc015.enabled = 0
+Tmballc016.enabled = 0
+Tmballc017.enabled = 0
+Tmballc018.enabled = 0
+Tmballc019.enabled = 0
+Tmballc020.enabled = 0
+Tmballc021.enabled = 0
+Tmballc022.enabled = 0
+Tmballc023.enabled = 0
+Tmballc024.enabled = 0
+Tmballc025.enabled = 0
+Tmballc026.enabled = 0
+Tmballc027.enabled = 0
+Tmballc028.enabled = 0
+Tmballc029.enabled = 0
+Tmballc030.enabled = 0
+end sub
+
+'************************************************
+'**************b2s counters*****************
+'************************************************
+
+sub Updatemonkeycountr
+select case monkeybattle
+				case 0 : monkeynbr0:monkeynbr00
+				case 1 : startB2S(51)
+				case 2 : startB2S(52)
+				case 3 : startB2S(53)
+				case 4 : startB2S(54)
+				case 5 : startB2S(55):punten2
+				case 6 : startB2S(56)
+				case 7 : startB2S(57)
+				case 8 : startB2S(58)
+				case 9 : startB2S(59)
+				case 10 : monkeynbr0:monkeynbr10
+				case 11 : startB2S(51)
+				case 12 : startB2S(52)
+				case 13 : startB2S(53)
+				case 14 : startB2S(54)
+				case 15 : startB2S(55):punten6
+				case 16 : startB2S(56)
+				case 17 : startB2S(57)
+				case 18 : startB2S(58)
+				case 19 : startB2S(59)
+				case 20 : monkeynbr0:monkeynbr20
+				case 21 : startB2S(51)
+				case 22 : startB2S(52)
+				case 23 : startB2S(53)
+				case 24 : startB2S(54)
+				case 25 : startB2S(55):punten10
+				case 26 : startB2S(56)
+				case 27 : startB2S(57)
+				case 28 : startB2S(58)
+				case 29 : startB2S(59)
+				case 30 : monkeynbr0:monkeynbr30
+				case 31 : startB2S(51)
+				case 32 : startB2S(52)
+				case 33 : startB2S(53)
+				case 34 : startB2S(54)
+				case 35 : startB2S(55)
+				case 36 : startB2S(56)
+				case 37 : startB2S(57)
+				case 38 : startB2S(58)
+				case 39 : startB2S(59)
+				case 40 : monkeynbr0:monkeynbr40
+				case 41 : startB2S(51)
+				case 42 : startB2S(52)
+				case 43 : startB2S(53)
+				case 44 : startB2S(54)
+				case 45 : startB2S(55)
+				case 46 : startB2S(56)
+				case 47 : startB2S(57)
+				case 48 : startB2S(58)
+				case 49 : startB2S(59)
+				case 50 : monkeynbr0:monkeynbr50
+				case 51 : startB2S(51)
+				case 52 : startB2S(52)
+				case 53 : startB2S(53)
+				case 54 : startB2S(54)
+				case 55 : startB2S(55)
+				case 56 : startB2S(56)
+				case 57 : startB2S(57)
+				case 58 : startB2S(58)
+				case 59 : startB2S(59)
+				case 60 : monkeynbr0:monkeynbr60
+				case 61 : startB2S(51)
+				case 62 : startB2S(52)
+				case 63 : startB2S(53)
+				case 64 : startB2S(54)
+				case 65 : startB2S(55)
+				case 66 : startB2S(56)
+				case 67 : startB2S(57)
+				case 68 : startB2S(58)
+				case 69 : startB2S(59)
+				case 70 : monkeynbr0:monkeynbr70
+				case 71 : startB2S(51)
+				case 72 : startB2S(52)
+				case 73 : startB2S(53)
+				case 74 : startB2S(54)
+				case 75 : startB2S(55)
+				case 76 : startB2S(56)
+				case 77 : startB2S(57)
+				case 78 : startB2S(58)
+				case 79 : startB2S(59)
+				case 80 : monkeynbr0:monkeynbr80
+				case 81 : startB2S(51)
+				case 82 : startB2S(52)
+				case 83 : startB2S(53)
+				case 84 : startB2S(54)
+				case 85 : startB2S(55)
+				case 86 : startB2S(56)
+				case 87 : startB2S(57)
+				case 88 : startB2S(58)
+				case 89 : startB2S(59)
+				case 90 : monkeynbr0:monkeynbr90
+				case 91 : startB2S(51)
+				case 92 : startB2S(52)
+				case 93 : startB2S(53)
+				case 94 : startB2S(54)
+				case 95 : startB2S(55)
+				case 96 : startB2S(56)
+				case 97 : startB2S(57)
+				case 98 : startB2S(58)
+				case 99 : startB2S(59)
+			end Select
+End Sub
+
+sub punten2
+	LightSeq001.StopPlay
+	PFMultiplier = 2
+	DMD "", "", "2x", eNone, eNone, eNone, 1000, True, "bonuss"
+	li022.state = 1
+end sub
+
+sub punten6
+	PFMultiplier = 6
+	DMD "", "", "6x", eNone, eNone, eNone, 1000, True, "bonuss"
+	li023.state = 0
+	li024.state = 1
+end sub
+
+sub punten10
+	PFMultiplier = 10
+	DMD "", "", "10x", eNone, eNone, eNone, 1000, True, "bonuss"
+	li025.state = 0
+	li026.state = 1
+end sub
+
+sub monkeynbr0
+	startB2S(50)
+end sub
+
+sub monkeynbr00
+	vpmtimer.addtimer 500, "startB2S(40) '"
+	vpmtimer.addtimer 750, "startB2S(11) '"
+end sub
+
+sub monkeynbr10
+PFMultiplier = 4
+	DMD "", "", "4x", eNone, eNone, eNone, 1000, True, "bonuss"
+li022.state = 0
+li023.state = 1
+vpmtimer.addtimer 500, "startB2S(41) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr20
+PFMultiplier = 8
+	DMD "", "", "8x", eNone, eNone, eNone, 1000, True, "bonuss"
+li024.state = 0
+li025.state = 1
+vpmtimer.addtimer 500, "startB2S(42) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr30
+PFMultiplier = 12
+	DMD "", "", "12x", eNone, eNone, eNone, 1000, True, "bonuss"
+li026.state = 0
+li027.state = 1
+vpmtimer.addtimer 500, "startB2S(43) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr40
+vpmtimer.addtimer 500, "startB2S(44) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr50
+vpmtimer.addtimer 500, "startB2S(45) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr60
+vpmtimer.addtimer 500, "startB2S(46) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr70
+PFMultiplier = 14
+vpmtimer.addtimer 500, "startB2S(47) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynbr80
+PFMultiplier = 16
+vpmtimer.addtimer 500, "startB2S(48) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub monkeynb90
+PFMultiplier = 18
+vpmtimer.addtimer 500, "startB2S(49) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+end sub
+
+sub Updatetreasurecountr
+select case treasuresfound
+				case 0 : treasurenbr0:treasurenbr00
+				case 1 : startB2S(31)
+				case 2 : startB2S(32)
+				case 3 : startB2S(33)
+				case 4 : startB2S(34)
+				case 5 : startB2S(35)
+				case 6 : startB2S(36)
+				case 7 : startB2S(37)
+				case 8 : startB2S(38)
+				case 9 : startB2S(39)
+				case 10 : treasurenbr0:treasurenbr10
+				case 11 : startB2S(31)
+				case 12 : startB2S(32)
+				case 13 : startB2S(33)
+				case 14 : startB2S(34)
+				case 15 : startB2S(35)
+				case 16 : startB2S(36)
+				case 17 : startB2S(37)
+				case 18 : startB2S(38)
+				case 19 : startB2S(39)
+				case 20 : treasurenbr0:treasurenbr20
+				case 21 : startB2S(31)
+				case 22 : startB2S(32)
+				case 23 : startB2S(33)
+				case 24 : startB2S(34)
+				case 25 : startB2S(35)
+				case 26 : startB2S(36)
+				case 27 : startB2S(37)
+				case 28 : startB2S(38)
+				case 29 : startB2S(39)
+				case 30 : treasurenbr0:treasurenbr30
+				case 31 : startB2S(31)
+				case 32 : startB2S(32)
+				case 33 : startB2S(33)
+				case 34 : startB2S(34)
+				case 35 : startB2S(35)
+				case 36 : startB2S(36)
+				case 37 : startB2S(37)
+				case 38 : startB2S(38)
+				case 39 : startB2S(39)
+				case 40 : treasurenbr0:treasurenbr40
+				case 41 : startB2S(31)
+				case 42 : startB2S(32)
+				case 43 : startB2S(33)
+				case 44 : startB2S(34)
+				case 45 : startB2S(35)
+				case 46 : startB2S(36)
+				case 47 : startB2S(37)
+				case 48 : startB2S(38)
+				case 49 : startB2S(39)
+				case 50 : treasurenbr0:treasurenbr50
+				case 51 : startB2S(31)
+				case 52 : startB2S(32)
+				case 53 : startB2S(33)
+				case 54 : startB2S(34)
+				case 55 : startB2S(35)
+				case 56 : startB2S(36)
+				case 57 : startB2S(37)
+				case 58 : startB2S(38)
+				case 59 : startB2S(39)
+				case 60 : treasurenbr0:treasurenbr60
+				case 61 : startB2S(31)
+				case 62 : startB2S(32)
+				case 63 : startB2S(33)
+				case 64 : startB2S(34)
+				case 65 : startB2S(35)
+				case 66 : startB2S(36)
+				case 67 : startB2S(37)
+				case 68 : startB2S(38)
+				case 69 : startB2S(39)
+				case 70 : treasurenbr0:treasurenbr70
+				case 71 : startB2S(31)
+				case 72 : startB2S(32)
+				case 73 : startB2S(33)
+				case 74 : startB2S(34)
+				case 75 : startB2S(35)
+				case 76 : startB2S(36)
+				case 77 : startB2S(37)
+				case 78 : startB2S(38)
+				case 79 : startB2S(39)
+				case 80 : treasurenbr0:treasurenbr80
+				case 81 : startB2S(31)
+				case 82 : startB2S(32)
+				case 83 : startB2S(33)
+				case 84 : startB2S(34)
+				case 85 : startB2S(35)
+				case 86 : startB2S(36)
+				case 87 : startB2S(37)
+				case 88 : startB2S(38)
+				case 89 : startB2S(39)
+				case 90 : treasurenbr0:treasurenbr90
+				case 91 : startB2S(31)
+				case 92 : startB2S(32)
+				case 93 : startB2S(33)
+				case 94 : startB2S(34)
+				case 95 : startB2S(35)
+				case 96 : startB2S(36)
+				case 97 : startB2S(37)
+				case 98 : startB2S(38)
+				case 99 : startB2S(39)
+			end Select
+End Sub
+
+sub treasurenbr0
+	startB2S(30)
+End Sub
+
+sub treasurenbr00
+vpmtimer.addtimer 500, "startB2S(20) '"
+vpmtimer.addtimer 750, "startB2S(11) '"
+End Sub
+
+sub treasurenbr10
+vpmtimer.addtimer 500, "startB2S(21) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr20
+vpmtimer.addtimer 500, "startB2S(22) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr30
+vpmtimer.addtimer 500, "startB2S(23) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr40
+vpmtimer.addtimer 500, "startB2S(24) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr50
+vpmtimer.addtimer 500, "startB2S(25) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr60
+vpmtimer.addtimer 500, "startB2S(26) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr70
+vpmtimer.addtimer 500, "startB2S(27) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr80
+vpmtimer.addtimer 500, "startB2S(28) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub treasurenbr90
+vpmtimer.addtimer 500, "startB2S(29) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub Updatecoinscountr
+if coinsearned => 99 then exit sub
+select case coinsearned
+				case 0 : coinsnbr0:coinsnbr00
+				case 1 : startB2S(71)
+				case 2 : startB2S(72)
+				case 3 : startB2S(73)
+				case 4 : startB2S(74)
+				case 5 : startB2S(75)
+				case 6 : startB2S(76)
+				case 7 : startB2S(77)
+				case 8 : startB2S(78)
+				case 9 : startB2S(79)
+				case 10 : coinsnbr0:coinsnbr10
+				case 11 : startB2S(71)
+				case 12 : startB2S(72)
+				case 13 : startB2S(73)
+				case 14 : startB2S(74)
+				case 15 : startB2S(75)
+				case 16 : startB2S(76)
+				case 17 : startB2S(77)
+				case 18 : startB2S(78)
+				case 19 : startB2S(79)
+				case 20 : coinsnbr0:coinsnbr20
+				case 21 : startB2S(71)
+				case 22 : startB2S(72)
+				case 23 : startB2S(73)
+				case 24 : startB2S(74)
+				case 25 : startB2S(75)
+				case 26 : startB2S(76)
+				case 27 : startB2S(77)
+				case 28 : startB2S(78)
+				case 29 : startB2S(79)
+				case 30 : coinsnbr0:coinsnbr30
+				case 31 : startB2S(71)
+				case 32 : startB2S(72)
+				case 33 : startB2S(73)
+				case 34 : startB2S(74)
+				case 35 : startB2S(75)
+				case 36 : startB2S(76)
+				case 37 : startB2S(77)
+				case 38 : startB2S(78)
+				case 39 : startB2S(79)
+				case 40 : coinsnbr0:coinsnbr40
+				case 41 : startB2S(71)
+				case 42 : startB2S(72)
+				case 43 : startB2S(73)
+				case 44 : startB2S(74)
+				case 45 : startB2S(75)
+				case 46 : startB2S(76)
+				case 47 : startB2S(77)
+				case 48 : startB2S(78)
+				case 49 : startB2S(79)
+				case 70 : coinsnbr0:coinsnbr50
+				case 51 : startB2S(71)
+				case 52 : startB2S(72)
+				case 53 : startB2S(73)
+				case 54 : startB2S(74)
+				case 55 : startB2S(75)
+				case 56 : startB2S(76)
+				case 57 : startB2S(77)
+				case 58 : startB2S(78)
+				case 59 : startB2S(79)
+				case 60 : coinsnbr0:coinsnbr60
+				case 61 : startB2S(71)
+				case 62 : startB2S(72)
+				case 63 : startB2S(73)
+				case 64 : startB2S(74)
+				case 65 : startB2S(75)
+				case 66 : startB2S(76)
+				case 67 : startB2S(77)
+				case 68 : startB2S(78)
+				case 69 : startB2S(79)
+				case 70 : coinsnbr0:coinsnbr70
+				case 71 : startB2S(71)
+				case 72 : startB2S(72)
+				case 73 : startB2S(73)
+				case 74 : startB2S(74)
+				case 75 : startB2S(75)
+				case 76 : startB2S(76)
+				case 77 : startB2S(77)
+				case 78 : startB2S(78)
+				case 79 : startB2S(79)
+				case 80 : coinsnbr0:coinsnbr80
+				case 81 : startB2S(71)
+				case 82 : startB2S(72)
+				case 83 : startB2S(73)
+				case 84 : startB2S(74)
+				case 85 : startB2S(75)
+				case 86 : startB2S(76)
+				case 87 : startB2S(77)
+				case 88 : startB2S(78)
+				case 89 : startB2S(79)
+				case 90 : coinsnbr0:coinsnbr90
+				case 91 : startB2S(71)
+				case 92 : startB2S(72)
+				case 93 : startB2S(73)
+				case 94 : startB2S(74)
+				case 95 : startB2S(75)
+				case 96 : startB2S(76)
+				case 97 : startB2S(77)
+				case 98 : startB2S(78)
+				case 99 : startB2S(79)
+			end Select
+End Sub
+
+sub coinsnbr0
+	startB2S(70)
+End Sub
+
+sub coinsnbr00
+vpmtimer.addtimer 500, "startB2S(60) '"
+vpmtimer.addtimer 750, "startB2S(11) '"
+End Sub
+
+sub coinsnbr10
+vpmtimer.addtimer 500, "startB2S(61) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr20
+vpmtimer.addtimer 500, "startB2S(62) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr30
+vpmtimer.addtimer 500, "startB2S(63) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr40
+vpmtimer.addtimer 500, "startB2S(64) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr50
+vpmtimer.addtimer 500, "startB2S(65) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr60
+vpmtimer.addtimer 500, "startB2S(66) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr70
+vpmtimer.addtimer 500, "startB2S(67) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr80
+vpmtimer.addtimer 500, "startB2S(68) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub coinsnbr90
+vpmtimer.addtimer 500, "startB2S(69) '"
+vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub Updatebananascountr()
+	select case bananasearned
+		case 0 : bananasnbr0:bananasbr00
+		case 1 : startB2S(91)
+		case 2 : startB2S(92)
+		case 3 : startB2S(93)
+		case 4 : startB2S(94)
+		case 5 : startB2S(95)
+		case 6 : startB2S(96)
+		case 7 : startB2S(97)
+		case 8 : startB2S(98)
+		case 9 : startB2S(99)
+		case 10 : bananasnbr0:bananasbr10
+		case 11 : startB2S(91)
+		case 12 : startB2S(92)
+		case 13 : startB2S(93)
+		case 14 : startB2S(94)
+		case 15 : startB2S(95)
+		case 16 : startB2S(96)
+		case 17 : startB2S(97)
+		case 18 : startB2S(98)
+		case 19 : startB2S(99)
+		case 20 : bananasnbr0:bananasbr20
+		case 21 : startB2S(91)
+		case 22 : startB2S(92)
+		case 23 : startB2S(93)
+		case 24 : startB2S(94)
+		case 25 : startB2S(95)
+		case 26 : startB2S(96)
+		case 27 : startB2S(97)
+		case 28 : startB2S(98)
+		case 29 : startB2S(99)
+		case 30 : bananasnbr0:bananasbr30
+		case 31 : startB2S(91)
+		case 32 : startB2S(92)
+		case 33 : startB2S(93)
+		case 34 : startB2S(94)
+		case 35 : startB2S(95)
+		case 36 : startB2S(96)
+		case 37 : startB2S(97)
+		case 38 : startB2S(98)
+		case 39 : startB2S(99)
+		case 40 : bananasnbr0:bananasbr40
+		case 41 : startB2S(91)
+		case 42 : startB2S(92)
+		case 43 : startB2S(93)
+		case 44 : startB2S(94)
+		case 45 : startB2S(95)
+		case 46 : startB2S(96)
+		case 47 : startB2S(97)
+		case 48 : startB2S(98)
+		case 49 : startB2S(99)
+		case 50 : bananasnbr0:bananasbr50
+		case 51 : startB2S(91)
+		case 52 : startB2S(92)
+		case 53 : startB2S(93)
+		case 54 : startB2S(94)
+		case 55 : startB2S(95)
+		case 56 : startB2S(96)
+		case 57 : startB2S(97)
+		case 58 : startB2S(98)
+		case 59 : startB2S(99)
+		case 60 : bananasnbr0:bananasbr60
+		case 61 : startB2S(91)
+		case 62 : startB2S(92)
+		case 63 : startB2S(93)
+		case 64 : startB2S(94)
+		case 65 : startB2S(95)
+		case 66 : startB2S(96)
+		case 67 : startB2S(97)
+		case 68 : startB2S(98)
+		case 69 : startB2S(99)
+		case 70 : bananasnbr0:bananasbr70
+		case 71 : startB2S(91)
+		case 72 : startB2S(92)
+		case 73 : startB2S(93)
+		case 74 : startB2S(94)
+		case 75 : startB2S(95)
+		case 76 : startB2S(96)
+		case 77 : startB2S(97)
+		case 78 : startB2S(98)
+		case 79 : startB2S(99)
+		case 80 : bananasnbr0:bananasbr80
+		case 81 : startB2S(91)
+		case 82 : startB2S(92)
+		case 83 : startB2S(93)
+		case 84 : startB2S(94)
+		case 85 : startB2S(95)
+		case 86 : startB2S(96)
+		case 87 : startB2S(97)
+		case 88 : startB2S(98)
+		case 89 : startB2S(99)
+		case 90 : bananasnbr0:bananasbr90
+		case 91 : startB2S(91)
+		case 92 : startB2S(92)
+		case 93 : startB2S(93)
+		case 94 : startB2S(94)
+		case 95 : startB2S(95)
+		case 96 : startB2S(96)
+		case 97 : startB2S(97)
+		case 98 : startB2S(98)
+		case 99 : startB2S(99)
+	end Select
+End Sub
+
+sub bananasnbr0()
+	startB2S(90)
+End Sub
+
+sub bananasbr00()
+	vpmtimer.addtimer 500, "startB2S(80) '"
+	vpmtimer.addtimer 750, "startB2S(11) '"
+End Sub
+
+sub bananasbr10()
+	vpmtimer.addtimer 500, "startB2S(81) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr20()
+	vpmtimer.addtimer 500, "startB2S(82) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr30()
+	vpmtimer.addtimer 500, "startB2S(83) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr40()
+	vpmtimer.addtimer 500, "startB2S(84) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr50()
+	vpmtimer.addtimer 500, "startB2S(85) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr60()
+	vpmtimer.addtimer 500, "startB2S(86) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr70()
+	vpmtimer.addtimer 500, "startB2S(87) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr80()
+	vpmtimer.addtimer 500, "startB2S(88) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub bananasbr90()
+	vpmtimer.addtimer 500, "startB2S(89) '"
+	vpmtimer.addtimer 750, "startB2S(3) '"
+End Sub
+
+sub resetycoins()
+	coinsearned = 0
+	Updatecoinscountr
+	vpmtimer.addtimer 1000, "resettreasures '"
+end sub
+
+sub resettreasures()
+	treasuresfound = 0
+	Updatetreasurecountr
+	vpmtimer.addtimer 1000, "resetbananasy '"
+end sub
+
+Sub resetbananasy()
+	bananasearned = 0
+	Updatebananascountr
+	vpmtimer.addtimer 1000, "resetmonkeybattlys '"
+end sub
+
+Sub resetmonkeybattlys()
+	monkeybattle = 0
+	Updatemonkeycountr
+end sub
