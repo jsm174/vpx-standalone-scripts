@@ -1315,8 +1315,18 @@
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkeyislandv1.1/monkeyisland.vbs.original",
     "patched": {
       "file": "monkeyisland.vbs",
-      "sha256": "1ab7350f013324dc15da89e2fcd2016d34cc26e3de4595c9ff59e77446594f25",
+      "sha256": "2e5fa16aae66dcf571abe7b6c28802ae12b1ba95c4515a43aba75e51817e10b1",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkeyislandv1.1/monkeyisland.vbs"
+    }
+  },
+  {
+    "file": "monkeyisland.vbs.original.vbs.original",
+    "sha256": "",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkeyislandv1.1/monkeyisland.vbs.original.vbs.original",
+    "patched": {
+      "file": "monkeyisland.vbs.original.vbs",
+      "sha256": "792cb311829e47d06fe65bb3be8a90849c321367f3c3bb3faee28238c0e10c79",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monkeyislandv1.1/monkeyisland.vbs.original.vbs"
     }
   },
   {
@@ -2287,6 +2297,26 @@
       "file": "fireball II VPX.vbs",
       "sha256": "f62f4a18642f7e6fc1307237cb8f24ca5906ce9d09a51c01fbc9b313372345e9",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/fireball II VPX/fireball II VPX.vbs"
+    }
+  },
+  {
+    "file": "indochinecentral.vbs.original",
+    "sha256": "95bca613efc9c72d06117bd23edbf0b7180f246b57213d859c9e0ccddfa40208",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/indochinecentral/indochinecentral.vbs.original",
+    "patched": {
+      "file": "indochinecentral.vbs",
+      "sha256": "01d792a2e862fca8f1d8b9f7dd8ea56c576368795d3e6e454ea90c22bdd15154",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/indochinecentral/indochinecentral.vbs"
+    }
+  },
+  {
+    "file": "indochinecentralPUP.vbs.original",
+    "sha256": "dbbc1b1bd0b4642f06da6760d0b502441b27f0f433d389835ed58fc26852b065",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/indochinecentralPUP/indochinecentralPUP.vbs.original",
+    "patched": {
+      "file": "indochinecentralPUP.vbs",
+      "sha256": "8546b7760ed2b050ff821b0ca0f95e86a5db07558fd2eaf4edf007d170be89a0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/indochinecentralPUP/indochinecentralPUP.vbs"
     }
   },
   {
