@@ -160,6 +160,16 @@
     }
   },
   {
+    "file": "Alfred Hitchcock's Psycho (TBA 2019).vbs.original",
+    "sha256": "6953eccdea307a0a4a011f9566e185746f82fcdb8faa1a32b39a392169e1df9a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Alfred Hitchcock's Psycho (TBA 2019)/Alfred Hitchcock's Psycho (TBA 2019).vbs.original",
+    "patched": {
+      "file": "Alfred Hitchcock's Psycho (TBA 2019).vbs",
+      "sha256": "e75d039740b742fe4d57da66ad2649bba30301976c2ded8bdac42fcd54221822",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Alfred Hitchcock's Psycho (TBA 2019)/Alfred Hitchcock's Psycho (TBA 2019).vbs"
+    }
+  },
+  {
     "file": "Alien Poker (Williams 1980).vbs.original",
     "sha256": "5b2cd741ee5fafafca8e1f51ae6c668699db374d582c03a659fec508d65517a2",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/AlienPoker(Williams1980)1.0/Alien Poker (Williams 1980).vbs.original",

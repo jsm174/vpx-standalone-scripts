@@ -1,9 +1,6 @@
---- Alfred Hitchcock's Psycho (TBA 2019).vbs.original	2025-03-20 10:32:41
-+++ Alfred Hitchcock's Psycho (TBA 2019).vbs	2025-03-20 10:29:52
-@@ -292,11 +292,11 @@
- SolCallback(4) = "dtbank3.SolDropUp"
- SolCallback(5) = "dtbank1.SolDropUp"
- 'SolCallback(6) = ""
+--- Alfred Hitchcock's Psycho (TBA 2019).vbs.original
++++ Alfred Hitchcock's Psycho (TBA 2019).vbs
+@@ -295,5 +295,5 @@
 -SolCallback(7) = "dtbank1..SolHit 1,"
 -SolCallback(8) = "dtbank1..SolHit 2,"
 -SolCallback(9) = "dtbank1..SolHit 3,"
@@ -14,7 +11,3 @@
 +SolCallback(9) = "dtbank1.SolHit 3,"
 +SolCallback(10) = "dtbank1.SolHit 4,"
 +SolCallback(11) = "dtbank1.SolHit 5,"
- 
- SolCallback(12) = "SolLeftGi" 'left flash effect
- SolCallback(13) = "SolRightGi" 'right flash effect
-\ No newline at end of file
