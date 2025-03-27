@@ -2220,6 +2220,16 @@
     }
   },
   {
+    "file": "Wednesday (Netflix 2023).vbs.original",
+    "sha256": "4378a4432ddd8e60abddbb4161657de026320a1686fb84e21904f82716b9d5a8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wednesday (Netflix 2023)/Wednesday (Netflix 2023).vbs.original",
+    "patched": {
+      "file": "Wednesday (Netflix 2023).vbs",
+      "sha256": "0344a75239d4c068b3f96b7c97b33001a9c353451a35e4a7cd947bfd0ff1640d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wednesday (Netflix 2023)/Wednesday (Netflix 2023).vbs"
+    }
+  },
+  {
     "file": "Wheel of Fortune (Stern 2007) 1.0.vbs.original",
     "sha256": "40e7363dd933c2c0a2eed943c4467bfa6398178fd412c180c0b7bb854eccda58",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wheel of Fortune (Stern 2007) 1.0/Wheel of Fortune (Stern 2007) 1.0.vbs.original",

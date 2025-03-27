@@ -1,39 +1,15 @@
 --- Wednesday (Netflix 2023).vbs.original
 +++ Wednesday (Netflix 2023).vbs
-@@ -19,7 +19,8 @@
- 
- Dim bsTrough, dtbank1, dtbank2, dtbank3, dtbank4, dtbank5, dtbank6, x
- 
+@@ -22 +22,2 @@
 -Const cGameName = "Wednesday"
 +'Const cGameName = "Wednesday"
 +Const cGameName = "mrblack"
- ' Const cGameName = "mrblack1" 'extra music
- 
- Const UseSolenoids = 2
-@@ -93,7 +94,7 @@
- '************
- 
- Sub table1_Init
+@@ -96 +97 @@
 -	NVramPatchLoad
 +	'NVramPatchLoad
-     vpmInit me
-     With Controller
- 		.GameName = "mrblack"' *** WIESSHUND ***
-@@ -180,7 +181,7 @@
- Sub table1_Paused:Controller.Pause = 1:End Sub
- Sub table1_unPaused:Controller.Pause = 0:End Sub
- Sub table1_exit
+@@ -183 +184 @@
 -		NVramPatchExit
 +		'NVramPatchExit
- 		Controller.stop
-         Controller.Games("mrblack").Settings.value("volume") = 0 ' *** WIESSHUND ***
- End Sub
-@@ -567,7 +568,7 @@
-     End If
-     UpdateLeds
-     UpdateLamps
+@@ -570 +571 @@
 -    NVramPatchKeyCheck
 +    'NVramPatchKeyCheck
- End Sub
- 
- 
