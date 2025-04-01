@@ -1980,6 +1980,16 @@
     }
   },
   {
+    "file": "TX-Sector (Gottlieb 1988) SG1bsoN Mod V1.1.vbs.original",
+    "sha256": "37154087cb216dbfb45ab154aa1b9735df90d1cbf35fa87cac6075bd46f448eb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TX-Sector (Gottlieb 1988) SG1bsoN Mod V1.1/TX-Sector (Gottlieb 1988) SG1bsoN Mod V1.1.vbs.original",
+    "patched": {
+      "file": "TX-Sector (Gottlieb 1988) SG1bsoN Mod V1.1.vbs",
+      "sha256": "5970a1bdbf1189f4aa4941fb28d335d44fa3616484b4214de1f89f5f1728166a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TX-Sector (Gottlieb 1988) SG1bsoN Mod V1.1/TX-Sector (Gottlieb 1988) SG1bsoN Mod V1.1.vbs"
+    }
+  },
+  {
     "file": "Tales from the Crypt (Data East 1993) VPW v1.22.vbs.original",
     "sha256": "3b922d69bc9e6c7c3cd5dead7a35b538b526b97c99f62f95bbb6fda2bc2107c2",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Tales from the Crypt (Data East 1993) VPW v1.22/Tales from the Crypt (Data East 1993) VPW v1.22.vbs.original",
