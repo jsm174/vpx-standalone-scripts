@@ -580,6 +580,16 @@
     }
   },
   {
+    "file": "DORAEMON.vbs.original",
+    "sha256": "bf368bec55b680f963778ea886446283f4accae025041339743ee4ad0a556716",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/DORAEMON/DORAEMON.vbs.original",
+    "patched": {
+      "file": "DORAEMON.vbs",
+      "sha256": "3150122bf09976ab8e0d5a1e5d2985654f9018a2e975c714e57a1365d1969a45",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/DORAEMON/DORAEMON.vbs"
+    }
+  },
+  {
     "file": "DarkPrincess1.3.1.vbs.original",
     "sha256": "95ad90a27da482ffced00b8d01dc3377f8945ace5e1454a3c2410c71e103f663",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/DarkPrincess1.3.1/DarkPrincess1.3.1.vbs.original",
