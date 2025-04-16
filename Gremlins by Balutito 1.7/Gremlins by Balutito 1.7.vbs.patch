@@ -1,9 +1,6 @@
 --- Gremlins by Balutito 1.7.vbs.original
 +++ Gremlins by Balutito 1.7.vbs
-@@ -162,6 +162,133 @@
- Const DMD_SemiColon = "VPX.DMD_SemiColon"
- Const DMD_SingleQuote = "VPX.DMD_SingleQuote"
- 
+@@ -164,0 +165,127 @@
 +'***********************************************************************************
 +'****				        	Lamp reference      				  		  	****
 +'***********************************************************************************
@@ -131,22 +128,13 @@
 +
 +
 +
- 
- On Error Resume Next
- ExecuteGlobal GetTextFile("controller.vbs")
-@@ -169,7 +296,7 @@
- On Error Goto 0
- 
- LoadVPM"01001100","sys80.VBS",3.42
+@@ -172 +299 @@
 -OptionsLoad
 +'OptionsLoad
- 
- 
- Sub Victory_Init
-@@ -1523,131 +1650,6 @@
- 
- 
- 
+@@ -1523,125 +1649,0 @@
+-
+-
+-
 -'***********************************************************************************
 -'****				        	Lamp reference      				  		  	****
 -'***********************************************************************************
@@ -269,9 +257,3 @@
 -const dShooterLane	 				= 201	' Shooterlane
 -const dLeftSlingshot 				= 211	' Left Slingshot
 -const dRightSlingshot 				= 212	' Right Slingshot
--
--
--
- 
- 
- 

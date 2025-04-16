@@ -900,6 +900,16 @@
     }
   },
   {
+    "file": "Gremlins by Balutito 1.7.vbs.original",
+    "sha256": "6d52e134537831f79f387b1776ace495ea49620107dc035d81c39f72174a2472",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gremlins by Balutito 1.7/Gremlins by Balutito 1.7.vbs.original",
+    "patched": {
+      "file": "Gremlins by Balutito 1.7.vbs",
+      "sha256": "c8817eb0cc6ee082f1aaff9b36e1557ccc7fa8ac7206c0e2da057737b9b43b2e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gremlins by Balutito 1.7/Gremlins by Balutito 1.7.vbs"
+    }
+  },
+  {
     "file": "HALO.vbs.original",
     "sha256": "db67f67b5a18f783601229ef8ffb363421b5a3d9ceac7316df91f64ee8878daa",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/HALO/HALO.vbs.original",
