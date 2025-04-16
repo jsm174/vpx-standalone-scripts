@@ -1990,6 +1990,16 @@
     }
   },
   {
+    "file": "Streets of Rage (TBA 2018).vbs.original",
+    "sha256": "6d4bc57b3b390cf0c222030e9e8d5639875218f158e12212a73963a2df96f84a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Streets of Rage (TBA 2018)/Streets of Rage (TBA 2018).vbs.original",
+    "patched": {
+      "file": "Streets of Rage (TBA 2018).vbs",
+      "sha256": "2ab8c010078b19a2d82912bcb5f981e118a92cf4330ce42b3e8b89de9d32d212",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Streets of Rage (TBA 2018)/Streets of Rage (TBA 2018).vbs"
+    }
+  },
+  {
     "file": "Strikes And Spares (Bally 1978) 2.0.vbs.original",
     "sha256": "6bc25adacccd9895a857d8420fee6dfff1374bbfdc43570bbcfe16bd07a8b087",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Strikes And Spares (Bally 1978) 2.0/Strikes And Spares (Bally 1978) 2.0.vbs.original",
