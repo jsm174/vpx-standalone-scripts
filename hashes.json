@@ -1440,6 +1440,16 @@
     }
   },
   {
+    "file": "Oba Oba (Taito do Brasil - 1979) v55_VPX8.vbs.original",
+    "sha256": "edabcd14cc02a5ec835b0ad5a6fc62ef0f14057ecec0ab87ed3339b61195b408",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Oba Oba (Taito do Brasil - 1979) v55_VPX8/Oba Oba (Taito do Brasil - 1979) v55_VPX8.vbs.original",
+    "patched": {
+      "file": "Oba Oba (Taito do Brasil - 1979) v55_VPX8.vbs",
+      "sha256": "7705f2bcd70c39a24917da9d037582aaac32a1ba2b9a966be304187b595c2683",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Oba Oba (Taito do Brasil - 1979) v55_VPX8/Oba Oba (Taito do Brasil - 1979) v55_VPX8.vbs"
+    }
+  },
+  {
     "file": "Party Animal (Bally 1987).vbs.original",
     "sha256": "bbc286e11d7f00943d84ada63568b6968357b213c6e2ea69850e7f9963b4589f",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Party Animal (Bally 1987)/Party Animal (Bally 1987).vbs.original",
