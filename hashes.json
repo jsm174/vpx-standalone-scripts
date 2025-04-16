@@ -880,6 +880,16 @@
     }
   },
   {
+    "file": "HALO.vbs.original",
+    "sha256": "db67f67b5a18f783601229ef8ffb363421b5a3d9ceac7316df91f64ee8878daa",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/HALO/HALO.vbs.original",
+    "patched": {
+      "file": "HALO.vbs",
+      "sha256": "24c76dc1675d31d5445b9689cf2a0a8e825d24f9a7ad6711f0ee7fa8ecd058aa",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/HALO/HALO.vbs"
+    }
+  },
+  {
     "file": "Halloween 1978-1981 (Original 2022) 1.03.vbs.original",
     "sha256": "2af841cdd9c64464fa2697b4267995a40962c2a161dc8bda3c38ab4ed75be692",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Halloween 1978-1981 (Original 2022) 1.03/Halloween 1978-1981 (Original 2022) 1.03.vbs.original",
