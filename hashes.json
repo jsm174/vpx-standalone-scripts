@@ -1690,6 +1690,16 @@
     }
   },
   {
+    "file": "SMGP.vbs.original",
+    "sha256": "cffb1889edcffab13a5c85576ef96673177b69914f1f6ea9a1c2fa551d91c016",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SMGP (Super Mario Galaxy Pinball)/SMGP.vbs.original",
+    "patched": {
+      "file": "SMGP.vbs",
+      "sha256": "e0cef436f64f2806d1ce7b6c48c901c8e827ed8a65f61e899974040eaa46e01f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SMGP (Super Mario Galaxy Pinball)/SMGP.vbs"
+    }
+  },
+  {
     "file": "Safe Cracker (Bally 1996) v1.0.vbs.original",
     "sha256": "e224e815280ce8e74ec1d2dfe1562dee9e5675b3f379cb5031ff69c39007fa0a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Safe Cracker (Bally 1996) v1.0/Safe Cracker (Bally 1996) v1.0.vbs.original",
