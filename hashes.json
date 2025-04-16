@@ -1910,6 +1910,16 @@
     }
   },
   {
+    "file": "Stellar Wars (Williams 1979).vbs.original",
+    "sha256": "e8c4e753640458b05f9ef92595b92e1b26183b1661ca7ab7678222d3e538049d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stellar Wars (Williams 1979)/Stellar Wars (Williams 1979).vbs.original",
+    "patched": {
+      "file": "Stellar Wars (Williams 1979).vbs",
+      "sha256": "10c9ad749cd0f44f168f8edfbfb1f85e0e512f6fb22c4f66c73f29cb6bca1d29",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stellar Wars (Williams 1979)/Stellar Wars (Williams 1979).vbs"
+    }
+  },
+  {
     "file": "Stingray (Stern 1977).vbs.original",
     "sha256": "94c1e8a3444862ffb953b0813fd1034ae525c6a3978e291fb3a7a45304abbf77",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stingray (Stern 1977) 2.0/Stingray (Stern 1977).vbs.original",
