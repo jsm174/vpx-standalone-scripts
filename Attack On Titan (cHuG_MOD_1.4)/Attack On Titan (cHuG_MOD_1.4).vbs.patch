@@ -1,11 +1,5 @@
 --- Attack On Titan (cHuG_MOD_1.4).vbs.original
 +++ Attack On Titan (cHuG_MOD_1.4).vbs
-@@ -2475,7 +2475,7 @@
-     MyLamp.TimerInterval = BlinkPeriod
-     MyLamp.TimerEnabled = 0
-     MyLamp.TimerEnabled = 1
+@@ -2478 +2478 @@
 -    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp (me.UserValue - INT(me.UserValue))*100, me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
 +    ExecuteGlobal "Sub " & MyLamp.Name & "_Timer:" & "SetLamp 100*(me.UserValue - INT(me.UserValue)), me.UserValue MOD 2:me.UserValue= me.UserValue -1:If me.UserValue < 0 then Me.TimerEnabled=0:End If:End Sub"
- End Sub
- 
- ' standard VPX objects

@@ -210,6 +210,16 @@
     }
   },
   {
+    "file": "Attack On Titan (cHuG_MOD_1.4).vbs.original",
+    "sha256": "e12d2e11a2ba9fef1e988f1c50f3752824c075ed9ebc8e1cc595585da4cd5f3a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Attack On Titan (cHuG_MOD_1.4)/Attack On Titan (cHuG_MOD_1.4).vbs.original",
+    "patched": {
+      "file": "Attack On Titan (cHuG_MOD_1.4).vbs",
+      "sha256": "1d260c49f79bf93b3c537f3d908bd65a5feedcf23bf3bca18af985298ceb1e05",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Attack On Titan (cHuG_MOD_1.4)/Attack On Titan (cHuG_MOD_1.4).vbs"
+    }
+  },
+  {
     "file": "Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP.vbs.original",
     "sha256": "e2decb7dd02dc27a17dec33014be40fe0ef7c3f8080892993b278669b6ea5e42",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP/Aztec (Williams 1976) 1.3 Mod Citedor JPJ-ARNGRIM-CED Team PP.vbs.original",
