@@ -1,9 +1,6 @@
 --- Meteor (Stern 1979).vbs.original
 +++ Meteor (Stern 1979).vbs
-@@ -1593,6 +1593,39 @@
- '		DROP TARGETS INITIALIZATION
- '******************************************************
- 
+@@ -1595,0 +1596,33 @@
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -37,37 +34,28 @@
 +  End Function
 +End Class
 +
- 'Define a variable for each drop target
- Dim DT9, DT10, DT11, DT19, DT20, DT21, DT22, DT23, DT24, DT27, DT28, DT29, DT30, DT31, DT32
- 
-@@ -1613,27 +1646,27 @@
- '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
- 
- ' 1 Bank
+@@ -1616,3 +1649,3 @@
 -DT22 = Array(sw22, sw22y, psw22, 22, 0)
 -DT23 = Array(sw23, sw23y, psw23, 23, 0)
 -DT24 = Array(sw24, sw24y, psw24, 24, 0)
 +Set DT22 = (new DropTarget)(sw22, sw22y, psw22, 22, 0, false)
 +Set DT23 = (new DropTarget)(sw23, sw23y, psw23, 23, 0, false)
 +Set DT24 = (new DropTarget)(sw24, sw24y, psw24, 24, 0, false)
- 
- ' 2 Bank
+@@ -1621,3 +1654,3 @@
 -DT19 = Array(sw19, sw19y, psw19, 19, 0)
 -DT20 = Array(sw20, sw20y, psw20, 20, 0)
 -DT21 = Array(sw21, sw21y, psw21, 21, 0)
 +Set DT19 = (new DropTarget)(sw19, sw19y, psw19, 19, 0, false)
 +Set DT20 = (new DropTarget)(sw20, sw20y, psw20, 20, 0, false)
 +Set DT21 = (new DropTarget)(sw21, sw21y, psw21, 21, 0, false)
- 
- ' 3 Bank
+@@ -1626,3 +1659,3 @@
 -DT9 = Array(sw9, sw9y, psw9, 9, 0)
 -DT10 = Array(sw10, sw10y, psw10, 10, 0)
 -DT11 = Array(sw11, sw11y, psw11, 11, 0)
 +Set DT9 = (new DropTarget)(sw9, sw9y, psw9, 9, 0, false)
 +Set DT10 = (new DropTarget)(sw10, sw10y, psw10, 10, 0, false)
 +Set DT11 = (new DropTarget)(sw11, sw11y, psw11, 11, 0, false)
- 
- ' Meteor Bank
+@@ -1631,6 +1664,6 @@
 -DT27 = Array(sw27, sw27y, psw27, 27, 0)
 -DT28 = Array(sw28, sw28y, psw28, 28, 0)
 -DT29 = Array(sw29, sw29y, psw29, 29, 0)
@@ -80,13 +68,7 @@
 +Set DT30 = (new DropTarget)(sw30, sw30y, psw30, 30, 0, false)
 +Set DT31 = (new DropTarget)(sw31, sw31y, psw31, 31, 0, false)
 +Set DT32 = (new DropTarget)(sw32, sw32y, psw32, 32, 0, false)
- 
- 'Add all the Drop Target Arrays to Drop Target Animation Array
- ' DTAnimationArray = Array(DT1, DT2, ....)
-@@ -1666,10 +1699,10 @@
- 	i = DTArrayID(switch)
- 
- 	PlayTargetSound
+@@ -1669,4 +1702,4 @@
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
@@ -95,41 +77,15 @@
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
- 	End If
- 
- 	DoDTAnim
-@@ -1679,7 +1712,7 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -1682 +1715 @@
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
- 	DoDTAnim
- End Sub
- 
-@@ -1687,14 +1720,14 @@
- 	Dim i
- 	i = DTArrayID(switch)
- 
+@@ -1690 +1723 @@
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
- 	DoDTAnim
- End Sub
- 
- Function DTArrayID(switch)
- 	Dim i
- 	For i = 0 to uBound(DTArray) 
+@@ -1697 +1730 @@
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
- 	Next
- End Function
- 
-@@ -1749,7 +1782,7 @@
- Sub DoDTAnim()
- 	Dim i
- 	For i=0 to Ubound(DTArray)
+@@ -1752 +1785 @@
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
- 	Next
- End Sub
- 

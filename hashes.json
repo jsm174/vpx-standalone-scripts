@@ -1310,6 +1310,16 @@
     }
   },
   {
+    "file": "Meteor (Stern 1979).vbs.original",
+    "sha256": "b5a7109e18348aabe6aaa1b16f539110ba3df33deaef99eae1a84f7bfb23098a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Meteor (Stern 1979)/Meteor (Stern 1979).vbs.original",
+    "patched": {
+      "file": "Meteor (Stern 1979).vbs",
+      "sha256": "d2e0a5ebd8d9e4544b427f7450bc24fcbdd928a2ae58ebd4c0f8e8f88dc23ca7",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Meteor (Stern 1979)/Meteor (Stern 1979).vbs"
+    }
+  },
+  {
     "file": "Monaco (Segasa 1977)V1.4.vbs.original",
     "sha256": "ce17434d262406296f98e2dfa4ea2b2c6d8be100f595fceef9b3be70ebb37694",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Monaco (Segasa 1977)V1.4/Monaco (Segasa 1977)V1.4.vbs.original",
