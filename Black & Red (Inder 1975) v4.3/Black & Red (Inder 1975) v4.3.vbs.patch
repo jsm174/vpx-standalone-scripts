@@ -1,5 +1,0 @@
---- Black & Red (Inder 1975) v4.3.vbs.original
-+++ Black & Red (Inder 1975) v4.3.vbs
-@@ -927 +927 @@
--    MatchReel.SetValue(Match \ 10) + 1
-+    MatchReel.SetValue 1 + (Match \ 10)
