@@ -3,6 +3,7 @@
 '                  Basic EM script up to 4 players
 '                 uses core.vbs for extra functions
 '         Black & Reed / IPD No. 4413 / INDER 1975 / 1 Player
+'                   VPX8 table, version 5.5.0
 ' ***********************************************************************
 
 Option Explicit
@@ -334,6 +335,11 @@ Sub SolRFlipper(Enabled)
     End If
 End Sub
 
+' flippers top animations
+
+Sub LeftFlipper_Animate:LeftFlipperTop.RotZ = LeftFlipper.CurrentAngle: End Sub
+Sub RightFlipper_Animate: RightFlipperTop.RotZ = RightFlipper.CurrentAngle: End Sub
+
 ' flippers hit Sound
 
 Sub LeftFlipper_Collide(parm)
@@ -562,7 +568,7 @@ End Function
 
 Const tnob = 19   'total number of balls
 Const lob = 0     'number of locked balls
-Const maxvel = 26 'max ball velocity
+Const maxvel = 32 'max ball velocity
 ReDim rolling(tnob)
 InitRolling
 
@@ -599,7 +605,7 @@ Sub RollingUpdate()
                 ballvol = Vol(BOT(b))
             Else
                 ballpitch = Pitch(BOT(b)) + 50000 'increase the pitch on a ramp
-                ballvol = Vol(BOT(b)) * 10
+                ballvol = Vol(BOT(b)) * 5
             End If
             rolling(b) = True
             PlaySound("fx_ballrolling" & b), -1, ballvol, Pan(BOT(b)), 0, ballpitch, 1, 0, AudioFade(BOT(b))
@@ -615,7 +621,8 @@ Sub RollingUpdate()
             PlaySound "fx_balldrop", 0, ABS(BOT(b).velz) / 17, Pan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, AudioFade(BOT(b))
         End If
 
-        ' jps ball speed control
+        ' jps ball speed & spin control
+        BOT(b).AngMomZ = BOT(b).AngMomZ * 0.95
         If BOT(b).VelX AND BOT(b).VelY <> 0 Then
             speedfactorx = ABS(maxvel / BOT(b).VelX)
             speedfactory = ABS(maxvel / BOT(b).VelY)
@@ -1554,8 +1561,6 @@ End Sub
 
 Sub RealTime_Timer
     RollingUpdate
-    LeftFlipperTop.RotZ = LeftFlipper.CurrentAngle
-    RightFlipperTop.RotZ = RightFlipper.CurrentAngle
 End Sub
 
 '************************************
