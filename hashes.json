@@ -350,6 +350,16 @@
     }
   },
   {
+    "file": "Big Horse (Maresa 1975) v55_VPX8.vbs.original",
+    "sha256": "47e43beaa7eb44b88bd94b6138b17437d0e0c63da00efb9071350b13cb965af0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Horse (Maresa 1975) v55_VPX8/Big Horse (Maresa 1975) v55_VPX8.vbs.original",
+    "patched": {
+      "file": "Big Horse (Maresa 1975) v55_VPX8.vbs",
+      "sha256": "fb08b9b76e7ac39d9c5430ed333a25bc5c45c9274f5c5332a2aa65f7968e7223",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Horse (Maresa 1975) v55_VPX8/Big Horse (Maresa 1975) v55_VPX8.vbs"
+    }
+  },
+  {
     "file": "Big Star (Williams 1972) v4.3.vbs.original",
     "sha256": "4f1835db3544aa47ee0ddba0d79649f03cf306c8a2296b8794399120873d63af",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Big Star (Williams 1972) v4.3/Big Star (Williams 1972) v4.3.vbs.original",
