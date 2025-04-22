@@ -1830,6 +1830,16 @@
     }
   },
   {
+    "file": "Sons Of Anarchy (Original 2019).vbs.original",
+    "sha256": "3baed89622af2ab61ae533935a4a0a7533addf6f536ce0238338071a136ad3f3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Sons Of Anarchy (Original 2019)/Sons Of Anarchy (Original 2019).vbs.original",
+    "patched": {
+      "file": "Sons Of Anarchy (Original 2019).vbs",
+      "sha256": "668bbcbcc644b82957e39ccd88034456ef85b8c8dbac675db43eaaf6dde6135b",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Sons Of Anarchy (Original 2019)/Sons Of Anarchy (Original 2019).vbs"
+    }
+  },
+  {
     "file": "South Park (Sega 1999) 1.3.vbs.original",
     "sha256": "abd5df2b3c2552418e4ee16fe96ae15de8d83f43b218b8ad86ee941643f060e0",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/South Park (Sega 1999) 1.3/South Park (Sega 1999) 1.3.vbs.original",
