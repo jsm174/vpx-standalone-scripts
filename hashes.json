@@ -2190,6 +2190,16 @@
     }
   },
   {
+    "file": "TheATeam.vbs.original",
+    "sha256": "3b091435c8562682dd7feb1d8ff18d17a950c14850fea2c2d1228875a0ab60a7",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_3.0.2/TheATeam.vbs.original",
+    "patched": {
+      "file": "TheATeam.vbs",
+      "sha256": "50e08442f9ff1dbfc97349025a6168da1ef6885888ed1e26c8881f3b6f89f80e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_3.0.2/TheATeam.vbs"
+    }
+  },
+  {
     "file": "Theatre of Magic (Bally 1995) 2.4.vbs.original",
     "sha256": "88babcfa830129a4f9d74f0dac20f00757492c9a0b27271ab4016880c26d5ae7",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Theatre of Magic (Bally 1995) 2.4/Theatre of Magic (Bally 1995) 2.4.vbs.original",
