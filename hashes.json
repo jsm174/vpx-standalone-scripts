@@ -360,13 +360,13 @@
     }
   },
   {
-    "file": "Black & Red (Inder 1975) v4.3.vbs.original",
-    "sha256": "08e6956f8012f3110c589acdfb31693c2f0118b7e7f7f2b0db080c5b7db89736",
-    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black & Red (Inder 1975) v4.3/Black & Red (Inder 1975) v4.3.vbs.original",
+    "file": "Black & Red (Inder 1975) v55_VPX8.vbs.original",
+    "sha256": "865ec5d88335d84d0eca43823882f796368d73bb6b7f205de67adac1b31e5ea8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black & Red (Inder 1975) v55_VPX8/Black & Red (Inder 1975) v55_VPX8.vbs.original",
     "patched": {
-      "file": "Black & Red (Inder 1975) v4.3.vbs",
-      "sha256": "10a82b74a684a6b13c2b3103c2edef86ceeb9902b590b53f23a03d1b0568eca8",
-      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black & Red (Inder 1975) v4.3/Black & Red (Inder 1975) v4.3.vbs"
+      "file": "Black & Red (Inder 1975) v55_VPX8.vbs",
+      "sha256": "ca9dbaa903985bb4a57e8f71b529ad4496e39a5b0b1025f9004fa2c415323db4",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Black & Red (Inder 1975) v55_VPX8/Black & Red (Inder 1975) v55_VPX8.vbs"
     }
   },
   {

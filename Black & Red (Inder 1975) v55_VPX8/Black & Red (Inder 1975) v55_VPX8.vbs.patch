@@ -1,11 +1,5 @@
 --- Black & Red (Inder 1975) v55_VPX8.vbs.original
 +++ Black & Red (Inder 1975) v55_VPX8.vbs
-@@ -931,7 +931,7 @@
- End Sub
- 
- Sub Display_Match()
+@@ -934 +934 @@
 -    MatchReel.SetValue(Match \ 10) + 1
 +    MatchReel.SetValue 1 + (Match \ 10)
-     If B2SOn then
-         If Match = 0 then
-             Controller.B2SSetMatch 100
