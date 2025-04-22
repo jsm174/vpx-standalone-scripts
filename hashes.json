@@ -1710,6 +1710,16 @@
     }
   },
   {
+    "file": "Running Horse (Inder 1976) v55_VPX8.vbs.original",
+    "sha256": "a838b999688f97f3b28936386daf1c173fbf224f9b1921c768dd113e91860eda",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Running Horse (Inder 1976) v55_VPX8/Running Horse (Inder 1976) v55_VPX8.vbs.original",
+    "patched": {
+      "file": "Running Horse (Inder 1976) v55_VPX8.vbs",
+      "sha256": "4474e281bf8257ef8cfc8b2417a0750f536579f0196053465ee3a1ad394fb26f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Running Horse (Inder 1976) v55_VPX8/Running Horse (Inder 1976) v55_VPX8.vbs"
+    }
+  },
+  {
     "file": "SMGP.vbs.original",
     "sha256": "cffb1889edcffab13a5c85576ef96673177b69914f1f6ea9a1c2fa551d91c016",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/SMGP (Super Mario Galaxy Pinball)/SMGP.vbs.original",

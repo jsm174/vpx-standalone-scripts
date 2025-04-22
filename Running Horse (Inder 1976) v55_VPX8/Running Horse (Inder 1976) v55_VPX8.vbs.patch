@@ -1,11 +1,5 @@
 --- Running Horse (Inder 1976) v55_VPX8.vbs.original
 +++ Running Horse (Inder 1976) v55_VPX8.vbs
-@@ -900,7 +900,7 @@
- End Sub
- 
- Sub Display_Match()
+@@ -903 +903 @@
 -    MatchReel.SetValue(Match \ 11) + 1
 +    MatchReel.SetValue 1 + (Match \ 11)
-     'MatchReel2.SetValue(Match \ 11) + 1
-     If B2SOn then
-         If Match = 0 then
