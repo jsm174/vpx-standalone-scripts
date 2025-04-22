@@ -30,6 +30,16 @@
     }
   },
   {
+    "file": "1679379865_jurassicparklimitededition.vbs.original",
+    "sha256": "518082d06d22300aee4d47d24025c33003708cade7835f7f5669213a9d8efec4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1679379865_jurassicparklimitededition/1679379865_jurassicparklimitededition.vbs.original",
+    "patched": {
+      "file": "1679379865_jurassicparklimitededition.vbs",
+      "sha256": "6051bfc4a97e2a7f0c155a98b2a9e618bd9b53df230928f4e9142521d58f7e11",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/1679379865_jurassicparklimitededition/1679379865_jurassicparklimitededition.vbs"
+    }
+  },
+  {
     "file": "2001 (Gottlieb 1971) v0.99a.vbs.original",
     "sha256": "0bdf965426045a5bb2d98e509cd17ae7b9afc4039b8a10f793cf6123fe9962c9",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/2001 (Gottlieb 1971) v0.99a/2001 (Gottlieb 1971) v0.99a.vbs.original",
