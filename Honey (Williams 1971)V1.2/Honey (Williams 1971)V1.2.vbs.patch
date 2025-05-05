@@ -1,5 +1,0 @@
---- Honey (Williams 1971)V1.2.vbs.original
-+++ Honey (Williams 1971)V1.2.vbs
-@@ -952 +952 @@
--	If (Match \ 10) < 4 Then  MatchReel1.SetValue(Match \ 10) + 1  Else  MatchReel2.SetValue(Match \ 10) + 1
-+	If (Match \ 10) < 4 Then  MatchReel1.SetValue 1 + (Match \ 10)  Else  MatchReel2.SetValue 1 + (Match \ 10)
