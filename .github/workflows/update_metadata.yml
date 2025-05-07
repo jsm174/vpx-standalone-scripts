@@ -26,7 +26,7 @@ jobs:
                 for file in *.original; do
                   basename="${file%.*.*}"
                   for file2 in "$basename.vbs"; do
-                    diff -w -U0 --label="$file" "$file" --label="$file2" "$file2" > "$file2.patch" || true
+                    diff -w -u --label="$file" "$file" --label="$file2" "$file2" > "$file2.patch" || true
                   done
                 done
                 shopt -u nullglob
