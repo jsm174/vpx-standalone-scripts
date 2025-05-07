@@ -1,46 +1,73 @@
 --- Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01.vbs.original
 +++ Aladdin's Castle (Bally 1976) - DOZER - MJR_1.01.vbs
-@@ -628 +628,4 @@
+@@ -625,17 +625,24 @@
+ 		end if
+ 	loop
+ End Sub
 -'******* Key Down *********************************************************************************************************Dim gxx
 +
 +'******* Key Down *********************************************************************************************************
 +Dim gxx
 +
-@@ -630 +633,2 @@
+ Sub Table1_KeyDown(ByVal keycode)   'This is what happens when you push a key down.
 -	If  Keycode = PlungerKey Then       'JP's plunger stuff.		Plunger.PullBack                'Pull back the plunger. 
 +	If  Keycode = PlungerKey Then       'JP's plunger stuff.
 +		Plunger.PullBack                'Pull back the plunger. 
-@@ -633 +637,3 @@
+         If Show_Hands = 1 AND ShowDT = True Then
+         pld = 1:Plunger_Hand.enabled = 1
 -        End If	End If    	If  Keycode = LeftFlipperKey And InProgress = True And Tilt=False Then
 +        End If
 +	End If    
 +	If  Keycode = LeftFlipperKey And InProgress = True And Tilt=False Then
-@@ -638 +644,2 @@
+         If Show_Hands = 1 AND ShowDT=True Then
+         hld = 1:hand_left.enabled = 1
+         End If
+ 
 -		LeftFlipper.RotateToEnd         'If the above conditions are present then flipper goes up.        PlaySoundat SoundFXDOF("flipperup",128,DOFOn,DOFFlippers), leftflipper
 +		LeftFlipper.RotateToEnd         'If the above conditions are present then flipper goes up.
 +        PlaySoundat SoundFXDOF("flipperup",128,DOFOn,DOFFlippers), leftflipper
-@@ -646 +653,3 @@
+ 		PlaySound "BuzzL", -1
+         If Gi_Dim = 1 Then
+         For Each gxx in GI_Lights
+@@ -643,12 +650,15 @@
+         Next
+         DOF 166,1:DOF 165,0
+         gi_bright.enabled = 1
 -        End If	End If    	If  Keycode = RightFlipperKey And InProgress = True And Tilt=False Then
 +        End If
 +	End If    
 +	If  Keycode = RightFlipperKey And InProgress = True And Tilt=False Then
-@@ -651 +660,2 @@
+         If Show_Hands = 1 AND ShowDT = True Then
+ 		rld = 1:hand_right.enabled = 1
+         End If
+ 		RightFlipper.RotateToEnd        'If the above conditions are present then flipper goes up.
 -		RightFlipper1.RotateToEnd       'If the above conditions are present then flipper goes up.		PlaySoundat SoundFXDOF("flipperup",129,DOFOn,DOFFlippers), rightflipper
 +		RightFlipper1.RotateToEnd       'If the above conditions are present then flipper goes up.
 +		PlaySoundat SoundFXDOF("flipperup",129,DOFOn,DOFFlippers), rightflipper
-@@ -659 +669,5 @@
+ 		PlaySound "BuzzR", -1
+         If Gi_Dim = 1 Then
+         For Each gxx in GI_Lights
+@@ -656,19 +666,34 @@
+         Next
+         DOF 166,1:DOF 165,0
+         gi_bright.enabled = 1
 -        End If	End If	If  Keycode = AddCreditKey Then 		Credits=credits + 1             'Add a credit.		MaxCredits                      'Call the max credits sub to check for maximum credits. 
 +        End If
 +	End If
 +	If  Keycode = AddCreditKey Then 
 +		Credits=credits + 1             'Add a credit.
 +		MaxCredits                      'Call the max credits sub to check for maximum credits. 
-@@ -664 +678,3 @@
+ 		PlaySound "credit"              'Play the sound.
+ 		PlaySound SoundFXDOF("knocker-echo",127,DOFPulse,DOFKnocker)        'Play the sound.
+         If B2SOn Then
+ 		Controller.B2ssetCredits Credits
 -        End If		' If  InProgress= False Then TextBox.Text = "Press Start"   'If the game is over then show Press Start.		PlaySound "coinin"               'I wish I had a quarter for every time I've heard this sound. Amen, Bob!
 +        End If
 +		' If  InProgress= False Then TextBox.Text = "Press Start"   'If the game is over then show Press Start.
 +		PlaySound "coinin"               'I wish I had a quarter for every time I've heard this sound. Amen, Bob!
-@@ -668,4 +684,13 @@
+ 	End If
+ 	If  Keycode = StartGameKey Then 
+ 		StartGame                       'Call the start game sub.
 -	End If   	If  Keycode = LeftTiltKey Then      'Left shake.		Nudge 90, 2                     'Degree of shake and strength.
 -		BumpIt                          'Check for tilt	End If    	If  Keycode = RightTiltKey Then     'Right shake.		Nudge 270, 2                    'Degree of shake and strength.
 -		BumpIt                          'Check for tilt	End If    	If  Keycode = CenterTiltKey Then    'Center shake.		Nudge 0, 2                      'Degree of shake and strength.
@@ -58,7 +85,13 @@
 +		Nudge 0, 2                      'Degree of shake and strength.
 +		BumpIt                          'Check for tilt
 +	End If
-@@ -846 +871,7 @@
+ 	if Keycode = 207 and Not InProgress and Not OpMenuActive AND showdt = false then   ' End = Coin Door key = operator menu
+ 		ShowOperatorMenu
+ 	end if
+@@ -843,25 +868,37 @@
+ 	End If 
+ 
+ End Sub
 -'*********** Key Up ******************************************************************************************************* Sub Table1_KeyUp(ByVal keycode)     'This is what happens when you release a key.	If  keycode = PlungerKey Then       'JP's Plunger stuff.		Plunger.Fire                    'Fire the plunger.		Playsoundat "Plungerrelease", Screw61
 +
 +'*********** Key Up *******************************************************************************************************
@@ -67,64 +100,128 @@
 +	If  keycode = PlungerKey Then       'JP's Plunger stuff.
 +		Plunger.Fire                    'Fire the plunger.
 +		Playsoundat "Plungerrelease", Screw61
-@@ -849 +880,3 @@
+         If Show_Hands = 1 AND ShowDT = True Then
+         pld = 11:Plunger_Hand.enabled = 1
 -        End If	End If   	If  Keycode = LeftFlipperKey then
 +        End If
 +	End If   
 +	If  Keycode = LeftFlipperKey then
-@@ -854 +887,2 @@
+ 		Stopsound "BuzzL"
+ 		if InProgress = True And Tilt=False Then
+             If Show_Hands = 1 AND ShowDT = True Then
+             hld = 6:hand_left.enabled = 1 
 -            End If			LeftFlipper.RotateToStart       'If the above conditions are true the flipper goes down.
 +            End If
 +			LeftFlipper.RotateToStart       'If the above conditions are true the flipper goes down.
-@@ -857 +891,2 @@
+              PlaySoundat SoundFXDOF("flipperdown",128,DOFOff,DOFFlippers), LeftFlipper
+ 		end if
 -	End If    	If  Keycode = RightFlipperKey then
 +	End If    
 +	If  Keycode = RightFlipperKey then
-@@ -862 +897,2 @@
+ 		Stopsound "BuzzR"
+ 		if InProgress = True And Tilt=False Then
+             If Show_Hands = 1 AND ShowDT = True Then
+             rld = 6:hand_right.enabled = 1 
 -            End If			RightFlipper.RotateToStart      'If the above conditions are true the flipper goes down.
 +            End If
 +			RightFlipper.RotateToStart      'If the above conditions are true the flipper goes down.
-@@ -864 +900,2 @@
+ 			RightFlipper1.RotateToStart     'If the above conditions are true the flipper goes down.
 -			DOF 129, 0			PlaySoundat SoundFXDOF("flipperdown",129,DOFOff,DOFFlippers), RightFlipper
 +			DOF 129, 0
 +			PlaySoundat SoundFXDOF("flipperdown",129,DOFOff,DOFFlippers), RightFlipper
-@@ -886 +923,2 @@
+ 		end if
+ 	End If
+ 
+@@ -883,7 +920,8 @@
+ End Sub
+  
+ Sub Addcredit()
 -	Credits=credits + 1             'Add a credit.    MaxCredits                      'Call the max credits sub to check for maximum credits. 
 +	Credits=credits + 1             'Add a credit.
 +    MaxCredits                      'Call the max credits sub to check for maximum credits. 
-@@ -917,0 +956 @@
+     PlaySound SoundFXDOF("knocker-echo",127,DOFPulse,DOFKnocker) 
+     If B2SOn Then
+     Controller.B2ssetCredits Credits
+@@ -915,7 +953,9 @@
+     DOF 166,0:DOF 165,1
+     me.enabled = 0
+ End Sub
 +
-@@ -918,0 +958 @@
+ '*************************** New Game ************************************************************************************ 
 + 
-@@ -939 +979,2 @@
+ Sub StartGame
+     ' If we're entering high score initials, or the operator menu is running,
+ 	' the Start button doesn't start a game after all.
+@@ -936,7 +976,8 @@
+ 			if credits > 0 then Credits = Credits - 1  ' Subtract a credit; if 0 credits, leave it at 0 as we must be on free play
+             If B2SOn Then
+ 			Controller.B2ssetCredits Credits
 -            End If  			Players = Players + 1           'Add a player.
 +            End If  
 +			Players = Players + 1           'Add a player.
-@@ -956 +997,4 @@
+ 			Playsound "bally-addplayer"
+             If B2SOn Then
+ 			Controller.B2ssetCanplay 31,Players
+@@ -953,7 +994,10 @@
+ 		End If
+ 	End If
+ End Sub
 -Sub NewGame                          ' Start game, kickass I found a quarter!    Ball=1                           ' Ball 1.	For Each Obj In Toplights:Obj.State=1:Next    ' Top lanes are all lit at the start of each ball
 +
 +Sub NewGame                          ' Start game, kickass I found a quarter!
 +    Ball=1                           ' Ball 1.
 +	For Each Obj In Toplights:Obj.State=1:Next    ' Top lanes are all lit at the start of each ball
-@@ -980 +1024,2 @@
+ 	For Each Obj In Sidelights: Obj.State=0:Next  ' Side lanes are unlit
+ 	For Each Obj In Toprolloverlights: Obj.State=0:Next      ' Top rollovers are unlit
+ 	For Each Obj In Bottomrolloverlights: Obj.State=0:Next   ' Bottom rollovers are unlit
+@@ -977,7 +1021,8 @@
+         Replay1Awarded(i) = false    ' We haven't awarded any replay at level 1 yet to any players
+ 		Replay2Awarded(i) = false    ' Likewise replay level 2
+ 		OverTheTop(i) = false        ' We haven't gone "Over the Top" yet for any player
 -	next    DelayTimer1.Enabled=true
 +	next
 +    DelayTimer1.Enabled=true
-@@ -1015,0 +1061 @@
+     If B2SOn Then
+     Controller.B2ssetgameover 35,0   ' turn off the Game Over backglass light
+     Controller.B2ssetTilt 33,0       ' turn off the Tilt backglass light
+@@ -1013,6 +1058,7 @@
+     DelayTimer1.Enabled=False
+     RandomSoundMetal
+ End Sub 
 + 
-@@ -1024 +1070,4 @@
+ Sub Trigger1_Hit()
+ 	DOF 124, 1
+ End Sub
+@@ -1021,7 +1067,10 @@
+ 	Playsoundat "Plunger", Screw60
+ 	DOF 124, 0
+ End Sub
 - '*********Sound Effects**************************************************************************************************                                       'Use these for your sound effects like ball rolling, etc.
 + 
 +'*********Sound Effects**************************************************************************************************
 +                                       'Use these for your sound effects like ball rolling, etc.
 +
-@@ -1094 +1143,2 @@
+ Sub Rubbers_Hit(idx)
+  	dim finalspeed
+   	finalspeed=SQR(activeball.velx * activeball.velx + activeball.vely * activeball.vely)
+@@ -1091,7 +1140,8 @@
+ 
+ Sub Metals_Hit(idx)
+ RandomSoundMetal
 -End Sub'******************* Bumpers **********************************************************************************************
 +End Sub
 +'******************* Bumpers **********************************************************************************************
-@@ -1117,0 +1168 @@
+ 
+ Sub bumper1_Hit()
+ if Tilt = False Then
+@@ -1115,17 +1165,23 @@
+ End Sub
+ 
+ '********************Tilt*************************************************************************************************
 +
-@@ -1121,2 +1172,5 @@
+ Sub BumpIt
+ 	If  InProgress = True And Tiltcount < 3 Then
+         ' The game is In Progress and not tilted yet.  Count each time you "shake" the game,
 -		' and tilt if we reach 3 bumps in within too short a time span.		Tiltcount = Tiltcount + 1       ' add 1 to the tiltcount while starting the timer.		TiltTimer.Enabled = True
 -	End If	If  Tiltcount > 2 Then              
 +		' and tilt if we reach 3 bumps in within too short a time span.
@@ -132,15 +229,23 @@
 +		TiltTimer.Enabled = True
 +	End If
 +	If  Tiltcount > 2 Then              
-@@ -1124 +1178,2 @@
+         ' The tilt count (times you've shaken the game) has reached 3 within too short a
 -		' time window.  Tilt the game.		Tilt = True
 +		' time window.  Tilt the game.
 +		Tilt = True
-@@ -1128 +1183,2 @@
+ 	End If    
+ 	If  Tilt= True Then                 ' If you've tilted the game do this.     
+ 		TiltIt
 -	End If End Sub
 +	End If 
 +End Sub
-@@ -1188,2 +1244,11 @@
+ 
+ Sub TiltIt
+ 	if InProgress then
+@@ -1185,8 +1241,17 @@
+ Bumper3_Wall.isdropped = 1
+ LeftSlingShot_Wall.isdropped = 1
+ Gotilt.setvalue(2)
 -End Sub   Sub TiltTimer_Timer    TiltTimer.Enabled = False       'Turn off/reset the timer.	If  Tiltcount=3 Then                'If the tilt count reches 3 then the game is tilted,
 -        Tilt = True                     'We have tilted the game.	Else                             		Tiltcount = 0                   'Else tilt count is 0 and reset the tilt timer.	End IfEnd Sub
 +End Sub
@@ -154,35 +259,67 @@
 +	End If
 +End Sub
 + 	 
-@@ -1316,0 +1382 @@
+  	 
+ '********************* Scores and scoring *******************************************************************************
+ 
+@@ -1314,6 +1379,7 @@
+ End Sub
+ 
+ 
 +
-@@ -1649 +1715,3 @@
+ ' ************************* Score Motor *********************************************************************
+ '
+ ' This simulates the score motor mechanism used on the real machine to award 
+@@ -1646,23 +1712,30 @@
+ Sub Slingshots_Hit(IDX)       'If a Slingshot is hit...
+ 	If  Tilt= False Then            'If the game isn't tilted.
+ 		AddScore10                  'Add the score.
 -	End IfEnd Sub
 +	End If
 +End Sub
 +
-@@ -1654 +1722,2 @@
+ Sub Spinner1_Spin()                 'If the Spinner is hit...
+     PlaySoundat "Fx_Spinner", PegPlasticT36
+ 	If Tilt= False Then                'If the game isn't tilted.
+ 		If  Light5.State=1 Then
 -			DOF 126, 2			AddScore100                    'Add the score.
 +			DOF 126, 2
 +			AddScore100                    'Add the score.
-@@ -1659 +1728,3 @@
+ 		Else
+ 			DOF 125, 2
+ 			AddScore10
+ 		End If
 -	End IfEnd Sub 
 +	End If
 +End Sub
 + 
-@@ -1663 +1734,2 @@
+ Sub LeftInlane_Hit()                ' Inlane has been hit.
+ 	PlaySoundAtBall "fx_Sensor"
+ 	If  Tilt= False Then            ' If the game isn't tilted.
 -		ScoreMotorAdd 300           ' score 300 on the score motor		DOF 115, 1                  ' fire the DOF effect
 +		ScoreMotorAdd 300           ' score 300 on the score motor
 +		DOF 115, 1                  ' fire the DOF effect
-@@ -1665 +1737,2 @@
+ 		AdvanceBonus
 -	End IfEnd Sub 
 +	End If
 +End Sub 
-@@ -1694 +1767,2 @@
+ 
+ Sub LeftInlane_Unhit()
+ 	DOF 115, 0
+@@ -1691,7 +1764,8 @@
+ Sub Outlanes_Hit(IDX)                  'Outlane has been hit.
+     PlaySoundAtBall "fx_Sensor"
+ 	If  Tilt=False Then
 -		If  Sidelight1.State=1 Then			ScoreAladdinsAlley
 +		If  Sidelight1.State=1 Then
 +			ScoreAladdinsAlley
-@@ -1819,2 +1893,7 @@
+ 		Else 
+ 			AddScore1000
+ 		End If
+@@ -1816,15 +1890,26 @@
+ 
+ 
+ '********* Drain *****************************************************************************************************
 -' Start a new ballSub AddBall()	If Shootagain.State=1 Then         'If the Shoot Again light is on then subtract a player. The Bonus Ended sub will add 		Player=Player-1 'a player to go to the next player, subtracting a player counteracts this, keeping the same player.
 -        If B2SOn Then		Controller.B2ssetshootagain 36,0
 +
@@ -192,7 +329,10 @@
 +		Player=Player-1 'a player to go to the next player, subtracting a player counteracts this, keeping the same player.
 +        If B2SOn Then
 +		Controller.B2ssetshootagain 36,0
-@@ -1825,2 +1904,7 @@
+ 		Controller.B2ssetballinplay 32,Ball
+         Controller.B2ssetplayerup 30,Player
+         End If
+     BallReel.setvalue(Ball) ' Set the ball number on the desktop reel.	
 -	End IfEnd Sub
 -' When the ball drains, start the bonus Sub Drain_Hit()                     'Another one bites the dust.    Drain.DestroyBall               'Destroy the ball when it hits the drain.    PlaySoundat "Drain5", drain             'Play the sound.
 +	End If
@@ -202,28 +342,46 @@
 +Sub Drain_Hit()                     'Another one bites the dust.
 +    Drain.DestroyBall               'Destroy the ball when it hits the drain.
 +    PlaySoundat "Drain5", drain             'Play the sound.
-@@ -1827,0 +1912 @@
+ 	DOF 123, 2
 +
-@@ -1836 +1921,2 @@
+ 	' Start the bonus timer to simulate the mechanical bonus scoring motor.
+ 	' For regular single bonus, award points in batches of 5.  For the 
+ 	' double bonus, award the bonus in batches of 2.  Between batches,
+@@ -1833,9 +1918,13 @@
+ 	If Light2x.State = 0 Then BonusMotor = 5 Else BonusMotor = 2
+ End Sub
+ 
 -' When the bonus ends, proceed to the next ballSub BonusEnded()
 +' When the bonus ends, proceed to the next ball
 +Sub BonusEnded()
-@@ -1838 +1924,4 @@
+ 	Addball                         'Call the Addball sub to check for Extra Ball.
 -    Player=Player+1                 'Go to the next player.    BonusCounter = 1000             'Reset the bonus to 1000 for the next ball.    Light1k.State = 1               'Turn on the 1000 light for the next ball.    AlleyLevel = 0                  'Reset the Aladdin's Alley progressive score to the first level
 +    Player=Player+1                 'Go to the next player.
 +    BonusCounter = 1000             'Reset the bonus to 1000 for the next ball.
 +    Light1k.State = 1               'Turn on the 1000 light for the next ball.
 +    AlleyLevel = 0                  'Reset the Aladdin's Alley progressive score to the first level
-@@ -1849 +1938,3 @@
+ 	'For Each Obj In TiltedObjects:Obj.disabled = False: Next 'If things were disabled by tilt turn them back on.
+     Tilt_Disable
+ 	If  Player > Players Then           'If the player number exceeds the number of players then default to the next ball.
+@@ -1846,9 +1935,12 @@
+         End If
+ 		BallReel.setvalue(Ball) ' Set the ball number on the desktop reel.
+ 		
 -	End If    	If  Ball <= OptBallsPerGame Then   'Is ball played less than total Balls or is the Game Over.		DelayTimer2.Enabled=True
 +	End If    
 +	If  Ball <= OptBallsPerGame Then   'Is ball played less than total Balls or is the Game Over.
 +		DelayTimer2.Enabled=True
-@@ -1851 +1942,2 @@
+ 		Playsound "Motor"
 -		For Each Obj In Toplights:Obj.State=1:Next        ' top lanes start each ball ON		For Each Obj In Sidelights: Obj.State=0:Next
 +		For Each Obj In Toplights:Obj.State=1:Next        ' top lanes start each ball ON
 +		For Each Obj In Sidelights: Obj.State=0:Next
-@@ -1873,2 +1965,6 @@
+ 		For Each Obj In Alleylights: Obj.State=0: Next
+ 		For Each Obj In Bottomrolloverlights: Obj.State=0: Next
+ 		For Each Obj In Toprolloverlights: Obj.State=0:Next
+@@ -1870,8 +1962,12 @@
+ 
+ 		' display the next high score above the player's current score
+ 		DispNextHighScoreAbove ScorePlayer(Player)
 -	Else                                'Sorry, but the game is now over.		GameOver                        'Go to game over to finish up.
 -		Light1k.State=0	End IfEnd Sub
 +
@@ -232,7 +390,13 @@
 +		Light1k.State=0
 +	End If
 +End Sub
-@@ -1884,2 +1980,7 @@
+ 
+ ' Ball release timer
+ Sub DelayTimer2_Timer()
+@@ -1881,10 +1977,18 @@
+     Ballrelease.Kick 23,6           'Kick ball out to direction,strength.
+     DelayTimer2.Enabled=False
+     Stopsound "Motor"
 -End Sub '************ Bonus Routine ************************************************************************************************
 -Dim Obj,BonusCounter,MultiplierCounter,Tens,Ones Sub AdvanceBonus()
 +End Sub
@@ -242,72 +406,137 @@
 +Dim Obj,BonusCounter,MultiplierCounter,Tens,Ones
 + 
 +Sub AdvanceBonus()
-@@ -1887 +1988,4 @@
+     BonusCounter = BonusCounter + 1000
 -	If  Bonuscounter >15000 Then Bonuscounter=15000	ShowBonusLightsEnd Sub 
 +	If  Bonuscounter >15000 Then Bonuscounter=15000
 +	ShowBonusLights
 +End Sub
 + 
-@@ -1894,0 +1999 @@
+ ' Bonus 1000s and 10000s lights.  Note that Light0K is a hidden off-screen light 
+ ' that we use as a placeholder for zero values, so that nothing visible lights.
+ ' The bonus on this machine is limited to 15000, so we only need one 10K light.
+@@ -1892,13 +1996,20 @@
+ 	Light0K, Light1K, Light2K, Light3K, Light4K, _
+ 	Light5K, Light6K, Light7K, Light8K, Light9K)
+ Dim BonusTensLights : BonusTensLights = Array(Light0K, Light10K)
 +
-@@ -1897 +2002,2 @@
+ ' Show the current bonus value on the playfield lights
+ Sub ShowBonusLights ()
 -	' turn off all of the lights to start fresh	For Each Obj In BonusLights:Obj.State = 0:Next
 +	' turn off all of the lights to start fresh
 +	For Each Obj In BonusLights:Obj.State = 0:Next
-@@ -1899 +2005,3 @@
+ 
 -	' Figure the multiple of 1000 and 10000 for the current bonus value.	Tens = ((Bonuscounter + 500) \ 10000) MOD 10   ' Get the multiple of 10,000	Ones = ((Bonuscounter + 500) \ 1000) MOD 10    ' Get the multiple if 1,000
 +	' Figure the multiple of 1000 and 10000 for the current bonus value.
 +	Tens = ((Bonuscounter + 500) \ 10000) MOD 10   ' Get the multiple of 10,000
 +	Ones = ((Bonuscounter + 500) \ 1000) MOD 10    ' Get the multiple if 1,000
-@@ -1901 +2009,4 @@
+ 	BonusOnesLights(Ones).State = 1                ' Turn on the suitable 1000s light
 -	BonusTensLights(Tens).State = 1                ' Turn on the suitable 10000s lightEnd Sub  Sub BonusTimer_Timer 
 +	BonusTensLights(Tens).State = 1                ' Turn on the suitable 10000s light
 +End Sub
 +  
 +Sub BonusTimer_Timer 
-@@ -1956,0 +2068 @@
+ 	' if the bonus has reached zero, we're done - signal the end of the bonus
+ 	' processing and turn off the bonus timer
+ 	If Bonuscounter = 0 Then
+@@ -1954,7 +2065,9 @@
+ 	' this is a one-shot timer - disable it
+     DoubleBonusDelay.Enabled = False
+ End Sub
 +
-@@ -1957,0 +2070 @@
+ '******************** Game Over ********************************************************************************************
 +
-@@ -1967 +2080,2 @@
+ Sub GameOver 
+     StopSound "BuzzL" : StopSound "BuzzR"
+ 	InProgress=False				 'We always know when the game is active with this variable.
+@@ -1964,9 +2077,11 @@
+     Controller.B2ssetballinplay 32,0
+     End If
+ 	Match						     'Call the match sub.
 -	LeftFlipper.RotateToStart       'If the above conditions are true the flipper goes down.    PlaySoundAt SoundFXDOF("FlipperDown",128,DOFOff,DOFFlippers), LeftFlipper
 +	LeftFlipper.RotateToStart       'If the above conditions are true the flipper goes down.
 +    PlaySoundAt SoundFXDOF("FlipperDown",128,DOFOff,DOFFlippers), LeftFlipper
-@@ -1969 +2083,2 @@
+ 	RightFlipper.RotateToStart      'If the above conditions are true the flipper goes down.
 -	RightFlipper1.RotateToStart     'If the above conditions are true the flipper goes down.    PlaySoundAt SoundFXDOF("FlipperDown",129,DOFOff,DOFFlippers), RightFlipper 
 +	RightFlipper1.RotateToStart     'If the above conditions are true the flipper goes down.
 +    PlaySoundAt SoundFXDOF("FlipperDown",129,DOFOff,DOFFlippers), RightFlipper 
-@@ -2432 +2547 @@
+     If Show_Hands = 1 AND ShowDT = True Then
+     hld = 6:hand_left.enabled = 1 
+     End If
+@@ -2429,7 +2544,7 @@
+ 			HSPos = HSPos - 1
+ 			HSBlink = 0
+ 			HSCurInit = Asc(Right(HSInitStr, 1))-65
 -			HSInitStr = Left(HSInitStr, Len(HSInitStr)-1)			
 +			HSInitStr = Left(HSInitStr, (Len(HSInitStr)-1))			
-@@ -2547 +2662 @@
+ 		else
+ 			' any other symbol - move to next position, or commit entry at position 4
+ 			HSInits(HSPos).SetValue HSCurInit   ' set base value in case we were blinked on
+@@ -2544,7 +2659,7 @@
+ 			case "radio"
+ 				val = Eval(ele(1))
+ 				OpMenuTmp(i) = val
 -				ele(2).SetValue (ele(3) + val)*2
 +				ele(2).SetValue 2*(ele(3) + val)
-@@ -2599,3 +2714,3 @@
+ 				ele(2).Image = "Options Reel"
+ 
+ 			case "digit"
+@@ -2596,9 +2711,9 @@
+ 	dim ele : ele = OpMenuMap(line)
+ 	OpMenuTmp(line) = val
+ 	dim ofs : if hilite then ofs = 1 else ofs = 0
 -	ele(2).SetValue ((val \ 10000) mod 10)*2 + ofs
 -	ele(3).SetValue ((val \ 1000) mod 10)*2 + ofs
 -	ele(4).SetValue ele(5)*2 + ofs
 +	ele(2).SetValue 2 * ((val \ 10000) mod 10) + ofs
 +	ele(3).SetValue 2 * ((val \ 1000) mod 10) + ofs
 +	ele(4).SetValue 2 * ele(5) + ofs
-@@ -2619 +2734 @@
+ End Sub
+ 
+ Dim OpMenuLine
+@@ -2616,13 +2731,13 @@
+ 	dim ofs : if hilite then ofs = 1 else ofs = 0
+ 	select case ele(0)
+ 		case "radio":
 -			ele(2).SetValue (ele(3) + val)*2 + ofs
 +			ele(2).SetValue 2 * (ele(3) + val) + ofs
-@@ -2621 +2736 @@
+ 		case "digit"
 -			ele(2).SetValue OpMenuTmp(OpMenuLine)*2 + ofs
 +			ele(2).SetValue 2 * OpMenuTmp(OpMenuLine) + ofs
-@@ -2625 +2740 @@
+ 		case "score"
+ 			OpMenuSetScore OpMenuLine, val, hilite
+ 		case "save", "cancel", "defaults"
 -			ele(1).SetValue ele(2)*2 + ofs
 +			ele(1).SetValue 2 * ele(2) + ofs
-@@ -2676 +2791 @@
+ 	end select
+ End Sub
+ 
+@@ -2673,13 +2788,13 @@
+ 			' radio button - advance to next selection, wrap at last selection
+ 			val = val + 1
+ 			if val + ele(3) > ele(4) then val = 0
 -			ele(2).SetValue (ele(3) + val)*2 + 1
 +			ele(2).SetValue 2 * (ele(3) + val) + 1
-@@ -2682 +2797 @@
+ 
+ 		case "digit"
+ 			' digit - advance to next value, wrap if we exceed the maximum
+ 			val = val + 1
+ 			if val > ele(4) then val = ele(3)
 -			ele(2).SetValue val*2 + 1
 +			ele(2).SetValue 2 * val + 1
-@@ -2713 +2828 @@
+ 
+ 		case "score"
+ 			' score line - add 1000, wrap to 0 at 99000, and jump from 0 to 50000
+@@ -2710,10 +2825,10 @@
+ 					OpMenuTmp(i) = val
+ 					select case t
+ 						case "radio"
 -							o(2).SetValue (o(3) + val)*2
 +							o(2).SetValue 2 * (o(3) + val)
-@@ -2716 +2831 @@
+ 
+ 						case "digit"
 -							o(2).SetValue val*2
 +							o(2).SetValue 2 * val
+ 
+ 						case "score"
+ 							OpMenuSetScore i, val, false

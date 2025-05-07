@@ -1,9 +1,21 @@
 --- South Park - Halloween.vbs.original
 +++ South Park - Halloween.vbs
-@@ -52 +52,2 @@
+@@ -49,7 +49,8 @@
+ 'Standard definitions
+ '********************
+ 
 -Const cGameName = "sprk_103h"
 +'Const cGameName = "sprk_103h"
 +Const cGameName = "sprk_103"
-@@ -1148 +1149 @@
+ Const UseSolenoids = 1
+ Const UseLamps = 1
+ Const SSolenoidOn = "SolOn"
+@@ -1145,7 +1146,7 @@
+ 	fbulb.visible = 1
+ 	for each bulb in Gi
+ 	bulb.state = 1
 -	If GiOnState = False then FlasherTimer1.Enabled = 1: Else 
 +	If GiOnState = False then FlasherTimer1.Enabled = 1 Else: 
+ 	FlasherTimer2.Enabled = 0
+ 	next
+ 	next

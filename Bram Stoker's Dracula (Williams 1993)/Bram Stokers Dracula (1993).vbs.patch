@@ -1,6 +1,12 @@
 --- Bram Stokers Dracula (1993).vbs.original
 +++ Bram Stokers Dracula (1993).vbs
-@@ -163,0 +164 @@
+@@ -161,7 +161,9 @@
+ On Error Resume Next
+ Dim i
+ For i=0 To 127
 +  If IsObject(eval("L" & i)) Then
-@@ -164,0 +166 @@
+   Execute "Set Lights(" & i & ")  = L" & i
 +  End If
+ Next
+ 
+ Lights(58)=Array(L58,L58A)

@@ -1,44 +1,66 @@
 --- Four Seasons (Gottlieb 1968)_Teisen_MOD.vbs.original
 +++ Four Seasons (Gottlieb 1968)_Teisen_MOD.vbs
-@@ -1222,3 +1222,3 @@
+@@ -1219,22 +1219,22 @@
+ 		SpinPos=SpinPos+1
+ 		DOF 113, 2
+ 		If SpinPos=20 Then SpinPos=0
 -		Me(Idx).IsDropped=True
 -		Me(Idx+20).IsDropped=True
 -		Me(Idx+40).enabled=False
 +		Spinner(Idx).IsDropped=True
 +		Spinner(Idx+20).IsDropped=True
 +		Spinner(Idx+40).enabled=False
-@@ -1230,3 +1230,3 @@
+ '		SpinnerPrims(TempPos).TopVisible=false
+ 	Else
+ 		SpinPos=SpinPos-1
+ 		DOF 113, 2
+ 		If SpinPos=-1 Then SpinPos=19
 -		Me(Idx-20).IsDropped=True
 -		Me(Idx).IsDropped=True
 -		Me(Idx+20).enabled=False
 +		Spinner(Idx-20).IsDropped=True
 +		Spinner(Idx).IsDropped=True
 +		Spinner(Idx+20).enabled=False
-@@ -1235,3 +1235,3 @@
+ '		SpinnerPrims(TempPos).TopVisible=false
+ 	End If
 -	Me(SpinPos).IsDropped=False
 -	Me(SpinPos+20).IsDropped=False
 -	Me(SpinPos+40).enabled=True
 +	Spinner(SpinPos).IsDropped=False
 +	Spinner(SpinPos+20).IsDropped=False
 +	Spinner(SpinPos+40).enabled=True
-@@ -1274,3 +1274,3 @@
+ 	ArrowPrimitive.ObjRotZ=SpinArrow(SpinPos)
+ 	VelX=VelX*0.8
+ 	VelY=VelY*0.8
+@@ -1271,22 +1271,22 @@
+ 		SpinPos2=SpinPos2+1
+ 		DOF 113, 2
+ 		If SpinPos2=20 Then SpinPos2=0
 -		Me(Idx).IsDropped=True
 -		Me(Idx+20).IsDropped=True
 -		Me(Idx+40).enabled=False
 +		Spinner2(Idx).IsDropped=True
 +		Spinner2(Idx+20).IsDropped=True
 +		Spinner2(Idx+40).enabled=False
-@@ -1282,3 +1282,3 @@
+ '		SpinnerPrims(TempPos).TopVisible=false
+ 	Else
+ 		SpinPos2=SpinPos2-1
+ 		DOF 113, 2
+ 		If SpinPos2=-1 Then SpinPos2=19
 -		Me(Idx-20).IsDropped=True
 -		Me(Idx).IsDropped=True
 -		Me(Idx+20).enabled=False
 +		Spinner2(Idx-20).IsDropped=True
 +		Spinner2(Idx).IsDropped=True
 +		Spinner2(Idx+20).enabled=False
-@@ -1287,3 +1287,3 @@
+ '		SpinnerPrims(TempPos).TopVisible=false
+ 	End If
 -	Me(SpinPos2).IsDropped=False
 -	Me(SpinPos2+20).IsDropped=False
 -	Me(SpinPos2+40).enabled=True
 +	Spinner2(SpinPos2).IsDropped=False
 +	Spinner2(SpinPos2+20).IsDropped=False
 +	Spinner2(SpinPos2+40).enabled=True
+ 	ArrowPrimitive1.ObjRotZ=SpinArrow(SpinPos2)
+ 	VelX=VelX*0.8
+ 	VelY=VelY*0.8

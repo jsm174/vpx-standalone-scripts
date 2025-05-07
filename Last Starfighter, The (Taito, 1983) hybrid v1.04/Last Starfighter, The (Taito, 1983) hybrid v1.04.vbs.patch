@@ -1,5 +1,11 @@
 --- Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs.original
 +++ Last Starfighter, The (Taito, 1983) hybrid v1.04.vbs
-@@ -107 +107 @@
+@@ -104,7 +104,7 @@
+ '************
+ 
+ Sub table1_Init
 -NVramPatchLoad
 +'NVramPatchLoad
+     vpmInit me
+     With Controller
+         .GameName = cGameName

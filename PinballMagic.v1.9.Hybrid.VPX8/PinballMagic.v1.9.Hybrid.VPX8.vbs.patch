@@ -1,5 +1,11 @@
 --- PinballMagic.v1.9.Hybrid.VPX8.vbs.original
 +++ PinballMagic.v1.9.Hybrid.VPX8.vbs
-@@ -1451 +1451 @@
+@@ -1448,7 +1448,7 @@
+ Sub Drain_Hit()
+ 	PlaySoundAt "drain", drain
+ 	drain.destroyball
 -    bsTrough.AddBall.0
 +    bsTrough.AddBall 0
+ 	'If  Then DisableFlippers
+ End Sub
+ 

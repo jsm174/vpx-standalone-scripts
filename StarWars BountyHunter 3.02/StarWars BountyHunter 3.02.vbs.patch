@@ -1,5 +1,11 @@
 --- StarWars BountyHunter 3.02.vbs.original
 +++ StarWars BountyHunter 3.02.vbs
-@@ -58 +58 @@
+@@ -55,7 +55,7 @@
+ '*******  MUSIC
+ Dim MusicFile(20)
+ Dim PlayVolume(20)
 -	MusicFile(1) ="Bountyhunter/Mandalorian_Official_Trailer_2.mp3" : PlayVolume(1) =0.7
 +	MusicFile(1) ="BountyHunter/Mandalorian_Official_Trailer_2.mp3" : PlayVolume(1) =0.7
+ 	MusicFile(2) ="BountyHunter/Razor_Crest_Crash_Landing.mp3"		: PlayVolume(2) =0.7
+ '*	Link Your Mp3's under here
+ 	MusicFile(3) ="BountyHunter/Boba_Fett_Theme.mp3" 				: PlayVolume(4) =0.15

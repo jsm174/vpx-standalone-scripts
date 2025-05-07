@@ -1,6 +1,12 @@
 --- Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs.original
 +++ Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs
-@@ -801 +801,2 @@
+@@ -798,7 +798,8 @@
+     End With
+ 
+ '***LPF Kicker  -cp
 -Sub Sw18_Hit()Controller.Switch(18)=1:sw18p.TransY = -5
 +Sub Sw18_Hit()
 +     Controller.Switch(18)=1:sw18p.TransY = -5
+      vpmtimer.addtimer 10, "Wall5.collidable = True'"
+      vpmtimer.addtimer 4000, "Wall5.collidable = False'"
+      PlaySoundAt "zCB1",ActiveBall

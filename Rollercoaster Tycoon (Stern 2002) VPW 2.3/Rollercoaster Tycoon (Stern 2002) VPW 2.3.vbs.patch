@@ -1,7 +1,19 @@
 --- Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original
 +++ Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs
-@@ -55,0 +56 @@
+@@ -53,6 +53,7 @@
+ If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+ On Error Goto 0
+ 
 +Const TestVRonDT = false
-@@ -66,2 +66,0 @@
--
+ Dim UseVPMDMD, VRRoom, DesktopMode, VarHidden, UseVPMColoredDMD
+ DesktopMode = Table1.ShowDT
+ If RenderingMode = 2 OR TestVRonDT=True Then UseVPMDMD = True Else UseVPMDMD = DesktopMode
+@@ -64,8 +65,6 @@
+     VarHidden = 0
+ End If
+ 
 -Const TestVRonDT = false
+-
+ '*************************************
+ '* VLM Stuff
+ '*************************************

@@ -1,5 +1,11 @@
 --- South Park (Sega 1999) 1.3.vbs.original
 +++ South Park (Sega 1999) 1.3.vbs
-@@ -1170 +1170 @@
+@@ -1167,7 +1167,7 @@
+ 	fbulb.visible = 1
+ 	for each bulb in Gi
+ 	bulb.state = 1
 -	If GiOnState = False then FlasherTimer1.Enabled = 1: Else 
 +	If GiOnState = False then FlasherTimer1.Enabled = 1
+ 	FlasherTimer2.Enabled = 0
+ 	next
+ 	next

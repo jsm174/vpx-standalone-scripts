@@ -1,8 +1,20 @@
 --- Scared Stiff (Bally 1996) v1.29.vbs.original
 +++ Scared Stiff (Bally 1996) v1.29.vbs
-@@ -468,0 +469,2 @@
+@@ -466,6 +466,8 @@
+ 
+ End Sub
+ 
 +Sub Table1_Paused:Controller.Pause = 1:End Sub
 +Sub Table1_UnPaused:Controller.Pause = 0:End Sub
-@@ -2057 +2059 @@
+ Sub Table1_exit():SaveLED:SaveCards: gic0.SaveColorsIDX :gic1.SaveColorsIDX :gic2.SaveColorsIDX : Controller.Pause = False:Controller.Stop:End Sub 'Save color to VPReg.stg
+ 
+ Sub SaveCards() : dim tmp : tmp = abs(Not PriceCard.Visible) : SaveValue gic0.name, "CustomCards", tmp : End Sub
+@@ -2054,7 +2056,7 @@
+ 'Various wrapper subs
+ Sub Lswitch(aObj)  : set LastSwitch = aObj  : End Sub
+ Sub LswitchA(aArray)  : LastSwitch = aArray  : End Sub
 -Sub LswitchBall() Set LastSwitch = TempPos : TempPos.Update : End Sub
 +Sub LswitchBall() : Set LastSwitch = TempPos : TempPos.Update : End Sub
+ Sub LswitchBumper()  : Set LastSwitch = BumperPos : BumperPos.Update  : End Sub
+ 
+ Class WallSwitchPos 

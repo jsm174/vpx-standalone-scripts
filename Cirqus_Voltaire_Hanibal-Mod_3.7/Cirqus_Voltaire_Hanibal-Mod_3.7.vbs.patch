@@ -1,35 +1,91 @@
 --- Cirqus_Voltaire_Hanibal-Mod_3.7.vbs.original
 +++ Cirqus_Voltaire_Hanibal-Mod_3.7.vbs
-@@ -1285 +1285 @@
+@@ -1282,10 +1282,10 @@
+ ' Lights Array 
+ ' -------------------------------------
+ ' lights, map all lights on the playfield to the Lights array
 -On Error Resume Next
 +
-@@ -1288 +1288 @@
+ Dim i
+ For i=0 To 127
 -	Execute "Set Lights(" & i & ")  = L" & i
 +	Execute "On Error Resume Next:Set Lights(" & i & ")  = L" & i & ":On Error Goto 0"
-@@ -2667 +2667 @@
+ Next
+ 
+ ' Hanibals special Lights
+@@ -2664,10 +2664,10 @@
+ ' **************
+ 
+ ' Side Show holes
 -Sub cSSHoles_Hit(idx):SubwayHandler Me(idx), 46:End Sub
 +Sub cSSHoles_Hit(idx):SubwayHandler cSSHoles(idx), 46:End Sub
-@@ -2670 +2670 @@
+ 
+ ' Ringmaster holes
 -Sub cRMHoles_Hit(idx):SubwayHandler Me(idx), 47:End Sub
 +Sub cRMHoles_Hit(idx):SubwayHandler cRMHoles(idx), 47:End Sub
-@@ -2690 +2690 @@
+ 
+ Sub SubwayHandler(aKick, aSwNo)
+     'ClearballID
+@@ -2687,7 +2687,7 @@
+ 
+ Sub CreateWildBall()
+     
 -Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.id = 666:kicker1.Kick 0, 0   
 +Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.UserValue = 666:kicker1.Kick 0, 0   
-@@ -3123 +3123 @@
+ WBall.mass = 1.5
+ End Sub
+ 
+@@ -3120,7 +3120,7 @@
+ 
+ Sub NewBCol_Timer()
+ WBDes.enabled = 0
 -Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.id = 666:kicker1.Kick 0, 0
 +Set WBall = kicker1.Createsizedball(51):WBall.color = (wbcolor):Wball.image = "powerball4":Wball.UserValue = 666:kicker1.Kick 0, 0
-@@ -3166 +3166 @@
+ WBall.mass = 1.5
+ me.enabled = 0
+ End Sub
+@@ -3163,7 +3163,7 @@
+ 
+ Dim f24gscale,f24gstate
+ 
 -f24scale = 0
 +f24gscale = 0
-@@ -3189 +3189 @@
+ f24gstate = 1
+ 
+ Sub F24F_Timer()
+@@ -3186,7 +3186,7 @@
+ 
+ Dim f21gscale,f21gstate
+ 
 -f21scale = 0
 +f21gscale = 0
-@@ -3212 +3212 @@
+ f21gstate = 1
+ 
+ Sub F21F_Timer()
+@@ -3209,7 +3209,7 @@
+ 
+ Dim f25gscale,f25gstate
+ 
 -f25scale = 0
 +f25gscale = 0
-@@ -3235 +3235 @@
+ f25gstate = 1
+ 
+ Sub F25F_Timer()
+@@ -3232,7 +3232,7 @@
+ 
+ Dim f26gscale,f26gstate
+ 
 -f26scale = 0
 +f26gscale = 0
-@@ -3258 +3258 @@
+ f26gstate = 1
+ 
+ Sub F26F_Timer()
+@@ -3255,7 +3255,7 @@
+ 
+ Dim f37gscale,f37gstate
+ 
 -f37scale = 0
 +f37gscale = 0
+ f37gstate = 1
+ 
+ Sub F37F_Timer()

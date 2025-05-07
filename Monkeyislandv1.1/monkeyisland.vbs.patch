@@ -1,26 +1,71 @@
 --- monkeyisland.vbs.original
 +++ monkeyisland.vbs
-@@ -2444 +2444 @@
+@@ -2441,7 +2441,7 @@
+                 DMDScene.GetImage("Dig" & i).SetBounds 4 + i * 6, dCharsPerLine(0) + 5, 8, 8
+             Next
+             For i = dCharsPerLine(1) to (dCharsPerLine(0) + dCharsPerLine(1) - 1) ' Bottom
 -                DMDScene.GetImage("Dig" & i).SetBounds (i - dCharsPerLine(1)) * 8, 3, 8, 16
 +                DMDScene.GetImage("Dig" & i).SetBounds 8 * (i - dCharsPerLine(1)), 3, 8, 16
-@@ -4395 +4395 @@
+             Next
+             FlexDMD.LockRenderThread
+             FlexDMD.Stage.AddActor DMDScene
+@@ -4392,7 +4392,7 @@
+ 
+ sub LRKickout2(tAngle, tForce, tZ)
+ 	'Create the ball
 -	Kicker002.CreateSizedBall(BallSize/2).ID = MyTroughLR(0)
 +	Kicker002.CreateSizedBall(BallSize/2).UserValue = MyTroughLR(0)
-@@ -4416 +4416 @@
+ 	'Kick it
+ 	Kicker002.Kick tAngle, tForce, tZ
+ 	PlaySound SoundFXDOF("fx_popper", 113, DOFPulse,DOFContactors)
+@@ -4413,7 +4413,7 @@
+ End Sub
+ 
+ sub BarKickout2(tAngle, tForce, tZ)
 -	Kicker006.CreateSizedBall(BallSize/2).ID = MyTroughTreasure(0)
 +	Kicker006.CreateSizedBall(BallSize/2).UserValue = MyTroughTreasure(0)
-@@ -4433 +4433 @@
+ 	Kicker006.Kick tAngle, tForce, tZ
+ 	Set rBall = Nothing
+ 	PlaySound SoundFXDOF("fx_popper", 114, DOFPulse,DOFContactors)
+@@ -4430,7 +4430,7 @@
+ sub LeChuckKickout2(tAngle, tForce, tZ)
+ 	Set dBall = Nothing
+ 	Kicker001.DestroyBall
 -	Kicker003.CreateSizedBall(BallSize/2).ID = MyTroughLeChuck(0)
 +	Kicker003.CreateSizedBall(BallSize/2).UserValue = MyTroughLeChuck(0)
-@@ -4447 +4447 @@
+ 	Kicker003.Kick tAngle, tForce, tZ
+ 	PlaySound SoundFXDOF("fx_popper", 111, DOFPulse,DOFContactors)
+ 	MyTroughLeChuckRemove()
+@@ -4444,7 +4444,7 @@
+ End Sub
+ 
+ sub TreasureKickout2(tAngle, tForce, tZ)
 -	Kicker007.CreateSizedBall(BallSize/2).ID = MyTroughTreasure(0)
 +	Kicker007.CreateSizedBall(BallSize/2).UserValue = MyTroughTreasure(0)
-@@ -4458 +4458 @@
+ 	Kicker007.Kick tAngle, tForce, tZ
+ 	PlaySound "fx_popper"
+ 	MyTroughTreasureRemove()
+@@ -4455,20 +4455,20 @@
+ 	'Increase the size of the array
+ 	ReDim Preserve MyTroughLR(UBound(MyTroughLR) + 1)
+ 	'Set the end of the array equal to the ball id that just entered
 -	MyTroughLR(UBound(MyTroughLR)) = tBall.ID
 +	MyTroughLR(UBound(MyTroughLR)) = tBall.UserValue
-@@ -4465 +4465 @@
+ 	'Free up the object that was the ball
+ 	Set tBall = Nothing
+ End Sub
+ 
+ Sub MyTroughTreasureAdd(tBall)
+ 	ReDim Preserve MyTroughTreasure(UBound(MyTroughTreasure) + 1)
 -	MyTroughTreasure(Ubound(MyTroughTreasure)) = tBall.ID
 +	MyTroughTreasure(Ubound(MyTroughTreasure)) = tBall.UserValue
-@@ -4471 +4471 @@
+ 	Set tBall = Nothing
+ End Sub
+ 
+ Sub MyTroughLeChuckAdd(tBall)
+ 	ReDim Preserve MyTroughLeChuck(UBound(MyTroughLeChuck) + 1)
 -	MyTroughLeChuck(Ubound(MyTroughLeChuck)) = tBall.ID
 +	MyTroughLeChuck(Ubound(MyTroughLeChuck)) = tBall.UserValue
+ 	Set tBall = Nothing
+ End Sub
+ 

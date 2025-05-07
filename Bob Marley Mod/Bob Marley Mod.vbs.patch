@@ -1,15 +1,30 @@
 --- Bob Marley Mod.vbs.original
 +++ Bob Marley Mod.vbs
-@@ -62 +62 @@
+@@ -59,7 +59,7 @@
+ '************
+ 
+ Sub table1_Init
 -NVramPatchLoad
 +'NVramPatchLoad
-@@ -156 +156,4 @@
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -153,7 +153,10 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
 -Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
 +Sub table1_exit
 +    'NVramPatchExit
 +    Controller.stop
 +End Sub
-@@ -167,4 +170,4 @@
+ 
+ 
+ 
+@@ -164,12 +167,12 @@
+ Sub MusicOn
+ 	
+     Dim FileSystemObject, folder, r, ct, file, musicPath, myMusicFolder
 -    myMusicFolder = "Bob Marley" 
 -    Set FileSystemObject = CreateObject("Scripting.FileSystemObject")
 -    musicPath = FileSystemObject.GetAbsolutePathName(".") ' get path to Visual Pinball\table
@@ -18,10 +33,16 @@
 +    ' Set FileSystemObject = CreateObject("Scripting.FileSystemObject")
 +    ' musicPath = FileSystemObject.GetAbsolutePathName(".") ' get path to Visual Pinball\table
 +    ' musicPath = Left(musicPath, Len(musicPath) - 6) + "music\" 'get path to Visual Pinball\music
-@@ -172 +175 @@
+     
 -	Set folder = FileSystemObject.GetFolder(musicPath + myMusicFolder) 'Comment out if using custom path
 +	' Set folder = FileSystemObject.GetFolder(musicPath + myMusicFolder) 'Comment out if using custom path
-@@ -181,0 +185,13 @@
+ 
+ 	'*****************************************************************************************************************
+ 	'NOTE- If you use a non-standard folder structure {IE not using "VisualPinball\Tables" and "VisualPinball\Music"} 
+@@ -179,13 +182,26 @@
+ 	'Set custom path below
+ 	'Set folder= FileSystemObject.GetFolder("C:\vPinball\VisualPinball\Music\Bob Marley")
+ 	
 +    Dim music(9)
 +    music(0) = "Music/Bob Marley/Could You Be Loved - Bob Marley.mp3"
 +    music(1) = "Music/Bob Marley/I Know - Bob Marley.mp3"
@@ -35,15 +56,25 @@
 +    music(9) = "Music/Bob Marley/Zion Train Lyrics - Bob Marley.mp3"
 +
 +
-@@ -183 +199 @@
+     Randomize
 -    r = INT(folder.Files.Count * Rnd + 1)
 +    r = INT(UBound(music) * Rnd + 1)
-@@ -185 +201 @@
+     ct=1
 -    For Each file in folder.Files
 +    For Each file in music
-@@ -188 +204 @@
+         if ct = r Then 
+             if (LCase(Right(file,4))) = ".mp3" Then ' can only play mp3 files
 -               PlayMusic Mid(file, Len(musicPath) + 1, 1000) 
 +               PlayMusic file
-@@ -604 +620 @@
+             End If 
+        End If
+    ct = ct + 1
+@@ -601,7 +617,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
 -    NVramPatchKeyCheck
 +    'NVramPatchKeyCheck
+ End Sub
+ 
+ Sub UpdateLamps()

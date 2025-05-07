@@ -1,5 +1,11 @@
 --- Scarface - Balls and Power 1.2.vbs.original
 +++ Scarface - Balls and Power 1.2.vbs
-@@ -1003 +1003 @@
+@@ -1000,7 +1000,7 @@
+ 
+ Sub Table1_KeyUp(ByVal keycode)
+     If keycode = PlungerKey Then
 -        :Plunger.Fire
 +        Plunger.Fire
+         If(BallinPlunger = 1) then 'the ball is in the plunger lane
+             PlaySoundat "fx_Plunger2", plunger
+         else

@@ -1,11 +1,21 @@
 --- tlk-0.35.vbs.original
 +++ tlk-0.35.vbs
-@@ -510 +509,0 @@
+@@ -507,9 +507,10 @@
+ 
+ 	Sub Table1_Init()
+ 		ChangeBall(ChooseBall)
 -		resetbackglass
-@@ -512,0 +512,2 @@
+ 		DMD_Init
+ 		LoadEM
 +		InitPup
 +		resetbackglass
-@@ -1389,0 +1391,16 @@
+ 		Dim i
+ 		Randomize
+ 		Loadhs
+@@ -1387,6 +1388,22 @@
+ 	Const pAudio=7
+ 	Const pCallouts=8
+ 
 +	Sub chilloutthemusic
 +		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":10 }"
 +		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":50 }"
@@ -22,7 +32,13 @@
 +	End Sub
 +
 +Sub InitPup	
-@@ -1415,15 +1431,0 @@
+ 	if HasPuP Then
+ 	on error resume next
+ 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
+@@ -1412,21 +1429,6 @@
+ 	PuPlayer.SetScreenex pCallouts,0,0,0,0,2
+ 	PuPlayer.hide pCallouts
+ 
 -	Sub chilloutthemusic
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":10 }"
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":50 }"
@@ -38,9 +54,24 @@
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 8, ""FN"":11, ""VL"":130 }"
 -	End Sub
 -
-@@ -1666 +1668 @@
+ 
+ 	PuPlayer.playlistadd pAudio,"sfx", 1 , 0
+ 	PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
+@@ -1663,7 +1665,7 @@
+ 	PuPlayer.LabelNew pBackglass,"HighScoreL2",numberfont,	8,26316	,0,0,1,49,60,1,1
+ 	PuPlayer.LabelNew pBackglass,"HighScoreL3",numberfont,	8,26316	,0,0,1,53,60,1,1
+ 	PuPlayer.LabelNew pBackglass,"HighScoreL4",numberfont,	5,26316	,0,1,1,50,65,1,1
 -
 +End Sub
-@@ -3617 +3619 @@
+ 
+ 	Sub ruleshelperon
+ 		rulestime.enabled = 1
+@@ -3614,7 +3616,7 @@
+ 	Dim point1:point1 = 1000
+ 	Dim bigpoints:bigpoints = 1
+ 
 -	calculatescore
 +	'calculatescore
+ 	Sub calculatescore
+ 	PuPlayer.LabelSet pBackglass,"lefttimer2",(bigpoints\10000) + 1 & "-" & point1\1000,1,"{'mt':2,'color':12971496, 'size': 4.8, 'xpos': 12.5, 'xalign': 1, 'ypos': 89.4, 'yalign': 1}"
+ 	PuPlayer.LabelSet pBackglass,"lefttimer",(bigpoints\10000) + 1 & "-" & point1\1000,1,"{'mt':2,'color':26316, 'size': 4.8, 'xpos': 12.5, 'xalign': 1, 'ypos': 89.2, 'yalign': 1}"

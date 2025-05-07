@@ -1,8 +1,20 @@
 --- AceOfSpeed.vbs.original
 +++ AceOfSpeed.vbs
-@@ -248 +248 @@
+@@ -245,7 +245,7 @@
+ 	r61.Visible = DesktopMode
+ 	r62.Visible = DesktopMode
+ 	r63.Visible = DesktopMode
 -	DisplayTimer.Enabled = DesktopMode
 +	DisplayTimer.Enabled = true
-@@ -1863 +1863 @@
+ 
+ 	' maybe start the timer for the mouse hole multiball modes
+ 	MouseHoleProcessTimer_Timer
+@@ -1860,7 +1860,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
 -	If isGIOn <> Not IsOff Then
 +	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on

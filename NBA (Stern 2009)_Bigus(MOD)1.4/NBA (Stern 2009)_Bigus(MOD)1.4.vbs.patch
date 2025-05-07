@@ -1,13 +1,22 @@
 --- NBA (Stern 2009)_Bigus(MOD)1.4.vbs.original
 +++ NBA (Stern 2009)_Bigus(MOD)1.4.vbs
-@@ -282 +282 @@
+@@ -279,16 +279,14 @@
+ '*********            solenoid fuctions                   **********************
+ '*******************************************************************************
+ 
 -:primitive1.RotAndTra5=-48
 +primitive1.RotAndTra5=-48
-@@ -285,2 +285 @@
+ Sub orbitblock(enabled)
+     if Enabled then
 -       
 -:stopper.IsDropped=0
 +        stopper.IsDropped=0
-@@ -290,2 +289 @@
+ orbitTimerUp.Enabled=1
+      else
+         orbitTimerDWN.Enabled=1
 -:stopper.IsDropped=1
 -
 +        stopper.IsDropped=1
+      end if
+     End Sub
+ 

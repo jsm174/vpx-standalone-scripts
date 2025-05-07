@@ -1,15 +1,30 @@
 --- Black Knight 2000 (Williams 1989) w VR Room v2.0.2.vbs.original
 +++ Black Knight 2000 (Williams 1989) w VR Room v2.0.2.vbs
-@@ -2690 +2690 @@
+@@ -2687,9 +2687,9 @@
+ 	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+ 
+ 	Public Sub Update()        'tracks in-ball-velocity
 -		dim str, b, highestID
 +		dim str, b, AllBalls, highestID : allBalls = getballs
-@@ -2692 +2692 @@
+ 
 -		for each b in gBOT
 +		for each b in allballs
-@@ -2700 +2700 @@
+ 			if b.id >= HighestID then highestID = b.id
+ 		Next
+ 
+@@ -2697,7 +2697,7 @@
+ 		if uBound(ballvelx) < highestID then redim ballvelx(highestID)        'set bounds
+ 		if uBound(ballvely) < highestID then redim ballvely(highestID)        'set bounds
+ 
 -		for each b in gBOT
 +		for each b in allballs
-@@ -2736,0 +2737,33 @@
+ 			ballvel(b.id) = BallSpeed(b)
+ 			ballvelx(b.id) = b.velx
+ 			ballvely(b.id) = b.vely
+@@ -2734,6 +2734,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -43,9 +58,18 @@
 +  End Function
 +End Class
 +
-@@ -2752,0 +2786 @@
+ 
+ 'Set array with drop target objects
+ '
+@@ -2750,16 +2783,17 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
-@@ -2757,6 +2791,6 @@
+ 
+ 
+ Dim DT1,DT2,DT3,DT4,DT5,DT6
+ 
 -DT1 = Array(sw1, sw1a, sw1p, 41, 0)
 -DT2 = Array(sw2, sw2a, sw2p, 42, 0)
 -DT3 = Array(sw3, sw3a, sw3p, 43, 0)
@@ -58,22 +82,54 @@
 +Set DT4 = (new DropTarget)(sw4, sw4a, sw4p, 44, 0, false)
 +Set DT5 = (new DropTarget)(sw5, sw5a, sw5p, 45, 0, false)
 +Set DT6 = (new DropTarget)(sw6, sw6a, sw6p, 46, 0, false)
-@@ -2793,3 +2827,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT1,DT2,DT3,DT4,DT5,DT6)
+@@ -2790,9 +2824,9 @@
+ Sub DTHit(switch)
+ 	Dim i
+ 	i = DTArrayID(switch)
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -2804 +2838 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -2801,7 +2835,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -2812 +2846 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -2809,14 +2843,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -2819 +2853 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -2874 +2908 @@
+ 	Next
+ End Function
+ 
+@@ -2871,7 +2905,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

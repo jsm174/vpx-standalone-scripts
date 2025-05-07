@@ -1,6 +1,9 @@
 --- X-Files Hanibal 4k LED Edition.vbs.original
 +++ X-Files Hanibal 4k LED Edition.vbs
-@@ -18 +18,10 @@
+@@ -15,7 +15,16 @@
+ On Error Goto 0
+ 
+ Dim UseVPMDMD
 -UseVPMDMD = 1
 +UseVPMDMD = True
 +Sub ImplicitDMD_Init
@@ -12,3 +15,6 @@
 +   Me.fontColor = RGB(255, 255, 255)
 +   Me.intensityScale = 1.5
 +End Sub
+ 
+ LoadVPM "01560000", "SEGA.VBS", 3.26
+ 

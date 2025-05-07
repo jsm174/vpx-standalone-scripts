@@ -1,6 +1,9 @@
 --- Stingray (Stern 1977).vbs.original
 +++ Stingray (Stern 1977).vbs
-@@ -1699,5 +1699,5 @@
+@@ -1696,11 +1696,11 @@
+ '				   Values for animate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+ '   isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
+ 
 -DT25 = Array(sw25, sw25a, sw25p, 25, 0, False)
 -DT26 = Array(sw26, sw26a, sw26p, 26, 0, False)
 -DT27 = Array(sw27, sw27a, sw27p, 27, 0, False)
@@ -11,28 +14,72 @@
 +Set DT27 = (new DropTarget)(sw27, sw27a, sw27p, 27, 0, false)
 +Set DT28 = (new DropTarget)(sw28, sw28a, sw28p, 28, 0, false)
 +Set DT29 = (new DropTarget)(sw29, sw29a, sw29p, 29, 0, false)
-@@ -1734,3 +1734,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT25, DT26, DT27, DT28, DT29)
+@@ -1731,9 +1731,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -1745 +1745 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -1742,7 +1742,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -1753 +1753 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -1750,14 +1750,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate  = 1
-@@ -1760 +1760 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -1815 +1815 @@
+ 	Next
+ End Function
+ 
+@@ -1812,7 +1812,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
-@@ -1871 +1871 @@
+ 	Next
+ End Sub
+ 
+@@ -1868,7 +1868,7 @@
+ 		if prim.transz <= -DTDropUnits Then 
+ 			prim.transz = -DTDropUnits
+ 			secondary.collidable = 0
 -			DTArray(ind)(5) = true 'Mark target as dropped
 +			DTArray(ind).isDropped = true 'Mark target as dropped
-@@ -1926 +1926 @@
+ 			controller.Switch(Switchid) = 1
+ 			primary.uservalue = 0
+ 			DTAnimate = 0
+@@ -1923,7 +1923,7 @@
+ 		end if
+ 		primary.collidable = 0
+ 		secondary.collidable = 1
 -		DTArray(ind)(5) = false 'Mark target as not dropped
 +		DTArray(ind).isDropped = false 'Mark target as not dropped
+ 		controller.Switch(Switchid) = 0
+ 
+ 	End If

@@ -1,12 +1,27 @@
 --- The Beatles_007.vbs.original
 +++ The Beatles_007.vbs
-@@ -199 +198,0 @@
+@@ -196,7 +196,6 @@
+ 
+ Sub Table1_Init
+ 	'spinner.MotorOn = True
 -	resetbackglass
-@@ -222 +221,2 @@
+ 	vpmInit Me
+ 	On Error Resume Next
+ 		With Controller
+@@ -219,7 +218,8 @@
+ 	If Err Then MsgBox Err.Description
+ 	If Err Then MsgBox Err.Description
+ 	On Error Goto 0
 - 
 +	PupInit
 +	resetbackglass
-@@ -1744,0 +1745,14 @@
+           PinMAMETimer.Interval = PinMAMEInterval
+           PinMAMETimer.Enabled = 1
+           vpmNudge.TiltSwitch = 7
+@@ -1742,6 +1742,20 @@
+ Const pVids=2
+ Const pModes=2
+ 
 +Sub chilloutthemusic
 +	PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":10 }"
 +	PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":10 }"
@@ -21,7 +36,13 @@
 +End Sub
 +
 +Sub PupInit
-@@ -1781,13 +1794,0 @@
+ if HasPuP Then
+ 	on error resume next
+ 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
+@@ -1778,19 +1792,6 @@
+ 
+ 	PuPlayer.SetScreenex pModes,0,0,0,0,0
+ 
 -Sub chilloutthemusic
 -	PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":10 }"
 -	PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":10 }"
@@ -35,6 +56,15 @@
 -	PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 9, ""FN"":11, ""VL"":99 }"
 -End Sub
 -
-@@ -1869 +1870 @@
+ 
+ 	PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
+ 	PuPlayer.playlistadd pAudio,"audioevents", 1 , 0
+@@ -1866,7 +1867,7 @@
+ 
+ 	PuPlayer.LabelNew pBackglass,"Jackpotbg",infofont,		8,65535 	,0,1,1,50,56,1,1
+ 	PuPlayer.LabelNew pBackglass,"Jackpot2bg",infofont,		10,65535 	,0,1,1,50,65,1,1
 -
 +End Sub
+ 'ccc
+ 'Colours
+ ' 16777215 - white

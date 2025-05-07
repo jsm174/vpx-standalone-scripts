@@ -1,7 +1,15 @@
 --- Legend of Zelda v4.3.vbs.original
 +++ Legend of Zelda v4.3.vbs
-@@ -406,0 +407 @@
+@@ -404,10 +404,11 @@
+ '*************
+ 
+ Sub table1_Paused
 +    If Isobject(Controller)Then Controller.Pause = True
-@@ -410 +411 @@
+ End Sub
+ 
+ Sub table1_unPaused
 -    If Isobject(Controller)Then Controller.Pause
 +    If Isobject(Controller)Then Controller.Pause = False
+ End Sub
+ 
+ Sub table1_Exit

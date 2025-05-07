@@ -1,6 +1,9 @@
 --- 1342729923_RollerCoasterTycoon(Stern2002)1.3.vbs.original
 +++ 1342729923_RollerCoasterTycoon(Stern2002)1.3.vbs
-@@ -3170,0 +3171,33 @@
+@@ -3168,6 +3168,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -34,9 +37,15 @@
 +  End Function
 +End Class
 +
-@@ -3188,0 +3222 @@
+ 'Define a variable for each drop target
+ Dim DT30, DT31, DT32, DT39
+ 
+@@ -3186,11 +3219,12 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
-@@ -3190,4 +3224,4 @@
+ 
 -DT30 = Array(sw30, sw30a, sw30p, 30, 0)
 -DT31 = Array(sw31, sw31a, sw31p, 31, 0)
 -DT32 = Array(sw32, sw32a, sw32p, 32, 0)
@@ -45,22 +54,54 @@
 +Set DT31 = (new DropTarget)(sw31, sw31a, sw31p, 31, 0, false)
 +Set DT32 = (new DropTarget)(sw32, sw32a, sw32p, 32, 0, false)
 +Set DT39 = (new DropTarget)(sw39, sw39a, sw39p, 39, 0, false)
-@@ -3226,3 +3260,3 @@
+ 
+ 
+ Dim DTArray
+@@ -3223,9 +3257,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -3237 +3271 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -3234,7 +3268,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -3245 +3279 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -3242,14 +3276,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -3252 +3286 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -3307 +3341 @@
+ 	Next
+ End Function
+ 
+@@ -3304,7 +3338,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

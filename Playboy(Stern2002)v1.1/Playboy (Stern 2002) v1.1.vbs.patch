@@ -1,5 +1,11 @@
 --- Playboy (Stern 2002) v1.1.vbs.original
 +++ Playboy (Stern 2002) v1.1.vbs
-@@ -655 +655 @@
+@@ -652,7 +652,7 @@
+ 
+ 	PlayboySetOptions
+ 
 -	If optSkip = False Then vpmShowDips
 +	'If optSkip = False Then vpmShowDips
+ 
+ 	PlayboySetOptions
+ 	With Controller

@@ -1,8 +1,20 @@
 --- Death Proof Balutito V2.vbs.original
 +++ Death Proof Balutito V2.vbs
-@@ -210 +210 @@
+@@ -207,7 +207,7 @@
+ '***************************************************************************************************************************************************************
+ 
+ Const cDMDRotation 	= -1 			'-1 for No change, 0 - DMD rotation of 0?, 1 - DMD rotation of 90?
 -Const cGameName 	= "deathproof"	'ROM name
 +Const cGameName 	= "mousn_l4"	'ROM name
-@@ -1947 +1947 @@
+ Const ballsize 		= 50
+ Const ballmass 		= 1
+ 
+@@ -1944,7 +1944,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
 -	If isGIOn <> Not IsOff Then
 +	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on

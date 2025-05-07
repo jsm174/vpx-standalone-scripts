@@ -1,6 +1,9 @@
 --- Apollo 13 (Sega 1995) w VR Room v2.1.1.vbs.original
 +++ Apollo 13 (Sega 1995) w VR Room v2.1.1.vbs
-@@ -2626,0 +2627,25 @@
+@@ -2624,6 +2624,31 @@
+ '		STAND-UP TARGET INITIALIZATION
+ '******************************************************
+ 
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
 +
@@ -26,7 +29,13 @@
 +  End Function
 +End Class
 +
-@@ -2645,13 +2670,13 @@
+ 'Define a variable for each stand-up target
+ 
+ Dim ST25, ST26, ST27, ST28, ST29, ST30, ST31, ST32, ST38, ST40, ST491, ST492, ST493	'Rectangle Stand Up Targets
+@@ -2642,19 +2667,19 @@
+ 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
+ 
+ 
 -ST25 = Array(sw25, psw25,25, 0)
 -ST26 = Array(sw26, psw26,26, 0)
 -ST27 = Array(sw27, psw27,27, 0)
@@ -53,14 +62,29 @@
 +Set ST491 = (new StandupTarget)(sw49a, psw49a,49, 0)
 +Set ST492 = (new StandupTarget)(sw49b, psw49b,49, 0)
 +Set ST493 = (new StandupTarget)(sw49c, psw49c,49, 0)
-@@ -2677 +2702 @@
+ 
+ Dim STArray
+ STArray = Array(ST25, ST26, ST27, ST28, ST29, ST30, ST31, ST32, ST38, ST40, ST491, ST492, ST493)
+@@ -2674,10 +2699,10 @@
+ 	i = STArrayID(switch)
+ 
+ 	PlayTargetSound
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
-@@ -2679,2 +2704,2 @@
+ 
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
-@@ -2742 +2767 @@
+ 	End If
+ 	DoSTAnim
+ End Sub
+@@ -2739,7 +2764,7 @@
+ Sub DoSTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(STArray)
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+ 	Next
+ End Sub
+ 

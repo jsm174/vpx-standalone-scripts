@@ -1,6 +1,9 @@
 --- Three Angels (Original 2018) 1.3.vbs.original
 +++ Three Angels (Original 2018) 1.3.vbs
-@@ -293,0 +294,22 @@
+@@ -291,6 +291,28 @@
+ 
+ Option Explicit				' Force explicit variable declaration
+ 
 +Sub ImplicitDMD_Init
 +   Me.x = 30
 +   Me.y = 30
@@ -23,26 +26,60 @@
 +   End If
 +End Sub
 +
-@@ -303 +325 @@
+ Dim VR_Room
+ 
+ '############-----VR Room-----############
+@@ -300,7 +322,7 @@
+ 
+ '---------- UltraDMD Unique Table Color preference -------------
+ Dim DMDColor, DMDColorSelect, UseFullColor
 -Dim DMDPosition, DMDPosX, DMDPosY, DMDSize, DMDWidth, DMDHeight 
 +Dim DMDPosition, DMDPosX, DMDPosY, DMDSize, DMD_Width, DMD_Height 
-@@ -314,2 +336,2 @@
+ 
+ 
+ UseFullColor = "True" '                           "True" / "False"
+@@ -311,8 +333,8 @@
+ DMDPosY = 40                                     ' Position in Decimal
+ 
+ DMDSize = False                                     ' Use Manual DMD Size, True / False
 -DMDWidth = 1276                                    ' Width in Decimal
 -DMDHeight = 684                                   ' Height in Decimal  
 +DMD_Width = 1276                                    ' Width in Decimal
 +DMD_Height = 684                                   ' Height in Decimal  
-@@ -324,2 +346,2 @@
+ 
+ 'Note open Ultradmd and right click on window to get the various sizes in decimal 
+ 
+@@ -321,20 +343,19 @@
+ Dim WshShell,filecheck,directory
+ Set WshShell = CreateObject("WScript.Shell")
+ If DMDSize then
 -WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMDWidth,"REG_DWORD"
 -WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMDHeight,"REG_DWORD"
 +WshShell.RegWrite "HKCU\Software\UltraDMD\w",DMD_Width,"REG_DWORD"
 +WshShell.RegWrite "HKCU\Software\UltraDMD\h",DMD_Height,"REG_DWORD"
-@@ -331,2 +353,2 @@
+ End if
+ If DMDPosition then
+ WshShell.RegWrite "HKCU\Software\UltraDMD\x",DMDPosX,"REG_DWORD"
+ WshShell.RegWrite "HKCU\Software\UltraDMD\y",DMDPosY,"REG_DWORD"
+ End if
 -WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 -WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 +' WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
-@@ -337 +358,0 @@
+ End Sub
+ '---------------------------------------------------
+ 
+ 
 -
-@@ -62805 +62826 @@
+ ' Define any Constants 
+ Const constMaxPlayers 		= 4 		' Maximum number of players per game (between 1 and 4)
+ Const constBallSaverTime	= 5000	' Time in which a free ball is given if it lost very quickly
+@@ -62802,7 +62823,7 @@
+ 	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
+ 	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
+ 	
 -	AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
 +	AddScore(1000000 * DoorJackpotNumber)  'This jackpot is a little harder.
+ 	bonuspoints(1)=bonuspoints(1)+100000
+ 
+ 

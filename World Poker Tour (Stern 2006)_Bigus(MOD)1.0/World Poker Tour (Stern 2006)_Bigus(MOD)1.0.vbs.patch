@@ -1,7 +1,13 @@
 --- World Poker Tour (Stern 2006)_Bigus(MOD)1.0.vbs.original
 +++ World Poker Tour (Stern 2006)_Bigus(MOD)1.0.vbs
-@@ -1759,2 +1759,2 @@
+@@ -1756,8 +1756,8 @@
+  
+  
+  
 - Dim LampState(200), FadingLevel(200), FadingState(200)
 -Dim FlashState(200), FlashLevel(200)
 + Dim LampState(570), FadingLevel(570), FadingState(570)
 +Dim FlashState(570), FlashLevel(570)
+ Dim FlashSpeedUp, FlashSpeedDown
+ Dim x
+  

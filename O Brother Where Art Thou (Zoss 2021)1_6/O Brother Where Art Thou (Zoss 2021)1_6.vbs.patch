@@ -1,6 +1,9 @@
 --- O Brother Where Art Thou (Zoss 2021)1_6.vbs.original
 +++ O Brother Where Art Thou (Zoss 2021)1_6.vbs
-@@ -2522,0 +2523,34 @@
+@@ -2520,12 +2520,46 @@
+ '******************************************************
+ '                                DROP TARGETS FUNCTIONS
+ '******************************************************
 +
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
@@ -35,7 +38,8 @@
 +	End Function
 +  End Class
 +
-@@ -2525,4 +2559,4 @@
+ 'An array of objects for each DT of (primary wall, secondary wall, primitive, switch, animate variable)
+ Dim DT001, DT002, DT003, DT004
 -DT001 = Array(DW001, DOW001, drop001, 01, 0)
 -DT002 = Array(DW002, DOW002, drop002, 02, 0)
 -DT003 = Array(DW003, DOW003, drop003, 03, 0)
@@ -44,23 +48,54 @@
 +Set DT002 = (new DropTarget)(DW002, DOW002, drop002, 02, 0, false)
 +Set DT003 = (new DropTarget)(DW003, DOW003, drop003, 03, 0, false)
 +Set DT004 = (new DropTarget)(DW004, DOW004, drop004, 04, 0, false)
-@@ -2539 +2573 @@
+ 
+ 
+ 'An array of DT arrays
+@@ -2536,21 +2570,21 @@
+ Function DTArrayID(switch)
+     Dim i
+     For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i: Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i: Exit Function 
-@@ -2546 +2580 @@
+     Next
+ End Function' This function looks over the DTArray and pulls the ID the target hit (ie 06))
+ 
+ Sub DTRaise(switch)
+     Dim i
+     i = DTArrayID(switch)
 -    DTArray(i)(4) = -1 'this sets the last variable in the DT array to -1 from 0 to raise DT
 +    DTArray(i).animate = -1 'this sets the last variable in the DT array to -1 from 0 to raise DT
-@@ -2553 +2587 @@
+     DoDTAnim
+ End Sub
+ 
+ Sub DTDrop(switch)
+     Dim i
+     i = DTArrayID(switch)
 -    DTArray(i)(4) = 1 'this sets the last variable in the DT array to 1 from 0
 +    DTArray(i).animate = 1 'this sets the last variable in the DT array to 1 from 0
-@@ -2561 +2595 @@
+     DoDTAnim
+ End Sub
+ 
+@@ -2558,10 +2592,10 @@
+     Dim i
+     i = DTArrayID(switch) ' this sets i to be the position of the DT in the array DTArray
+ 
 -    DTArray(i)(4) =  DTCheckBrick(Activeball, DTArray(i)(2)) ' this sets the animate value (-1 raise, 1&4 drop, 0 do nothing, 3 bend backwards, 2 BRICK
 +    DTArray(i).animate =  DTCheckBrick(Activeball, DTArray(i).prim) ' this sets the animate value (-1 raise, 1&4 drop, 0 do nothing, 3 bend backwards, 2 BRICK
-@@ -2563,2 +2597,2 @@
+ 
 -    If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then ' if the value from brick checking is not 2 then apply ball physics
 -	DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +    If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then ' if the value from brick checking is not 2 then apply ball physics
 +	DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -2640 +2674 @@
+     End If
+     DoDTAnim
+ End Sub
+@@ -2637,7 +2671,7 @@
+ Sub DoDTAnim()
+         Dim i
+         For i = 0 to Ubound(DTArray)
 -	    DTArray(i)(4) = DTAnimate(DTArray(i)(0), DTArray(i)(1), DTArray(i)(2), DTArray(i)(3), DTArray(i)(4))
 +	    DTArray(i).animate = DTAnimate(DTArray(i).primary, DTArray(i).secondary, DTArray(i).prim, DTArray(i).sw, DTArray(i).animate)
+         Next
+ End Sub
+ 

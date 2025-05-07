@@ -1,6 +1,9 @@
 --- Cybernaut.vbs.original
 +++ Cybernaut.vbs
-@@ -57,0 +58,12 @@
+@@ -55,6 +55,18 @@
+ Primitive13.visible=0
+ End if
+ 
 +Const sSaucer=9'1
 +Const sLT=10'2              drop target reset
 +Const sBumper=11'3         
@@ -13,9 +16,13 @@
 +Const sEnable=19'10         K1 reley ( flipper enable )
 +Const sRightGate=20'11
 +
-@@ -91,13 +102,0 @@
--
--
+ '*************************************************************
+ 'Solenoid Call backs
+ '**********************************************************************************************************
+@@ -90,19 +102,6 @@
+ End Sub
+ 
+ 
 -Const sSaucer=9'1
 -Const sLT=10'2              drop target reset
 -Const sBumper=11'3         
@@ -27,3 +34,8 @@
 -Const sCLo=18'9             ?
 -Const sEnable=19'10         K1 reley ( flipper enable )
 -Const sRightGate=20'11
+-
+-
+ '**********************************************************************************************************
+ 
+  Sub FlipperTimer_Timer

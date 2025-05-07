@@ -1,13 +1,30 @@
 --- Stranger Things - SE 1.47_OSB.vbs.original
 +++ Stranger Things - SE 1.47_OSB.vbs
-@@ -361 +360,0 @@
+@@ -358,10 +358,11 @@
+ 	Sub Table1_Init()
+ 		SetLocale(1033)
+ 		Spot1.opacity = 0
 -		resetbackglass
-@@ -364,0 +364,2 @@
+ 		StartXMAS
+ 		LoadEM
+ 		DMD_Init
 +		PupInit
 +		resetbackglass
-@@ -1896,0 +1898 @@
+ 		Dim i
+ 		help.opacity = 0
+ 		Randomize
+@@ -1894,6 +1895,7 @@
+ 			Const pAudio=7
+ 			Const pCallouts=8
+ 
 +Sub PupInit		
-@@ -1922,9 +1923,0 @@
+ 	if HasPuP Then
+ 	on error resume next
+ 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
+@@ -1919,23 +1921,7 @@
+ 	PuPlayer.SetScreenex pCallouts,0,0,0,0,2
+ 	PuPlayer.hide pCallouts
+ 
 -	Sub chilloutthemusic
 -		If calloutlowermusicvol = 1 Then
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
@@ -17,7 +34,7 @@
 -			vpmtimer.addtimer 2200, "turnitbackup'"
 -		End If
 -	End Sub
-@@ -1932,7 +1924,0 @@
+ 
 -	Sub turnitbackup
 -		If calloutlowermusicvol = 1 Then
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":"&(videovol)&" }"
@@ -25,7 +42,13 @@
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
 -		End If
 -	End Sub
-@@ -2147,0 +2134,28 @@
+ 
+ 
+ 	PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
+@@ -2145,6 +2131,34 @@
+ 	PuPlayer.LabelNew pBackglass,"ah20n","AvantGarde LT Medium",			5,16777215  ,0,1,1,54,66,1,1
+ 	PuPlayer.LabelNew pBackglass,"ah20s","AvantGarde LT Medium",			5,16777215  ,0,1,1,65,66,1,1
+ 
 +	
 +	'Page 2 (default Text Splash 1 Big Line)
 +	PuPlayer.LabelNew pBackglass,"Splash"  ,"avantgarde",40,77749231,0,1,1,0,0,2,0
@@ -54,10 +77,19 @@
 +	End If
 +	End Sub
 +
-@@ -2190,6 +2203,0 @@
+ 	Sub ruleshelperon
+ 		rulestime.enabled = 1
+ 	End Sub
+@@ -2187,12 +2201,6 @@
+ 	End Sub
+ 
+ 
 -	'Page 2 (default Text Splash 1 Big Line)
 -	PuPlayer.LabelNew pBackglass,"Splash"  ,"avantgarde",40,77749231,0,1,1,0,0,2,0
 -
 -	'Page 3 (default Text Splash 2 Lines)
 -	PuPlayer.LabelNew pBackglass,"Splash2a","avantgarde",40,77749231,0,1,1,0,25,3,0
 -	PuPlayer.LabelNew pBackglass,"Splash2b","avantgarde",40,77749231,0,1,1,0,75,3,0
+ 
+ 	Sub resetbackglass
+ 	Loadhs

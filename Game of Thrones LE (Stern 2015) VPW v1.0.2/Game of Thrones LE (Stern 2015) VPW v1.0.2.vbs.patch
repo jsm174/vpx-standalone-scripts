@@ -1,12 +1,27 @@
 --- Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs.original
 +++ Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs
-@@ -8963 +8963 @@
+@@ -8960,7 +8960,7 @@
+                 line1 = "TOTAL BONUS" : line2 = FormatScore(BonusCnt * BonusMultiplier(CurrentPlayer))
+                 PlayfieldMultiplierVal = 1
+                 Dim t : t = ReplayAwarded(CurrentPlayer)
 -                AddScore (BonusCnt * BonusMultiplier(CurrentPlayer))+BonusHeldPoints(CurrentPlayer)
 +                AddScore ((BonusCnt * BonusMultiplier(CurrentPlayer))+BonusHeldPoints(CurrentPlayer))
-@@ -15454 +15454 @@
+                 if bBonusHeld = 0 Then BonusHeldPoints(CurrentPlayer) = 0
+                 if bBonusHeld = 1 Then 
+                     BonusHeldPoints(CurrentPlayer) = BonusCnt * BonusMultiplier(CurrentPlayer)
+@@ -15451,7 +15451,7 @@
+                     Else 
+                         .Text = (ComboMultiplier(i)*PlayfieldMultiplierVal)&"X"
+                     End If
 -                    .SetAlignedPosition (i-1)*25,31,FlexDMD_Align_BottomLeft
 +                    .SetAlignedPosition ((i-1)*25),31,FlexDMD_Align_BottomLeft
-@@ -15600,0 +15601,33 @@
+                     If t And i > 1 Then .Visible = 0 Else .Visible = 1
+                 End With
+             Next
+@@ -15598,6 +15598,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -40,7 +55,13 @@
 +  End Function
 +End Class
 +
-@@ -15620,4 +15653,4 @@
+ 'Define a variable for each drop target
+ Dim DT7, DT8, DT9, DT90
+ 
+@@ -15617,10 +15650,10 @@
+ '						Values for animate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+ '   isDropped:			Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
+ 
 -DT7 = Array(target7, target7a, T7_BM_Dark_Room, 1, 0, false)
 -DT8 = Array(target8, target8a, T8_BM_Dark_Room, 2, 0, false)
 -DT9 = Array(target9, target9a, T9_BM_Dark_Room, 3, 0, false)
@@ -49,7 +70,13 @@
 +Set DT8 = (new DropTarget)(target8, target8a, T8_BM_Dark_Room, 2, 0, false)
 +Set DT9 = (new DropTarget)(target9, target9a, T9_BM_Dark_Room, 3, 0, false)
 +Set DT90= (new DropTarget)(target90, target90a, T90_BM_Dark_Room,  4, 0, true)
-@@ -15655,4 +15688,4 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT7, DT8, DT9, DT90)
+@@ -15652,12 +15685,12 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -    debug.print "dthit "&i&" pre-state: "&DTArray(i)(4)
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
@@ -58,28 +85,69 @@
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -15660 +15693 @@
+ 	End If
 -    debug.print "post-state: "&DTArray(i)(4)
 +    debug.print "post-state: "&DTArray(i).animate
-@@ -15668 +15701 @@
+ 	'DoDTAnim - No need for this, it's called on a timer every 10ms
+ End Sub
+ 
+@@ -15665,7 +15698,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -15676 +15709 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -15673,14 +15706,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -15683 +15716 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -15738 +15771 @@
+ 	Next
+ End Function
+ 
+@@ -15735,7 +15768,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
-@@ -15794 +15827 @@
+ 	Next
+ End Sub
+ 
+@@ -15791,7 +15824,7 @@
+ 		if prim.transz <= -DTDropUnits Then 
+ 			prim.transz = -DTDropUnits
+ 			secondary.collidable = 0
 -			DTArray(ind)(5) = true 'Mark target as dropped
 +			DTArray(ind).isDropped = true 'Mark target as dropped
-@@ -15849 +15882 @@
+ 			DTAction switchid
+ 			primary.uservalue = 0
+ 			DTAnimate = 0
+@@ -15846,7 +15879,7 @@
+ 		end if
+ 		primary.collidable = 0
+ 		secondary.collidable = 1
 -		DTArray(ind)(5) = false 'Mark target as not dropped
 +		DTArray(ind).isDropped = false 'Mark target as not dropped
-@@ -15918,0 +15952,25 @@
+ 
+ 	End If
+ 
+@@ -15916,6 +15949,31 @@
+ '		STAND-UP TARGET INITIALIZATION
+ '******************************************************
+ 
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
 +
@@ -105,7 +173,13 @@
 +  End Function
 +End Class
 +
-@@ -15935,10 +15993,10 @@
+ 'Define a variable for each stand-up target
+ Dim ST04, ST05, ST06, ST07, ST08, ST09, ST10, ST11, ST12, ST13
+ 
+@@ -15932,16 +15990,16 @@
+ 'You will also need to add a secondary hit object for each stand up (name sw11o, sw12o, and sw13o on the example Table1)
+ 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
+ 
 -ST04 = Array(Target32, targets_004_BM_Dark_Room, 4,  0)
 -ST05 = Array(Target33, targets_005_BM_Dark_Room, 5,  0)
 -ST06 = Array(Target34, targets_006_BM_Dark_Room, 6,  0)
@@ -126,18 +200,39 @@
 +Set ST11 = (new StandupTarget)(Target82, targets_011_BM_Dark_Room, 11, 0)
 +Set ST12 = (new StandupTarget)(Target81, targets_012_BM_Dark_Room, 12, 0)
 +Set ST13 = (new StandupTarget)(Target80, targets_BM_Dark_Room    , 13, 0)
-@@ -15967 +16025 @@
+ 
+ 
+ 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
+@@ -15964,11 +16022,11 @@
+ 	i = STArrayID(switch)
+ 
+ 	PlayTargetSound
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
-@@ -15969 +16027 @@
+ 
 -	If STArray(i)(3) <> 0 Then
 +	If STArray(i).animate <> 0 Then
-@@ -15971 +16029 @@
+         ' The line below slows down the ball, the same as a drop target does, but standup targets don't behave that way
 -		'DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +		'DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
-@@ -15979 +16037 @@
+ 	End If
+ 	DoSTAnim
+ End Sub
+@@ -15976,7 +16034,7 @@
+ Function STArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(STArray) 
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
-@@ -16008 +16066 @@
+ 	Next
+ End Function
+ 
+@@ -16005,7 +16063,7 @@
+ Sub DoSTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(STArray)
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+ 	Next
+ End Sub
+ 

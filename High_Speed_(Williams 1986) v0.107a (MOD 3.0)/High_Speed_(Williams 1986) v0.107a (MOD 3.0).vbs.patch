@@ -1,6 +1,18 @@
 --- High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs.original
 +++ High_Speed_(Williams 1986) v0.107a (MOD 3.0).vbs
-@@ -8,0 +9 @@
+@@ -6,6 +6,7 @@
+ If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+ On Error Goto 0
+  
 +Const tnob = 3						'Total number of balls
-@@ -3821 +3821,0 @@
+ Const BallMass = 1
+ Const BallSize = 50
+ Const cGameName="hs_l4",UseGI=0,SSolenoidOn="SolOn",SSolenoidOff="SolOff", SCoin="coin"
+@@ -3818,7 +3819,6 @@
+ ' New shadow code...
+ 
+ 
 -Const tnob = 3						'Total number of balls
+ Const lob = 0						'Locked balls
+ 
+ 

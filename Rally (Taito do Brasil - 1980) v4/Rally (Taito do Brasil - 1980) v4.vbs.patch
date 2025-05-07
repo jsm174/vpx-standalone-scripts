@@ -1,4 +1,10 @@
 --- Rally (Taito do Brasil - 1980) v4.vbs.original
 +++ Rally (Taito do Brasil - 1980) v4.vbs
-@@ -63 +62,0 @@
+@@ -60,7 +60,6 @@
+ '************
+ 
+ Sub table1_Init
 -    NVramPatchLoad
+     vpmInit me
+     With Controller
+         .GameName = cGameName

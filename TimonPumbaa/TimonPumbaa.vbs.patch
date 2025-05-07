@@ -1,12 +1,24 @@
 --- TimonPumbaa.vbs.original
 +++ TimonPumbaa.vbs
-@@ -3551 +3551 @@
+@@ -3548,7 +3548,7 @@
+ 		If Flex_Overlay_CurrentImage > 0 Then FlexDMD.Stage.GetImage(Flex_Overlay_image & Flex_Overlay_CurrentImage ).Visible=False
+ 		Flex_Overlay_CurrentImage = Flex_Overlay_FrameCounter
+ 	End If
 -	debug.print "img=" & Flex_Overlay_image & Flex_Overlay_FrameCounter
 +	'debug.print "img=" & Flex_Overlay_image & Flex_Overlay_FrameCounter
-@@ -8915 +8915,2 @@
+ 	FlexDMD.Stage.GetImage(Flex_Overlay_image & Flex_Overlay_FrameCounter ).Visible=True
+ 
+ 
+@@ -8912,9 +8912,10 @@
+ 	roach4.y=roachxy4(1)(roachstep)
+ 	if roachstep>0 Then
+ 		for xx = 1 to 4											'change each roach rotation
 -			dy=-1*(EVAL("roachxy"&xx)(1)(roachstep)-EVAL("roachxy"&xx)(1)(roachstep-1))	'delta Y
 +			Dim roachxy:roachxy=EVAL("roachxy"&xx)
 +			dy=-1*(roachxy(1)(roachstep)-roachxy(1)(roachstep-1))	'delta Y
-@@ -8917 +8918 @@
+ 			if dy=0 then dy=0.0000001													'avoid divide by zero errors
 -			dx=EVAL("roachxy"&xx)(0)(roachstep)-EVAL("roachxy"&xx)(0)(roachstep-1)		'delta X
 +			dx=roachxy(0)(roachstep)-roachxy(0)(roachstep-1)		'delta X
+ 			roachA=atn(dX/dY)												'angle in radians
+ 			if roachA<0 then roachA=roachA+PI								'correction for negative angles
+ 			roachA=int(roachA/(pi/180))							'convert to degrees

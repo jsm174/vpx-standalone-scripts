@@ -1,8 +1,20 @@
 --- Harlem Globetrotters (Bally 1979) VPW 1.0.vbs.original
 +++ Harlem Globetrotters (Bally 1979) VPW 1.0.vbs
-@@ -251,0 +252,2 @@
+@@ -249,6 +249,8 @@
+ '----- VR Room Auto-Detect -----
+ Dim VR_Obj, VRRoom, VRSound, VRSoundVolume, VRSoundInit, CabRails, BPRails, BPRamp1, BPRamp2
+ 
 +Const LiveViewVRSim = 0		' 0 = Default, 1 = View table in VR mode in "Live View Editor"
 +
-@@ -316,2 +317,0 @@
--
+ VRRoom = 3
+ If RenderingMode = 2 Or LiveViewVRSim = 1 Then
+ 	VRSoundInit = 1
+@@ -314,8 +316,6 @@
+ 	If eventId = 3 And dspTriggered Then dspTriggered = False : DisableStaticPreRendering = False : End If
+ End Sub
+ 
 -Const LiveViewVRSim = 0		' 0 = Default, 1 = View table in VR mode in "Live View Editor"
+-
+ Sub SetupSound()
+ 	If VRSound = 1 Then
+ 		StopSound "Song"

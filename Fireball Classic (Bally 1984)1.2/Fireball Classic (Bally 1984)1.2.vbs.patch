@@ -1,6 +1,9 @@
 --- Fireball Classic (Bally 1984)1.2.vbs.original
 +++ Fireball Classic (Bally 1984)1.2.vbs
-@@ -3,0 +4,42 @@
+@@ -1,6 +1,48 @@
+ Option Explicit
+ Randomize
+ 
 +if Table1.showdt = false then ramp008.visible = 0:ramp011.visible = 0
 +
 +ExecuteGlobal GetTextFile("controller.vbs")
@@ -43,7 +46,13 @@
 +Dim  Turntable,  MagnetsOn, MotorDirection,d
 +
 +
-@@ -97,12 +138,0 @@
+ Class cTurntable
+ 	private cX, cY, cSize, cMaxSpeed, cSpinUp, cSpinDown
+ 	private cTempX, cTempY, cCurspeed, cMotorOn, cClockwise
+@@ -94,62 +136,7 @@
+ 	End Sub
+ End Class
+ 
 -if Table1.showdt = false then ramp008.visible = 0:ramp011.visible = 0
 -
 -ExecuteGlobal GetTextFile("controller.vbs")
@@ -56,7 +65,7 @@
 -Const SSolenoidOn="solon",SSolenoidOff="soloff",SFlipperOn="FlipperUp",SFlipperOff="FlipperDown",sCoin="coin3"
 -
 -Set LampCallback=GetRef("UpdateMultipleLamps")
-@@ -110,43 +139,0 @@
+  
 -SolCallback(sKnocker)="vpmSolSound ""knocker"","
 -SolCallback(sLSling)="vpmSolSound ""sling""," 
 -SolCallback(sRSling)="vpmSolSound""sling""," 
@@ -100,7 +109,13 @@
 -
 -Dim bsTrough,bsLSaucer,bsRSaucer
 -Dim  Turntable,  MagnetsOn, MotorDirection,d
-@@ -224,0 +212,16 @@
+ Sub Table1_Init()
+ 	KickerLane.CreateBall
+ KickerLane.Kick 180,4
+@@ -222,6 +209,22 @@
+ Plunger1.Pullback
+ End Sub 
+ 
 +SolCallback(sKnocker)="vpmSolSound ""knocker"","
 +SolCallback(sLSling)="vpmSolSound ""sling""," 
 +SolCallback(sRSling)="vpmSolSound""sling""," 
@@ -117,3 +132,6 @@
 +SolCallback(sLRFlipper)="SolRightF" 
 +SolCallback(sEnable)="vpmNudge.SolGameOn"
 +
+ Sub SpindiskTimer_timer
+ spindisk.ObjRotZ = spindisk.ObjRotZ -1
+ End Sub

@@ -1,5 +1,11 @@
 --- Riccione.vbs.original
 +++ Riccione.vbs
-@@ -1131 +1131 @@
+@@ -1128,7 +1128,7 @@
+ End Sub
+ 
+ Sub Display_Match()
 -    MatchReel.SetValue(Match \ 10) + 1
 +    MatchReel.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100

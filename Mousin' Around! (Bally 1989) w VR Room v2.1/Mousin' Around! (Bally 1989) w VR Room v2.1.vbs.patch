@@ -1,10 +1,27 @@
 --- Mousin' Around! (Bally 1989) w VR Room v2.1.vbs.original
 +++ Mousin' Around! (Bally 1989) w VR Room v2.1.vbs
-@@ -279 +279 @@
+@@ -276,14 +276,13 @@
+ 	UpdateBallBrightness
+ 	LampTimer
+ 
 -	If VR_Room = 1 Then
 +	If VR_Room = 1 OR (VR_Room = 0 AND cab_mode = 1) Then
-@@ -286 +285,0 @@
+ 		DisplayTimer
+ 	End If
+ 
+ 	If VR_Room = 0 AND cab_mode = 0 Then
+ 		DisplayTimerDT
+ 	End If
 -
-@@ -1481 +1480 @@
+ End Sub
+ 
+ 
+@@ -1478,7 +1477,7 @@
+ Dim GIStep : GIStep = 0
+ Sub SolGI(IsOff)
+ 	If EnableGI = 0 And Not isGIOn Then Exit Sub
 -	If isGIOn <> Not IsOff Then
 +	If isGIOn <> (Not IsOff) Then
+ 		isGIOn = Not IsOff
+ 		If isGIOn Then
+ 			' GI goes on

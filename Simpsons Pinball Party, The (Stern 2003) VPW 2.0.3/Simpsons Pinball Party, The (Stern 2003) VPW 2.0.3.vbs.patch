@@ -1,6 +1,9 @@
 --- Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3.vbs.original
 +++ Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3.vbs
-@@ -3335,11 +3335,11 @@
+@@ -3332,17 +3332,17 @@
+ 	Public Property Get state(idx) : state = Lvl(idx) : end Property
+ 
+ 	'Mass assign, Builds arrays where necessary
 -	Public Sub MassAssign(aIdx, aInput)
 -		If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set
 -			if IsArray(aInput) then
@@ -23,3 +26,6 @@
 +'			Obj(aIdx) = AppendArray(obj(aIdx), aInput)
 +'		end if	
 +'	end Sub
+ 	
+ 	Public Property Let MassAssign(aIdx, aInput)
+ 		If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set

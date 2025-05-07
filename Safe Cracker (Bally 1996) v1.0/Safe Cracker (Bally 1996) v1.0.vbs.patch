@@ -1,5 +1,11 @@
 --- Safe Cracker (Bally 1996) v1.0.vbs.original
 +++ Safe Cracker (Bally 1996) v1.0.vbs
-@@ -57 +57 @@
+@@ -54,7 +54,7 @@
+ LoadVPM "01560000", "WPC.VBS", 3.50
+ keyStagedFlipperL = ""
+ 
 -Const cGameName="sc_18"
 +Const cGameName="sc_18s11"
+ 
+ dim mPopperDish, bsBank, SCBall1, SCBall2, SCBall3, SCBall4, SpinnerBall
+ 

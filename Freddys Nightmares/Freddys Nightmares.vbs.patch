@@ -1,6 +1,9 @@
 --- Freddys Nightmares.vbs.original
 +++ Freddys Nightmares.vbs
-@@ -112,0 +113,14 @@
+@@ -110,6 +110,20 @@
+     PuPlayer.B2SData "E"&EventNum,1  'send event to Pup-Pack
+ End Sub
+ 
 +
 +Const pTopper2=0        'change this number to the screen of your choosing for Topper
 +Const pDMD=1
@@ -15,7 +18,13 @@
 +
 +Sub InitPuP()
 +
-@@ -186,10 +199,0 @@
+ ' ******* How to use PUPEvent to trigger / control a PuP-Pack *******
+ 
+ ' Usage: pupevent(EventNum)
+@@ -183,23 +197,13 @@
+     'USE THE BELOW OPTIONS TO SET THE PUP-PACK TO THE SCREEN NUMBERS OF YOUR CHOICE
+     '********************************************************************************
+ 
 -			Const pTopper2=0        'change this number to the screen of your choosing for Topper
 -			Const pDMD=1
 -            Const pBackglass=2				
@@ -26,7 +35,7 @@
 -			Const pCallouts=8
 -            Const pFullDMD=5        'change this number to the screen of your choosing for FullDMD
 -            
-@@ -197,6 +201,6 @@
+ 
 -	if HasPuP Then
 -	on error resume next
 -	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
@@ -39,7 +48,13 @@
 +	' on error goto 0
 +	' if not IsObject(PuPlayer) then HasPuP = False
 +	' end If
-@@ -247,9 +250,0 @@
+ 
+ 	if HasPuP Then
+ 
+@@ -244,25 +248,7 @@
+ 	End If
+ 	End If  
+ 
 -	Sub chilloutthemusic
 -		If calloutlowermusicvol = 1 Then
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
@@ -49,7 +64,7 @@
 -			vpmtimer.addtimer 4500, "turnitbackup'"
 -		End If
 -	End Sub
-@@ -257,9 +251,0 @@
+ 
 -	Sub turnitbackup
 -		If calloutlowermusicvol = 1 Then
 -			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":"&(videovol)&" }"
@@ -59,7 +74,13 @@
 -            PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(Audiovol)&" }"
 -		End If
 -	End Sub
-@@ -303,0 +290,21 @@
+ 
+ 
+ PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
+@@ -301,6 +287,27 @@
+ PuPlayer.playlistadd pFullDMD,"fulldmd", 1 , 0
+ End If
+ 
 +End Sub
 +
 +Sub chilloutthemusic
@@ -81,9 +102,21 @@
 +    PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(Audiovol)&" }"
 +End If
 +End Sub
-@@ -396,0 +404 @@
+ 
+ 
+ Const BallSize = 50 ' 50 is the normal size
+@@ -394,6 +401,7 @@
+     LoadEM
+     Dim i
+     Randomize
 +    InitPuP
-@@ -2659,11 +2667,11 @@
+     SpecialTableStartups
+ 
+     'Impulse Plunger as autoplunger
+@@ -2656,24 +2664,24 @@
+ 
+ ' Load & Save UltraDMD colors
+ Sub SetDMDColors
 -    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 -    ' Read the current Values
 -    On Error Resume Next
@@ -106,10 +139,16 @@
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\color", "White", "REG_SZ"
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\hideVDMD", "False", "REG_SZ"
 +    ' On Error Goto 0
-@@ -2674,3 +2682,3 @@
+ End Sub
+ 
+ Sub DMD_Exit
+     If UltraDMD.IsRendering Then UltraDMD.CancelRendering
 -    Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 -    WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
 -    WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
 +    ' Dim WshShell:Set WshShell = CreateObject("WScript.Shell")
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\color", DMDOldColor, "REG_SZ"
 +    ' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor", DMDOldFullColor, "REG_SZ"
+     UltraDMD = Null
+ End Sub
+ 

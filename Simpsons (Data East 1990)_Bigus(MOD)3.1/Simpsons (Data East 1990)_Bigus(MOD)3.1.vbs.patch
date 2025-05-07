@@ -1,6 +1,12 @@
 --- Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs.original
 +++ Simpsons (Data East 1990)_Bigus(MOD)3.1.vbs
-@@ -659,0 +660 @@
+@@ -657,7 +657,9 @@
+ 				FlexDMD.LockRenderThread
+ 					With FlexDMDScene
+ 						For jj = 0 To 31
 +							if Not IsEmpty(FlexDigits(jj)) then 
-@@ -660,0 +662 @@
+ 							.GetImage("Seg" & CStr(jj)).Bitmap = FlexDMD.NewImage("", FlexDMDDict.Item (FlexDigits(jj))).Bitmap
 +							end if
+ 						Next
+ 					End With
+ 				FlexDMD.UnlockRenderThread

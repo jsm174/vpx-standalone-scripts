@@ -1,63 +1,113 @@
 --- Saving Wallden.vbs.original
 +++ Saving Wallden.vbs
-@@ -9390 +9390 @@
+@@ -9387,21 +9387,21 @@
+ 	'----------------------------------------------------------
+ 	Public Sub PlayTrack(mName, loopCount, volume, fade, fadeOut, pan, randomPitch, pitch, frontRearFade)
+ 		If Not data.Exists(mName) Then Exit Sub
 -		
 +		Dim i: i = data.Item(mName)
-@@ -9394 +9394 @@
+ 		' Determine our volumes and fading
+ 		Dim loopCountToUse, volumeToUse, fadeToUse, fadeOutToUse
+ 		If IsNull(loopCount) Then
 -			loopCountToUse = data.Item(mName)(0)
 +			loopCountToUse = i(0)
-@@ -9399 +9399 @@
+ 		Else
+ 			loopCountToUse = loopCount
+ 		End If
+ 		If IsNull(volume) Then
 -			volumeToUse = data.Item(mName)(1)
 +			volumeToUse = i(1)
-@@ -9404 +9404 @@
+ 		Else
+ 			volumeToUse = volume
+ 		End If
+ 		If IsNull(fade) Then
 -			fadeToUse = data.Item(mName)(2)
 +			fadeToUse = i(2)
-@@ -9413 +9413,2 @@
+ 		Else
+ 			fadeToUse = fade
+ 		End If
+@@ -9410,7 +9410,8 @@
+ 			'Stop / fade out the current track if it is not the same as the track we are requesting
+ 			If Not mName = nowPlaying Then
+ 				If IsNull(fadeOut) Then
 -					fadeOutToUse = data.Item(nowPlaying)(3)
 +					Dim np: np = data.Item(nowPlaying)
 +					fadeOutToUse = np(3)
-@@ -9452 +9453,2 @@
+ 				Else
+ 					fadeOutToUse = fadeOut
+ 				End If
+@@ -9449,7 +9450,8 @@
+ 		' Get our fade-out duration
+ 		Dim fadeOutToUse
+ 		If IsNull(fadeOut) Then
 -			fadeOutToUse = data.Item(nowPlaying)(2)
 +			Dim np: np = data.Item(nowPlaying)
 +			fadeOutToUse = np(2)
-@@ -9734,0 +9737 @@
+ 		Else
+ 			fadeOutToUse = fadeOut
+ 		End If
+@@ -9732,27 +9734,28 @@
+ 		k = data.Keys
+ 		reTriggerPlaySound = False
+ 		For Each key In k
 +			Dim i: i = data.Item(key)
-@@ -9736,2 +9739,2 @@
+ 			' Determine the total time that has elapsed, and the time remaining, for the fade operation
 -			totalTimeElapsed = data.Item(key)(2) + timeElapsed
 -			timeRemaining = data.Item(key)(3) - totalTimeElapsed
 +			totalTimeElapsed = i(2) + timeElapsed
 +			timeRemaining = i(3) - totalTimeElapsed
-@@ -9739 +9742 @@
+ 			If timeRemaining < 0 Then timeRemaining = 0
 -			If totalTimeElapsed > data.Item(key)(3) Then totalTimeElapsed = data.Item(key)(3)
 +			If totalTimeElapsed > i(3) Then totalTimeElapsed = i(3)
-@@ -9742,2 +9745,2 @@
+ 			
+ 			' Determine the difference between initial and target value, the percent complete from time elapsed to total fade time, and thus what value we should be using for the fade right now.
 -			valueDifference = Abs(data.Item(key)(0) - data.Item(key)(1))
 -			If data.Item(key)(3) <= 0 Then ' Division by zero / negative duration protection
 +			valueDifference = Abs(i(0) - i(1))
 +			If i(3) <= 0 Then ' Division by zero / negative duration protection
-@@ -9746 +9749 @@
+ 				percentProgress = 1
+ 			Else
 -				percentProgress = totalTimeElapsed / data.Item(key)(3)
 +				percentProgress = totalTimeElapsed / i(3)
-@@ -9748,2 +9751,2 @@
+ 			End If
 -			If data.Item(key)(0) > data.Item(key)(1) Then ' Decreasing the value over time
 -				newValue = data.Item(key)(0) - (valueDifference * percentProgress)
 +			If i(0) > i(1) Then ' Decreasing the value over time
 +				newValue = i(0) - (valueDifference * percentProgress)
-@@ -9751 +9754 @@
+ 			Else ' Increasing the value over time
 -				newValue = data.Item(key)(0) + (valueDifference * percentProgress)
 +				newValue = i(0) + (valueDifference * percentProgress)
-@@ -9755 +9758 @@
+ 			End If
+ 			
+ 			' Save our new parameters
 -			data.Item(key) = Array(data.Item(key)(0), data.Item(key)(1), totalTimeElapsed, data.Item(key)(3))
 +			data.Item(key) = Array(i(0), i(1), totalTimeElapsed, i(3))
-@@ -14866 +14869,2 @@
+ 			
+ 			' Update the track's audio values in the class, and mark that we must call PlaySound
+ 			Select Case key
+@@ -14863,14 +14866,16 @@
+ 				If DTDropped(SWITCH_DROPS_PLUS) = True And DTDropped(SWITCH_DROPS_H) = True And DTDropped(SWITCH_DROPS_P) = True Then 'All targets dropped
+ 					addScore Scoring.basic("hpTargets.complete"), "Completed +HP Drop Targets"
+ 					Clocks.data.Item("hpTargets").timeLeft = 10000
 -					adjustHP Health.HP("heal.dropTargets.completed")(dataGame.data.Item("gameDifficulty"))
 +					Dim hpCompleted: hpCompleted = Health.HP("heal.dropTargets.completed")
 +					adjustHP hpCompleted(dataGame.data.Item("gameDifficulty"))
-@@ -14873 +14877,2 @@
+ 					'TODO: SFX / PUP
+ 				End If
+ 
+ 			Case SWITCH_HP_DING_WALL
+ 				addScore Scoring.basic("hpDingWall"), "Hit the +HP Ding Wall"
+ 				If DTDropped(SWITCH_DROPS_PLUS) = True And DTDropped(SWITCH_DROPS_H) = True And DTDropped(SWITCH_DROPS_P) = True Then 'All HP targets dropped
 -					adjustHP Health.HP("heal.dropTargets.bonus")(dataGame.data.Item("gameDifficulty"))
 +					Dim hpBonus: hpBonus = Health.HP("heal.dropTargets.bonus")
 +					adjustHP hpBonus(dataGame.data.Item("gameDifficulty"))
-@@ -16288,3 +16293,6 @@
+ 					'TODO: SFX / PUP
+ 				End If
+ 				
+@@ -16285,9 +16290,12 @@
+ 	dataPlayer(currentPlayers - 1).data.Item("colorSlot") = currentPlayers
+ 	
+ 	' Assign starting HP, drain damage, and Armor Class
 -	dataPlayer(currentPlayers - 1).data.Item("HP") = Health.HP("start")(gameDifficulty)
 -	dataPlayer(currentPlayers - 1).data.Item("drainDamage") = Health.drainDamage("start")(gameDifficulty)
 -	dataPlayer(currentPlayers - 1).data.Item("AC") = Health.AC("start")(gameDifficulty)
@@ -67,3 +117,6 @@
 +	dataPlayer(currentPlayers - 1).data.Item("drainDamage") = startingDrainDamage(gameDifficulty)
 +	Dim startingAC: startingAC = Health.AC("start")
 +	dataPlayer(currentPlayers - 1).data.Item("AC") = startingAC(gameDifficulty)
+ 	
+ 	' Assign the ones place in the score depending on game difficulty (don't use addScore because we do not want to trigger any scoring routines)
+ 	If TOURNAMENT_MODE = 0 Then

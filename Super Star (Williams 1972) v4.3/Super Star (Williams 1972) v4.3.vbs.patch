@@ -1,5 +1,11 @@
 --- Super Star (Williams 1972) v4.3.vbs.original
 +++ Super Star (Williams 1972) v4.3.vbs
-@@ -1083 +1083 @@
+@@ -1080,7 +1080,7 @@
+ End Sub
+ 
+ Sub Display_Match()
 -    MatchReel.SetValue(Match \ 10) + 1
 +    MatchReel.SetValue 1 + (Match \ 10)
+     If B2SOn then
+         If Match = 0 then
+             Controller.B2SSetMatch 100

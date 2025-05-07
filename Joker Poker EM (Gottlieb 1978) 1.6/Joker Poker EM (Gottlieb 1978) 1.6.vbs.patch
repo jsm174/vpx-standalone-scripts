@@ -1,6 +1,9 @@
 --- Joker Poker EM (Gottlieb 1978) 1.6.vbs.original
 +++ Joker Poker EM (Gottlieb 1978) 1.6.vbs
-@@ -2950,0 +2951,33 @@
+@@ -2948,6 +2948,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -34,7 +37,13 @@
 +  End Function
 +End Class
 +
-@@ -2970,15 +3003,15 @@
+ 'Define a variable for each drop target
+ Dim DTA1v,DTA2v,DTJKv,DTA3v,DTA4v,DT10v,DTJ1v,DTJ2v,DTQ1v,DTQ2v,DTQ3v,DTK1v,DTK2v,DTK3v,DTK4v
+ 
+@@ -2967,21 +3000,21 @@
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+ 
 -DTA1v = Array(DTA1, DTA1a, DTA1p, 1, 0)
 -DTA2v = Array(DTA2, DTA2a, DTA2p, 2, 0)
 -DTJKv = Array(DTJK, DTJKa, DTJKp, 3, 0)
@@ -65,22 +74,54 @@
 +Set DTK2v = (new DropTarget)(DTK2, DTK2a, DTK2p, 13, 0, false)
 +Set DTK3v = (new DropTarget)(DTK3, DTK3a, DTK3p, 14, 0, false)
 +Set DTK4v = (new DropTarget)(DTK4, DTK4a, DTK4p, 15, 0, false)
-@@ -3018,3 +3051,3 @@
+ 
+ 
+ Dim DTArray
+@@ -3015,9 +3048,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -3030 +3063 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -3027,7 +3060,7 @@
+ 	i = DTArrayID(switch)
+ 	DTIsDropped(switch) = 0
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -3038 +3071 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -3035,14 +3068,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 	
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -3045 +3078 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -3100 +3133 @@
+ 	Next
+ End Function
+ 
+@@ -3097,7 +3130,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

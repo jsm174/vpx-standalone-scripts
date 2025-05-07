@@ -1,6 +1,9 @@
 --- Lawman (Gottlieb 1971) 1.1.vbs.original
 +++ Lawman (Gottlieb 1971) 1.1.vbs
-@@ -343,17 +343,17 @@
+@@ -340,23 +340,23 @@
+ end sub
+ 
+ Sub MusicOn
 -	If PUPStatus=true then Exit Sub
 -    Dim FileSystemObject, folder, r, ct, file, musicPath
 -    Set FileSystemObject = CreateObject("Scripting.FileSystemObject")
@@ -35,3 +38,6 @@
 +'        End If
 +'    ct = ct + 1
 +'    Next
+  End Sub
+  
+ Sub Table1_MusicDone() 

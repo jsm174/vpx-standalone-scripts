@@ -1,15 +1,30 @@
 --- ABBAv2.0.vbs.original
 +++ ABBAv2.0.vbs
-@@ -50 +50 @@
+@@ -47,7 +47,7 @@
+ 
+ Sub table1_Init
+ 	'Set Controller = CreateObject("B2S.Server")
 -	NVramPatchLoad
 +	'NVramPatchLoad
-@@ -116 +116,4 @@
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -113,7 +113,10 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
 -Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
 +Sub table1_exit
 +    'NVramPatchExit
 +    Controller.stop
 +End Sub
-@@ -305,5 +308,5 @@
+ 
+ '******************
+ ' Realtime Updates
+@@ -302,11 +305,11 @@
+ SolCallback(4) = "dtbank3.SolDropUp"
+ SolCallback(5) = "dtbank1.SolDropUp"
+ 'SolCallback(6) = ""
 -SolCallback(7) = "dtbank1..SolHit 1,"
 -SolCallback(8) = "dtbank1..SolHit 2,"
 -SolCallback(9) = "dtbank1..SolHit 3,"
@@ -20,10 +35,22 @@
 +SolCallback(9) = "dtbank1.SolHit 3,"
 +SolCallback(10) = "dtbank1.SolHit 4,"
 +SolCallback(11) = "dtbank1.SolHit 5,"
-@@ -470 +473 @@
+ 
+ SolCallback(12) = "SolLeftGi"  'left flash effect
+ SolCallback(13) = "SolRightGi" 'right flash effect
+@@ -467,7 +470,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
 -    NVramPatchKeyCheck
 +    'NVramPatchKeyCheck
-@@ -907,85 +910,85 @@
+ End Sub
+ 
+ Sub UpdateLamps()
+@@ -904,91 +907,91 @@
+     PlaySound("fx_collide"), 0, Csng(velocity) ^2 / 2000, Pan(ball1), 0, Pitch(ball1), 0, 0, AudioFade(ball1)
+ End Sub
+ 
 -' =============================================================================================================
 -'                 NVram patch for Taito do Brasil tables by Pmax65
 -'
@@ -194,7 +221,7 @@
 +'         End If
 +'     Else
 +'         NVramPatchCoinCnt = 0
-@@ -993,2 +996,2 @@
+     
 -	End If
 -End Sub
 +' 	End If

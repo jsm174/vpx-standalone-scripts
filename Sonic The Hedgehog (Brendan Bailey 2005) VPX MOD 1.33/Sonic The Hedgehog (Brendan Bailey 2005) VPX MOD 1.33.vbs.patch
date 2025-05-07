@@ -1,6 +1,9 @@
 --- Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs.original
 +++ Sonic The Hedgehog (Brendan Bailey 2005) VPX MOD 1.33.vbs
-@@ -159,4 +159,4 @@
+@@ -156,10 +156,10 @@
+ Sub LoadUltraDMD 
+ 	If turnonultradmd = 0 then exit sub
+ 
 -			Dim WshShell
 -			Set WshShell = CreateObject("WScript.Shell")
 -			WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor","True","REG_SZ"
@@ -9,12 +12,25 @@
 +			' Set WshShell = CreateObject("WScript.Shell")
 +			' WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor","True","REG_SZ"
 +			' WshShell.RegWrite "HKCU\Software\UltraDMD\color","White","REG_SZ"
-@@ -980 +980 @@
+ 
+ 			Set UltraDMD = CreateObject("UltraDMD.DMDObject")
+ 			If UltraDMD is Nothing Then
+@@ -977,15 +977,15 @@
+ 		'player3reel.text = ""
+ 		if ballsremaining(currentplayer) = 3 then
+ 			D2.text = "ball 1" 
 -			DisplayB2SText (score(currentplayer)) &" " & "              BALL 1 "
 +			DisplayB2SText score(currentplayer) &" " & "              BALL 1 "
-@@ -984 +984 @@
+ 		end if
+ 		if ballsremaining(currentplayer) = 2 then
+ 			D2.text = "ball 2" 
 -			DisplayB2SText (score(currentplayer)) &" " & "              BALL 2 "
 +			DisplayB2SText score(currentplayer) &" " & "              BALL 2 "
-@@ -988 +988 @@
+ 		end if
+ 		if ballsremaining(currentplayer) = 1 then
+ 			D2.text = "ball 3"
 -			DisplayB2SText (score(currentplayer)) &" " & "              BALL 3 "
 +			DisplayB2SText score(currentplayer) &" " & "              BALL 3 "
+ 		end if
+       end if
+ 	  ' update the score displays

@@ -1,5 +1,11 @@
 --- X-Men LE (Stern 2012) VPW v1.0.vbs.original
 +++ X-Men LE (Stern 2012) VPW v1.0.vbs
-@@ -3217 +3217 @@
+@@ -3214,7 +3214,7 @@
+ 	Private Sub Class_Initialize : redim ballvel(0) : redim ballvelx(0): redim ballvely(0) : End Sub 
+ 
+ 	Public Sub Update()	'tracks in-ball-velocity
 -		dim str, b, AllBalls, highestID : allBalls = gBOT
 +		dim str, b, AllBalls, highestID : allBalls = getballs
+ 
+ 		for each b in allballs
+ 			if b.id >= HighestID then highestID = b.id

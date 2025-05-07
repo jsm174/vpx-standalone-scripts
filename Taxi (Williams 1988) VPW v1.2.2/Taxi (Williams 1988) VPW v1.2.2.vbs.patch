@@ -1,6 +1,9 @@
 --- Taxi (Williams 1988) VPW v1.2.2.vbs.original
 +++ Taxi (Williams 1988) VPW v1.2.2.vbs
-@@ -1438,8 +1438,9 @@
+@@ -1435,14 +1435,15 @@
+ '--------------------------------------
+ 
+ Dim DigitsDT(39)
 -Const Offset=32
 -DigitsDT(Offset+0)=Array(LED1,LED2,LED3,LED4,LED5,LED6,LED7,LED8)'ok
 -DigitsDT(Offset+1)=Array(LED9,LED10,LED11,LED12,LED13,LED14,LED15)'ok
@@ -18,6 +21,15 @@
 +DigitsDT(DigitsOffset+5)=Array(LED38,LED39,LED40,LED41,LED42,LED43,LED44)'ok
 +DigitsDT(DigitsOffset+6)=Array(LED45,LED46,LED47,LED48,LED49,LED50,LED51)'ok
 +
-@@ -1507 +1508 @@
+ 
+ Dim Digits(39)
+ Digits(0)=Array(ax00, ax05, ax0c, ax0d, ax08, ax01, ax06, ax0f, ax02, ax03, ax04, ax07, ax0b, ax0a, ax09, ax0e)
+@@ -1504,7 +1505,7 @@
+                   Next
+ 				end If
+ 				if DesktopMode = True and VRRoom < 1 Then
 -					if (num >= Offset+0) and (num <= Offset+6) then
 +					if (num >= DigitsOffset+0) and (num <= DigitsOffset+6) then
+ 						For Each obj In DigitsDT(num)
+ 						If chg And 1 Then obj.State=stat And 1
+ 						chg=chg\2 : stat=stat\2

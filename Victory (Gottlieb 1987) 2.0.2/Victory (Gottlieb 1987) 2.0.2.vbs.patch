@@ -1,6 +1,9 @@
 --- Victory (Gottlieb 1987) 2.0.2.vbs.original
 +++ Victory (Gottlieb 1987) 2.0.2.vbs
-@@ -181,0 +182,125 @@
+@@ -179,6 +179,131 @@
+ 
+ 
+ '***********************************************************************************
 +'****				        	Lamp reference      				  		  	****
 +'***********************************************************************************
 +Const lBallRelease					= 2
@@ -126,10 +129,22 @@
 +
 +
 +'***********************************************************************************
-@@ -977 +1102 @@
+ '****								Knocker               						****
+ '*********************************************************************************** 
+ SolCallback(sKnocker) = "DoKnocker"
+@@ -974,7 +1099,7 @@
+  	TableOptions = LoadValue(TableName,"Options")			
+ 	If TableOptions = "" Or OptionReset Then 
+ 		TableOptions = 1				
 -		OptionsEdit							
 +		'OptionsEdit							
-@@ -1148,122 +1272,0 @@
+ 	Else
+ 		If TableOptions And 1 = 0 Then
+ 			TableOptions = TableOptions OR 1		
+@@ -1145,128 +1270,6 @@
+ 
+ 
+ 
 -'***********************************************************************************
 -'****				        	Lamp reference      				  		  	****
 -'***********************************************************************************
@@ -252,3 +267,6 @@
 -const dShooterLane	 				= 201	' Shooterlane
 -const dLeftSlingshot 				= 211	' Left Slingshot
 -const dRightSlingshot 				= 212	' Right Slingshot
+ 
+ 
+ 

@@ -1,8 +1,20 @@
 --- Gladiators (Premier 1993) v1.1.1.vbs.original
 +++ Gladiators (Premier 1993) v1.1.1.vbs
-@@ -347 +347 @@
+@@ -344,7 +344,7 @@
+ 	If ModePlay < 0 Then
+ 		RailSx.visible=1
+ 		RailDx.visible=1
 -		Trim.visible=1
 +		'Trim.visible=1
-@@ -360 +360 @@
+ 		TrimS1.visible=1
+ 		TrimS2.visible=1
+ 		TrimS3.visible=1
+@@ -357,7 +357,7 @@
+ 	Else
+ 		RailSx.visible=RailsLights
+ 		RailDx.visible=RailsLights
 -		Trim.visible=RailsLights
 +		'Trim.visible=RailsLights
+ 		TrimS1.visible=RailsLights
+ 		TrimS2.visible=RailsLights
+ 		TrimS3.visible=RailsLights

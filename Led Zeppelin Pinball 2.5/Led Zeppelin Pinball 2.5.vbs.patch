@@ -1,6 +1,9 @@
 --- Led Zeppelin Pinball 2.5.vbs.original
 +++ Led Zeppelin Pinball 2.5.vbs
-@@ -464,5 +464,5 @@
+@@ -461,14 +461,13 @@
+ end sub
+ 
+ Sub Delay( seconds )
 -	Dim wshShell, strCmd
 -	Set wshShell = CreateObject( "WScript.Shell" )
 -	strCmd = wshShell.ExpandEnvironmentStrings( "%COMSPEC% /C (PING.EXE -n " & ( seconds + 1 ) & " localhost >NUL 2>&1)" )
@@ -11,9 +14,16 @@
 +	Do
 +	Loop While timer - startTime < seconds
 +	Debug.Print "Delay end " & timer
-@@ -471 +470,0 @@
+ End Sub
+ 
 -
-@@ -4490,0 +4490,33 @@
+ Sub MusicOn
+ 	Dim x
+ 	Pupevent 51
+@@ -4488,6 +4487,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -47,7 +57,13 @@
 +	End Function
 +  End Class
 +
-@@ -4510,5 +4542,5 @@
+ 'Define a variable for each drop target
+ Dim DT1, DT2, DT3, DT4, DT5
+ 
+@@ -4507,11 +4539,11 @@
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+ 
 -DT1 = Array(Target1, Target1a, Target1p, 1, 0)
 -DT2 = Array(Target2, Target2a, Target2p, 2, 0)
 -DT3 = Array(Target3, Target3a, Target3p, 3, 0)
@@ -58,22 +74,54 @@
 +Set DT3 = (new DropTarget)(Target3, Target3a, Target3p, 3, 0, false)
 +Set DT4 = (new DropTarget)(Target4, Target4a, Target4p, 4, 0, false)
 +Set DT5 = (new DropTarget)(Target5, Target5a, Target5p, 5, 0, false)
-@@ -4547,3 +4579,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT1, DT2, DT3, DT4, DT5)
+@@ -4544,9 +4576,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -4559 +4591 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -4556,7 +4588,7 @@
+ 	i = DTArrayID(switch)
+ 	DTIsDropped(switch) = 0
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -4567 +4599 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -4564,14 +4596,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -4574 +4606 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -4629 +4661 @@
+ 	Next
+ End Function
+ 
+@@ -4626,7 +4658,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

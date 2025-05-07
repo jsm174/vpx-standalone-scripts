@@ -1,9 +1,18 @@
 --- Bart VS the Space Mutants 1.1.vbs.original
 +++ Bart VS the Space Mutants 1.1.vbs
-@@ -36 +36 @@
+@@ -33,7 +33,7 @@
+ Option Explicit
+ Randomize
+ 
 -Const TableName = "PapaGhost"
 +Const TableName = "BartVsTheSpaceMutants"
-@@ -57,10 +57,2 @@
+ Dim Ball
+ Const Balls = 5 'if you want 3 balls you may change this variable
+ Dim Credits
+@@ -54,18 +54,11 @@
+ Dim MatchDelay
+ 
+ 
 -HighScoreReel.SetValue Highscore
 -HighScoreReel.AddValue "84000"
 -Sub Loadhs
@@ -16,28 +25,68 @@
 -
 +' HighScoreReel.SetValue Highscore
 +' HighScoreReel.AddValue "84000"
-@@ -68,0 +61 @@
+ 
+ 
 +PlaySound "1BartMusic",-1
-@@ -87,0 +81 @@
+ 
+ Sub table1_Init
+ Dim ii
+@@ -85,6 +78,7 @@
+     Game_Over = TRUE
+     Clear_Match
+     loadhs
 +    LoadCredits
-@@ -95 +89 @@
+     CreditReel.Setvalue Credits
+     ScoreReel1.SetValue Highscore
+     'StartShake
+@@ -92,7 +86,7 @@
+     ' reset VP objects
+ ' Setup the lightning according to the nightday slider
+ If table1.nightday < 50 Then
 -for each ii in aGiLights: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
 +    for each ii in GI: ii.intensity = ii.intensity + (100 - table1.nightday)/10: next
-@@ -161 +154,0 @@
+ 'bumper1light.opacity=bumper1light.opacity + (100 - table1.nightday)^2
+ 'bumper2light.opacity=bumper2light.opacity + (100 - table1.nightday)^2
+ End If
+@@ -158,7 +152,6 @@
+     If keycode = AddCreditKey2 And Credits < 8 Then
+         PlaySound "fx_coin"
+         AddCredits 2
 -        Savehs
-@@ -307 +300 @@
+     End If
+ 
+     If keycode = StartGameKey And Credits > 0 AND Game_Over = TRUE Then
+@@ -304,7 +297,7 @@
+ Sub GameOver
+     Ball = 0:UpdateBallNumber 'display the game over sign
+     Game_Over = True
 -
 +    Savehs
-@@ -342,0 +336 @@
+ End Sub
+ 
+ Sub UpdateBallNumber 'if ball = 0 shows the Game Over
+@@ -340,6 +333,7 @@
+ Sub AddCredits(value)
+     Credits = Credits + value
+     CreditReel.SetValue Credits
 +    SaveCredits
-@@ -468,4 +461,0 @@
+ End Sub
+ 
+ Sub Clear_Match()
+@@ -465,19 +459,32 @@
+ ' Highscore
+ '***********
+ 
 -
 -
 -' Load & Save Highscore
 -
-@@ -475,0 +466 @@
+ Sub Loadhs
+     Dim x
+     x = LoadValue(TableName, "HighScore")
+     If(x <> "") Then HighScore = CDbl(x) Else HighScore = 10000 End If
 +End Sub
-@@ -476,0 +468,13 @@
+ 
 +Sub Savehs
 +    if(Score > HighScore) Then
 +        HighScore = Score
@@ -51,20 +100,30 @@
 +
 +Sub LoadCredits
 +    Dim x
-@@ -478 +482 @@
+     x = LoadValue(TableName, "Credits")
 -    If(x <> "") then Credits = CInt(x) Else Credits = 0 End If
 +    If(x <> "") Then Credits = CDbl(x) Else Credits = 0 End If
-@@ -480,0 +485,3 @@
+ End Sub
+ 
 +Sub SaveCredits
 +    SaveValue TableName, "Credits", Credits
 +End Sub
-@@ -1002,3 +1008,0 @@
+ 
+ 
+ '**************
+@@ -999,15 +1006,7 @@
+ 
+ 
+ 
 -sub savehs
 -    savevalue "Highscore", "hiscore", hisc
 -End Sub
-@@ -1006,5 +1009,0 @@
+ 
 -sub loadhs
 -    dim temp
 -    If (temp <> "") then hisc = CDbl(temp)
 -    temp = LoadValue("Highscore", "match")
 -End Sub
+ 
+ function RandomNumber(ByVal max)
+     RandomNumber = Int(max * Rnd+1)

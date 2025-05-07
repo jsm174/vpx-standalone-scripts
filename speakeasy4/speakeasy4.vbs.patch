@@ -1,5 +1,11 @@
 --- speakeasy4.vbs.original
 +++ speakeasy4.vbs
-@@ -1778 +1778 @@
+@@ -1775,7 +1775,7 @@
+ 			For each ii in Rswitches:Controller.switch(ii)=0:next
+ 			roulettesw.enabled = false
+ 			For ii = 0 to 11
 -				GWHoles(ii).kick (ii+1)*30+60, (rnd(4))+12
 +				GWHoles(ii).kick 30*(ii+1)+60, (rnd(4))+12
+ 				GWHoles(ii).enabled = false
+ 			Next			
+ 			GWRamp.collidable = 1

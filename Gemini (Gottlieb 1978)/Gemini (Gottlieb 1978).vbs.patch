@@ -1,26 +1,74 @@
 --- Gemini (Gottlieb 1978).vbs.original
 +++ Gemini (Gottlieb 1978).vbs
-@@ -1176 +1176 @@
+@@ -1173,7 +1173,7 @@
+ 
+ Sub DTredL_dropped
+ 	PlaySoundAt SoundFXDOF("target",123,DOFPulse,DOFContactors), DTRedL
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1186 +1186 @@
+ 	If StarRed.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1183,7 +1183,7 @@
+ 
+ Sub DTredR_dropped
+ 	PlaySoundAt SoundFXDOF("target",123,DOFPulse,DOFContactors), DTRedR
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1196 +1196 @@
+ 	If StarRed.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1193,7 +1193,7 @@
+ 
+ Sub DTwhiteL_dropped
+ 	PlaySoundAt SoundFXDOF("target",124,DOFPulse,DOFContactors), DTwhiteL
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1205 +1205 @@
+ 	If StarWhite.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1202,7 +1202,7 @@
+ 
+ Sub DTwhiteR_dropped
+ 	PlaySoundAt SoundFXDOF("target",124,DOFPulse,DOFContactors), DTwhiteR
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1215 +1215 @@
+ 	If StarWhite.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1212,7 +1212,7 @@
+ 
+ Sub DTgreenL_dropped
+ 	PlaySoundAt SoundFXDOF("target",125,DOFPulse,DOFContactors), DTGreenL
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1225 +1225 @@
+ 	If StarGreen.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1222,7 +1222,7 @@
+ 
+ Sub DTGreenR_dropped
+ 	PlaySoundAt SoundFXDOF("target",125,DOFPulse,DOFContactors), DTGreenR
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1234 +1234 @@
+ 	If StarGreen.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1231,7 +1231,7 @@
+ 
+ Sub DTyellowL_dropped
+ 	PlaySoundAt SoundFXDOF("target",126,DOFPulse,DOFContactors), DTYellowL
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
-@@ -1243 +1243 @@
+ 	If StarYellow.State = 1 then 
+ 		addbonus
+ 	end if
+@@ -1240,7 +1240,7 @@
+ 
+ Sub DTyellowR_dropped
+ 	PlaySoundAt SoundFXDOF("target",126,DOFPulse,DOFContactors), DTYellowR
 -	addscore (starstate+1)*1000
 +	addscore 1000*(starstate+1)
+ 	If StarYellow.State = 1 then 
+ 		addbonus
+ 	end if

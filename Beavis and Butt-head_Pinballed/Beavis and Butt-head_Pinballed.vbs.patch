@@ -1,5 +1,11 @@
 --- Beavis and Butt-head_Pinballed.vbs.original
 +++ Beavis and Butt-head_Pinballed.vbs
-@@ -54 +54 @@
+@@ -51,7 +51,7 @@
+ 
+ Const cGameName= "beav_butt"
+ 
 -LoadVPM "02800000", "beav_butt.VBS", 3.50
 +LoadVPM "02800000", "beav_butt.vbs", 3.50
+ 
+ '********************
+ 'Standard definitions

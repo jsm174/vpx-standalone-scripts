@@ -1,8 +1,20 @@
 --- AC-DC_Back In Black LE-1.5.vbs.original
 +++ AC-DC_Back In Black LE-1.5.vbs
-@@ -100,0 +101,2 @@
+@@ -98,6 +98,8 @@
+ Const Ballsize = 51
+ Const BallMass = 1.1
+ 
 +Const cGameName = "acd_170h"
 +
-@@ -129,2 +130,0 @@
--
+ Const UseVPMModSol = True
+ Dim UseVPMDMD,CustomDMD,DesktopMode
+ DesktopMode = ACDC.ShowDT : CustomDMD = False
+@@ -127,8 +129,6 @@
+ '						 INIT TABLE
+ '************************************************************************
+ 
 -Const cGameName = "acd_170h"
+-
+ Dim bsTrough, bsTEject, bsBellEject, bsLowEject, PlungerIM, ACDCBank, TNTBank
+ 
+ Sub ACDC_Init

@@ -1,10 +1,25 @@
 --- Cactus Canyon (Bally 1998) VPW 1.1.vbs.original
 +++ Cactus Canyon (Bally 1998) VPW 1.1.vbs
-@@ -110,0 +111 @@
+@@ -108,6 +108,7 @@
+ Const cSingleLFlip = 0
+ Const cSingleRFlip = 0
+ 
 +Const tnob = 4 ' total number of balls
-@@ -1928 +1928,0 @@
+ 
+ Const BallSize = 50
+ Const BallMass = 1
+@@ -1925,7 +1926,6 @@
+ 'End Sub
+ 
+ ' *** These are usually defined elsewhere (ballrolling), but activate here if necessary
 -Const tnob = 4 ' total number of balls
-@@ -3836,0 +3837,34 @@
+ Const lob = 1	'locked balls on start; might need some fiddling depending on how your locked balls are done
+ 'Dim tablewidth: tablewidth = Table1.width
+ 'Dim tableheight: tableheight = Table1.height
+@@ -3834,6 +3834,40 @@
+ '		DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -39,9 +54,15 @@
 +End Class
 +
 +
-@@ -3854,0 +3889 @@
+ 'Define a variable for each drop target
+ Dim DT61, DT62, DT63, DT64
+ 
+@@ -3852,11 +3886,12 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
-@@ -3856,4 +3891,4 @@
+ 
 -DT61 = Array(sw61, sw61a, sw61p, 61, 0)
 -DT62 = Array(sw62, sw62a, sw62p, 62, 0)
 -DT63 = Array(sw63, sw63a, sw63p, 63, 0)
@@ -50,22 +71,54 @@
 +Set DT62 = (new DropTarget)(sw62, sw62a, sw62p, 62, 0, false)
 +Set DT63 = (new DropTarget)(sw63, sw63a, sw63p, 63, 0, false)
 +Set DT64 = (new DropTarget)(sw64, sw64a, sw64p, 64, 0, false)
-@@ -3890,3 +3925,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT61, DT62, DT63, DT64)
+@@ -3887,9 +3922,9 @@
+ 	i = DTArrayID(switch)
+ 
+ '	PlaySoundAtVol  DTHitSound, Activeball, Vol(Activeball)*22.5
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -3901 +3936 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -3898,7 +3933,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -3909 +3944 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -3906,14 +3941,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -3916 +3951 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -3978 +4013 @@
+ 	Next
+ End Function
+ 
+@@ -3975,7 +4010,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

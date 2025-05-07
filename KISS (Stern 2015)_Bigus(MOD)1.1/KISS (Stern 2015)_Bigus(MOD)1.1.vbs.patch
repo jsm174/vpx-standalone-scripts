@@ -1,6 +1,9 @@
 --- KISS (Stern 2015)_Bigus(MOD)1.1.vbs.original
 +++ KISS (Stern 2015)_Bigus(MOD)1.1.vbs
-@@ -3645,8 +3645,8 @@
+@@ -3642,14 +3642,14 @@
+ Dim DMDPosition, DMDPosX, DMDPosY
+ 
+ Sub GetDMDColor
 -    Dim WshShell,filecheck,directory
 -    Set WshShell = CreateObject("WScript.Shell")
 -    If DMDPosition then
@@ -17,3 +20,6 @@
 +    'End if
 +    'WshShell.RegWrite "HKCU\Software\UltraDMD\fullcolor",UseFullColor,"REG_SZ"
 +    'WshShell.RegWrite "HKCU\Software\UltraDMD\color",DMDColorSelect,"REG_SZ"
+ End Sub
+ '---------------------------------------------------
+ '---------------------------------------------------

@@ -1,6 +1,9 @@
 --- Junkyard Cats_1.07.vbs.original
 +++ Junkyard Cats_1.07.vbs
-@@ -511,4 +511,4 @@
+@@ -508,10 +508,10 @@
+ 		jenkins = false
+ 		scarla = false
+        If B2SOn Then
 -        : Controller.B2SSetData 9, 0
 -        : Controller.B2SSetData 10, 0
 -        : Controller.B2SSetData 11, 0
@@ -9,7 +12,13 @@
 +        Controller.B2SSetData 10, 0
 +        Controller.B2SSetData 11, 0
 +        Controller.B2SSetData 12, 0
-@@ -1150,5 +1150,5 @@
+           Controller.B2SSetData 13, 0
+        End If
+ 		resetlocklights()
+@@ -1147,11 +1147,11 @@
+ 
+ 	endattractmode()
+   If B2SOn Then
 -    :Controller.B2SSetData 9, 0
 -:    Controller.B2SSetData 10, 0
 -    :Controller.B2SSetData 11, 0
@@ -20,7 +29,13 @@
 +    Controller.B2SSetData 11, 0
 +    Controller.B2SSetData 12, 0
 +    Controller.B2SSetData 13, 0
-@@ -1216,8 +1216,8 @@
+   End If
+ 	wardlight.state = 0
+ 	axellight.state = 0
+@@ -1213,14 +1213,14 @@
+ 	bo7.state = bulboff
+ 	bo8.state = bulboff
+    If B2SOn Then
 -   :Controller.B2SSetData 1, 0
 -   :Controller.B2SSetData 2, 0
 -   :Controller.B2SSetData 3, 0
@@ -37,7 +52,13 @@
 +    Controller.B2SSetData 6, 0
 +    Controller.B2SSetData 7, 0
 +    Controller.B2SSetData 8, 0
-@@ -1369,5 +1369,5 @@
+    End If
+ 
+ 	TurnGIoff()
+@@ -1366,11 +1366,11 @@
+ 
+ Sub Tablereset()
+  If B2SOn Then
 -: Controller.B2SSetData 9, 0
 -: Controller.B2SSetData 10, 0
 -: Controller.B2SSetData 11, 0
@@ -48,3 +69,6 @@
 +  Controller.B2SSetData 11, 0
 +  Controller.B2SSetData 12, 0
 +  Controller.B2SSetData 13, 0
+  End If
+ 
+ 	noswitchhit = true

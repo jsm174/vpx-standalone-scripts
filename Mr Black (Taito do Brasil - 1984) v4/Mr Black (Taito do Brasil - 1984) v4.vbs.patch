@@ -1,14 +1,32 @@
 --- Mr Black (Taito do Brasil - 1984) v4.vbs.original
 +++ Mr Black (Taito do Brasil - 1984) v4.vbs
-@@ -64 +64 @@
+@@ -61,7 +61,7 @@
+ '************
+ 
+ Sub table1_Init
 -	NVramPatchLoad
 +	'NVramPatchLoad
-@@ -148 +148,4 @@
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -145,7 +145,10 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
 -Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
 +Sub table1_exit
 +    'NVramPatchExit
 +    Controller.stop
 +End Sub
-@@ -513 +516 @@
+ 
+ '**********
+ ' Keys
+@@ -510,7 +513,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
 -    NVramPatchKeyCheck
 +    'NVramPatchKeyCheck
+ End Sub
+ 
+ 

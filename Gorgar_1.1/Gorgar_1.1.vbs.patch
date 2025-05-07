@@ -1,6 +1,9 @@
 --- Gorgar_1.1.vbs.original
 +++ Gorgar_1.1.vbs
-@@ -2749,0 +2750,33 @@
+@@ -2747,6 +2747,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -34,10 +37,17 @@
 +  End Function
 +End Class
 +
-@@ -2767,0 +2801,2 @@
+ 'Define a variable for each drop target
+ Dim DT41, DT42,DT43,DT20,DT19,DT18 
+ 
+@@ -2765,14 +2798,16 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 +'
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
-@@ -2770,6 +2805,6 @@
+ 
+ 
 -DT41 = Array(sw41, sw41a, sw41p, 41, 0)
 -DT42 = Array(sw42, sw42a, sw42p, 42, 0)
 -DT43 = Array(sw43, sw43a, sw43p, 43, 0)
@@ -50,22 +60,54 @@
 +Set DT18 = (new DropTarget)(sw18, sw18a, sw18p, 18, 0, false)
 +Set DT19 = (new DropTarget)(sw19, sw19a, sw19p, 19, 0, false)
 +Set DT20 = (new DropTarget)(sw20, sw20a, sw20p, 20, 0, false)
-@@ -2808,3 +2843,3 @@
+ 
+ 
+ Dim DTArray
+@@ -2805,9 +2840,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -2819 +2854 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -2816,7 +2851,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -2827 +2862 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -2824,14 +2859,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -2834 +2869 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -2889 +2924 @@
+ 	Next
+ End Function
+ 
+@@ -2886,7 +2921,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

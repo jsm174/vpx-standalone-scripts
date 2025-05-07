@@ -1,6 +1,9 @@
 --- Diner (Williams 1990) VPW Mod 1.0.2.vbs.original
 +++ Diner (Williams 1990) VPW Mod 1.0.2.vbs
-@@ -4178,0 +4179,33 @@
+@@ -4176,6 +4176,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -34,9 +37,15 @@
 +  End Function
 +End Class
 +
-@@ -4196,0 +4230 @@
+ 'Define a variable for each drop target
+ Dim DT1, DT2, DT3, DT4, DT5, DT6
+ 
+@@ -4194,13 +4227,14 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
-@@ -4198,6 +4232,6 @@
+ 
 -DT1 = Array(rootbeer, rootbeer_a, rootbeer_p, swRootBeer, 0)
 -DT2 = Array(fries, fries_a, fries_p, swFries, 0)
 -DT3 = Array(icedtea, icedtea_a, icedtea_p, swIcedTea, 0)
@@ -49,22 +58,54 @@
 +Set DT4 = (new DropTarget)(hotdog, hotdog_a, hotdog_p, swHotdog, 0, false)
 +Set DT5 = (new DropTarget)(burger, burger_a, burger_p, swBurger, 0, false)
 +Set DT6 = (new DropTarget)(chili, chili_a, chili_p, swChili, 0, false)
-@@ -4236,3 +4270,3 @@
+ 
+ 
+ Dim DTArray
+@@ -4233,9 +4267,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -4247 +4281 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -4244,7 +4278,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -4255 +4289 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -4252,14 +4286,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -4262 +4296 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -4317 +4351 @@
+ 	Next
+ End Function
+ 
+@@ -4314,7 +4348,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub
+ 

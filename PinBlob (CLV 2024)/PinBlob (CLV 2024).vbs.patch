@@ -1,9 +1,18 @@
 --- PinBlob (CLV 2024).vbs.original
 +++ PinBlob (CLV 2024).vbs
-@@ -328 +328 @@
+@@ -325,7 +325,7 @@
+ '***************************************************************************************************************************************************************
+ 
+ Const cDMDRotation 	= -1 			'-1 for No change, 0 - DMD rotation of 0?, 1 - DMD rotation of 90?
 -Const cGameName 	= "pinblob"	'ROM name
 +Const cGameName 	= "atlantis"	'ROM name
-@@ -3350,0 +3351,33 @@
+ Const ballsize 		= 50
+ Const ballmass 		= 1
+ Const UsingROM = True		
+@@ -3348,6 +3348,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -37,7 +46,13 @@
 +  End Function
 +End Class
 +
-@@ -3370,4 +3403,4 @@
+ 'Define a variable for each drop target
+ Dim DT1, DT2, DT3, DT4
+ 
+@@ -3367,10 +3400,10 @@
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+ 
 -DT1 = Array(sw1, sw1a, sw1p, 1, 0)
 -DT2 = Array(sw2, sw2a, sw2p, 2, 0)
 -DT3 = Array(sw3, sw3a, sw3p, 3, 0)
@@ -46,26 +61,61 @@
 +Set DT2 = (new DropTarget)(sw2, sw2a, sw2p, 2, 0, false)
 +Set DT3 = (new DropTarget)(sw3, sw3a, sw3p, 3, 0, false)
 +Set DT4 = (new DropTarget)(sw4, sw4a, sw4p, 4, 0, false)
-@@ -3404,3 +3437,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT1, DT2, DT3, DT4)
+@@ -3401,9 +3434,9 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -3420 +3453 @@
+ 
+ ' added to control the GI and shadows of the drop targets 
+ 		isTargetDown(switch) = True
+@@ -3417,7 +3450,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -3428 +3461 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -3425,14 +3458,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -3435 +3468 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -3490 +3523 @@
+ 	Next
+ End Function
+ 
+@@ -3487,7 +3520,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
-@@ -3632,0 +3666,25 @@
+ 	Next
+ End Sub
+ 
+@@ -3630,6 +3663,31 @@
+ '		STAND-UP TARGET INITIALIZATION
+ '******************************************************
+ 
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
 +
@@ -91,7 +141,13 @@
 +  End Function
 +End Class
 +
-@@ -3649,9 +3707,9 @@
+ 'Define a variable for each stand-up target
+ Dim ST25, ST26, ST27, ST28, ST29, ST30, ST33, ST34, ST35
+ 
+@@ -3646,15 +3704,15 @@
+ 'You will also need to add a secondary hit object for each stand up (name sw11o, sw12o, and sw13o on the example Table1)
+ 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
+ 
 -ST25 = Array(sw25, psw25,25, 0)
 -ST26 = Array(sw26, psw26,26, 0)
 -ST27 = Array(sw27, psw27,27, 0)
@@ -110,17 +166,38 @@
 +Set ST33 = (new StandupTarget)(sw33, psw33,33, 0)
 +Set ST34 = (new StandupTarget)(sw34, psw34,34, 0)
 +Set ST35 = (new StandupTarget)(sw35, psw35,35, 0)
-@@ -3679 +3737 @@
+ 
+ 'Add all the Stand-up Target Arrays to Stand-up Target Animation Array
+ ' STAnimationArray = Array(ST1, ST2, ....)
+@@ -3676,10 +3734,10 @@
+ 	i = STArrayID(switch)
+ 
+ 	PlayTargetSound
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
-@@ -3681,2 +3739,2 @@
+ 
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
-@@ -3690 +3748 @@
+ 	End If
+ 	DoSTAnim
+ End Sub
+@@ -3687,7 +3745,7 @@
+ Function STArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(STArray) 
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
-@@ -3719 +3777 @@
+ 	Next
+ End Function
+ 
+@@ -3716,7 +3774,7 @@
+ Sub DoSTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(STArray)
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+ 	Next
+ End Sub
+ 

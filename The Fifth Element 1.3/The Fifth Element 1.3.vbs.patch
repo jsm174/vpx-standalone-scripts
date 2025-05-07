@@ -1,5 +1,11 @@
 --- The Fifth Element 1.3.vbs.original
 +++ The Fifth Element 1.3.vbs
-@@ -481 +481 @@
+@@ -478,7 +478,7 @@
+         Else
+ 
+             If Keycode = StartGameKey Then
 -				:pupevent 800
 +				pupevent 800
+                 If(bFreePlay = True) Then
+                     If(BallsOnPlayfield = 0) Then
+                         ResetForNewGame()

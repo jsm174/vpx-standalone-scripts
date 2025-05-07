@@ -1,6 +1,12 @@
 --- VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs.original
 +++ VP10-Terminator 3 (Stern 2003) Hanibal v1.5.vbs
-@@ -1238,0 +1239 @@
+@@ -1236,7 +1236,9 @@
+ Dim i
+ 
+ For i=0 To 127
 +	If IsObject(eval("L" & i)) Then
-@@ -1239,0 +1241 @@
+ Execute "Set Lights(" & i & ")  = L" & i
 +	End If
+ Next
+ 
+ 

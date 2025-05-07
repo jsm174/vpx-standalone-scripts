@@ -1,6 +1,9 @@
 --- Solar Fire (Williams 1981) w VR Room v2.0.5.vbs.original
 +++ Solar Fire (Williams 1981) w VR Room v2.0.5.vbs
-@@ -2400,0 +2401,33 @@
+@@ -2398,6 +2398,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -34,7 +37,13 @@
 +  End Function
 +End Class
 +
-@@ -2422,13 +2455,13 @@
+ 'Define a variable for each drop target
+ 
+ Dim DT27, DT28, DT29, DT30, DT31, DT32, DT33, DT34, DT35, DT36, DT37, DT38, DT39
+@@ -2419,19 +2452,19 @@
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
+ 
+ 
 -DT27 = Array(sw27, sw27a, sw27p, 27, 0)
 -DT28 = Array(sw28, sw28a, sw28p, 28, 0)
 -DT29 = Array(sw29, sw29a, sw29p, 29, 0)
@@ -61,26 +70,61 @@
 +Set DT37 = (new DropTarget)(sw37, sw37a, sw37p, 37, 0, false)
 +Set DT38 = (new DropTarget)(sw38, sw38a, sw38p, 38, 0, false)
 +Set DT39 = (new DropTarget)(sw39, sw39a, sw39p, 39, 0, false)
-@@ -2466,3 +2499,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT27, DT28, DT29, DT30, DT31, DT32, DT33, DT34, DT35, DT36, DT37, DT38, DT39)
+@@ -2463,9 +2496,9 @@
+ 	i = DTArrayID(switch)
+ 
+ 	PlayTargetSound
 -	DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -	If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -		DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -2477 +2510 @@
+ 	End If
+ 	DoDTAnim
+ End Sub
+@@ -2474,7 +2507,7 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = -1
 +	DTArray(i).animate = -1
-@@ -2485 +2518 @@
+ 	DoDTAnim
+ End Sub
+ 
+@@ -2482,14 +2515,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray(i)(4) = 1
 +	DTArray(i).animate = 1
-@@ -2492 +2525 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -2547 +2580 @@
+ 	Next
+ End Function
+ 
+@@ -2544,7 +2577,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
-@@ -2740,0 +2774,25 @@
+ 	Next
+ End Sub
+ 
+@@ -2738,6 +2771,31 @@
+ '		STAND-UP TARGET INITIALIZATION
+ '******************************************************
+ 
 +Class StandupTarget
 +  Private m_primary, m_prim, m_sw, m_animate
 +
@@ -106,22 +150,49 @@
 +  End Function
 +End Class
 +
-@@ -2759,2 +2817,2 @@
+ 'Define a variable for each stand-up target
+ 
+ Dim ST25, ST41
+@@ -2756,8 +2814,8 @@
+ 'these are inclined primitives to simulate hitting a bent target and should provide so z velocity on high speed impacts
+ 
+ 
 -ST25 = Array(sw25, psw25,25, 0)
 -ST41 = Array(sw41, psw41,41, 0)
 +Set ST25 = (new StandupTarget)(sw25, psw25,25, 0)
 +Set ST41 = (new StandupTarget)(sw41, psw41,41, 0)
-@@ -2781 +2839 @@
+ 
+ 
+ Dim STArray
+@@ -2778,10 +2836,10 @@
+ 	i = STArrayID(switch)
+ 
+ 	PlayTargetSound
 -	STArray(i)(3) =  STCheckHit(Activeball,STArray(i)(0))
 +	STArray(i).animate =  STCheckHit(Activeball,STArray(i).primary)
-@@ -2783,2 +2841,2 @@
+ 
 -	If STArray(i)(3) <> 0 Then
 -		DTBallPhysics Activeball, STArray(i)(0).orientation, STMass
 +	If STArray(i).animate <> 0 Then
 +		DTBallPhysics Activeball, STArray(i).primary.orientation, STMass
-@@ -2792 +2850 @@
+ 	End If
+ 	DoSTAnim
+ End Sub
+@@ -2789,7 +2847,7 @@
+ Function STArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(STArray) 
 -		If STArray(i)(2) = switch Then STArrayID = i:Exit Function 
 +		If STArray(i).sw = switch Then STArrayID = i:Exit Function 
-@@ -2821 +2879 @@
+ 	Next
+ End Function
+ 
+@@ -2818,7 +2876,7 @@
+ Sub DoSTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(STArray)
 -		STArray(i)(3) = STAnimate(STArray(i)(0),STArray(i)(1),STArray(i)(2),STArray(i)(3))
 +		STArray(i).animate = STAnimate(STArray(i).primary,STArray(i).prim,STArray(i).sw,STArray(i).animate)
+ 	Next
+ End Sub
+ 

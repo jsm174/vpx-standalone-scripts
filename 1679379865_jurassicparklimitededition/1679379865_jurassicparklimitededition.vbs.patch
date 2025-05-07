@@ -1,12 +1,22 @@
 --- 1679379865_jurassicparklimitededition.vbs.original
 +++ 1679379865_jurassicparklimitededition.vbs
-@@ -496 +495,0 @@
+@@ -493,9 +493,11 @@
+ 
+ 	Sub Table1_Init()
+ 		ChangeBall(ChooseBall)
 -		resetbackglass
-@@ -498,0 +498,3 @@
+ 		DMD_Init
+ 		LoadEM
 +		InitPuP
 +		calculatescore
 +		resetbackglass
-@@ -1402,0 +1405,16 @@
+ 		Dim i
+ 		Randomize
+ 		Loadhs
+@@ -1400,6 +1402,22 @@
+ 	Const pAudio=7
+ 	Const pCallouts=8
+ 
 +	Sub chilloutthemusic
 +		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":10 }"
 +		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":50 }"
@@ -23,7 +33,13 @@
 +	End Sub	
 +
 +Sub InitPuP
-@@ -1428,14 +1445,0 @@
+ 	if HasPuP Then
+ 	on error resume next
+ 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
+@@ -1425,20 +1443,6 @@
+ 	PuPlayer.SetScreenex pCallouts,0,0,0,0,2
+ 	PuPlayer.hide pCallouts
+ 
 -	Sub chilloutthemusic
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":10 }"
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":50 }"
@@ -38,9 +54,24 @@
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(sfxvol)&" }"
 -		PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 8, ""FN"":11, ""VL"":130 }"
 -	End Sub
-@@ -1688,0 +1693,2 @@
+ 
+ 
+ 	PuPlayer.playlistadd pAudio,"sfx", 1 , 0
+@@ -1686,6 +1690,8 @@
+ 	PuPlayer.LabelNew pBackglass,"HighScoreL3",numberfont,	8,26316	,0,0,1,53,60,1,1
+ 	PuPlayer.LabelNew pBackglass,"HighScoreL4",numberfont,	5,26316	,0,1,1,50,65,1,1
+ 
 +End Sub
 +
-@@ -3661 +3667 @@
+ 
+ 	Sub ruleshelperon
+ 		rulestime.enabled = 1
+@@ -3658,7 +3664,7 @@
+ 	Dim point1:point1 = 1000
+ 	Dim bigpoints:bigpoints = 1
+ 
 -	calculatescore
 +	
+ 	Sub calculatescore
+ 	PuPlayer.LabelSet pBackglass,"lefttimer2",(bigpoints\10000) + 1 & "-" & point1\1000,1,"{'mt':2,'color':12971496, 'size': 4.8, 'xpos': 12.5, 'xalign': 1, 'ypos': 89.4, 'yalign': 1}"
+ 	PuPlayer.LabelSet pBackglass,"lefttimer",(bigpoints\10000) + 1 & "-" & point1\1000,1,"{'mt':2,'color':26316, 'size': 4.8, 'xpos': 12.5, 'xalign': 1, 'ypos': 89.2, 'yalign': 1}"

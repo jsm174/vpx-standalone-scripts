@@ -1,14 +1,38 @@
 --- pizzatime-65.vbs.original
 +++ pizzatime-65.vbs
-@@ -51 +51 @@
+@@ -48,7 +48,7 @@
+ Const helpfulcalls		= 1     ' 0=off 1=on for helpful callouts by Crust
+ Const houseband			= 1     ' 0=off commercial punk soundtrack 1=on for the PizzaTime House band!
+ Const BallFinderOn		= 1     ' 0=off this allows the tables ball finder script to be on. If you're having issues with it, turn it off.
 -Const osbactive			= 1 	' Orbital Scoreboard: Set to 0 for off, 1 for only player 1 to be sent, 2 for all scores to be sent.	
 +Const osbactive			= 0 	' Orbital Scoreboard: Set to 0 for off, 1 for only player 1 to be sent, 2 for all scores to be sent.	
-@@ -153,0 +154,2 @@
+ 								'     See link to create obs.vbs: https://docs.orbitalpin.com/vpx-user-settings
+ Const FontScale			= .5	' Scales the PupFonts up/down for different sized DMDs  [0.5 Desktop]
+ Const PreloadMe 		= 1     ' Go through flasher sequence at table start, to prevent in-game slowdowns 
+@@ -151,6 +151,8 @@
+ ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
+ 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ 
 +
 +Const bHardMode	= True
-@@ -1857 +1859 @@
+ 		if bHardMode then 
+ 			Primitive28.visible = False
+ 			Primitive27.visible = False 
+@@ -1854,7 +1856,7 @@
+ 				puPlayer.LabelSet pBackglass,"Bonus7", "Bonus Multiplier"							,1,"{'mt':2,'size':2.5,'ypos':"& (42+(idx*3.5)) &"}"
+ 				puPlayer.LabelSet pBackglass,"BonusScore7", BonusMultiplier(CurrentPlayer)&"x"		,1,"{'mt':2,'size':2.5,'ypos':"& (42+(idx*3.5)) &"}"
+ 				puPlayer.LabelSet pBackglass,"BonusTotal",	BonusMultiplier(CurrentPlayer)*FormatScore(ScoreBonusAdd)		,1,""
 -				AddScore (BonusMultiplier(CurrentPlayer)-1)*FormatScore(ScoreBonusAdd)  ' Subtract one since we already added score counting up total
 +				AddScore FormatScore(ScoreBonusAdd)*(BonusMultiplier(CurrentPlayer)-1)  ' Subtract one since we already added score counting up total
-@@ -13637,2 +13638,0 @@
--
+ 			case 8:  ' Wait
+ 			case 9:  ' End of Ball
+ 				for i = 0 to 5
+@@ -13635,8 +13637,6 @@
+ 
+ 
+ 
 -Const bHardMode	= True
+-
+ 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
+ '/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/

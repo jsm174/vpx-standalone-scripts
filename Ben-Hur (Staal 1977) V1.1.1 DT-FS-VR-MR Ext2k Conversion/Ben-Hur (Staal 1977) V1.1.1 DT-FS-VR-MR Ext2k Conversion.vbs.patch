@@ -1,5 +1,11 @@
 --- Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion.vbs.original
 +++ Ben-Hur (Staal 1977) V1.1.1 DT-FS-VR-MR Ext2k Conversion.vbs
-@@ -1333 +1333 @@
+@@ -1330,7 +1330,7 @@
+ End Sub
+ 
+ Sub UpdateBallInPlay
 -	ScoreReel6.SetValue (PlayersPlayingGame*10) + Balls
 +	ScoreReel6.SetValue Balls + (PlayersPlayingGame*10)
+     If B2SOn Then
+ 		Controller.B2SSetReel 27, PlayersPlayingGame
+ 		Controller.B2SSetReel 28, Balls

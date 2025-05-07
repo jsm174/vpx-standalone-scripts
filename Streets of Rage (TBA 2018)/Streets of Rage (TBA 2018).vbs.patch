@@ -1,59 +1,134 @@
 --- Streets of Rage (TBA 2018).vbs.original
 +++ Streets of Rage (TBA 2018).vbs
-@@ -75 +75 @@
+@@ -72,7 +72,7 @@
+ 
+ 'Note open Ultradmd and right click on window to get the various sizes in decimal 
+ 
 -GetDMDColor
 +'GetDMDColor
-@@ -4079 +4079 @@
+ Sub GetDMDColor
+ Dim WshShell,filecheck,directory
+ Set WshShell = CreateObject("WScript.Shell")
+@@ -4076,10 +4076,10 @@
+ 				' Display final score.
+ 				If Score(1) < 1000000 Then
+ 					D1.Text = FormatScore(Score(1)) & String(10 - Len(PosInTable), " ") & "HIGH SCORE <" & PosInTable & Suffix & ">"
 -				    DisplayB2SText (Score(1)) & String(10 - Len(PosInTable), " ") & "HIGH SCORE <" & PosInTable & Suffix & ">"
 +				    DisplayB2SText "" & (Score(1)) & String(10 - Len(PosInTable), " ") & "HIGH SCORE <" & PosInTable & Suffix & ">"
-@@ -4082 +4082 @@
+ 				Else
+ 					D1.Text = FormatScore(Score(1)) & String(16 - Len(Score(1)) - Len(PosInTable), " ") & "HIGH SCORE <" & PosInTable & Suffix & ">"
 -			    	DisplayB2SText (Score(1)) & String(16 - Len(Score(1)) - Len(PosInTable), " ") & "HIGH SCORE <" & PosInTable & Suffix & ">"
 +			    	DisplayB2SText "" & (Score(1)) & String(16 - Len(Score(1)) - Len(PosInTable), " ") & "HIGH SCORE <" & PosInTable & Suffix & ">"
-@@ -4093 +4093 @@
+ 				End If
+ 				' Submit the player score to the High Score system built into Future Pinball if required.
+ 				'bEnteringAHighScore = TRUE
+@@ -4090,10 +4090,10 @@
+ 				' Player's score doesn't fit in the "top ten".
+ 				If Score(1) < 1000000 Then
+ 					D1.Text = FormatScore(Score(1)) & "                GAME OVER"
 -                    DisplayB2SText (Score(1)) & "                GAME OVER"
 +                    DisplayB2SText "" & (Score(1)) & "                GAME OVER"
-@@ -4096 +4096 @@
+ 				Else
+ 					D1.Text = FormatScore(Score(1)) & String(22 - Len(Score(1)), " ") & "GAME OVER"
 -				    DisplayB2SText (Score(1)) & String(22 - Len(Score(1)), " ") & "GAME OVER"
 +				    DisplayB2SText "" & (Score(1)) & String(22 - Len(Score(1)), " ") & "GAME OVER"
-@@ -4232 +4232 @@
+ 				End If
+ 				bEnteringAHighScore = FALSE
+ 				' Play the game over music.
+@@ -4229,35 +4229,35 @@
+ 				lenPOWBonus = Len(POWBonus)
+ 				lenPOWBase = Len(1000 * nvR2)
+ 				lenPOWScore = Len(1000 * nvR2 * POWBonus)
 -                DisplayB2SText (POWBonus) & " SOR     " & String(lenPOWBase, " ") & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
 +                DisplayB2SText POWBonus & " SOR     " & String(lenPOWBase, " ") & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
-@@ -4239 +4239 @@
+ 				D1.Text = FormatScore(POWBonus) & " SOR     " & String(lenPOWBase, " ") & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
+ 				Playsound "Thankyou"
+ 			Case 15:
+ 				lenPOWBonus = Len(POWBonus)
+ 				lenPOWBase = Len(1000 * nvR2)
+ 				lenPOWScore = Len(1000 * nvR2 * POWBonus)
 -                DisplayB2SText (POWBonus) & " SOR  X  " & String(lenPOWBase, " ") & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
 +                DisplayB2SText POWBonus & " SOR  X  " & String(lenPOWBase, " ") & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
-@@ -4246 +4246 @@
+ 				D1.Text = FormatScore(POWBonus) & " SOR  X  " & String(lenPOWBase, " ") & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
+ 				Playsound "Steel"
+ 			Case 20:
+ 				lenPOWBonus = Len(POWBonus)
+ 				lenPOWBase = Len(1000 * nvR2)
+ 				lenPOWScore = Len(1000 * nvR2 * POWBonus)
 -                DisplayB2SText (POWBonus) & " SOR  X  " & FormatScore(nvR2 * 1000) & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
 +                DisplayB2SText POWBonus & " SOR  X  " & FormatScore(nvR2 * 1000) & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
-@@ -4253 +4253 @@
+ 				D1.Text = FormatScore(POWBonus) & " SOR  X  " & FormatScore(nvR2 * 1000) & "     " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
+ 				Playsound "Steel"
+ 			Case 25:
+ 				lenPOWBonus = Len(POWBonus)
+ 				lenPOWBase = Len(1000 * nvR2)
+ 				lenPOWScore = Len(1000 * nvR2 * POWBonus)
 -                DisplayB2SText (POWBonus) & " SOR  X  " & FormatScore(nvR2 * 1000) & "  =  " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
 +                DisplayB2SText POWBonus & " SOR  X  " & FormatScore(nvR2 * 1000) & "  =  " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
-@@ -4260 +4260 @@
+ 				D1.Text = FormatScore(POWBonus) & " SOR  X  " & FormatScore(nvR2 * 1000) & "  =  " & String(lenPOWScore, " ") & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
+ 				Playsound "Steel"
+ 			Case 30:
+ 				lenPOWBonus = Len(POWBonus)
+ 				lenPOWBase = Len(1000 * nvR2)
+ 				lenPOWScore = Len(1000 * nvR2 * POWBonus)
 -                DisplayB2SText (POWBonus) & " SOR  X  " & FormatScore(nvR2 * 1000) & "  =  " & FormatScore(1000 * nvR2 * POWBonus) & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
 +                DisplayB2SText POWBonus & " SOR  X  " & FormatScore(nvR2 * 1000) & "  =  " & FormatScore(1000 * nvR2 * POWBonus) & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
-@@ -5427 +5427 @@
+ 				D1.Text = FormatScore(POWBonus) & " SOR  X  " & FormatScore(nvR2 * 1000) & "  =  " & FormatScore(1000 * nvR2 * POWBonus) & String(Int((18 - lenPOWBonus - lenPOWBase - lenPOWScore) / 2), " ")
+ 				If POWBonusBall < 10 Then
+ 					Playsound "Ok"
+@@ -5424,28 +5424,28 @@
+ 			If bPlayingMission3 Then
+ 				' Specific display for mission 3 (Super Jets).
+ 				If Score(1) < 1000000 Then
 -                    DisplayB2SText (cstr(FormatScore(Score(1)))) & "        REMAINING WEAPONS " & Right("0" & RemainingJets, 2)
 +                    DisplayB2SText cstr(FormatScore(Score(1))) & "        REMAINING WEAPONS " & Right("0" & RemainingJets, 2)
-@@ -5430 +5430 @@
+ 					D1.Text = FormatScore(Score(1)) & "        REMAINING WEAPONS " & Right("0" & RemainingJets, 2)
+ 				Else
 -                    DisplayB2SText (cstr(FormatScore(Score(1)))) & String(14 - Len(Score(1)), " ") & "REMAINING WEAPONS " & Right("0" & RemainingJets, 2)
 +                    DisplayB2SText cstr(FormatScore(Score(1))) & String(14 - Len(Score(1)), " ") & "REMAINING WEAPONS " & Right("0" & RemainingJets, 2)
-@@ -5436 +5436 @@
+ 					D1.Text = FormatScore(Score(1)) & String(14 - Len(Score(1)), " ") & "REMAINING WEAPONS " & Right("0" & RemainingJets, 2)
+ 				End If
+ 			ElseIf bPlayingMission4 Then
+ 				' Specific display for mission 4 (POW).
+ 				If Score(1) < 1000000 Then
 -                    DisplayB2SText (cstr(FormatScore(Score(1))))
 +                    DisplayB2SText cstr(FormatScore(Score(1)))
-@@ -5439 +5439 @@
+ 					D1.Text = FormatScore(Score(1)) & "          REMAINING SOR " & RemainingPOW
+ 				Else
 -                    DisplayB2SText (cstr(FormatScore(Score(1)))) & String(16 - Len(Score(1)), " ") & "REMAINING SOR " & RemainingPOW
 +                    DisplayB2SText cstr(FormatScore(Score(1))) & String(16 - Len(Score(1)), " ") & "REMAINING SOR " & RemainingPOW
-@@ -5445 +5445 @@
+ 					D1.Text = FormatScore(Score(1)) & String(16 - Len(Score(1)), " ") & "REMAINING SOR " & RemainingPOW
+ 				End If
+ 			ElseIf bPlayingMission5 Then
+ 				' Specific display for mission 5 (Defeat Allen O'Neill).
+ 				If Score(1) < 1000000 Then
 -                    DisplayB2SText (cstr(FormatScore(Score(1)))) & "         BOSS ENERGY " & RemainingAllen
 +                    DisplayB2SText cstr(FormatScore(Score(1))) & "         BOSS ENERGY " & RemainingAllen
-@@ -5448 +5448 @@
+ 					D1.Text = FormatScore(Score(1)) & "         BOSS ENERGY " & RemainingAllen
+ 				Else
 -                    DisplayB2SText (cstr(FormatScore(Score(1)))) & String(15 - Len(Score(1)), " ") & "BOSS ENERGY " & RemainingAllen
 +                    DisplayB2SText cstr(FormatScore(Score(1))) & String(15 - Len(Score(1)), " ") & "BOSS ENERGY " & RemainingAllen
-@@ -6612 +6612 @@
+ 					D1.Text = FormatScore(Score(1)) & String(15 - Len(Score(1)), " ") & "BOSS ENERGY " & RemainingAllen
+ 				End If
+ 			End If
+@@ -6609,7 +6609,7 @@
+ 	FlashAnimate2()
+ 	InterruptDisplay(1200)
+ 	' Display collected POW bonus.
 -    DisplayB2SText (POWBonus) & " SOR SAVED   " & String(Len(POWRank(POWRankRnd)), " ") & " " & String(Len(POWName(POWNamePtr)), " ") & String(Int((18 - Len(POWBonus) - Len(POWRank(POWRankRnd)) - Len(POWName(POWNamePtr))) / 2), " ")
 +    DisplayB2SText POWBonus & " SOR SAVED   " & String(Len(POWRank(POWRankRnd)), " ") & " " & String(Len(POWName(POWNamePtr)), " ") & String(Int((18 - Len(POWBonus) - Len(POWRank(POWRankRnd)) - Len(POWName(POWNamePtr))) / 2), " ")
-@@ -7404 +7404 @@
+ 	D1.Text = FormatScore(POWBonus) & " SOR SAVED   " & String(Len(POWRank(POWRankRnd)), " ") & " " & String(Len(POWName(POWNamePtr)), " ") & String(Int((18 - Len(POWBonus) - Len(POWRank(POWRankRnd)) - Len(POWName(POWNamePtr))) / 2), " ")
+ '	D1.QueueText FormatScore(POWBonus) & " SOR SAVED - " & POWRank(POWRankRnd) & ". " & POWName(POWNamePtr) & String(Int((18 - Len(POWBonus) - Len(POWRank(POWRankRnd)) - Len(POWName(POWNamePtr))) / 2), " ")', seBlinkMask, 300
+ '	D2.QueueText FormatScore(POWBonus) & " SOR SAVED - " & POWRank(POWRankRnd) & ". " & POWName(POWNamePtr) & String(Int((18 - Len(POWBonus) - Len(POWRank(POWRankRnd)) - Len(POWName(POWNamePtr))) / 2), " ")', seBlinkMask, 300
+@@ -7401,9 +7401,9 @@
+ 
+ Sub DisplayScore
+   If Score(1) < 1000000 Then
 -	 DisplayB2SText (cstr(Score(1))) & "" & "                   BALL " & Ball
 +	 DisplayB2SText cstr(Score(1)) & "" & "                   BALL " & Ball
-@@ -7406 +7406 @@
+ 	Else
 -	 DisplayB2SText (cstr(Score(1))) & (Score(1)) & String(32 - Len(Score(1)), " ") 
 +	 DisplayB2SText cstr(Score(1)) & (Score(1)) & String(32 - Len(Score(1)), " ") 
+   End If
+ End Sub
+ 

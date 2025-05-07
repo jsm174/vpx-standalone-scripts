@@ -1,5 +1,11 @@
 --- Power Play (Bally 1977).vbs.original
 +++ Power Play (Bally 1977).vbs
-@@ -925 +925 @@
+@@ -922,7 +922,7 @@
+ 
+ Sub DoDTAnim()
+ 	Dim i
 -	For i=0 to Ubound(DTArray)
 +    For i = 0 To UBound(DTArray)
+ 		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+ 	Next
+ End Sub

@@ -1,5 +1,11 @@
 --- Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs.original
 +++ Space Jam (Sega 1996) 1.4 JPJ - Edizzle - TeamPP - JLou.vbs
-@@ -10,2 +9,0 @@
+@@ -7,8 +7,6 @@
+ On Error Goto 0
+ 
+ Const BallSize = 52
 -Const Bsize = 26
 -Const Bsize2 = 26
+ Const BallMass = 2.2
+ 'Const Lumen = 10
+ 

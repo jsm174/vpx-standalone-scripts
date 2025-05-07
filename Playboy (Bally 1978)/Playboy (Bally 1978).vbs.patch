@@ -1,5 +1,11 @@
 --- Playboy (Bally 1978).vbs.original
 +++ Playboy (Bally 1978).vbs
-@@ -39 +39 @@
+@@ -36,7 +36,7 @@
+ SolCallback(13) 		= "dtRBank.SolDropUp"
+ SolCallback(sLRFlipper) = "SolRFlipper"
+ SolCallback(sLLFlipper) = "SolLFlipper"
 -SolCallback(2)     		= "vpmSolSound Soundfx(""Knocker"",DOFKnocker)" 
 +' SolCallback(2)     		= "vpmSolSound Soundfx(""Knocker"",DOFKnocker)," 
+ 
+ Set vpmShowDips 		= GetRef("editDips")
+ Set LampCallback		= GetRef("UpdateMultipleLamps")

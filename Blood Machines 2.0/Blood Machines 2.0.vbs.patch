@@ -1,20 +1,35 @@
 --- Blood Machines 2.0.vbs.original
 +++ Blood Machines 2.0.vbs
-@@ -208,2 +208,2 @@
+@@ -205,12 +205,12 @@
+ 
+ dim ScorbitActive
+ 'This should point to the path where all the original sound track music is placed
 -'dim MusicDirectory : MusicDirectory = "C:\Visual Pinball\Music\Blood Machines OST\"
 -dim MusicDirectory
 +'dim MusicDir : MusicDir = "C:\Visual Pinball\Music\Blood Machines OST\"
 +dim MusicDir
-@@ -211 +211 @@
+ 'if VersionMinor => 8 Then
 -'	MusicDirectory = musicdirectory("Blood Machines OST")	'this not working right now
 +	MusicDir = musicdirectory & "Blood Machines OST\"
-@@ -213 +213 @@
+ 'Else
 -	MusicDirectory = GetMusicFolder & "\Blood Machines OST\"
 +'	MusicDir = GetMusicFolder & "\Blood Machines OST\"
-@@ -1819 +1819 @@
+ 'end if
+ 
+ 'The songs placed in the directory must bedefined here. The filenames must be correct and in this order
+@@ -1816,7 +1816,7 @@
+ 	scene.GetImage("ScOverlay1").visible=True 
+ 
+ 
 -	scene.AddActor FlexDMD.NewImage("highlight1" , "misc/3lines1highlight.png" ) ' highlight1 Underlay for mission screens  12px high move it around -1 10 21 height
 +	scene.AddActor FlexDMD.NewImage("highlight1" , "Misc/3lines1highlight.png" ) ' highlight1 Underlay for mission screens  12px high move it around -1 10 21 height
-@@ -11636,7 +11636,7 @@
+ 	scene.GetImage("highlight1").visible=False 
+ 
+ 
+@@ -11633,13 +11633,13 @@
+ initPlayer
+ 
+ sub initPlayer
 -	if Not fso.FolderExists(MusicDirectory) Then
 -		'InfoBox.text = "Music path: " & MusicDirectory & " not found. Checking default path."
 -		MusicDirectory = "C:\vPinball\VisualPinball\Music\Blood Machines OST\"
@@ -29,19 +44,46 @@
 +			MusicDir = "D:\Visual Pinball\Music\Blood Machines OST\"
 +			if Not fso.FolderExists(MusicDir) Then
 +				'InfoBox.text = "Music path: " & MusicDir & " not found. Go get a Music pack."
-@@ -11677 +11677 @@
+ 				'msgbox "No music detected, will play ambient audio"
+ 				AmbientAudio = 1
+ 			else
+@@ -11674,7 +11674,7 @@
+ sub PlaySong(aNro)
+ 	StopSong
+ 	CurrentSong = aNro
 -	oPlayer1.URL = MusicDirectory & Songs(CurrentSong)
 +	oPlayer1.URL = MusicDir & Songs(CurrentSong)
-@@ -11695 +11695 @@
+ 	oPlayer1.settings.volume = MusicVol*100
+ 	oPlayer1.controls.play
+ end sub
+@@ -11692,7 +11692,7 @@
+ '
+ 'sub SongStartDelay_timer
+ ''	debug.print "delayed"
 -'	oPlayer1.URL = MusicDirectory & "\" & Songs(CurrentSong)
 +'	oPlayer1.URL = MusicDir & "\" & Songs(CurrentSong)
-@@ -11725 +11725 @@
+ '	oPlayer1.controls.play
+ '	SongStartDelay.enabled = false
+ 'end sub
+@@ -11722,12 +11722,12 @@
+ sub PlaySongStartingAt(chan,aNro,seconds)
+ 	CurrentSong = aNro
+ 	If chan = 1 Then
 -		oPlayer1.URL = MusicDirectory & Songs(CurrentSong)
 +		oPlayer1.URL = MusicDir & Songs(CurrentSong)
-@@ -11730 +11730 @@
+ 		oPlayer1.controls.currentPosition = seconds
+ 		oPlayer1.settings.volume = MusicVol*100
+ 		oPlayer1.controls.play
+ 	Elseif chan = 2 Then
 -		oPlayer2.URL = MusicDirectory & Songs(CurrentSong)
 +		oPlayer2.URL = MusicDir & Songs(CurrentSong)
-@@ -14325,0 +14326,33 @@
+ 		oPlayer2.controls.currentPosition = seconds
+ 		oPlayer2.settings.volume = MusicVol*100
+ 		oPlayer2.controls.play
+@@ -14323,6 +14323,39 @@
+ '  DROP TARGETS INITIALIZATION
+ '******************************************************
+ 
 +Class DropTarget
 +  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +
@@ -75,10 +117,16 @@
 +  End Function
 +End Class
 +
-@@ -14343,0 +14377,2 @@
+ 'Define a variable for each drop target
+ Dim DT1, DT2, DT3, DT4, DT5, DT6,DT7, DT8, DT9
+ 
+@@ -14341,16 +14374,18 @@
+ '	animate:			Arrary slot for handling the animation instrucitons, set to 0
+ '
+ '	Values for annimate: 1 - bend target (hit to primary), 2 - drop target (hit to secondary), 3 - brick target (high velocity hit to secondary), -1 - raise target 
 +'
 +'       isDropped:  Boolean which determines whether a drop target is dropped. Set to false if they are initially raised, true if initially dropped.
-@@ -14345,9 +14380,9 @@
+ 
 -DT1 = Array(TargetScavenge1, TargetScavenge1a, TargetScavenge1p, 1, 0)
 -DT2 = Array(TargetScavenge2, TargetScavenge2a, TargetScavenge2p, 2, 0)
 -DT3 = Array(TargetScavenge3, TargetScavenge3a, TargetScavenge3p, 3, 0)
@@ -97,7 +145,13 @@
 +Set DT7 = (new DropTarget)(TargetVascan4, TargetVascan4a, TargetVascan4p, 7, 0, false)
 +Set DT8 = (new DropTarget)(TargetVascan5, TargetVascan5a, TargetVascan5p, 8, 0, false)
 +Set DT9 = (new DropTarget)(TargetVascan6, TargetVascan6a, TargetVascan6p, 9, 0, false)
-@@ -14377,13 +14411,0 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT1, DT2, DT3, DT4, DT5, DT6, DT7, DT8, DT9)
+@@ -14374,19 +14409,6 @@
+ 
+ Const DTMass = 0.2 'Mass of the Drop Target (between 0 and 1), higher values provide more resistance
+ 
 -
 -Dim DTArray0, DTArray1, DTArray2, DTArray3, DTArray4
 -Redim DTArray0(UBound(DTArray)), DTArray1(UBound(DTArray)), DTArray2(UBound(DTArray)), DTArray3(UBound(DTArray)), DTArray4(UBound(DTArray))
@@ -111,25 +165,63 @@
 -   DTArray4(DTIdx) = DTArray(DTIdx)(4)
 -Next
 -
-@@ -14399,3 +14421,3 @@
+ '******************************************************
+ '  DROP TARGETS FUNCTIONS
+ '******************************************************
+@@ -14396,9 +14418,9 @@
+ 	i = DTArrayID(switch)
+ 
+ '	PlayTargetSound
 -	DTArray4(i) =  DTCheckBrick(Activeball,DTArray2(i))
 -	If DTArray4(i) = 1 or DTArray4(i) = 3 or DTArray4(i) = 4 Then
 -		DTBallPhysics Activeball, DTArray2(i).rotz, DTMass
 +	DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +	If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +		DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -14423 +14445 @@
+ 	End If
+ 	DoDTAnim
+ 	Select Case Switch
+@@ -14420,7 +14442,7 @@
+ 	DTWasDropped(Switch) = DTIsDropped(switch)
+ 	DTIsDropped(switch) = False
+ 
 -	DTArray4(i) = -1
 +	DTArray(i).animate = -1
-@@ -14436 +14458 @@
+ 	DoDTAnim
+ 	Select Case Switch
+ 		case 1: LightMystery1C.visible = true
+@@ -14433,14 +14455,14 @@
+ 	Dim i
+ 	i = DTArrayID(switch)
+ 
 -	DTArray4(i) = 1
 +	DTArray(i).animate = 1
-@@ -14443 +14465 @@
+ 	DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+ 	Dim i
+ 	For i = 0 to uBound(DTArray) 
 -		If DTArray3(i) = switch Then DTArrayID = i:Exit Function 
 +		If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -14498 +14520 @@
+ 	Next
+ End Function
+ 
+@@ -14495,7 +14517,7 @@
+ Sub DoDTAnim()
+ 	Dim i
+ 	For i=0 to Ubound(DTArray)
 -		DTArray4(i) = DTAnimate(DTArray0(i),DTArray1(i),DTArray2(i),DTArray3(i),DTArray4(i))
 +		DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
-@@ -19621 +19643 @@
+ 	Next
+ End Sub
+ 
+@@ -19618,7 +19640,7 @@
+ 		for each VRThings in VR_360:VRThings.visible = 0:Next
+ 		for each VRThings in VR_Cab:VRThings.visible = 0:Next
+ 		for each VRThings in VR_Min:VRThings.visible = 0:Next
 -		DMD.visible=1
 +		'DMD.visible=1
+ 		PinCab_Backbox.visible = 1
+ 		PinCab_Backglass.visible = 1
+ 	End If

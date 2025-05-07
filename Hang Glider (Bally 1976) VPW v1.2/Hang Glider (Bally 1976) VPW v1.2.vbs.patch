@@ -1,6 +1,9 @@
 --- Hang Glider (Bally 1976) VPW v1.2.vbs.original
 +++ Hang Glider (Bally 1976) VPW v1.2.vbs
-@@ -1422,0 +1423,33 @@
+@@ -1420,12 +1420,45 @@
+ '******************************************
+ ' Drop Targets
+ 
 +Class DropTarget
 +	Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
 +  
@@ -34,7 +37,7 @@
 +	End Function
 +End Class
 +
-@@ -1424,5 +1457,5 @@
+ Dim DT006, DT007, DT008, DT009, DT010
 -DT006 = Array(WallTarget006, WallTarget006offset, vca_Target006, 06, 0)
 -DT007 = Array(WallTarget007, WallTarget007offset, vca_Target007, 07, 0)
 -DT008 = Array(WallTarget008, WallTarget008offset, vca_Target008, 08, 0)
@@ -45,22 +48,54 @@
 +Set DT008 = (new DropTarget)(WallTarget008, WallTarget008offset, vca_Target008, 08, 0, false)
 +Set DT009 = (new DropTarget)(WallTarget009, WallTarget009offset, vca_Target009, 09, 0, false)
 +Set DT010 = (new DropTarget)(WallTarget010, WallTarget010offset, vca_Target010, 10, 0, false)
-@@ -1486,3 +1519,3 @@
+ 
+ Dim DTArray
+ DTArray = Array(DT006, DT007, DT008, DT009, DT010)
+@@ -1483,9 +1516,9 @@
+         i = DTArrayID(switch)
+ 
+ '        PlaySoundAtVol  DTHitSound, Activeball, Vol(Activeball)*22.5
 -        DTArray(i)(4) =  DTCheckBrick(Activeball,DTArray(i)(2))
 -        If DTArray(i)(4) = 1 or DTArray(i)(4) = 3 or DTArray(i)(4) = 4 Then
 -                DTBallPhysics Activeball, DTArray(i)(2).rotz, DTMass
 +        DTArray(i).animate =  DTCheckBrick(Activeball,DTArray(i).prim)
 +        If DTArray(i).animate = 1 or DTArray(i).animate = 3 or DTArray(i).animate = 4 Then
 +                DTBallPhysics Activeball, DTArray(i).prim.rotz, DTMass
-@@ -1497 +1530 @@
+         End If
+         DoDTAnim
+ End Sub
+@@ -1494,7 +1527,7 @@
+         Dim i
+         i = DTArrayID(switch)
+ 
 -        DTArray(i)(4) = -1
 +        DTArray(i).animate = -1
-@@ -1505 +1538 @@
+         DoDTAnim
+ End Sub
+ 
+@@ -1502,14 +1535,14 @@
+         Dim i
+         i = DTArrayID(switch)
+ 
 -        DTArray(i)(4) = 1
 +        DTArray(i).animate = 1
-@@ -1512 +1545 @@
+         DoDTAnim
+ End Sub
+ 
+ Function DTArrayID(switch)
+         Dim i
+         For i = 0 to uBound(DTArray) 
 -                If DTArray(i)(3) = switch Then DTArrayID = i:Exit Function 
 +                If DTArray(i).sw = switch Then DTArrayID = i:Exit Function 
-@@ -1580 +1613 @@
+         Next
+ End Function
+ 
+@@ -1577,7 +1610,7 @@
+ Sub DoDTAnim()
+         Dim i
+         For i=0 to Ubound(DTArray)
 -                DTArray(i)(4) = DTAnimate(DTArray(i)(0),DTArray(i)(1),DTArray(i)(2),DTArray(i)(3),DTArray(i)(4))
 +                DTArray(i).animate = DTAnimate(DTArray(i).primary,DTArray(i).secondary,DTArray(i).prim,DTArray(i).sw,DTArray(i).animate)
+         Next
+ End Sub
+ 

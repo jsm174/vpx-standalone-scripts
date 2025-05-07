@@ -1,8 +1,20 @@
 --- Topaz (Inder 1979).vbs.original
 +++ Topaz (Inder 1979).vbs
-@@ -103 +103 @@
+@@ -100,7 +100,7 @@
+ Dim CaBall, BOT
+ 
+ Sub table1_Init
 -	NVramPatchLoad
 +	'NVramPatchLoad
-@@ -813 +813 @@
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -810,7 +810,7 @@
+ 		.AddFrame 0, 275, 200, "Replay 1 Score", &H00001000 + &H00002000, Array("650,000", 0, "700,000", &H00001000, "750,000", &H00002000, "800,000", &H00001000 + &H00002000) 'dip 13-14
+ 		.AddFrame 0, 360, 200, "Replay 2 Score", &H00000400 + &H00000800, Array("800,000", 0, "850,000", &H00000400, "900,000", &H00000800, "none", &H00000400 + &H00000800) 'dip 11-12
+ 		.AddFrame 0, 445, 200, "Coins per credit", &H00010000 + &H00020000 + &H00040000, Array("1", &H00010000 + &H00040000, "2", 0)	'dip 17-18-19
 -		.AddChk 0, 510, 200, Array("Show high score on display ", &H000400000) 'dip 23
 +		.AddChk 0, 510, 200, Array("Show high score on display", &H00040000) 'dip 23
+ 		.AddChk 0, 530, 200, Array("Melody", &H00100000)	'dip 21
+ 		.AddChk 0, 550, 200, Array("Extra Ball when DT bank + TOPAZ", &H00000001)	'dip 1
+ 		.AddChk 0, 570, 200, Array("Special when DT bank + TOPAZ", &H00000002) 'dip 2

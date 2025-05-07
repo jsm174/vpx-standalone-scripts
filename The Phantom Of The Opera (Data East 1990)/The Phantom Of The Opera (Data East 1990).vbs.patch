@@ -1,7 +1,13 @@
 --- The Phantom Of The Opera (Data East 1990).vbs.original
 +++ The Phantom Of The Opera (Data East 1990).vbs
-@@ -138,2 +138,2 @@
+@@ -135,8 +135,8 @@
+ 		If Err Then MsgBox "Can't start Game" & cGameName & vbNewLine & Err.Description : Exit Sub
+ 		.SplashInfoLine = "Phantom of the Opera"&chr(13)&"You Suck"
+ 		.HandleMechanics=0
 -		.Settings.value("sound") = 1  '- Test table sounds...  disables ROM sounds
 -        .Settings.Value("rol") = 0
 +		.Games(cGameName).Settings.Value("sound") = 1 '- Test table sounds...  disables ROM sounds
 +		.Games(cGameName).Settings.Value("rol") = 0
+ 		.HandleKeyboard=0
+ 		.ShowDMDOnly=1
+ 		.ShowFrame=0

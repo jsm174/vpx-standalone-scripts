@@ -1,11 +1,23 @@
 --- Oba Oba (Taito do Brasil - 1979) v55_VPX8.vbs.original
 +++ Oba Oba (Taito do Brasil - 1979) v55_VPX8.vbs
-@@ -58 +58 @@
+@@ -55,7 +55,7 @@
+ '************
+ 
+ Sub table1_Init
 -NVramPatchLoad
 +'NVramPatchLoad
-@@ -119 +119,4 @@
+     vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -116,7 +116,10 @@
+ 
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
 -Sub table1_exit:NVramPatchExit:Controller.stop:End Sub
 +Sub table1_exit
 +    'NVramPatchExit
 +    Controller.stop
 +End Sub
+ 
+ '**********
+ ' Keys

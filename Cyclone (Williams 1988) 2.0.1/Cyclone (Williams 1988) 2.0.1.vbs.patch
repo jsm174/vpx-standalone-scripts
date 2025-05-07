@@ -1,10 +1,22 @@
 --- Cyclone (Williams 1988) 2.0.1.vbs.original
 +++ Cyclone (Williams 1988) 2.0.1.vbs
-@@ -7,0 +8 @@
+@@ -5,6 +5,7 @@
+ Option Explicit
+ Randomize
+ 
 +
-@@ -25,2 +26,3 @@
+ On Error Resume Next
+ ExecuteGlobal GetTextFile("controller.vbs")
+ If Err Then MsgBox "Can't open controller.vbs"
+@@ -22,8 +23,9 @@
+ Const SFlipperOn = "FlipperUp"
+ Const SFlipperOff = "FlipperDown"
+ Const SCoin = "Coin"
 -Const BSize = 25
 -Const BMass = 1.7
 +
 +const BallSize = 50
 +const BallMass = 1.7
+ 
+ '**************************************************************
+ '                    USER OPTIONS
