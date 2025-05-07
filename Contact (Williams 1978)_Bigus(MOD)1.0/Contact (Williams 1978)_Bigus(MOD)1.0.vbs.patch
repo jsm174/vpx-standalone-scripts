@@ -1,0 +1,13 @@
+--- Contact (Williams 1978)_Bigus(MOD)1.0.vbs.original
++++ Contact (Williams 1978)_Bigus(MOD)1.0.vbs
+@@ -170,8 +170,8 @@
+   dtR.InitSnd SoundFX("fx_droptarget2",DOFDropTargets),SoundFX("fx_resetdrop2",DOFContactors)
+ 
+   dtL.AllDownSw=31
+-  dtR.LinkedTo=dtL
+-  dtL.LinkedTo=dtR
++  dtR.LinkedTo=Array(dtL)
++  dtL.LinkedTo=Array(dtR)
+ 
+     'Nudging
+   vpmNudge.TiltSwitch = 1
