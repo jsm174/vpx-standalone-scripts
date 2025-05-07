@@ -1050,13 +1050,13 @@
     }
   },
   {
-    "file": "Honey (Williams 1971)V1.2.vbs.original",
-    "sha256": "ebd983dab2d584be27c4e6a34a91e7643f9a43303f3bf565abb963f311eefe06",
-    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Honey (Williams 1971)V1.2/Honey (Williams 1971)V1.2.vbs.original",
+    "file": "Honey (Williams 1971)V1.3.vbs.original",
+    "sha256": "70fc999663d1758943a804abe6e07bbf949d7b9b04508d9344579e0b87270193",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Honey (Williams 1971)V1.3/Honey (Williams 1971)V1.3.vbs.original",
     "patched": {
-      "file": "Honey (Williams 1971)V1.2.vbs",
-      "sha256": "61918a13d1bb47be91fa23c19e0f4c8b95ffee3fcbd3ba1107d101fbe986b001",
-      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Honey (Williams 1971)V1.2/Honey (Williams 1971)V1.2.vbs"
+      "file": "Honey (Williams 1971)V1.3.vbs",
+      "sha256": "4414f5d5175c7fed331353ba577b912d2e8c55752f73f39d2c184485cca82e8f",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Honey (Williams 1971)V1.3/Honey (Williams 1971)V1.3.vbs"
     }
   },
   {
