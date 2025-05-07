@@ -2230,6 +2230,16 @@
     }
   },
   {
+    "file": "The Rolling Stones (Stern 2011)_Bigus(MOD)3.0.vbs.original",
+    "sha256": "451c4fe90240eb6102412c12dc7cd32c21eb0e01dda72df7200a89a6a6bc69b7",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Rolling Stones (Stern 2011)_Bigus(MOD)3.0/The Rolling Stones (Stern 2011)_Bigus(MOD)3.0.vbs.original",
+    "patched": {
+      "file": "The Rolling Stones (Stern 2011)_Bigus(MOD)3.0.vbs",
+      "sha256": "3aea44d6e251efb6357531bf4073f55367d424c03a52a7555117edbbdcc9c5ac",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/The Rolling Stones (Stern 2011)_Bigus(MOD)3.0/The Rolling Stones (Stern 2011)_Bigus(MOD)3.0.vbs"
+    }
+  },
+  {
     "file": "TheATeam.vbs.original",
     "sha256": "a2eb9499500c9e6adb09e363a2b98e7a52638617031a40d2870e845eae0506fe",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/TheATeam_2.0.7/TheATeam.vbs.original",
