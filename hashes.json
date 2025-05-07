@@ -1310,6 +1310,26 @@
     }
   },
   {
+    "file": "Luck Smile (Inder 1976) 1p v55_VPX8.vbs.original",
+    "sha256": "b86ab1a520aa84d399c1c86e55b249badb6b5032156c521ee3c3f806d8301620",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Luck Smile (Inder 1976) 1p v55_VPX8/Luck Smile (Inder 1976) 1p v55_VPX8.vbs.original",
+    "patched": {
+      "file": "Luck Smile (Inder 1976) 1p v55_VPX8.vbs",
+      "sha256": "c2b69044a3469b98e2c50353725297c8555d8abe31f4f730c7f111496c7daf51",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Luck Smile (Inder 1976) 1p v55_VPX8/Luck Smile (Inder 1976) 1p v55_VPX8.vbs"
+    }
+  },
+  {
+    "file": "Luck Smile (Inder 1976) 4p v55_VPX8.vbs.original",
+    "sha256": "220aa55215a4e376f0dcbc603f1cb0405fe65950b018abf074fee784a4a27838",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Luck Smile (Inder 1976) 4p v55_VPX8/Luck Smile (Inder 1976) 4p v55_VPX8.vbs.original",
+    "patched": {
+      "file": "Luck Smile (Inder 1976) 4p v55_VPX8.vbs",
+      "sha256": "c75fadfc8cc3c3e0666f21f621b5d4171838ced97fe22a09bc217ac2ce9f2931",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Luck Smile (Inder 1976) 4p v55_VPX8/Luck Smile (Inder 1976) 4p v55_VPX8.vbs"
+    }
+  },
+  {
     "file": "MF DOOM (GOILL773 2024) v1.1.vbs.original",
     "sha256": "2ce4bf978b60a7ff869c909c283d88de6f9e635ee5afdde1416aa716067e35bb",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/MF DOOM (GOILL773 2024) v1.1/MF DOOM (GOILL773 2024) v1.1.vbs.original",

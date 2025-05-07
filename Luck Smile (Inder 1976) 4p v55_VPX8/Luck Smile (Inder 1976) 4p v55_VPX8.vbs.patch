@@ -1,13 +1,7 @@
 --- Luck Smile (Inder 1976) 4p v55_VPX8.vbs.original
 +++ Luck Smile (Inder 1976) 4p v55_VPX8.vbs
-@@ -898,8 +898,8 @@
- End Sub
- 
- Sub Display_Match()
+@@ -901,2 +901,2 @@
 -    MatchReel.SetValue(Match \ 11) + 1
 -    MatchReel2.SetValue(Match \ 11) + 1
 +    MatchReel.SetValue 1 + (Match \ 11)
 +    MatchReel2.SetValue 1 + (Match \ 11)
-     If B2SOn then
-         If Match = 0 then
-             Controller.B2SSetMatch 100
