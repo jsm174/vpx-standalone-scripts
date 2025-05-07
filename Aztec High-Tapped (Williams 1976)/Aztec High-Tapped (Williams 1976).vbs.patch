@@ -1,0 +1,1294 @@
+--- Aztec High-Tapped (Williams 1976).vbs.original
++++ Aztec High-Tapped (Williams 1976).vbs
+@@ -2,7 +2,46 @@
+ 'Const ReflectionMod=True			'enable JPJ reflection mod
+ 
+ Dim Score(4)
+-dim truesc(4)dim ballrelenableddim statedim playnodim creditdim egdim hisc1dim hisc2dim currpldim plno(4)dim play(4)dim rstdim ballinplaydim match(10)dim tiltdim tiltsensdim rep(4)dim plm(4)dim matchnumbdim creddim scndim scn1dim belldim pointsdim tempscoredim digitdim updatedim reel(4)dim replay1dim replay2dim replay3dim up(4)dim bl(10)dim bvdim ballsdim azlet(5)dim az1(5)dim az2(5)dim smdim br
++dim truesc(4)
++dim ballrelenabled
++dim state
++dim playno
++dim credit
++dim eg
++dim hisc1
++dim hisc2
++dim currpl
++dim plno(4)
++dim play(4)
++dim rst
++dim ballinplay
++dim match(10)
++dim tilt
++dim tiltsens
++dim rep(4)
++dim plm(4)
++dim matchnumb
++dim cred
++dim scn
++dim scn1
++dim bell
++dim points
++dim tempscore
++dim digit
++dim update
++dim reel(4)
++dim replay1
++dim replay2
++dim replay3
++dim up(4)
++dim bl(10)
++dim bv
++dim balls
++dim azlet(5)
++dim az1(5)
++dim az2(5)
++dim sm
++dim br
+ dim bumperchoice
+ dim rstep, rstepa, rstepb, rstepc, rstepd, rstepe, lstep, lstepa, lstepb, lstepc, lstepd
+ Dim GlobalSoundLevel
+@@ -23,7 +62,10 @@
+ On Error Resume Next
+ ExecuteGlobal GetTextFile("controller.vbs")
+ If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+-On Error Goto 0'************************ Table ini ****************************sub table1_init
++On Error Goto 0
++
++'************************ Table ini ****************************
++sub table1_init
+ 
+ '*********** JPJ's automatic random rotation of screws *******
+ 	dim z
+@@ -70,7 +112,64 @@
+ 
+ citedor03ok = 0
+ gov = 0
+-    set plno(1)=plno1    set plno(2)=plno2    set plno(3)=plno3    set plno(4)=plno4    set play(1)=up1     set play(2)=up2    set play(3)=up3    set play(4)=up4    set match(0)=m0    set match(1)=m1    set match(2)=m2    set match(3)=m3    set match(4)=m4    set match(5)=m5    set match(6)=m6    set match(7)=m7    set match(8)=m8    set match(9)=m9    set up(1)=up1    set up(2)=up2    set up(3)=up3    set up(4)=up4    set bl(1)=b5k    set bl(2)=b10k    set bl(3)=b15k    set bl(4)=b20k    set bl(5)=b25k    set bl(6)=b30k    set bl(7)=b35k    set bl(8)=b40k    set bl(9)=b45k    set bl(10)=b50k    set azlet(1)=upcl    set azlet(2)=midll    set azlet(3)=midrl    set azlet(4)=lowll    set azlet(5)=lowrl    set az1(1)=al1    set az1(2)=zl1    set az1(3)=tl1    set az1(4)=el1    set az1(5)=cl1    set az2(1)=al2    set az2(2)=zl2    set az2(3)=tl2    set az2(4)=el2    set az2(5)=cl2    set reel(1)=reel1    set reel(2)=reel2    set reel(3)=reel3    set reel(4)=reel4    credtimer.enabled=true    loadhs    if hisc1="" then hisc1=300250    if hisc2="" then hisc2=450250    if credit="" then credit=0    credtxt.text=credit
++
++    set plno(1)=plno1
++    set plno(2)=plno2
++    set plno(3)=plno3
++    set plno(4)=plno4
++    set play(1)=up1 
++    set play(2)=up2
++    set play(3)=up3
++    set play(4)=up4
++    set match(0)=m0
++    set match(1)=m1
++    set match(2)=m2
++    set match(3)=m3
++    set match(4)=m4
++    set match(5)=m5
++    set match(6)=m6
++    set match(7)=m7
++    set match(8)=m8
++    set match(9)=m9
++    set up(1)=up1
++    set up(2)=up2
++    set up(3)=up3
++    set up(4)=up4
++    set bl(1)=b5k
++    set bl(2)=b10k
++    set bl(3)=b15k
++    set bl(4)=b20k
++    set bl(5)=b25k
++    set bl(6)=b30k
++    set bl(7)=b35k
++    set bl(8)=b40k
++    set bl(9)=b45k
++    set bl(10)=b50k
++    set azlet(1)=upcl
++    set azlet(2)=midll
++    set azlet(3)=midrl
++    set azlet(4)=lowll
++    set azlet(5)=lowrl
++    set az1(1)=al1
++    set az1(2)=zl1
++    set az1(3)=tl1
++    set az1(4)=el1
++    set az1(5)=cl1
++    set az2(1)=al2
++    set az2(2)=zl2
++    set az2(3)=tl2
++    set az2(4)=el2
++    set az2(5)=cl2
++    set reel(1)=reel1
++    set reel(2)=reel2
++    set reel(3)=reel3
++    set reel(4)=reel4
++    credtimer.enabled=true
++    loadhs
++    if hisc1="" then hisc1=300250
++    if hisc2="" then hisc2=450250
++    if credit="" then credit=0
++    credtxt.text=credit
+ '************************************************************************
+ '**  Changing number of balls, 3 or 5 manually in the script           **
+ '**  Or Using Left Magna Button before starting game                   **
+@@ -78,42 +177,70 @@
+ '************************************************************************
+ 
+ 	apron3d.image = "apron02"
+-	balls=5    ballstxt.text=balls
++	balls=5
++    ballstxt.text=balls
+ 	replay1=330000
+ 	replay2=660000
+ 	replay3=990000
+    	hstxt.text=hisc1
+-    select case(matchnumb)    case 0:    m0.text="00"
++
++    select case(matchnumb)
++    case 0:
++    m0.text="00"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,1
+-	end if    case 1:    m1.text="10"
++	end if
++    case 1:
++    m1.text="10"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,2
+-	end if    case 2:    m2.text="20"
++	end if
++    case 2:
++    m2.text="20"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,3
+-	end if    case 3:    m3.text="30"
++	end if
++    case 3:
++    m3.text="30"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,4
+-	end if    case 4:    m4.text="40"
++	end if
++    case 4:
++    m4.text="40"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,5
+-	end if    case 5:    m5.text="50"
++	end if
++    case 5:
++    m5.text="50"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,6
+-	end if    case 6:    m6.text="60"
++	end if
++    case 6:
++    m6.text="60"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,7
+-	end if    case 7:    m7.text="70"
++	end if
++    case 7:
++    m7.text="70"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,8
+-	end if    case 8:    m8.text="80"
++	end if
++    case 8:
++    m8.text="80"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,9
+-	end if    case 9:    m9.text="90"
++	end if
++    case 9:
++    m9.text="90"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,10
+-	end if    end select    for i=1 to 4    currpl=i    reel(currpl).setvalue(score(currpl))    next    currpl=0
++	end if
++    end select
++    for i=1 to 4
++    currpl=i
++    reel(currpl).setvalue(score(currpl))
++    next
++    currpl=0
+ 	coin = 1
+ 	sa = 0
+ 
+@@ -123,7 +250,16 @@
+ gioff
+ 
+ If cite = 1 and gov = 0 then citedor01:gov=1:end if
+-end sub'**********************************************************Sub Table1_KeyDown(ByVal keycode)          if keycode=50 then dbl.state=lightstateon  	If keycode = PlungerKey Then		Plunger.PullBack	End If    
++
++end sub
++'**********************************************************
++
++Sub Table1_KeyDown(ByVal keycode)
++          if keycode=50 then dbl.state=lightstateon  
++	If keycode = PlungerKey Then
++		Plunger.PullBack
++	End If
++    
+ 	if keycode = Rightmagnasave then     
+ 		if cite = 0 then 
+ 			cite = 1
+@@ -132,18 +268,101 @@
+ 			citedor00
+ 		end if
+ 	end If
+-    if keycode = addcreditkey then	playsound "coin3"	coindelay.enabled=true	end if
++
++    if keycode = addcreditkey then
++	playsound "coin3"
++	coindelay.enabled=true
++	end if
+ 
+     if keycode = AddCreditKey2 then
+ 	playsound "coin3"
+ 	coindelay2.enabled=true
+-	end if	if keycode = StartGameKey and credit>0 and state=false and playno=0 then	credit=credit-1
+-If credit < 1 Then DOF 128, DOFOff	credtxt.text=credit
+-	GION    eg=0    playno=1    currpl=1    plno(playno).state=lightstateon    play(currpl).state=lightstateon    playsound "click"    playsound "initialize"    rst=0    ballinplay=1    resettimer.enabled=true    end if        if keycode = StartGameKey and credit>0 and state=true and playno>0 and playno<4 and ballinplay<2 then    credit=credit-1
+-If credit < 1 Then DOF 128, DOFOff    credtxt.text=credit    plno(playno).state=lightstateoff    playno=playno+1    plno(playno).state=lightstateon    playsound "click"    end if	if state=true and tilt=false then	If keycode = LeftFlipperKey Then		LeftFlipper.RotateToEnd		PlaySound SoundFXDOF("FlipperUp",101,DOFOn,DOFFlippers)	End If    	If keycode = RightFlipperKey Then		RightFlipper.RotateToEnd        PlaySound SoundFXDOF("FlipperUp",102,DOFOn,DOFFlippers)	End If    	If keycode = LeftTiltKey Then		Nudge 90, 2		checktilt	End If    	If keycode = RightTiltKey Then		Nudge 270, 2		checktilt	End If    	If keycode = CenterTiltKey Then		Nudge 0, 2		checktilt	End If	end if    End SubSub Table1_KeyUp(ByVal keycode)	If keycode = PlungerKey Then		Plunger.Fire		playsound "plunger"	End If    	If keycode = LeftFlipperKey Then		LeftFlipper.RotateToStart		if tilt=false and state=true then PlaySound SoundFXDOF("FlipperDown",101,DOFOff,DOFFlippers)	End If    	If keycode = RightFlipperKey Then		RightFlipper.RotateToStart		if tilt=false and state=true then PlaySound SoundFXDOF("FlipperDown",102,DOFOff,DOFFlippers)	End IfEnd Subsub coindelay_timer
+-playsound "click" credit=credit+1
+-DOF 128, DOFOnif credit>25 then credit=25credtxt.text=credit
+-	coindelay.enabled=falseend sub
++	end if
++
++	if keycode = StartGameKey and credit>0 and state=false and playno=0 then
++	credit=credit-1
++If credit < 1 Then DOF 128, DOFOff
++	credtxt.text=credit
++	GION
++    eg=0
++    playno=1
++    currpl=1
++    plno(playno).state=lightstateon
++    play(currpl).state=lightstateon
++    playsound "click"
++    playsound "initialize"
++    rst=0
++    ballinplay=1
++    resettimer.enabled=true
++    end if
++    
++    if keycode = StartGameKey and credit>0 and state=true and playno>0 and playno<4 and ballinplay<2 then
++    credit=credit-1
++If credit < 1 Then DOF 128, DOFOff
++    credtxt.text=credit
++    plno(playno).state=lightstateoff
++    playno=playno+1
++    plno(playno).state=lightstateon
++    playsound "click"
++    end if
++
++	if state=true and tilt=false then
++	If keycode = LeftFlipperKey Then
++		LeftFlipper.RotateToEnd
++		PlaySound SoundFXDOF("FlipperUp",101,DOFOn,DOFFlippers)
++	End If
++    
++	If keycode = RightFlipperKey Then
++		RightFlipper.RotateToEnd
++        PlaySound SoundFXDOF("FlipperUp",102,DOFOn,DOFFlippers)
++	End If
++    
++	If keycode = LeftTiltKey Then
++		Nudge 90, 2
++		checktilt
++	End If
++    
++	If keycode = RightTiltKey Then
++		Nudge 270, 2
++		checktilt
++	End If
++    
++	If keycode = CenterTiltKey Then
++		Nudge 0, 2
++		checktilt
++	End If
++	end if
++    
++End Sub
++
++Sub Table1_KeyUp(ByVal keycode)
++
++	If keycode = PlungerKey Then
++		Plunger.Fire
++		playsound "plunger"
++	End If
++    
++	If keycode = LeftFlipperKey Then
++		LeftFlipper.RotateToStart
++		if tilt=false and state=true then PlaySound SoundFXDOF("FlipperDown",101,DOFOff,DOFFlippers)
++	End If
++    
++	If keycode = RightFlipperKey Then
++		RightFlipper.RotateToStart
++		if tilt=false and state=true then PlaySound SoundFXDOF("FlipperDown",102,DOFOff,DOFFlippers)
++	End If
++
++End Sub
++
++sub coindelay_timer
++playsound "click" 
++credit=credit+1
++DOF 128, DOFOn
++if credit>25 then credit=25
++credtxt.text=credit
++	coindelay.enabled=false
++end sub
++
+ sub coindelay2_timer
+ playsound "click" 
+ credit=credit+1
+@@ -172,14 +391,73 @@
+ credtxt.text=credit
+ coindelay4.enabled=false
+ end sub
+-sub resettimer_timer    rst=rst+1    for i=1 to 4    reel(i).resettozero    next    if rst=20 then    playsound "kickerkick"    end if    if rst=24 then    newgame    resettimer.enabled=false    end ifend subsub newgame    credtimer.enabled=false'    credittxt.text="Ported To VP By Leon Spalding"    state=true    for i=1 to 4    score(i)=0    truesc(i)=0    rep(i)=0    next    eg=0    sm=0    bip5.text=" "    bip1.text="1"    for i=0 to 9    match(i).text=" "    next    tilttxt.text=" "     gamov.text=" "    bv=1    bl(bv).state=lightstateon    for i=1 to 5    azlet(i).state=lightstateon    az1(i).state=lightstateoff    az2(i).state=lightstateoff    next    sp1.state=lightstateoff    sp2.state=lightstateoff    ebl.state=lightstateoff    spinl.state=lightstateoff    leftsidel.state=lightstateoff    topl.state=lightstateoff    lanekl.state=lightstateoff		Bumper3l.state = 0
++
++sub resettimer_timer
++    rst=rst+1
++    for i=1 to 4
++    reel(i).resettozero
++    next
++    if rst=20 then
++    playsound "kickerkick"
++    end if
++    if rst=24 then
++    newgame
++    resettimer.enabled=false
++    end if
++end sub
++
++sub newgame
++    credtimer.enabled=false
++'    credittxt.text="Ported To VP By Leon Spalding"
++    state=true
++    for i=1 to 4
++    score(i)=0
++    truesc(i)=0
++    rep(i)=0
++    next
++    eg=0
++    sm=0
++    bip5.text=" "
++    bip1.text="1"
++    for i=0 to 9
++    match(i).text=" "
++    next
++    tilttxt.text=" " 
++    gamov.text=" "
++    bv=1
++    bl(bv).state=lightstateon
++    for i=1 to 5
++    azlet(i).state=lightstateon
++    az1(i).state=lightstateoff
++    az2(i).state=lightstateoff
++    next
++    sp1.state=lightstateoff
++    sp2.state=lightstateoff
++    ebl.state=lightstateoff
++    spinl.state=lightstateoff
++    leftsidel.state=lightstateoff
++    topl.state=lightstateoff
++    lanekl.state=lightstateoff
++		Bumper3l.state = 0
+ 		Bumper2l.state = 0
+ 		Bumper1l.state = 1
+ 		uprl.state = 1
+-		upll.state = 0    dbl.state=lightstateoff    tilt=false    tiltsens=0    ballinplay=1    nb.CreateBall.image="ballimage7"	nb.kick 135,4
+-	DOF 113, DOFPulseend subSub Drain_Hit()	Drain.DestroyBall
++		upll.state = 0
++    dbl.state=lightstateoff
++    tilt=false
++    tiltsens=0
++    ballinplay=1
++    nb.CreateBall.image="ballimage7"
++	nb.kick 135,4
++	DOF 113, DOFPulse
++end sub
++
++Sub Drain_Hit()
++	Drain.DestroyBall
+ 	DOF 114, DOFPulse
+-	playsound "drainshort"	if tilt=false then	br=1
++	playsound "drainshort"
++	if tilt=false then
++	br=1
+ 	for i=0 to 13
+ 		StopSound("fx_ballrolling" & (i))
+ 	Next
+@@ -187,14 +465,20 @@
+ 		StopSound("Theme0" & (i))
+ 	Next
+ 	If cite = 1 then playsound "ballout":end if
+-	bonuscount.interval=200	bonuscount.enabled=true	else
++
++	bonuscount.interval=200
++	bonuscount.enabled=true
++	else
+ 	for i=0 to 13
+ 		StopSound("fx_ballrolling" & (i))
+ 	Next
+ 	for i=0 to 2
+ 		StopSound("Theme0" & (i))
+-	Next	If cite = 1 then playsound "ballout":end if
+-	nextball    end ifend sub
++	Next
++	If cite = 1 then playsound "ballout":end if
++	nextball
++    end if
++end sub
+ sub Trigger1_hit
+ 		for i=0 to 2
+ 		StopSound("Theme0" & (i))
+@@ -204,28 +488,281 @@
+ 		for i=0 to 2
+ 		StopSound("Theme0" & (i))
+ 	Next
+-end subsub bonuscount_timer    if (dbl.state)=lightstateoff then bonuscount.interval=1000    if bv>0 then    if (dbl.state)=lightstateon then    addscore 10000    else    addscore 5000    end if    end if    if bv=<0 then     nextball    br=0    bonuscount.enabled=false    end ifend sub        sub bld        bl(bv).state=lightstateoff      if bv>1 then bl(bv-1).state=lightstateon    bv=bv-1end subsub nextball		if tilt=true then	tilt=false	tilttxt.text=" "'	bumper1.force=7'    bumper2.force=7'    bumper3.force=7    leftsling.slingshotstrength=6    rightsling.slingshotstrength=6	end if	if (shootagain.state)=lightstateon then
+-		sa=0		shootagain.state=lightstateoff		playsound "kickerkick"		newball		ballreltimer.enabled=true	else		currpl=currpl+1	end if	if currpl>playno then	ballinplay=ballinplay+1	if ballinplay>balls then
+-	GIOFF:ballinplay=0	playsound "motorleer"	eg=1	ballreltimer.enabled=true	else	if state=true and tilt=false then	play(currpl-1).state=lightstateoff	currpl=1	play(currpl).state=lightstateon	newball	playsound "kickerkick"	ballreltimer.enabled=true	end if	select case (ballinplay)	case 1:	bip1.text="1"	case 2: 	bip1.text=" "	bip2.text="2"	case 3:	bip2.text=" "	bip3.text="3"	case 4:	bip3.text=" "	bip4.text="4"	case 5:	bip4.text=" "	bip5.text="5"	end select	end if	end if	if currpl>1 and currpl<(playno+1) then	if state=true and tilt=false then	play(currpl-1).state=lightstateoff	play(currpl).state=lightstateon	newball	playsound "kickerkick"	ballreltimer.enabled=true	end if	end ifend Subsub ballreltimer_timer    if eg=1 then    matchnum	bip3.text=" "	bip5.text=" "	state=false	plno(playno).state=lightstateoff	play(currpl-1).state=lightstateoff	playno=0	gamov.text="GAME OVER"
+-	If cite = 1 and gov = 1 then citedor05:end if	for i=1 to 4	if balls=3 and truesc(i)>hisc1 then 	hisc1=truesc(i)	hstxt.text=hisc1	end if	if balls=5 and truesc(i)>hisc2 then 	hisc2=truesc(i)	hstxt.text=hisc2	end if	next	savehs	cred=0	credtimer.enabled=true	ballreltimer.enabled=false    else    nb.CreateBall.image="ballimage7"	nb.kick 135,4
++end sub
++
++sub bonuscount_timer
++    if (dbl.state)=lightstateoff then bonuscount.interval=1000
++    if bv>0 then
++    if (dbl.state)=lightstateon then
++    addscore 10000
++    else
++    addscore 5000
++    end if
++    end if
++    if bv=<0 then 
++    nextball
++    br=0
++    bonuscount.enabled=false
++    end if
++end sub
++        
++sub bld    
++    bl(bv).state=lightstateoff  
++    if bv>1 then bl(bv-1).state=lightstateon
++    bv=bv-1
++end sub
++
++sub nextball	
++	if tilt=true then
++	tilt=false
++	tilttxt.text=" "
++'	bumper1.force=7
++'    bumper2.force=7
++'    bumper3.force=7
++    leftsling.slingshotstrength=6
++    rightsling.slingshotstrength=6
++	end if
++	if (shootagain.state)=lightstateon then
++		sa=0
++		shootagain.state=lightstateoff
++		playsound "kickerkick"
++		newball
++		ballreltimer.enabled=true
++	else
++		currpl=currpl+1
++	end if
++	if currpl>playno then
++	ballinplay=ballinplay+1
++	if ballinplay>balls then
++	GIOFF:ballinplay=0
++	playsound "motorleer"
++	eg=1
++	ballreltimer.enabled=true
++	else
++	if state=true and tilt=false then
++	play(currpl-1).state=lightstateoff
++	currpl=1
++	play(currpl).state=lightstateon
++	newball
++	playsound "kickerkick"
++	ballreltimer.enabled=true
++	end if
++	select case (ballinplay)
++	case 1:
++	bip1.text="1"
++	case 2: 
++	bip1.text=" "
++	bip2.text="2"
++	case 3:
++	bip2.text=" "
++	bip3.text="3"
++	case 4:
++	bip3.text=" "
++	bip4.text="4"
++	case 5:
++	bip4.text=" "
++	bip5.text="5"
++	end select
++	end if
++	end if
++	if currpl>1 and currpl<(playno+1) then
++	if state=true and tilt=false then
++	play(currpl-1).state=lightstateoff
++	play(currpl).state=lightstateon
++	newball
++	playsound "kickerkick"
++	ballreltimer.enabled=true
++	end if
++	end if
++end Sub
++
++sub ballreltimer_timer
++    if eg=1 then
++    matchnum
++	bip3.text=" "
++	bip5.text=" "
++	state=false
++	plno(playno).state=lightstateoff
++	play(currpl-1).state=lightstateoff
++	playno=0
++	gamov.text="GAME OVER"
++	If cite = 1 and gov = 1 then citedor05:end if
++	for i=1 to 4
++	if balls=3 and truesc(i)>hisc1 then 
++	hisc1=truesc(i)
++	hstxt.text=hisc1
++	end if
++	if balls=5 and truesc(i)>hisc2 then 
++	hisc2=truesc(i)
++	hstxt.text=hisc2
++	end if
++	next
++	savehs
++	cred=0
++	credtimer.enabled=true
++	ballreltimer.enabled=false
++    else
++    nb.CreateBall.image="ballimage7"
++	nb.kick 135,4
+ 	DOF 113, DOFPulse
+-		if cite=1 then citedor06:end if    ballreltimer.enabled=false    end ifend subsub newball    bv=1    sm=0    bl(bv).state=lightstateon    for i=1 to 5    azlet(i).state=lightstateon    az1(i).state=lightstateoff    az2(i).state=lightstateoff    next		Bumper3l.state = 0
++		if cite=1 then citedor06:end if
++    ballreltimer.enabled=false
++    end if
++end sub
++
++sub newball
++    bv=1
++    sm=0
++    bl(bv).state=lightstateon
++    for i=1 to 5
++    azlet(i).state=lightstateon
++    az1(i).state=lightstateoff
++    az2(i).state=lightstateoff
++    next
++		Bumper3l.state = 0
+ 		Bumper2l.state = 0
+ 		Bumper1l.state = 1
+ 		uprl.state = 1
+-		upll.state = 0    topl.state=lightstateoff    sp1.state=lightstateoff    sp2.state=lightstateoff    ebl.state=lightstateoff    spinl.state=lightstateoff    leftsidel.state=lightstateoff    lanekl.state=lightstateoff    dbl.state=lightstateoffend sub    sub addscore(points)    if tilt=false then    bell=0'    bb2.isdropped=true    if points=100 or points=10 then     matchnumb=matchnumb+1    if matchnumb=10 then matchnumb=0    end if    if points = 10 or points = 100 or points = 1000 or points=10000 then scn=1    if points = 100 then     reel(currpl).addvalue(100)    bell=100    end if    if points = 10 then     reel(currpl).addvalue(10)    bell=10    end if    if points = 1000 then     reel(currpl).addvalue(1000)    bell=1000    end if    if points = 10000 then     reel(currpl).addvalue(10000)    bell=10000    end if    if points = 500 then     reel(currpl).addvalue(500)    scn=5    bell=100    end if    if points = 20000 then    reel(currpl).addvalue(20000)    scn=2    bell=10000    end if    if points=2000 then    reel(currpl).addvalue(2000)    scn=2    bell=1000    end if    if points = 30000 then    reel(currpl).addvalue(30000)    scn=3    bell=10000    end if    if points=3000 then    reel(currpl).addvalue(3000)    scn=3    bell=1000    end if    if points = 40000 then    reel(currpl).addvalue(40000)    scn=4    bell=10000    end if    if points=4000 then    reel(currpl).addvalue(4000)    scn=4    bell=1000    end if    if points=50000 then    reel(currpl).addvalue(50000)    scn=5    bell=10000    end if    if points=5000 then    reel(currpl).addvalue(5000)    scn=5    bell=1000    end if    scn1=0    scntimer.enabled=true     score(currpl)=score(currpl)+points    truesc(currpl)=truesc(currpl)+points    if score(currpl)=>1000000 then     score(currpl)=score(currpl)-1000000    rep(currpl)=0    end if    if score(currpl)=>replay1 and rep(currpl)=0 then    credit=credit+1
+-	shootagain.state=lightstateon	DOF 128, DOFOn
++		upll.state = 0
++    topl.state=lightstateoff
++    sp1.state=lightstateoff
++    sp2.state=lightstateoff
++    ebl.state=lightstateoff
++    spinl.state=lightstateoff
++    leftsidel.state=lightstateoff
++    lanekl.state=lightstateoff
++    dbl.state=lightstateoff
++end sub    
++
++sub addscore(points)
++    if tilt=false then
++    bell=0
++'    bb2.isdropped=true
++    if points=100 or points=10 then 
++    matchnumb=matchnumb+1
++    if matchnumb=10 then matchnumb=0
++    end if
++    if points = 10 or points = 100 or points = 1000 or points=10000 then scn=1
++    if points = 100 then 
++    reel(currpl).addvalue(100)
++    bell=100
++    end if
++    if points = 10 then 
++    reel(currpl).addvalue(10)
++    bell=10
++    end if
++    if points = 1000 then 
++    reel(currpl).addvalue(1000)
++    bell=1000
++    end if
++    if points = 10000 then 
++    reel(currpl).addvalue(10000)
++    bell=10000
++    end if
++    if points = 500 then 
++    reel(currpl).addvalue(500)
++    scn=5
++    bell=100
++    end if
++    if points = 20000 then
++    reel(currpl).addvalue(20000)
++    scn=2
++    bell=10000
++    end if
++    if points=2000 then
++    reel(currpl).addvalue(2000)
++    scn=2
++    bell=1000
++    end if
++    if points = 30000 then
++    reel(currpl).addvalue(30000)
++    scn=3
++    bell=10000
++    end if
++    if points=3000 then
++    reel(currpl).addvalue(3000)
++    scn=3
++    bell=1000
++    end if
++    if points = 40000 then
++    reel(currpl).addvalue(40000)
++    scn=4
++    bell=10000
++    end if
++    if points=4000 then
++    reel(currpl).addvalue(4000)
++    scn=4
++    bell=1000
++    end if
++    if points=50000 then
++    reel(currpl).addvalue(50000)
++    scn=5
++    bell=10000
++    end if
++    if points=5000 then
++    reel(currpl).addvalue(5000)
++    scn=5
++    bell=1000
++    end if
++    scn1=0
++    scntimer.enabled=true 
++    score(currpl)=score(currpl)+points
++    truesc(currpl)=truesc(currpl)+points
++    if score(currpl)=>1000000 then 
++    score(currpl)=score(currpl)-1000000
++    rep(currpl)=0
++    end if
++    if score(currpl)=>replay1 and rep(currpl)=0 then
++    credit=credit+1
++	shootagain.state=lightstateon
++	DOF 128, DOFOn
+     playsound SoundFXDOF("knocker",126,DOFPulse,DOFKnocker)
+-	DOF 127, DOFPulse    if credit>25 then credit=25	credtxt.text=credit    rep(currpl)=1    playsound "click"    end if    if score(currpl)=>replay2 and rep(currpl)=1 then    credit=credit+1
+-	shootagain.state=lightstateon	DOF 128, DOFOn
++	DOF 127, DOFPulse
++    if credit>25 then credit=25
++	credtxt.text=credit
++    rep(currpl)=1
++    playsound "click"
++    end if
++    if score(currpl)=>replay2 and rep(currpl)=1 then
++    credit=credit+1
++	shootagain.state=lightstateon
++	DOF 128, DOFOn
+ 	playsound SoundFXDOF("knocker",126,DOFPulse,DOFKnocker)
+-	DOF 127, DOFPulse    if credit>25 then credit=25	credtxt.text=credit    rep(currpl)=2    playsound "click"    end if    if score(currpl)=>replay3 and rep(currpl)=2 then    credit=credit+1
+-	shootagain.state=lightstateon	DOF 128, DOFOn
++	DOF 127, DOFPulse
++    if credit>25 then credit=25
++	credtxt.text=credit
++    rep(currpl)=2
++    playsound "click"
++    end if
++    if score(currpl)=>replay3 and rep(currpl)=2 then
++    credit=credit+1
++	shootagain.state=lightstateon
++	DOF 128, DOFOn
+     playsound SoundFXDOF("knocker",126,DOFPulse,DOFKnocker)
+-	DOF 127, DOFPulse    if credit>25 then credit=25	credtxt.text=credit    rep(currpl)=3    playsound "click"    end if    end ifend subsub scntimer_timer    scn1=scn1 + 1    if bell=10 then playsound SoundFXDOF("bell10",141,DOFPulse,DOFChimes)
++	DOF 127, DOFPulse
++    if credit>25 then credit=25
++	credtxt.text=credit
++    rep(currpl)=3
++    playsound "click"
++    end if
++    end if
++end sub
++
++sub scntimer_timer
++    scn1=scn1 + 1
++    if bell=10 then playsound SoundFXDOF("bell10",141,DOFPulse,DOFChimes)
+     if bell=100 then playsound SoundFXDOF("bell100",142,DOFPulse,DOFChimes)
+     if bell=1000 then playsound SoundFXDOF("bell1000",143,DOFPulse,DOFChimes)
+-    if bell=10000 then playsound SoundFXDOF("bell1000low",144,DOFPulse,DOFChimes)    if scn1=scn then     if br=1 then bld    scntimer.enabled=false    end ifend sub     sub matchnum    select case(matchnumb)    case 0:
++    if bell=10000 then playsound SoundFXDOF("bell1000low",144,DOFPulse,DOFChimes)
++    if scn1=scn then 
++    if br=1 then bld
++    scntimer.enabled=false
++    end if
++end sub 
++    
++sub matchnum
++    select case(matchnumb)
++    case 0:
+     m0.text="00"
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,1
+@@ -275,12 +812,50 @@
+ 	if b2son Then
+ 		Controller.b2ssetdata 34,10
+ 	end if
+-    end select    for i=1 to playno    if (matchnumb*10)=(score(i) mod 100) then    credit=credit+1	DOF 128, DOFOn
++    end select
++    for i=1 to playno
++    if (matchnumb*10)=(score(i) mod 100) then
++    credit=credit+1
++	DOF 128, DOFOn
+     playsound SoundFXDOF("knocker",126,DOFPulse,DOFKnocker)
+-	DOF 127, DOFPulse    if credit>25 then credit=25	credtxt.text=credit    playsound "click"    end if    next end subsub credtimer_timer'    cred=cred+1'    if cred=1 then credittxt.text="Ported To VP By Leon Spalding"'    if cred=2 then credittxt.text="At The Request Of Bogy"'    if cred=3 then credittxt.text="'F1' 3 or 5 Ball Game"'    if cred=4 then credittxt.text="'5' Add Coin : 'S' Start game"'    if cred=5 then credittxt.text="Thanx To Black (load&save)"'    if cred=6 then credittxt.text="Thanx To Randy Davis (guess)"'    if cred=7 then credittxt.text="Thanx To All At Shivas VP Forum"'    if cred=8 then credittxt.text="'F1' 3 or 5 Ball Game"'    if cred=9 then credittxt.text="'5' Add Coin : 'S' Start game"'    if cred=10 then credittxt.text="An 'IR Pinball' Preserved Classic"'    if cred=11 then credittxt.text="'IR Pinball' Are...."'    if cred=12 then credittxt.text="Steveir, Duglis, Danz,"'    if cred=13 then credittxt.text="Robair, Jay & Leon."'    if cred=14 then credittxt.text="www.hippie.net/shivasite/irpinball"'    if cred=14 then cred=0end sub
++	DOF 127, DOFPulse
++    if credit>25 then credit=25
++	credtxt.text=credit
++    playsound "click"
++    end if
++    next 
++end sub
++
++sub credtimer_timer
++'    cred=cred+1
++'    if cred=1 then credittxt.text="Ported To VP By Leon Spalding"
++'    if cred=2 then credittxt.text="At The Request Of Bogy"
++'    if cred=3 then credittxt.text="'F1' 3 or 5 Ball Game"
++'    if cred=4 then credittxt.text="'5' Add Coin : 'S' Start game"
++'    if cred=5 then credittxt.text="Thanx To Black (load&save)"
++'    if cred=6 then credittxt.text="Thanx To Randy Davis (guess)"
++'    if cred=7 then credittxt.text="Thanx To All At Shivas VP Forum"
++'    if cred=8 then credittxt.text="'F1' 3 or 5 Ball Game"
++'    if cred=9 then credittxt.text="'5' Add Coin : 'S' Start game"
++'    if cred=10 then credittxt.text="An 'IR Pinball' Preserved Classic"
++'    if cred=11 then credittxt.text="'IR Pinball' Are...."
++'    if cred=12 then credittxt.text="Steveir, Duglis, Danz,"
++'    if cred=13 then credittxt.text="Robair, Jay & Leon."
++'    if cred=14 then credittxt.text="www.hippie.net/shivasite/irpinball"
++'    if cred=14 then cred=0
++end sub
++
+ 
+-'**************** Bonus 10 lights ***************sub bonadv    bl(bv).state=lightstateoff    bv=bv+1    if bv>10 then bv=10    bl(bv).state=lightstateon    playsound "clerker"
+-	playsound SoundFXDOF("bell1000",143,DOFPulse,DOFChimes)end sub'************************************************
++'**************** Bonus 10 lights ***************
++sub bonadv
++    bl(bv).state=lightstateoff
++    bv=bv+1
++    if bv>10 then bv=10
++    bl(bv).state=lightstateon
++    playsound "clerker"
++	playsound SoundFXDOF("bell1000",143,DOFPulse,DOFChimes)
++end sub
++'************************************************
+ 
+ 
+ '************** Slingshots ***********************
+@@ -328,6 +903,7 @@
+     End Select
+     LStep = LStep + 1
+ End Sub
++
+ Sub topSling_Slingshot
+ 	light
+ 	playsound SoundFXDOF("leftslingshot",103,DOFPulse,DOFContactors)
+@@ -348,9 +924,13 @@
+     End Select
+     LStepa = LStepa + 1
+ End Sub
++
+ sub topslingL_slingshot
+ 	light
+-	playsound SoundFXDOF("leftslingshot",103,DOFPulse,DOFContactors)	addscore 10end sub
++	playsound SoundFXDOF("leftslingshot",103,DOFPulse,DOFContactors)
++	addscore 10
++end sub
++
+ Sub topslingL2_Slingshot
+ 	light
+ 	playsound SoundFXDOF("leftslingshot",103,DOFPulse,DOFContactors)
+@@ -457,6 +1037,7 @@
+ End Sub
+ 
+ '******************************************************************************
++
+ sub rbut_hit
+ 	lbutt01.state = 1
+     addscore 100
+@@ -483,6 +1064,7 @@
+     End Select
+ CC=cc+1
+ end sub
++
+ sub lbut_hit
+ 	lbutt03.state = 1
+     addscore 100
+@@ -494,6 +1076,7 @@
+ 	rbut00.Enabled = 1
+ 	lbutt03.state = 0
+ end sub
++
+ dim ccc
+ ccc=0
+ 
+@@ -509,19 +1092,61 @@
+ CCC=ccc+1
+ end sub
+ 
++
+ sub leftin_hit
+-	DOF 119, DOFPulse    addscore 5000end subsub rightin_hit
+-	DOF 120, DOFPulse    addscore 5000end subsub rightout_hit
+-	DOF 121, DOFPulse    if (sp2.state)=lightstateon then    credit=credit+1
+-	shootagain.state=lightstateon	DOF 128, DOFOn
++	DOF 119, DOFPulse
++    addscore 5000
++end sub
++
++sub rightin_hit
++	DOF 120, DOFPulse
++    addscore 5000
++end sub
++
++sub rightout_hit
++	DOF 121, DOFPulse
++    if (sp2.state)=lightstateon then
++    credit=credit+1
++	shootagain.state=lightstateon
++	DOF 128, DOFOn
+     playsound SoundFXDOF("knocker",126,DOFPulse,DOFKnocker)
+-	DOF 127, DOFPulse    if credit>25 then credit=25	credtxt.text=credit    playsound "click"    else    addscore 10000    bonadv    end ifend subsub leftout_hit
+-	DOF 118, DOFPulse    if (sp1.state)=lightstateon then    credit=credit+1
+-	shootagain.state=lightstateon	DOF 128, DOFOn
++	DOF 127, DOFPulse
++    if credit>25 then credit=25
++	credtxt.text=credit
++    playsound "click"
++    else
++    addscore 10000
++    bonadv
++    end if
++end sub
++
++sub leftout_hit
++	DOF 118, DOFPulse
++    if (sp1.state)=lightstateon then
++    credit=credit+1
++	shootagain.state=lightstateon
++	DOF 128, DOFOn
+     playsound SoundFXDOF("knocker",126,DOFPulse,DOFKnocker)
+-	DOF 127, DOFPulse    if credit>25 then credit=25	credtxt.text=credit    playsound "click"    else    addscore 10000    bonadv    end ifend subsub spinner1_spin
++	DOF 127, DOFPulse
++    if credit>25 then credit=25
++	credtxt.text=credit
++    playsound "click"
++    else
++    addscore 10000
++    bonadv
++    end if
++end sub
++
++sub spinner1_spin
+ 	DOF 129, DOFPulse
+-	PlaySound "spinner", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0    if (spinl.state)=lightstateon then    addscore 1000    else    addscore 100    end ifend sub
++	PlaySound "spinner", 0, Vol(ActiveBall), Pan(ActiveBall), 0, Pitch(ActiveBall), 1, 0
++    if (spinl.state)=lightstateon then
++    addscore 1000
++    else
++    addscore 100
++    end if
++end sub
++
+ sub cbut_hit
+ 	lbutt02.state = 1
+     bonadv
+@@ -548,39 +1173,179 @@
+     End Select
+ CCCC=cccc+1
+ end sub
+-sub laneK_hit    if (lanekl.state)=lightstateon then dbl.state=lightstateon    if sm>0 then    addscore (10000*sm)    else    addscore 1000    end if    playsound "kickerkick"    kickertimer.enabled=trueend sub sub kickertimer_timer    lanek.kick 0,18
+-	If cite = 1 then playsound "trigger02":end if    kickertimer.enabled=falseend sub    sub leftside_hit
+-	If cite = 1 then Citedor04.enabled = true:end if    if (leftsidel.state)=lightstateon then dbl.state=lightstateon    bonadvend subsub bumper1_hit	if tilt=false then playsound SoundFXDOF("jet2",109,DOFPulse,DOFContactors)
++
++
++sub laneK_hit
++    if (lanekl.state)=lightstateon then dbl.state=lightstateon
++    if sm>0 then
++    addscore (10000*sm)
++    else
++    addscore 1000
++    end if
++    playsound "kickerkick"
++    kickertimer.enabled=true
++end sub 
++
++sub kickertimer_timer
++    lanek.kick 0,18
++	If cite = 1 then playsound "trigger02":end if
++    kickertimer.enabled=false
++end sub    
++
++sub leftside_hit
++	If cite = 1 then Citedor04.enabled = true:end if
++    if (leftsidel.state)=lightstateon then dbl.state=lightstateon
++    bonadv
++end sub
++
++sub bumper1_hit
++	if tilt=false then playsound SoundFXDOF("jet2",109,DOFPulse,DOFContactors)
+ 	if cite = 1 then playsound "bumper01":end if
+-	DOF 110, DOFPulse    if (Bumper1l.state)=lightstateon then		addscore 1000    else		addscore 100    end ifend subsub bumper2_hit    if tilt=false then playsound SoundFXDOF("jet2",107,DOFPulse,DOFContactors)
++	DOF 110, DOFPulse
++    if (Bumper1l.state)=lightstateon then
++		addscore 1000
++    else
++		addscore 100
++    end if
++end sub
++
++sub bumper2_hit
++    if tilt=false then playsound SoundFXDOF("jet2",107,DOFPulse,DOFContactors)
+ 	if cite = 1 then playsound "bumper02":end if
+-	DOF 108, DOFPulse    if (bumper2l.state)=lightstateon then		addscore 1000    else		addscore 100    end ifend subsub bumper3_hit    if tilt=false then playsound SoundFXDOF("jet2",111,DOFPulse,DOFContactors)
++	DOF 108, DOFPulse
++    if (bumper2l.state)=lightstateon then
++		addscore 1000
++    else
++		addscore 100
++    end if
++end sub
++
++sub bumper3_hit
++    if tilt=false then playsound SoundFXDOF("jet2",111,DOFPulse,DOFContactors)
+ 	if cite = 1 then playsound "bumper03":end if
+-	DOF 112, DOFPulse    if (bumper3l.state)=lightstateon then		addscore 1000    else		addscore 100    end ifend subsub top_hit
+-	topt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",125,DOFPulse,DOFTargets)    if (topl.state)=lightstateon then bonadv    addscore 1000end sub
++	DOF 112, DOFPulse
++    if (bumper3l.state)=lightstateon then
++		addscore 1000
++    else
++		addscore 100
++    end if
++end sub
++
++sub top_hit
++	topt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",125,DOFPulse,DOFTargets)
++    if (topl.state)=lightstateon then bonadv
++    addscore 1000
++end sub
+ Sub top_Timer():topt.transx = 0:Me.TimerEnabled = 0:End Sub
++
++
+ sub upl_hit
+-	DOF 115, DOFPulse    if (upll.state)=lightstateon then bonadv    addscore 1000end subsub upr_hit
+-	DOF 117, DOFPulse    if (uprl.state)=lightstateon then bonadv    addscore 1000end sub                        sub upc_hit
++	DOF 115, DOFPulse
++    if (upll.state)=lightstateon then bonadv
++    addscore 1000
++end sub
++
++sub upr_hit
++	DOF 117, DOFPulse
++    if (uprl.state)=lightstateon then bonadv
++    addscore 1000
++end sub                        
++
++sub upc_hit
+ 	DOF 116, DOFPulse
+-    addscore 1000'    bumper1.state=lightstateon    spinl.state=lightstateon    if (upcl.state)=lightstateon then'    upll.state=lightstateon    upcl.state=lightstateoff    al1.state=lightstateon    al2.state=lightstateon    sm=sm+1    end if    checkawardend sub    sub midl_hit
+-	midlt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",122,DOFPulse,DOFTargets)    addscore 1000'    bumper2.state=lightstateon    if (midll.state)=lightstateon then    uprl.state=lightstateon    midll.state=lightstateoff    zl1.state=lightstateon    zl2.state=lightstateon    sm=sm+1    end if    checkawardend sub
++    addscore 1000
++'    bumper1.state=lightstateon
++    spinl.state=lightstateon
++    if (upcl.state)=lightstateon then
++'    upll.state=lightstateon
++    upcl.state=lightstateoff
++    al1.state=lightstateon
++    al2.state=lightstateon
++    sm=sm+1
++    end if
++    checkaward
++end sub    
++
++sub midl_hit
++	midlt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",122,DOFPulse,DOFTargets)
++    addscore 1000
++'    bumper2.state=lightstateon
++    if (midll.state)=lightstateon then
++    uprl.state=lightstateon
++    midll.state=lightstateoff
++    zl1.state=lightstateon
++    zl2.state=lightstateon
++    sm=sm+1
++    end if
++    checkaward
++end sub
+ Sub midl_Timer():midlt.transx = 0:Me.TimerEnabled = 0:End Sub
++
+ sub midr_hit
+-	midrt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",124,DOFPulse,DOFTargets)    addscore 1000'    bumper3.state=lightstateon    if (midrl.state)=lightstateon then    topl.state=lightstateon    midrl.state=lightstateoff    tl1.state=lightstateon    tl2.state=lightstateon    sm=sm+1    end if    checkawardend sub
+-Sub midr_Timer():midrt.transx = 0:Me.TimerEnabled = 0:End Subsub lowl_hit
+-	lowlt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",122,DOFPulse,DOFTargets)    addscore 1000    if (lowll.state)=lightstateon then    lowll.state=lightstateoff    el1.state=lightstateon    el2.state=lightstateon    sm=sm+1    end if    checkawardend sub
++	midrt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",124,DOFPulse,DOFTargets)
++    addscore 1000
++'    bumper3.state=lightstateon
++    if (midrl.state)=lightstateon then
++    topl.state=lightstateon
++    midrl.state=lightstateoff
++    tl1.state=lightstateon
++    tl2.state=lightstateon
++    sm=sm+1
++    end if
++    checkaward
++end sub
++Sub midr_Timer():midrt.transx = 0:Me.TimerEnabled = 0:End Sub
++
++sub lowl_hit
++	lowlt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",122,DOFPulse,DOFTargets)
++    addscore 1000
++    if (lowll.state)=lightstateon then
++    lowll.state=lightstateoff
++    el1.state=lightstateon
++    el2.state=lightstateon
++    sm=sm+1
++    end if
++    checkaward
++end sub
+ Sub lowl_Timer():lowlt.transx = 0:Me.TimerEnabled = 0:End Sub
++
+ sub lowr_hit
+-	lowrt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",124,DOFPulse,DOFTargets)    addscore 1000    if (lowrl.state)=lightstateon then    lowrl.state=lightstateoff    cl1.state=lightstateon    cl2.state=lightstateon    sm=sm+1    end if    checkawardend subSub lowr_Timer():lowrt.transx = 0:Me.TimerEnabled = 0:End Sub
++	lowrt.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",124,DOFPulse,DOFTargets)
++    addscore 1000
++    if (lowrl.state)=lightstateon then
++    lowrl.state=lightstateoff
++    cl1.state=lightstateon
++    cl2.state=lightstateon
++    sm=sm+1
++    end if
++    checkaward
++end sub
++Sub lowr_Timer():lowrt.transx = 0:Me.TimerEnabled = 0:End Sub
++
+ sub midc_hit
+-	midct.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",123,DOFPulse,DOFTargets)    if (ebl.state)=lightstateon then     shootagain.state=lightstateon    ebl.state=lightstateoff    end if    if sm>0 then    addscore (1000*sm)    else    addscore 500    end if    bonadvend sub    Sub midc_Timer():midct.transx = 0:Me.TimerEnabled = 0:End Sub
++	midct.transx = -10:Me.TimerEnabled = 1:PlaySound SoundFXDOF("target",123,DOFPulse,DOFTargets)
++    if (ebl.state)=lightstateon then 
++    shootagain.state=lightstateon
++    ebl.state=lightstateoff
++    end if
++    if sm>0 then
++    addscore (1000*sm)
++    else
++    addscore 500
++    end if
++    bonadv
++end sub    
++Sub midc_Timer():midct.transx = 0:Me.TimerEnabled = 0:End Sub
++
+ 
+ sub checkaward
+-	'********* Azt or aec for lighting Shootagain    if (al1.state)=lightstateon and (el1.state)=lightstateon and (cl1.state)=lightstateon and sa = 0 then		if shootagain.state = 0 then
++	'********* Azt or aec for lighting Shootagain
++    if (al1.state)=lightstateon and (el1.state)=lightstateon and (cl1.state)=lightstateon and sa = 0 then
++		if shootagain.state = 0 then
+ 			ebl.state=lightstateon
+ 			sa=1
+-		end if    end if
++		end if
++    end if
+     if (al1.state)=lightstateon and (zl1.state)=lightstateon and (tl1.state)=lightstateon and sa = 0 then
+ 		if shootagain.state = 0 then
+ 			ebl.state=lightstateon
+@@ -588,24 +1353,156 @@
+ 		end if
+     end if
+ 
+-	'********* Azt or Aec for Special    if (al1.state)=lightstateon and (zl1.state)=lightstateon and (tl1.state)=lightstateon and bv=10 then    sp1.state=lightstateon    sp2.state=lightstateon    end if
++	'********* Azt or Aec for Special
++    if (al1.state)=lightstateon and (zl1.state)=lightstateon and (tl1.state)=lightstateon and bv=10 then
++    sp1.state=lightstateon
++    sp2.state=lightstateon
++    end if
+ 
+     if (al1.state)=lightstateon and (el1.state)=lightstateon and (cl1.state)=lightstateon and bv=10 then
+     sp1.state=lightstateon
+     sp2.state=lightstateon
+     end if
+ 
+-	'*********    if (zl1.state)=lightstateon and (tl1.state)=lightstateon then    leftsidel.state=lightstateon    lanekl.state=lightstateon    end ifend sub    Sub CheckTilt	If Tilttimer.Enabled = True Then	TiltSens = TiltSens + 1	if TiltSens = 10 Then	Tilt = True	tilttxt.text="TILT"	playsound "tilt"	savehs	turnoff	End If	Else	TiltSens = 0	Tilttimer.Enabled = True	End IfEnd SubSub Tilttimer_Timer()	Tilttimer.Enabled = FalseEnd Subsub turnoff    bl(bv).state=lightstateoff    for i=1 to 5    azlet(i).state=lightstateoff    az1(i).state=lightstateoff    az2(i).state=lightstateoff    next    sp1.state=lightstateoff    sp2.state=lightstateoff    ebl.state=lightstateoff    spinl.state=lightstateoff    leftsidel.state=lightstateoff    topl.state=lightstateoff    lanekl.state=lightstateoff		Bumper3l.state = 0
++	'*********
++    if (zl1.state)=lightstateon and (tl1.state)=lightstateon then
++    leftsidel.state=lightstateon
++    lanekl.state=lightstateon
++    end if
++end sub    
++
++Sub CheckTilt
++	If Tilttimer.Enabled = True Then
++	TiltSens = TiltSens + 1
++	if TiltSens = 10 Then
++	Tilt = True
++	tilttxt.text="TILT"
++	playsound "tilt"
++	savehs
++	turnoff
++	End If
++	Else
++	TiltSens = 0
++	Tilttimer.Enabled = True
++	End If
++End Sub
++
++Sub Tilttimer_Timer()
++	Tilttimer.Enabled = False
++End Sub
++
++sub turnoff
++    bl(bv).state=lightstateoff
++    for i=1 to 5
++    azlet(i).state=lightstateoff
++    az1(i).state=lightstateoff
++    az2(i).state=lightstateoff
++    next
++    sp1.state=lightstateoff
++    sp2.state=lightstateoff
++    ebl.state=lightstateoff
++    spinl.state=lightstateoff
++    leftsidel.state=lightstateoff
++    topl.state=lightstateoff
++    lanekl.state=lightstateoff
++		Bumper3l.state = 0
+ 		Bumper2l.state = 0
+ 		Bumper1l.state = 0
+ 		uprl.state = 0
+-		upll.state = 0    dbl.state=lightstateoff    leftsling.slingshotstrength=0    rightsling.slingshotstrength=0end sub    sub savehs	' Based on Black's Highscore routines	Dim FileObj	Dim ScoreFile	Set FileObj=CreateObject("Scripting.FileSystemObject")	If Not FileObj.FolderExists(UserDirectory) then 		Exit Sub	End if	Set ScoreFile=FileObj.CreateTextFile(UserDirectory & "aztec.txt",True)		ScoreFile.WriteLine credit		ScoreFile.WriteLine score(1)		ScoreFile.WriteLine matchnumb        scorefile.writeline balls        scorefile.writeline score(2)        scorefile.writeline score(3)        scorefile.writeline score(4)        scorefile.writeline hisc1        scorefile.writeline hisc2		ScoreFile.Close	Set ScoreFile=Nothing	Set FileObj=Nothingend subsub loadhs    ' Based on Black's Highscore routines	Dim FileObj	Dim ScoreFile    dim temp1    dim temp2    dim temp3    dim temp4    dim temp5    dim temp6    dim temp7    dim temp8    dim temp9    Set FileObj=CreateObject("Scripting.FileSystemObject")	If Not FileObj.FolderExists(UserDirectory) then 		Exit Sub	End if	If Not FileObj.FileExists(UserDirectory & "aztec.txt") then		Exit Sub	End if	Set ScoreFile=FileObj.GetFile(UserDirectory & "aztec.txt")	Set TextStr=ScoreFile.OpenAsTextStream(1,0)		If (TextStr.AtEndOfStream=True) then			Exit Sub		End if		temp1=TextStr.ReadLine		temp2=Textstr.ReadLine 		temp3=Textstr.ReadLine        temp4=textstr.readline        temp5=textstr.readline        temp6=Textstr.ReadLine        temp7=textstr.readline        temp8=textstr.readline        temp9=textstr.readline		TextStr.Close	    credit = CDbl(temp1)
+-		If credit > 0 Then DOF 128, DOFOn	    score(1) = CDbl(temp2)	    matchnumb=cdbl(temp3)	    balls=cdbl(temp4)	    score(2)=cdbl(temp5)	    score(3)=cdbl(temp6)	    score(4)=cdbl(temp7)	    hisc1=cdbl(temp8)	    hisc2=cdbl(temp9) 	    Set ScoreFile=Nothing	    Set FileObj=Nothingend sub
++		upll.state = 0
++    dbl.state=lightstateoff
++    leftsling.slingshotstrength=0
++    rightsling.slingshotstrength=0
++end sub    
++
++sub savehs
++	' Based on Black's Highscore routines
++	Dim FileObj
++	Dim ScoreFile
++	Set FileObj=CreateObject("Scripting.FileSystemObject")
++	If Not FileObj.FolderExists(UserDirectory) then 
++		Exit Sub
++	End if
++	Set ScoreFile=FileObj.CreateTextFile(UserDirectory & "aztec.txt",True)
++		ScoreFile.WriteLine credit
++		ScoreFile.WriteLine score(1)
++		ScoreFile.WriteLine matchnumb
++        scorefile.writeline balls
++        scorefile.writeline score(2)
++        scorefile.writeline score(3)
++        scorefile.writeline score(4)
++        scorefile.writeline hisc1
++        scorefile.writeline hisc2
++		ScoreFile.Close
++	Set ScoreFile=Nothing
++	Set FileObj=Nothing
++end sub
++
++sub loadhs
++    ' Based on Black's Highscore routines
++	Dim FileObj
++	Dim ScoreFile
++    dim temp1
++    dim temp2
++    dim temp3
++    dim temp4
++    dim temp5
++    dim temp6
++    dim temp7
++    dim temp8
++    dim temp9
++    Set FileObj=CreateObject("Scripting.FileSystemObject")
++	If Not FileObj.FolderExists(UserDirectory) then 
++		Exit Sub
++	End if
++	If Not FileObj.FileExists(UserDirectory & "aztec.txt") then
++		Exit Sub
++	End if
++	Set ScoreFile=FileObj.GetFile(UserDirectory & "aztec.txt")
++	Set TextStr=ScoreFile.OpenAsTextStream(1,0)
++		If (TextStr.AtEndOfStream=True) then
++			Exit Sub
++		End if
++		temp1=TextStr.ReadLine
++		temp2=Textstr.ReadLine 
++		temp3=Textstr.ReadLine
++        temp4=textstr.readline
++        temp5=textstr.readline
++        temp6=Textstr.ReadLine
++        temp7=textstr.readline
++        temp8=textstr.readline
++        temp9=textstr.readline
++		TextStr.Close
++	    credit = CDbl(temp1)
++		If credit > 0 Then DOF 128, DOFOn
++	    score(1) = CDbl(temp2)
++	    matchnumb=cdbl(temp3)
++	    balls=cdbl(temp4)
++	    score(2)=cdbl(temp5)
++	    score(3)=cdbl(temp6)
++	    score(4)=cdbl(temp7)
++	    hisc1=cdbl(temp8)
++	    hisc2=cdbl(temp9) 
++	    Set ScoreFile=Nothing
++	    Set FileObj=Nothing
++end sub
++
+ Sub TriggerTheme01_unhit
+ 	If cite = 1 then Citedor02.enabled = true:end if
+ end sub
+-sub ballrel_hit    if ballrelenabled=1 then     playsound "launchball"
+-    If cite = 1 then playsound "launch01":end If    ballrelenabled=0    end ifend sub    sub ballhome_hit    ballrelenabled=1end sub
++
++sub ballrel_hit
++    if ballrelenabled=1 then 
++    playsound "launchball"
++    If cite = 1 then playsound "launch01":end If
++    ballrelenabled=0
++    end if
++end sub    
++
++sub ballhome_hit
++    ballrelenabled=1
++end sub
++
+ 
+ 
+ 
+@@ -683,6 +1580,7 @@
+ '**************************************************
+ 
+ 
++
+ '***************** Light routine ******************
+ sub light 
+ 	if Uprl.state = 1 then 
+@@ -849,6 +1747,7 @@
+ '*******************************************************************************************
+ 
+ '*********** ROLLING SOUND *********************************
++Const tnob = 1 ' total number of balls for this table (at the same time)
+ ReDim rolling(tnob)
+ InitRolling
+ Sub InitRolling:Dim i:For i=0 to (tnob-1):rolling(i) = False:Next:End Sub
+@@ -882,7 +1781,6 @@
+ 
+ 
+ '*********** BALL SHADOW *********************************
+-Const tnob = 1 ' total number of balls for this table (at the same time)
+ ReDim BallShadow(tnob-1)
+ InitBallShadow
+ 
