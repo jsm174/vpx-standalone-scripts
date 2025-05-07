@@ -1,0 +1,12 @@
+--- Vampirella1 .3.vbs.original
++++ Vampirella1 .3.vbs
+@@ -84,7 +84,9 @@
+ On Error Resume Next
+ Dim i
+ For i=0 To 127
++    If IsObject(eval("L" & i)) Then
+     Execute "Set Lights(" & i & ")  = L" & i
++    End If
+ Next
+  
+ Lights(58)=Array(L58,L58A)
