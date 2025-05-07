@@ -2070,6 +2070,16 @@
     }
   },
   {
+    "file": "Stranger Things 4 Premium.vbs.original",
+    "sha256": "7713fd12367b6fc3453d3084fced1f727be4a312221319b20e380d2cd62a7a91",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things 4 Premium/Stranger Things 4 Premium.vbs.original",
+    "patched": {
+      "file": "Stranger Things 4 Premium.vbs",
+      "sha256": "e3478e6f9beaf70b8cc3ed120a144b94ca92bea7074cdabb8aad1e3ec0c5ba64",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things 4 Premium/Stranger Things 4 Premium.vbs"
+    }
+  },
+  {
     "file": "Streets of Rage (TBA 2018).vbs.original",
     "sha256": "6d4bc57b3b390cf0c222030e9e8d5639875218f158e12212a73963a2df96f84a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Streets of Rage (TBA 2018)/Streets of Rage (TBA 2018).vbs.original",
