@@ -1,12 +1,11 @@
 ' ******************************************************************
-'       VPX - version by Klodo81 2022, HONEY version 1.2
+'       VPX - version by Klodo81 2022, HONEY version 1.3
 '
-'       Table built from JPSalas Williams Big Star Version 4.0.0
+'              Table built from JPSalas Williams Big Star 
 '
 '                 VISUAL PINBALL X EM Script Based on
-'               JPSalas Basic EM script up to 4 players
-'		          uses core.vbs for extra functions
-'                           Version 4.0.0
+'               JPSalas Basic EM script up to 4 players		          
+'                     JPSalas Physics 4.3.0
 '
 '                     Some lines of script based on
 '     VP9 Table Williams Honey from Starman Version 1.0.0  (2011)
@@ -16,17 +15,25 @@
 '
 '          Honey / IPD No.1230 / December 17, 1971 / 4 Players  
 '
-'Version  1.1 :
+'V1.1 mod table
 '- Some graphics updated
 '- Mod Script Ball In Play on Desktop version
 
-'Version 1.2 : mod table and Backglass
+'V1.2 mod table and Backglass
 '- Tilt on Ball In Play Only
 '- B2S Mod player Up (download the backglass)
 '- Mod Match display on DT
 '- Mod Song more realistic with 2 Bells
 '- Added typical sounds and wall targets proposed by Mustang1961
 '- Add option no attract mode in script
+'
+'V1.3 mod table
+'- Mod Rev3 Physics from JPSalas
+'- New LUT from JPSalas
+'- Added Playfield Mesh
+'- New Kickers
+'- Added "Same player shoots again" on Backglass DT
+'- Some others little things
 ' ******************************************************************
 
 Option Explicit
@@ -63,6 +70,7 @@ End Sub
 
 Const BallsPerGame = 5     ' to play with 3 or 5 balls
 Const AttractMode = 1      ' 0 = no attract mode
+Const FreePlay = False     ' Free play or coins
 
 '*************************************************************
 
@@ -140,10 +148,8 @@ Sub Table1_Init()
     End If
     UpdateCredits
 
-    ' Free play or Coins
-    bFreePlay = False
-
     ' init all the global variables
+    bFreePlay = Freeplay
     bAttractMode = False
     bOnTheFirstBall = False
     bGameInPlay = False
@@ -204,10 +210,8 @@ Sub Table1_KeyDown(ByVal Keycode)
         Exit Sub
     End If
 
-    If keycode = LeftMagnaSave Then bLutActive = True: Lutbox.text = "level of darkness " & LUTImage + 1
-    If keycode = RightMagnaSave Then
-        If bLutActive Then NextLUT:End If
-    End If
+    If keycode = LeftMagnaSave Then bLutActive = True:SetLUTLine "Color LUT image " & table1.ColorGradeImage
+    If keycode = RightMagnaSave AND bLutActive Then NextLUT:End If
 
     ' add coins
     If Keycode = AddCreditKey Then
@@ -283,7 +287,7 @@ Sub Table1_KeyUp(ByVal keycode)
         Exit Sub
     End If
 
-    If keycode = LeftMagnaSave Then bLutActive = False: LutBox.text = ""
+    If keycode = LeftMagnaSave Then bLutActive = False:HideLUT
 
     If bGameInPlay AND NOT Tilted Then
 
@@ -316,16 +320,18 @@ Sub table1_Exit
 	'Controller.Stop
 End Sub
 
-'***************************
-'   LUT - Darkness control 
-'***************************
+'************************************
+'       LUT - Darkness control
+' 10 normal level & 10 warmer levels
+'************************************
 
 Dim bLutActive, LUTImage
 
 Sub LoadLUT
+    Dim x
     bLutActive = False
     x = LoadValue(cGameName, "LUTImage")
-    If(x <> "")Then LUTImage = x Else LUTImage = 0
+    If(x <> "") Then LUTImage = x Else LUTImage = 0
     UpdateLUT
 End Sub
 
@@ -333,36 +339,140 @@ Sub SaveLUT
     SaveValue cGameName, "LUTImage", LUTImage
 End Sub
 
-Sub NextLUT:LUTImage = (LUTImage + 1)MOD 15:UpdateLUT:SaveLUT:Lutbox.text = "level of darkness " & LUTImage + 1:End Sub
+Sub NextLUT:LUTImage = (LUTImage + 1) MOD 22:UpdateLUT:SaveLUT:SetLUTLine "Color LUT image " & table1.ColorGradeImage:End Sub
 
 Sub UpdateLUT
     Select Case LutImage
-        Case 0:table1.ColorGradeImage = "LUT0":GiIntensity = 1:ChangeGIIntensity 1
-        Case 1:table1.ColorGradeImage = "LUT1":GiIntensity = 1.05:ChangeGIIntensity 1
-        Case 2:table1.ColorGradeImage = "LUT2":GiIntensity = 1.1:ChangeGIIntensity 1
-        Case 3:table1.ColorGradeImage = "LUT3":GiIntensity = 1.15:ChangeGIIntensity 1
-        Case 4:table1.ColorGradeImage = "LUT4":GiIntensity = 1.2:ChangeGIIntensity 1
-        Case 5:table1.ColorGradeImage = "LUT5":GiIntensity = 1.25:ChangeGIIntensity 1
-        Case 6:table1.ColorGradeImage = "LUT6":GiIntensity = 1.3:ChangeGIIntensity 1
-        Case 7:table1.ColorGradeImage = "LUT7":GiIntensity = 1.35:ChangeGIIntensity 1
-        Case 8:table1.ColorGradeImage = "LUT8":GiIntensity = 1.4:ChangeGIIntensity 1
-        Case 9:table1.ColorGradeImage = "LUT9":GiIntensity = 1.45:ChangeGIIntensity 1
-        Case 10:table1.ColorGradeImage = "LUT10":GiIntensity = 1.5:ChangeGIIntensity 1
-        Case 11:table1.ColorGradeImage = "LUT11":GiIntensity = 1.55:ChangeGIIntensity 1
-        Case 12:table1.ColorGradeImage = "LUT12":GiIntensity = 1.6:ChangeGIIntensity 1
-        Case 13:table1.ColorGradeImage = "LUT13":GiIntensity = 1.65:ChangeGIIntensity 1
-        Case 14:table1.ColorGradeImage = "LUT14":GiIntensity = 1.7:ChangeGIIntensity 1
+        Case 0:table1.ColorGradeImage = "LUT0"
+        Case 1:table1.ColorGradeImage = "LUT1"
+        Case 2:table1.ColorGradeImage = "LUT2"
+        Case 3:table1.ColorGradeImage = "LUT3"
+        Case 4:table1.ColorGradeImage = "LUT4"
+        Case 5:table1.ColorGradeImage = "LUT5"
+        Case 6:table1.ColorGradeImage = "LUT6"
+        Case 7:table1.ColorGradeImage = "LUT7"
+        Case 8:table1.ColorGradeImage = "LUT8"
+        Case 9:table1.ColorGradeImage = "LUT9"
+        Case 10:table1.ColorGradeImage = "LUT10"
+        Case 11:table1.ColorGradeImage = "LUT Warm 0"
+        Case 12:table1.ColorGradeImage = "LUT Warm 1"
+        Case 13:table1.ColorGradeImage = "LUT Warm 2"
+        Case 14:table1.ColorGradeImage = "LUT Warm 3"
+        Case 15:table1.ColorGradeImage = "LUT Warm 4"
+        Case 16:table1.ColorGradeImage = "LUT Warm 5"
+        Case 17:table1.ColorGradeImage = "LUT Warm 6"
+        Case 18:table1.ColorGradeImage = "LUT Warm 7"
+        Case 19:table1.ColorGradeImage = "LUT Warm 8"
+        Case 20:table1.ColorGradeImage = "LUT Warm 9"
+        Case 21:table1.ColorGradeImage = "LUT Warm 10"
     End Select
 End Sub
 
-Dim GiIntensity
-GiIntensity = 1   'used by the LUT changing to increase the GI lights when the table is darker
-
-Sub ChangeGiIntensity(factor) 'changes the intensity scale
-    Dim bulb
-    For each bulb in aGiLights
-        bulb.IntensityScale = GiIntensity * factor
+' New LUT postit
+Sub SetLUTLine(String)
+    Dim Index
+    Dim xFor
+    Index = 1
+    LUBack.imagea = "PostItNote"
+    String = CL2(String)
+    For xFor = 1 to 40
+        Eval("LU" &xFor).imageA = GetHSChar(String, Index)
+        Index = Index + 1
     Next
+End Sub
+
+Sub HideLUT
+    SetLUTLine ""
+    LUBack.imagea = "PostitBL"
+End Sub
+
+Function CL2(NumString) 'center line
+    Dim Temp, TempStr
+    If Len(NumString)> 40 Then NumString = Left(NumString, 40)
+    Temp = (40 - Len(NumString) ) \ 2
+    TempStr = Space(Temp) & NumString & Space(Temp)
+    CL2 = TempStr
+End Function
+
+'**********************************************
+'    Flipper adjustments - enable tricks
+'             by JLouLouLou
+'**********************************************
+
+Dim FlipperPower
+Dim FlipperElasticity
+Dim SOSTorque, SOSAngle
+Dim FullStrokeEOS_Torque, LiveStrokeEOS_Torque
+Dim LeftFlipperOn
+Dim RightFlipperOn
+
+Dim LLiveCatchTimer
+Dim RLiveCatchTimer
+Dim LiveCatchSensivity
+
+FlipperPower = 5000
+FlipperElasticity = 0.85
+FullStrokeEOS_Torque = 0.3 	' EOS Torque when flipper hold up ( EOS Coil is fully charged. Ampere increase due to flipper can't move or when it pushed back when "On". EOS Coil have more power )
+LiveStrokeEOS_Torque = 0.2	' EOS Torque when flipper rotate to end ( When flipper move, EOS coil have less Ampere due to flipper can freely move. EOS Coil have less power )
+
+LeftFlipper.EOSTorqueAngle = 10
+RightFlipper.EOSTorqueAngle = 10
+
+SOSTorque = 0.1
+SOSAngle = 6
+
+LiveCatchSensivity = 10
+
+LLiveCatchTimer = 0
+RLiveCatchTimer = 0
+
+LeftFlipper.TimerInterval = 1
+LeftFlipper.TimerEnabled = 1
+
+Sub LeftFlipper_Timer 'flipper's tricks timer
+'Start Of Stroke Flipper Stroke Routine : Start of Stroke for Tap pass and Tap shoot
+    If LeftFlipper.CurrentAngle >= LeftFlipper.StartAngle - SOSAngle Then LeftFlipper.Strength = FlipperPower * SOSTorque else LeftFlipper.Strength = FlipperPower : End If
+ 
+'End Of Stroke Routine : Livecatch and Emply/Full-Charged EOS
+	If LeftFlipperOn = 1 Then
+		If LeftFlipper.CurrentAngle = LeftFlipper.EndAngle then
+			LeftFlipper.EOSTorque = FullStrokeEOS_Torque
+			LLiveCatchTimer = LLiveCatchTimer + 1
+			If LLiveCatchTimer < LiveCatchSensivity Then
+				LeftFlipper.Elasticity = 0
+			Else
+				LeftFlipper.Elasticity = FlipperElasticity
+				LLiveCatchTimer = LiveCatchSensivity
+			End If
+		End If
+	Else
+		LeftFlipper.Elasticity = FlipperElasticity
+		LeftFlipper.EOSTorque = LiveStrokeEOS_Torque
+		LLiveCatchTimer = 0
+	End If
+	
+
+'Start Of Stroke Flipper Stroke Routine : Start of Stroke for Tap pass and Tap shoot
+    If RightFlipper.CurrentAngle <= RightFlipper.StartAngle + SOSAngle Then RightFlipper.Strength = FlipperPower * SOSTorque else RightFlipper.Strength = FlipperPower : End If
+ 
+'End Of Stroke Routine : Livecatch and Emply/Full-Charged EOS
+ 	If RightFlipperOn = 1 Then
+		If RightFlipper.CurrentAngle = RightFlipper.EndAngle Then
+			RightFlipper.EOSTorque = FullStrokeEOS_Torque
+			RLiveCatchTimer = RLiveCatchTimer + 1
+			If RLiveCatchTimer < LiveCatchSensivity Then
+				RightFlipper.Elasticity = 0
+			Else
+				RightFlipper.Elasticity = FlipperElasticity
+				RLiveCatchTimer = LiveCatchSensivity
+			End If
+		End If
+	Else
+		RightFlipper.Elasticity = FlipperElasticity
+		RightFlipper.EOSTorque = LiveStrokeEOS_Torque
+		RLiveCatchTimer = 0
+	End If
+
 End Sub
 
 '*******************
@@ -375,29 +485,33 @@ SolCallback(sLLFlipper) = "SolLFlipper"
 Sub SolLFlipper(Enabled)
     If Enabled Then
         PlaySoundAt SoundFXDOF ("LeftflipperupH-2dB", 101, DOFOn, DOFFlippers), LeftFlipper
-        LeftFlipper.EOSTorque = 0.65:LeftFlipper.RotateToEnd
+        LeftFlipper.RotateToEnd
+		LeftFlipperOn = 1
     Else
         PlaySoundAt SoundFXDOF ("LeftflipperdownH", 101, DOFOff, DOFFlippers), LeftFlipper
-        LeftFlipper.EOSTorque = 0.15:LeftFlipper.RotateToStart
+        LeftFlipper.RotateToStart
+		LeftFlipperOn = 0
     End If
 End Sub
 
 Sub SolRFlipper(Enabled)
     If Enabled Then
         PlaySoundAt SoundFXDOF ("RightflipperupH-2dB", 102, DOFOn, DOFFlippers), RightFlipper
-        RightFlipper.EOSTorque = 0.65:RightFlipper.RotateToEnd
+        RightFlipper.RotateToEnd
+        RightFlipperOn = 1
     Else
         PlaySoundAt SoundFXDOF ("RightflipperdownH", 102, DOFOff, DOFFlippers), RightFlipper
-        RightFlipper.EOSTorque = 0.15:RightFlipper.RotateToStart
+        RightFlipper.RotateToStart
+        RightFlipperOn = 0
     End If
 End Sub
 
 Sub LeftFlipper_Collide(parm)
-    PlaySound "fx_rubber_flipper", 0, Vol(ActiveBall), pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
+    PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
 End Sub
 
 Sub RightFlipper_Collide(parm)
-    PlaySound "fx_rubber_flipper", 0, Vol(ActiveBall), pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
+    PlaySound "fx_rubber_flipper", 0, parm / 60, pan(ActiveBall), 0.2, 0, 0, 0, AudioFade(ActiveBall)
 End Sub
 
 
@@ -540,10 +654,12 @@ Function RndNbr(n) 'returns a random number between 1 and n
     RndNbr = Int((n * Rnd) + 1)
 End Function
 
-'***********************************************
-'   JP's VP10 Rolling Sounds + Ballshadow v4.0
-'   uses a collection of shadows, aBallShadow
-'***********************************************
+'***********************************
+'   JP's VP10 Rolling Sounds v4.0
+'   JP's Ball Shadows
+'   JP's Ball Speed Control
+'   Rothbauer's dropping sounds
+'***********************************
 
 Const tnob = 19   'total number of balls
 Const lob = 0     'number of locked balls
@@ -558,33 +674,35 @@ Sub InitRolling
     Next
 End Sub
 
-Sub RollingUpdate()
+Sub RollingUpdate() 'call this routine from any realtime timer you may have, running at an interval of 10 is good.
+
     Dim BOT, b, ballpitch, ballvol, speedfactorx, speedfactory
     BOT = GetBalls
 
-    ' stop the sound of deleted balls
+    ' stop the sound of deleted balls and hide the shadow
     For b = UBound(BOT) + 1 to tnob
         rolling(b) = False
         StopSound("fx_ballrolling" & b)
-        aBallShadow(b).Y = 3000
+        aBallShadow(b).Y = 2100 'under the apron 'may differ from table to table
     Next
 
     ' exit the sub if no balls on the table
     If UBound(BOT) = lob - 1 Then Exit Sub 'there no extra balls on this table
 
-    ' play the rolling sound for each ball and draw the shadow
+    ' draw the ball shadow
     For b = lob to UBound(BOT)
         aBallShadow(b).X = BOT(b).X
         aBallShadow(b).Y = BOT(b).Y
-        aBallShadow(b).Height = BOT(b).Z -Ballsize/2
+        aBallShadow(b).Height = BOT(b).Z - Ballsize / 2 + 1
 
-        If BallVel(BOT(b))> 1 Then
-            If BOT(b).z <30 Then
+    'play the rolling sound for each ball
+        If BallVel(BOT(b)) > 1 Then
+            If BOT(b).z < 30 Then
                 ballpitch = Pitch(BOT(b))
                 ballvol = Vol(BOT(b))
             Else
                 ballpitch = Pitch(BOT(b)) + 50000 'increase the pitch on a ramp
-                ballvol = Vol(BOT(b)) * 10
+                ballvol = Vol(BOT(b)) * 5
             End If
             rolling(b) = True
             PlaySound("fx_ballrolling" & b), -1, ballvol, Pan(BOT(b)), 0, ballpitch, 1, 0, AudioFade(BOT(b))
@@ -596,7 +714,7 @@ Sub RollingUpdate()
         End If
 
         ' rothbauerw's Dropping Sounds
-        If BOT(b).VelZ <-1 and BOT(b).z <55 and BOT(b).z> 27 Then 'height adjust for ball drop sounds
+        If BOT(b).VelZ < -1 and BOT(b).z < 55 and BOT(b).z > 27 Then 'height adjust for ball drop sounds
             PlaySound "fx_balldrop", 0, ABS(BOT(b).velz) / 17, Pan(BOT(b)), 0, Pitch(BOT(b)), 1, 0, AudioFade(BOT(b))
         End If
 
@@ -604,11 +722,11 @@ Sub RollingUpdate()
         If BOT(b).VelX AND BOT(b).VelY <> 0 Then
             speedfactorx = ABS(maxvel / BOT(b).VelX)
             speedfactory = ABS(maxvel / BOT(b).VelY)
-            If speedfactorx <1 Then
+            If speedfactorx < 1 Then
                 BOT(b).VelX = BOT(b).VelX * speedfactorx
                 BOT(b).VelY = BOT(b).VelY * speedfactorx
             End If
-            If speedfactory <1 Then
+            If speedfactory < 1 Then
                 BOT(b).VelX = BOT(b).VelX * speedfactory
                 BOT(b).VelY = BOT(b).VelY * speedfactory
             End If
@@ -629,18 +747,13 @@ End Sub
 '***************************************
 
 Sub aMetals_Hit(idx):PlaySoundAtBall "fx_MetalHit":End Sub
+Sub aMetalWires_Hit(idx):PlaySoundAtBall "fx_MetalWire":End Sub
 Sub aRubber_Bands_Hit(idx):PlaySoundAtBall "fx_rubber_band":End Sub
 Sub aRubber_Posts_Hit(idx):PlaySoundAtBall "fx_rubber_post":End Sub
 Sub aRubber_Pins_Hit(idx):PlaySoundAtBall "fx_rubber_pin":End Sub
 Sub aPlastics_Hit(idx):PlaySoundAtBall "fx_PlasticHit":End Sub
 Sub aGates_Hit(idx):PlaySoundAtBall "fx_Gate":End Sub
 Sub aWoods_Hit(idx):PlaySoundAtBall "fx_Woodhit":End Sub
-
-'added Mustang1961
-
-Sub GR_hit()
-	Playsound "fx_gate"
-End Sub
 
 '***************************************************************************************************
 ' Only for VPX 10.2 and higher.
@@ -804,6 +917,7 @@ Sub EndOfBall2
         ' turn off light if no more extra balls
         If(ExtraBallsAwards(CurrentPlayer) = 0) Then
 			LightShootAgain.State = 0
+			ShootAgainR.SetValue 0
 			If B2SOn then
 				Controller.B2SSetShootAgain 0
 			End If
@@ -949,7 +1063,7 @@ Sub Clear_Match()
 End Sub
 
 Sub Display_Match()
-	If (Match \ 10) < 4 Then  MatchReel1.SetValue 1 + (Match \ 10)  Else  MatchReel2.SetValue 1 + (Match \ 10)
+	If (Match \ 10) < 4 Then  MatchReel1.SetValue(Match \ 10) + 1  Else  MatchReel2.SetValue(Match \ 10) + 1
     If B2SOn then
         If Match = 0 then
             Controller.B2SSetMatch 100
@@ -1136,9 +1250,6 @@ Sub UpdateScore(playerpoints)
     End Select
     If B2SOn then
         Controller.B2SSetScorePlayer CurrentPlayer, Score(CurrentPlayer)
-        If Score(CurrentPlayer) >= 100000 then
-            Controller.B2SSetScoreRollover 24 + CurrentPlayer, 1
-        end if
     end if
 End Sub
 
@@ -1149,13 +1260,9 @@ Sub ResetScores
     ScoreReel4.ResetToZero
     If B2SOn then
         Controller.B2SSetScorePlayer1 0
-        Controller.B2SSetScoreRolloverPlayer1 0
         Controller.B2SSetScorePlayer2 0
-        Controller.B2SSetScoreRolloverPlayer2 0
         Controller.B2SSetScorePlayer3 0
-        Controller.B2SSetScoreRolloverPlayer3 0
         Controller.B2SSetScorePlayer4 0
-        Controller.B2SSetScoreRolloverPlayer4 0
 		Controller.B2SSetData 81,0
 		Controller.B2SSetData 82,0
 		Controller.B2SSetData 83,0
@@ -1239,6 +1346,7 @@ Sub AwardExtraBall()
         ExtraBallsAwards(CurrentPlayer) = ExtraBallsAwards(CurrentPlayer) + 1
         bExtraBallWonThisBall = True
 		LightShootAgain.State = 1
+		ShootAgainR.SetValue 1
         If B2SOn Then
             Controller.B2SSetShootAgain 1
         End If		
@@ -1268,6 +1376,7 @@ Sub StartAttractMode()
         Controller.B2SSetBallInPlay 0
 		Controller.B2SSetPlayerUp 0
         Controller.B2SSetCanPlay 1
+		Controller.B2SSetShootAgain 0
 		Controller.B2SSetTilt 0
 		Controller.B2SSetData 81,1
 		Controller.B2SSetData 82,1
@@ -1276,6 +1385,7 @@ Sub StartAttractMode()
     end if
     GameOverR.SetValue 1
     BallInPlayR.SetValue 0
+	ShootAgainR.SetValue 0
 	pl1.State = 0:pl2.State = 0:pl3.State = 0:pl4.State = 0
     cp1.State = 1 : cp2.State = 0 : cp3.State = 0 : cp4.State = 0
 	TiltReel.SetValue 0	
@@ -1944,10 +2054,18 @@ Sub KickerC_Hit
 	If Bl3k.State = 1 Then AddScore 3000 : delay = 750
 	If Bl5k.State = 1 Then AddScore 5000 : delay = 1000
 	If Bl10k.State = 1 Then AddScore 10000 : delay = 1800 
-	vpmtimer.addtimer delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 114, DOFPulse, DOFContactors), kickerC : kickerC.kick 190, 15 '"
-	If Bl1k.State = 0 Then vpmtimer.addtimer delay + 250, "ResetTargetC '"
+	vpmtimer.addtimer delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 114, DOFPulse, DOFContactors), kickerC : kickerC.kick 190, 14 + RndNbr(3) '"
+	PkickarmC.rotx=-70
+	KickerArmC.interval = Delay + 200
+	KickerArmC.enabled = true
+    If Bl1k.State = 0 Then vpmtimer.addtimer delay + 300, "ResetTargetC '"
 	If Bl10k.State = 1 Then ResetCenter() Else BCup()   
 End Sub
+
+sub KickerArmC_timer
+	PkickarmC.rotx=-90
+	KickerArmC.enabled = false
+end sub
 
 'Left
 
@@ -1964,9 +2082,16 @@ Sub KickerL_Hit
 	If Bl1000L.State = 1 Then AddScore 1000 : Delay = 450 
 	If Bl3000L.State = 1 Then AddScore 3000 : Delay = 750 
 	If EBlightL.State = 1 Then EBLightL.State = 0 : EBLightR.State = 0 : AwardExtraBall() : EBready = False
-	vpmtimer.addtimer delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 132, DOFPulse, DOFContactors), kickerL : kickerL.kick 120, 20 '"
+	vpmtimer.addtimer Delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 132, DOFPulse, DOFContactors), kickerL : kickerL.kick 120, 19 + RndNbr(3) '"
+	PkickarmL.rotz=15
+	KickerArmL.interval = Delay + 200
+	KickerArmL.enabled = true
 End Sub
 
+sub KickerArmL_timer
+	PkickarmL.rotz=0
+	KickerArmL.enabled = false
+end sub
 
 'Right
 
@@ -1983,8 +2108,16 @@ Sub KickerR_Hit
 	If Bl1000R.State = 1 Then AddScore 1000 : Delay = 450 
 	If Bl3000R.State = 1 Then AddScore 3000 : Delay = 750 
 	If EBlightR.State = 1 Then EBLightL.State = 0 : EBLightR.State = 0 : AwardExtraBall() : EBready = False
-	vpmtimer.addtimer delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 133, DOFPulse, DOFContactors), kickerR : kickerR.kick 230, 20 '"
+	vpmtimer.addtimer Delay, "PlaySoundAt SoundFXDOF (""fx_kicker"", 133, DOFPulse, DOFContactors), kickerR : kickerR.kick 230, 19 + RndNbr(3) '"
+	PkickarmR.rotz=15
+	KickerArmR.interval = Delay + 200
+	KickerArmR.enabled=true
 End Sub
+
+sub KickerArmR_timer
+	PkickarmR.rotz=0
+	KickerArmR.enabled=false
+end sub
 
 'Kick all ball
 Sub KickBall
@@ -2061,6 +2194,13 @@ Sub CT_timer() 'Targets Side Walls
 		TargetB1.IsDropped=true
 		TargetB2.IsDropped=true
 	end If
+	If TargetC.IsDropped=false Then
+		TargetC1.IsDropped=false
+		TargetC2.IsDropped=false
+		else
+		TargetC1.IsDropped=true
+		TargetC2.IsDropped=true
+	end If
 End Sub
 
 ' ============================================================================================
@@ -2097,11 +2237,11 @@ Dim HSScore(5)     ' High Scores read in from config file
 Dim HSName(5)      ' High Score Initials read in from config file
 
 ' default high scores, remove this when the scores are available from the config file
-HSScore(1) = 15000
-HSScore(2) = 14000
-HSScore(3) = 13000
-HSScore(4) = 12000
-HSScore(5) = 11000
+HSScore(1) = 25000
+HSScore(2) = 20000
+HSScore(3) = 16000
+HSScore(4) = 13000
+HSScore(5) = 10000
 
 HSName(1) = "AAA"
 HSName(2) = "ZZZ"
@@ -2189,7 +2329,7 @@ Sub NewHighScore(NewScore, PlayNum)
         SetHSLine 2, "ENTER NAME"
         SetHSLine 3, MID(AlphaString, AlphaStringPos, 1)
         HSNewHigh = NewScore
-        AwardSpecial
+        PlaySound "sfx_Enter"
     End If
     ScoreChecker = ScoreChecker-1
     If ScoreChecker = 0 then
