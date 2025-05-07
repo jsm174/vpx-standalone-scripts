@@ -2390,6 +2390,16 @@
     }
   },
   {
+    "file": "Vampirella1 .3.vbs.original",
+    "sha256": "57f6051545b5731a670f10d8848755f48b6a67b6928798ddc3d07a6dac85ebf4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Vampirella1 .3/Vampirella1 .3.vbs.original",
+    "patched": {
+      "file": "Vampirella1 .3.vbs",
+      "sha256": "079215b6fc6a8dc32e07b852f36d7fa3e7a55510afdb204356d28cfe8967cecb",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Vampirella1 .3/Vampirella1 .3.vbs"
+    }
+  },
+  {
     "file": "Victory (Gottlieb 1987) 2.0.2.vbs.original",
     "sha256": "33dbe34f5a135cd9bbfd456ca8ab32c62274d21b3817a168a1b1cbfbfc63e554",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Victory (Gottlieb 1987) 2.0.2/Victory (Gottlieb 1987) 2.0.2.vbs.original",
