@@ -240,6 +240,16 @@
     }
   },
   {
+    "file": "Aztec High-Tapped (Williams 1976).vbs.original",
+    "sha256": "b40020e2801f7645f9e52d1e6aee69f5e2ae90925766376aaca42faba90bc8ed",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aztec High-Tapped (Williams 1976)/Aztec High-Tapped (Williams 1976).vbs.original",
+    "patched": {
+      "file": "Aztec High-Tapped (Williams 1976).vbs",
+      "sha256": "b119c66f19349a65b0a7531ededfc289eefcc7ae02d97ea23ebb72e27abdecc0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Aztec High-Tapped (Williams 1976)/Aztec High-Tapped (Williams 1976).vbs"
+    }
+  },
+  {
     "file": "BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs.original",
     "sha256": "3c12ae4cb433313ae80c17ffd07bf4cac5b95b02b8c4aa229522e8e143b29051",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BarbWire(Gottlieb1996)JoePicassoModv1.2/BarbWire(Gottlieb1996)JoePicassoModv1.2.vbs.original",
