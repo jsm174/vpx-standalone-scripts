@@ -580,6 +580,16 @@
     }
   },
   {
+    "file": "Contact (Williams 1978)_Bigus(MOD)1.0.vbs.original",
+    "sha256": "7cfd4d14b0e07b516a4507b876fac01d4ec37c1d6282d7489c9b202eff412651",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Contact (Williams 1978)_Bigus(MOD)1.0/Contact (Williams 1978)_Bigus(MOD)1.0.vbs.original",
+    "patched": {
+      "file": "Contact (Williams 1978)_Bigus(MOD)1.0.vbs",
+      "sha256": "4c4aa570aa9e2d4651c1dfc32b65377cb9cdf7a333b592ca9a8b3698e9cc135c",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Contact (Williams 1978)_Bigus(MOD)1.0/Contact (Williams 1978)_Bigus(MOD)1.0.vbs"
+    }
+  },
+  {
     "file": "Cosmic (Taito do Brasil - 1980) v4.vbs.original",
     "sha256": "0302236432d85dc2ccd5f2d62982e1036121ee1d273b2c32db915a9a6096d3a6",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cosmic (Taito do Brasil - 1980) v4/Cosmic (Taito do Brasil - 1980) v4.vbs.original",
