@@ -1,0 +1,61 @@
+--- The Rolling Stones (Stern 2011)_Bigus(MOD)3.0.vbs.original
++++ The Rolling Stones (Stern 2011)_Bigus(MOD)3.0.vbs
+@@ -268,7 +268,7 @@
+ 
+ Sub SW23_UnHit()
+ Controller.Switch(23) = 0
+-If Controller.Switch(71) = False And ActiveBall.id = 666 Then
++If Controller.Switch(71) = False And ActiveBall.Uservalue = 666 Then
+ Controller.Switch(71) = True
+ End If
+ End Sub
+@@ -339,7 +339,7 @@
+ 
+ 
+ Sub Magnet1_Hit()
+-If NOT ActiveBall.id = 666 Then
++If NOT ActiveBall.Uservalue = 666 Then
+ Mag1.AddBall ActiveBall
+ End If
+ End Sub
+@@ -349,7 +349,7 @@
+ End Sub
+ 
+ Sub Magnet2_Hit()
+-If NOT ActiveBall.id = 666 Then
++If NOT ActiveBall.Uservalue = 666 Then
+ Mag2.AddBall ActiveBall
+ End If
+ End Sub
+@@ -509,11 +509,11 @@
+ End Sub
+ 
+ Sub Drain_Hit()
+-  If ActiveBall.id = 666 Then
++  If ActiveBall.Uservalue = 666 Then
+     me.destroyball
+     Set wball = Kicker_Load.createball
+     wball.image = "Powerball2"
+-    wball.id = 666
++    wball.Uservalue = 666
+     Kicker_Load.kick 45,5
+     PlaySoundAt "drain", drain
+     BIP = BIP - 1
+@@ -1059,7 +1059,7 @@
+ 'and activate the White Ball Detection Opto.
+ 
+ Sub SW21_Hit()
+-If ActiveBall.id = 666 Then
++If ActiveBall.Uservalue = 666 Then
+ Controller.Switch(71) = 0
+ End If
+ Controller.Switch(21) = 1
+@@ -1120,7 +1120,7 @@
+ Select Case tball
+ Case 1:Kicker_Load.createball:Kicker_Load.kick 45,5:tball = 2
+ Case 2:Kicker_Load.createball:Kicker_Load.kick 45,5:tball = 3
+-Case 3:Set wball = Kicker_Load.createball:wball.image = "powerball2":wball.id = 666:Kicker_Load.kick 45,5:tball = 4
++Case 3:Set wball = Kicker_Load.createball:wball.image = "powerball2":wball.Uservalue = 666:Kicker_Load.kick 45,5:tball = 4
+ Case 4:Kicker_Load.createball:Kicker_Load.kick 45,5:tball = 5
+ Case 5:Kicker_Load.createball:Kicker_Load.kick 45,5:tball = 6
+ Case 6:me.enabled = 0
