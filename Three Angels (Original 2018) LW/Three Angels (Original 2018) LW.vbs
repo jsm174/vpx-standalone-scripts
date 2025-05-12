@@ -361,7 +361,7 @@ Const constBallSaverTime	= 5000	' Time in which a free ball is given if it lost 
 Const constMaxMultiplier	= 6		' Defines the maximum bonus multiplier level
 Const BallSize = 50		'Ball size must be 50
 Const BallMass = 1		'Ball mass must be 1
-Const bladeArt	= 2	'1=On (Art), 2=On ALT, 0=Sideblades Off.
+
 
 ' Define Global Variables
 '
@@ -2365,7 +2365,42 @@ Sub THREEANGELS_INIT()
 
 End Sub
 
+Dim SidewallChoice: SidewallChoice = 0
 
+'//////////////F12 Menu//////////////
+' Called when options are tweaked by the player. 
+' - 0: game has started, good time to load options and adjust accordingly
+' - 1: an option has changed
+' - 2: options have been reseted
+' - 3: player closed the tweak UI, good time to update staticly prerendered parts
+' Table1.Option arguments are: 
+' - option name, minimum value, maximum value, step between valid values, default value, unit (0=None, 1=Percent), an optional arry of literal strings
+Dim dspTriggered : dspTriggered = False
+Sub THREEANGELS_OptionEvent(ByVal eventId)
+	If eventId = 1 And Not dspTriggered Then dspTriggered = True : DisableStaticPreRendering = True : End If
+
+	SidewallChoice = THREEANGELS.Option("Sidewall Art", 0, 1, 1, 1, 0, Array("Desktop", "PinCab"))
+	SetSidewall SidewallChoice
+        If eventId = 3 And dspTriggered Then dspTriggered = False : DisableStaticPreRendering = False : End If
+	End Sub
+
+Sub SetSidewall(Opt)
+	Select Case Opt
+		Case 0:
+			PinCab_Blades1.visible = 0
+            Desktop_Blades.visible = 1
+            Ramp15.Visible = 1
+			Ramp16.Visible = 1
+			
+		Case 1:
+			
+			PinCab_Blades1.visible = 1
+            Desktop_Blades.visible = 0
+            Ramp15.Visible = 0
+			Ramp16.Visible = 0
+		
+	End Select
+End Sub
 
 Sub BootupTimer_Timer()
 
@@ -62830,7 +62865,7 @@ Sub DoorJackpot()
 	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
 	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
 	
-	AddScore(1000000 * DoorJackpotNumber)  'This jackpot is a little harder.
+	AddScore 1000000 * DoorJackpotNumber  'This jackpot is a little harder.
 	bonuspoints(1)=bonuspoints(1)+100000
 
 
@@ -102363,19 +102398,7 @@ Class SlingshotCorrection
 	End Sub
 End Class
 
-' Choose Side Blades 
-	if bladeArt = 1 then
-		PinCab_Blades1.Image = "Sidewalls 3"
-		PinCab_Blades1.visible = 1
-        Primitive52.visible = 0
-    elseif bladeArt = 2 then
-		PinCab_Blades1.Image = "Sidewalls 3c"
-		PinCab_Blades1.visible = 1
-        Primitive52.visible = 0
-	elseif bladeArt = 0 then
-		PinCab_Blades1.visible = 0
-        Primitive52.visible = 1
-	End if 
+
 
 Sub Threeangels_Exit
 SaveLUT

@@ -1,26 +1,6 @@
 --- Three Angels (Original 2018) LW.vbs.original
 +++ Three Angels (Original 2018) LW.vbs
-@@ -172,7 +172,7 @@
- 
- 
- '===========================================
--' V2.0 - CHANGES by LoadedWeapon
-+' V2.0.2 - CHANGES by LoadedWeapon
- '===========================================
- '-Updated images for 4k playfield and videos
- '-Fixed some broken lights
-@@ -184,7 +184,9 @@
- '-Updated Physics (nFozzy) table objects,script
- '-Misc fixes for bugs and lost balls 
- '-Tons of other stuff I can't remember 
--
-+'-Fixed Lut Save
-+'-Fixed Upper Bumper Area and trapped ball
-+'-Fixed Duplicated Flipper sounds and some other sounds
- '-I spent a lot of time updating this amazing table and I hope you enjoy it! :)
- 
- 
-@@ -333,7 +335,7 @@
+@@ -335,7 +335,7 @@
  
  'Note open Ultradmd and right click on window to get the various sizes in decimal 
  
@@ -29,68 +9,12 @@
  Sub GetDMDColor
  Dim WshShell,filecheck,directory
  Set WshShell = CreateObject("WScript.Shell")
-@@ -62828,7 +62830,7 @@
+@@ -62865,7 +62865,7 @@
  	DMD_DisplayScene ""," . 0 0 0 .0 0 0" & DoorJackpotNumber, UltraDMD_Animation_None, UltraDMD_deOn, UltraDMD_Animation_None
  	'DMD2.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000 : 'DMDB.QueueText DoorJackpotNumber & " . 0 0 0 .0 0 0", seBlinkMask, 1000
  	
 -	AddScore(1000000) * DoorJackpotNumber  'This jackpot is a little harder.
-+	AddScore(1000000 * DoorJackpotNumber)  'This jackpot is a little harder.
++	AddScore 1000000 * DoorJackpotNumber  'This jackpot is a little harder.
  	bonuspoints(1)=bonuspoints(1)+100000
  
  
-@@ -76451,7 +76453,7 @@
- 		FlashForMS WishMasterKickerBulb, 1000, 25, 0
- 		FlashForMS FlasherUPR, 1000, 25, 0
- 		
--		WishMasterKicker.Kick 175, 20
-+		WishMasterKicker.Kick 175, 23
-         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
- 			AzarSoundThunder()
- 			
-@@ -77581,7 +77583,7 @@
- 		FlashForms WishMasterKickerBulb, 1000, 25, 0
- 		FlashForms FlasherUPR, 1000, 25, 0
- 		
--		WishMasterKicker.Kick 175, 20
-+		WishMasterKicker.Kick 175, 23
- 		        PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
- 		
- 		If PitPriceSelector = 0 then 'Player choose to come back later. So we dont raise the souls
-@@ -77757,7 +77759,7 @@
- 		FlashForms WishMasterKickerBulb, 1000, 25, 0
- 		FlashForms FlasherUPR, 1000, 25, 0
- 		
--		WishMasterKicker.Kick 175, 20
-+		WishMasterKicker.Kick 175, 23
-         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
- 		
- 		If PitPriceSelector = 0 then 'Player choose to come back later. So we dont raise the souls
-@@ -90568,7 +90570,7 @@
- 		FlashForMs WishMasterKickerBulb, 1000, 25, 0
- 		FlashForMs FlasherUPR, 1000, 25, 0
- 		
--			WishMasterKicker.Kick 175, 20
-+			WishMasterKicker.Kick 175, 23
-         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
- 			FlashForMs Seal1Light, 500, 25, 0
- 			FlashForMs Seal2Light, 500, 25, 0
-@@ -98401,7 +98403,7 @@
- 
- 	Case 138 '-: WISHMASTER :-
- 
--		WishMasterKicker.Kick 175, 20
-+		WishMasterKicker.Kick 175, 23
- 		
-         PlaySound SoundFXDOF("solenoid", 115, DOFPulse, DOFContactors)
- 		
-@@ -100844,7 +100846,9 @@
- ' will call this routine. What you add in the sub is up to you. As an example is a simple Playsound with volume and paning
- ' depending of the speed of the collision.
- 
--
-+Sub Ramp_Hit (idx)
-+	PlaySound "fx_nail1", 0, Vol(ActiveBall), AudioPan(ActiveBall), 0, Pitch(ActiveBall), 1, 0, AudioFade(ActiveBall)
-+End Sub
- Sub Pins_Hit (idx)
- 	PlaySound "pinhit_low", 0, Vol(ActiveBall), AudioPan(ActiveBall), 0, Pitch(ActiveBall), 0, 0, AudioFade(ActiveBall)
- End Sub
