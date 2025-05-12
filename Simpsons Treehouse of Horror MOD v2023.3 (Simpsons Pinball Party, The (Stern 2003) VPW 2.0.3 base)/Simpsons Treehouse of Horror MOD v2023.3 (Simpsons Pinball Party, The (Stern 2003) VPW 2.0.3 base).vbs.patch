@@ -1,0 +1,40 @@
+--- Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base).vbs.original
++++ Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base).vbs
+@@ -95,7 +95,7 @@
+ If Err Then MsgBox "You need the controller.vbs in order to run this table, available in the vp10 package"
+ On Error Goto 0
+ 
+-Const cGameName="simpprtyh",UseSolenoids=2,UseLamps=0,UseGI=0,UseSync=1,HandleMech=1
++Const cGameName="simpprty",UseSolenoids=2,UseLamps=0,UseGI=0,UseSync=1,HandleMech=1
+ 
+ dim UseVPMModSol : UseVPMModSol = cBool(PWMflashers)
+ LoadVPM "01560000", "Sega.VBS", 3.02
+@@ -3334,17 +3334,17 @@
+ 	Public Property Get state(idx) : state = Lvl(idx) : end Property
+ 
+ 	'Mass assign, Builds arrays where necessary
+-	Public Sub MassAssign(aIdx, aInput)
+-		If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set
+-			if IsArray(aInput) then
+-				obj(aIdx) = aInput
+-			Else
+-				Set obj(aIdx) = aInput
+-			end if
+-		Else
+-			Obj(aIdx) = AppendArray(obj(aIdx), aInput)
+-		end if	
+-	end Sub
++	' Public Sub MassAssign(aIdx, aInput)
++	' 	If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set
++	' 		if IsArray(aInput) then
++	' 			obj(aIdx) = aInput
++	' 		Else
++	' 			Set obj(aIdx) = aInput
++	' 		end if
++	' 	Else
++	' 		Obj(aIdx) = AppendArray(obj(aIdx), aInput)
++	' 	end if	
++	' end Sub
+ 	
+ 	Public Property Let MassAssign(aIdx, aInput)
+ 		If typename(obj(aIdx)) = "NullFadingObject" Then 'if empty, use Set
