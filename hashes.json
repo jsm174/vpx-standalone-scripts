@@ -1860,6 +1860,16 @@
     }
   },
   {
+    "file": "Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base).vbs.original",
+    "sha256": "a7645bf8ee90df9294bebec5558b198bd50fb28c368b3296e4ff9efefdb31385",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base)/Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base).vbs.original",
+    "patched": {
+      "file": "Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base).vbs",
+      "sha256": "05b26570b15de95d101fb5edd6b74d9f5ec53fbb3e5c533148e1508fb7783f65",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base)/Simpsons Treehouse of Horror MOD v2023.3 (Simpsons Pinball Party, The (Stern 2003) VPW 2.0.3 base).vbs"
+    }
+  },
+  {
     "file": "Skylab (Williams 1974)V1.3.vbs.original",
     "sha256": "0c75dddb674493b9be941439d4f11081d4c9a4dc33f0ee4ee18092bc6accee24",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Skylab (Williams 1974)V1.3/Skylab (Williams 1974)V1.3.vbs.original",
