@@ -1470,6 +1470,16 @@
     }
   },
   {
+    "file": "Motley Crue SS.vbs.original",
+    "sha256": "f771751d5e7d873a8afa954fbab002375ee76fb86ec0336744962a68adf900f3",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Motley Crue SS/Motley Crue SS.vbs.original",
+    "patched": {
+      "file": "Motley Crue SS.vbs",
+      "sha256": "51b597bbb6ac8bbf06478c6a83a291b953eeeb936e2a8bd14e20268c64f03994",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Motley Crue SS/Motley Crue SS.vbs"
+    }
+  },
+  {
     "file": "Mousin' Around! (Bally 1989) w VR Room v2.1.vbs.original",
     "sha256": "ec06f68b60f8c3d0d84452859c1473eb047da4e3e059d79c3dca758d005816d6",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Mousin' Around! (Bally 1989) w VR Room v2.1/Mousin' Around! (Bally 1989) w VR Room v2.1.vbs.original",
