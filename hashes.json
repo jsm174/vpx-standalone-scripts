@@ -2311,11 +2311,11 @@
   },
   {
     "file": "Three Angels (Original 2018) LW.vbs.original",
-    "sha256": "bfbac8f55c7484b4af4e4ffb7864118e249cbc12ffdde6ffeac9910baf23c0cc",
+    "sha256": "b2db1b33156cc8b758d9a6c27f8b9247c0637d1804d43a03cd0b7ea36a1a1b3a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Three Angels (Original 2018) LW/Three Angels (Original 2018) LW.vbs.original",
     "patched": {
       "file": "Three Angels (Original 2018) LW.vbs",
-      "sha256": "b8495a176dd0815f3801b962af7d54ff4ec09ae898d9d06bb8154b2605638cc0",
+      "sha256": "c288ec65e091f55ac57a18f0b0256d7df4551be6ae2cc86b5ba4f9f04da5049c",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Three Angels (Original 2018) LW/Three Angels (Original 2018) LW.vbs"
     }
   },
