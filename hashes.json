@@ -330,6 +330,16 @@
     }
   },
   {
+    "file": "BeastieBoysv1.0.vbs.original",
+    "sha256": "570700b20ad4938e6d7aaf5b2bacbdaa9b5083fab0cd028cd2959dcfadf89b1f",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BeastieBoysv1.0/BeastieBoysv1.0.vbs.original",
+    "patched": {
+      "file": "BeastieBoysv1.0.vbs",
+      "sha256": "7cb8cc62ba67247f7beafa09fdc9587a098a2151c73b8cc02ae1b3bca90b268d",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/BeastieBoysv1.0/BeastieBoysv1.0.vbs"
+    }
+  },
+  {
     "file": "Beavis and Butt-head_Pinballed.vbs.original",
     "sha256": "6f69794ce24811b216d36a231e3a0761f7ea07619d0340c8d889a75dac7c13d9",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Beavis and Butt-head_Pinballed/Beavis and Butt-head_Pinballed.vbs.original",
