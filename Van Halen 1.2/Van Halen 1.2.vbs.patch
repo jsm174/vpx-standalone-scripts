@@ -1,0 +1,11 @@
+--- Van Halen 1.2.vbs.original
++++ Van Halen 1.2.vbs
+@@ -4926,7 +4926,7 @@
+ 	If PartLen>11 Then:LPA(12)=ASC(Mid(Nu,12,1)):SortNameD LPA(12),12:End If
+ 	If PartLen>12 Then:LPA(13)=ASC(Mid(Nu,13,1)):SortNameD LPA(13),13:End If
+ 	If PartLen>13 Then:LPA(14)=ASC(Mid(Nu,14,1)):SortNameD LPA(14),14:End If
+-	For Q=1 To 14:DD ((L-1)*14)+Q,LPA(Q),S:Next
++	For Q=1 To 14:DD Q + ((L-1)*14),LPA(Q),S:Next
+ End Sub
+ 
+ Sub DisplayText3(Nu,L,S) 'requires manual redisplay of score
