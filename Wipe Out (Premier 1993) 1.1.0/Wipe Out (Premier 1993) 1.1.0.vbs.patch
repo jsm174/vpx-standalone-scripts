@@ -1,0 +1,20 @@
+--- Wipe Out (Premier 1993) 1.1.0.vbs.original
++++ Wipe Out (Premier 1993) 1.1.0.vbs
+@@ -258,7 +258,7 @@
+  If ShowDT=True Then
+ 	RailSx.visible=1
+ 	RailDx.visible=1
+-	Trim.visible=1
++	'Trim.visible=1
+ 	TrimS1.visible=1
+ 	TrimS2.visible=1
+ 	TrimS3.visible=1
+@@ -266,7 +266,7 @@
+ Else
+ 	RailSx.visible=RailsLights
+ 	RailDx.visible=RailsLights
+-	Trim.visible=RailsLights
++	'Trim.visible=RailsLights
+ 	TrimS1.visible=RailsLights
+ 	TrimS2.visible=RailsLights
+ 	TrimS3.visible=RailsLights
