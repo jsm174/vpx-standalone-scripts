@@ -1,0 +1,34 @@
+--- Roller Coaster (Gottlieb 1971)x.vbs.original
++++ Roller Coaster (Gottlieb 1971)x.vbs
+@@ -1037,22 +1037,22 @@
+ 		DOF 114, 2
+ 		SpinPos=SpinPos+1
+ 		If SpinPos=20 Then SpinPos=0
+-		Me(Idx).IsDropped=True
+-		Me(Idx+20).IsDropped=True
+-		Me(Idx+40).enabled=False
++ 		Spinner(Idx).IsDropped=True
++ 		Spinner(Idx+20).IsDropped=True
++ 		Spinner(Idx+40).enabled=False
+ '		SpinnerPrims(TempPos).TopVisible=false
+ 	Else
+ 		DOF 114, 2
+ 		SpinPos=SpinPos-1
+ 		If SpinPos=-1 Then SpinPos=19
+-		Me(Idx-20).IsDropped=True
+-		Me(Idx).IsDropped=True
+-		Me(Idx+20).enabled=False
++		Spinner(Idx-20).IsDropped=True
++		Spinner(Idx).IsDropped=True
++		Spinner(Idx+20).enabled=False
+ '		SpinnerPrims(TempPos).TopVisible=false
+ 	End If
+-	Me(SpinPos).IsDropped=False
+-	Me(SpinPos+20).IsDropped=False
+-	Me(SpinPos+40).enabled=True
++	Spinner(SpinPos).IsDropped=False
++	Spinner(SpinPos+20).IsDropped=False
++	Spinner(SpinPos+40).enabled=True
+ 	ArrowPrimitive.ObjRotZ=SpinArrow(SpinPos)
+ 	VelX=VelX*0.8
+ 	VelY=VelY*0.8
