@@ -1,0 +1,39 @@
+--- Warriors The Full DMD 2.0 (Iceman 2023).vbs.original
++++ Warriors The Full DMD 2.0 (Iceman 2023).vbs
+@@ -14,7 +14,8 @@
+ 
+ Dim bsTrough, bsSaucer, dtL, dtR, dtR2, mVLock, x
+ 
+-Const cGameName = "sharktw"
++'Const cGameName = "sharktw"
++Const cGameName = "sharkt"
+ 
+ Const UseSolenoids = 1
+ Const UseLamps = 0
+@@ -49,7 +50,7 @@
+ '************
+ 
+ Sub table1_Init
+-	NVramPatchLoad
++	'NVramPatchLoad
+ 	vpmInit me
+     With Controller
+         .GameName = cGameName
+@@ -119,7 +120,7 @@
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
+ Sub table1_exit
+-	NVramPatchExit
++	'NVramPatchExit
+ 	Controller.Stop
+ End Sub
+ 
+@@ -502,7 +503,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
+-	NVramPatchKeyCheck
++	'NVramPatchKeyCheck
+ End Sub
+ 
+ Sub UpdateLamps()
