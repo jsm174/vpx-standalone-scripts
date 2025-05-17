@@ -1230,6 +1230,16 @@
     }
   },
   {
+    "file": "Jungle_Queen.vbs.original",
+    "sha256": "33eba4afaa7888607e6fcadbc60751a5fd99ad7462b85335962b5f2ed54bca1a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jungle_Queen/Jungle_Queen.vbs.original",
+    "patched": {
+      "file": "Jungle_Queen.vbs",
+      "sha256": "a5bab260dff9e4c076c3bb27b85e8bfef2331e9f0d2158332fc91aabb371fb77",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Jungle_Queen/Jungle_Queen.vbs"
+    }
+  },
+  {
     "file": "Junk Yard (Williams 1996) v1.83.vbs.original",
     "sha256": "705199f19e66e5dc27e6582b665f7d4589576e4d2876665676a7c52e58f801b6",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Junk Yard (Williams 1996) v1.83/Junk Yard (Williams 1996) v1.83.vbs.original",
