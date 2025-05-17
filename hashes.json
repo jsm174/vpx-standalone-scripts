@@ -2520,6 +2520,16 @@
     }
   },
   {
+    "file": "Warriors The Full DMD 2.0 (Iceman 2023).vbs.original",
+    "sha256": "9ce93ee9759bb7024c736715ccf5bd608ab24c41baeaf3f2c35170cbd294c8fc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Warriors The Full DMD 2.0 (Iceman 2023)/Warriors The Full DMD 2.0 (Iceman 2023).vbs.original",
+    "patched": {
+      "file": "Warriors The Full DMD 2.0 (Iceman 2023).vbs",
+      "sha256": "3e1156adf52d2a7100c91137dec69ef89134c82c1ee9bcafafb85d0502d01d4a",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Warriors The Full DMD 2.0 (Iceman 2023)/Warriors The Full DMD 2.0 (Iceman 2023).vbs"
+    }
+  },
+  {
     "file": "Wednesday (Netflix 2023).vbs.original",
     "sha256": "4378a4432ddd8e60abddbb4161657de026320a1686fb84e21904f82716b9d5a8",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wednesday (Netflix 2023)/Wednesday (Netflix 2023).vbs.original",
