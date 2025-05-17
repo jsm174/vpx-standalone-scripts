@@ -2110,6 +2110,16 @@
     }
   },
   {
+    "file": "Stranger Things (Original 2020) LW.vbs.original",
+    "sha256": "d0c7aea54f2d573adc4df21b3e64cfaab359528ae0a0e463b0d3fe28ae9743cc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things (Original 2020) LW/Stranger Things (Original 2020) LW.vbs.original",
+    "patched": {
+      "file": "Stranger Things (Original 2020) LW.vbs",
+      "sha256": "90f4133c110d9b9b8f020eb26cc8b177db20d0ba6a33c64701b920a806fecea4",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things (Original 2020) LW/Stranger Things (Original 2020) LW.vbs"
+    }
+  },
+  {
     "file": "Stranger Things - SE 1.47_OSB.vbs.original",
     "sha256": "3b7c854c4e8e0c020063f1f34d53e001a104ebc16c1abd677d377abc0cf38931",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Stranger Things - SE 1.47_OSB/Stranger Things - SE 1.47_OSB.vbs.original",
