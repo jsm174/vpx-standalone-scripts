@@ -1,0 +1,83 @@
+--- Jungle_Queen.vbs.original
++++ Jungle_Queen.vbs
+@@ -15,7 +15,6 @@
+ Const BallMass = 1.7
+ 
+ ExecuteGlobal GetTextFile("core.vbs")
+-ExecuteGlobal GetTextFile("b2s.vbs")
+ 
+ On Error Resume Next
+ ExecuteGlobal GetTextFile("Controller.vbs")
+@@ -29,8 +28,6 @@
+ Controller.Run
+ Dim B2SOn
+ 
+-ResetB2SData 0, 49, 0
+-
+ Dim Tablename
+ Dim GameOver, GameInProgress, Started, Tilt, OldTilt, NewTilt, TiltSwing
+ Dim i,x,y,z
+@@ -56,11 +53,35 @@
+ Const IMPowerSetting = 48
+ Const IMTime = 0.8
+ 
++Sub SetB2SData(ByVal Pos,ByVal Value)
++	Controller.B2SSetData Pos, Value
++End Sub
++
++Sub StepB2SData (ByVal startpos,ByVal endpos,ByVal value,ByVal direction,ByVal steptime,ByVal stepsound)
++	' TODO this should use a timer to animate the stepping?
++	Dim b2si
++	For b2si=startpos to endpos
++		Controller.B2SSetData b2si, value
++	Next
++End Sub
++
++Sub ResetB2SData(ByVal StartPos,ByVal EndPos,ByVal Value)
++	Dim b2si
++	For b2si=StartPos to EndPos
++		Controller.B2SSetData b2si, Value
++	Next
++End Sub
++
+ Sub table_Init()
+ 	TableName = "JungleQueen"
+ 	LoadData()
+ 	On Error Resume Next
++	LoadEM
++	ReSetB2SData 0, 49, 0
++	Table_Reset
++End Sub
+ 
++Sub Table_Reset()
+ '	Impulse Plunger
+ 	Set plungerIM = New cvpmImpulseP
+ 	With plungerIM
+@@ -664,12 +685,12 @@
+ Sub b2sSplitScore (Byval b2splayer, Byval b2sscorevalue)
+ 	Dim B2Ssplit
+ 	b2splayer=(b2splayer-1)*6
+-	B2Ssplit= Int(b2sscorevalue/1000000):B2SData(b2splayer)=Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*1000000)
+-	B2Ssplit= Int(b2sscorevalue/100000):B2SData(b2splayer)=Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*100000)
+-	B2Ssplit= Int(b2sscorevalue/10000):B2SData(b2splayer+1)=Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*10000)
+-	B2Ssplit= Int(b2sscorevalue/1000):B2SData(b2splayer+2)=Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*1000)
+-	B2Ssplit= Int(b2sscorevalue/100):B2SData(b2splayer+3)=Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*100)
+-	B2Ssplit= Int(b2sscorevalue/10):B2SData(b2splayer+4)=Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*10)
++	B2Ssplit= Int(b2sscorevalue/1000000):SetB2SData b2splayer,Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*1000000)
++	B2Ssplit= Int(b2sscorevalue/100000):SetB2SData b2splayer,Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*100000)
++	B2Ssplit= Int(b2sscorevalue/10000):SetB2SData b2splayer+1,Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*10000)
++	B2Ssplit= Int(b2sscorevalue/1000):SetB2SData b2splayer+2,Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*1000)
++	B2Ssplit= Int(b2sscorevalue/100):SetB2SData b2splayer+3,Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*100)
++	B2Ssplit= Int(b2sscorevalue/10):SetB2SData b2splayer+4,Chr(B2Ssplit+1):b2sscorevalue=b2sscorevalue-Int(B2Ssplit*10)
+ 	SetB2SData b2splayer+5,b2sscorevalue
+ End Sub
+ 
+@@ -875,7 +896,7 @@
+ End Sub
+ 
+ Sub TimerInit_Timer
+-	Table_Init : TargetReset()
++	Table_Reset : TargetReset()
+ 	Me.Enabled = False
+ End Sub
+ 
