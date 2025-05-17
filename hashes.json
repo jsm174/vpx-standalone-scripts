@@ -2470,6 +2470,16 @@
     }
   },
   {
+    "file": "Van Halen 1.2.vbs.original",
+    "sha256": "12cb6a3a31db75a2c18ad2aa696268dc85141fe5386c3aac72a192f716c62716",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Van Halen 1.2/Van Halen 1.2.vbs.original",
+    "patched": {
+      "file": "Van Halen 1.2.vbs",
+      "sha256": "6d89bc0a9a8bb1e937ac6bd367b4c11402a02f101518e7a006600e9a9ee2c361",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Van Halen 1.2/Van Halen 1.2.vbs"
+    }
+  },
+  {
     "file": "Victory (Gottlieb 1987) 2.0.2.vbs.original",
     "sha256": "33dbe34f5a135cd9bbfd456ca8ab32c62274d21b3817a168a1b1cbfbfc63e554",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Victory (Gottlieb 1987) 2.0.2/Victory (Gottlieb 1987) 2.0.2.vbs.original",
@@ -2517,6 +2527,16 @@
       "file": "Wheel of Fortune (Stern 2007) 1.0.vbs",
       "sha256": "d58cd58ffe1721f7364135640646b43b589447d5c67473a3524144690cf5b2a4",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wheel of Fortune (Stern 2007) 1.0/Wheel of Fortune (Stern 2007) 1.0.vbs"
+    }
+  },
+  {
+    "file": "Wipe Out (Premier 1993) 1.1.0.vbs.original",
+    "sha256": "d7198561431baad2f01581fac13afdf02ef9d4f778c28d5e8de418e246551ed5",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wipe Out (Premier 1993) 1.1.0/Wipe Out (Premier 1993) 1.1.0.vbs.original",
+    "patched": {
+      "file": "Wipe Out (Premier 1993) 1.1.0.vbs",
+      "sha256": "6425d07dfa7c960f5b4a0cd64a07167de6a427efcccef24511326bfd06de93e0",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Wipe Out (Premier 1993) 1.1.0/Wipe Out (Premier 1993) 1.1.0.vbs"
     }
   },
   {
