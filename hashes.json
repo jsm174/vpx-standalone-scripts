@@ -1770,6 +1770,16 @@
     }
   },
   {
+    "file": "Roller Coaster (Gottlieb 1971)x.vbs.original",
+    "sha256": "91897d3954360ea05b7de41736de36334722f18d411f35359bebfc0cebaf44bb",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Roller Coaster (Gottlieb 1971)x/Roller Coaster (Gottlieb 1971)x.vbs.original",
+    "patched": {
+      "file": "Roller Coaster (Gottlieb 1971)x.vbs",
+      "sha256": "3d53e56548bd9fd247d9c3657a353ee15d660d12c4815b391938b14b8884c3a9",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Roller Coaster (Gottlieb 1971)x/Roller Coaster (Gottlieb 1971)x.vbs"
+    }
+  },
+  {
     "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original",
     "sha256": "ef9629d4d7e02a29cceeadc0b4bd550d2623cee787329e9dcecfd29092a581cb",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.3/Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original",
