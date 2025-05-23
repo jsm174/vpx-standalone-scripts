@@ -1,0 +1,12 @@
+--- Sheriff (Gottlieb 1971) 1.2.vbs.original
++++ Sheriff (Gottlieb 1971) 1.2.vbs
+@@ -359,7 +359,8 @@
+     Dim FileSystemObject, folder, r, ct, file, musicPath
+     Set FileSystemObject = CreateObject("Scripting.FileSystemObject")
+     musicPath = FileSystemObject.GetAbsolutePathName(".") ' get path to Visual Pinball\table
+-    musicPath = Left(musicPath, Len(musicPath) - 6) + "music\" 'get path to Visual Pinball\music
++    'musicPath = Left(musicPath, Len(musicPath) - 6) + "music\" 'get path to Visual Pinball\music
++	musicPath = "./music/"
+ 	On Error Resume Next
+     Set folder = FileSystemObject.GetFolder(musicPath + myMusicFolder)
+     Randomize
