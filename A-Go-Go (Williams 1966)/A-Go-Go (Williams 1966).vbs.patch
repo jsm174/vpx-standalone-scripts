@@ -1,0 +1,11 @@
+--- A-Go-Go (Williams 1966).vbs.original
++++ A-Go-Go (Williams 1966).vbs
+@@ -1293,7 +1293,7 @@
+ 	temp = LoadValue(cGameName, "BallsPerCredit")
+     If (temp <> "") then BallsPerCredit = CDbl(temp)
+ 	temp = LoadValue(cGameName, "ScoreMatchIsActive")
+-    If (temp <> "") then ScoreMatchIsActive = CDbl(temp)
++    If (temp <> "") then ScoreMatchIsActive = CBool(temp)
+ 	temp = LoadValue(cGameName, "hsa1")
+     If (temp <> "") then HSA1 = CDbl(temp)
+ 	temp = LoadValue(cGameName, "hsa2")
