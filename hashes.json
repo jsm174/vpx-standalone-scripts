@@ -70,6 +70,16 @@
     }
   },
   {
+    "file": "A-Go-Go (Williams 1966).vbs.original",
+    "sha256": "923f7b096cecac937b10794c1c05c5905dfc0646f22cec5c0a4a5e420e47f3a6",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/A-Go-Go (Williams 1966)/A-Go-Go (Williams 1966).vbs.original",
+    "patched": {
+      "file": "A-Go-Go (Williams 1966).vbs",
+      "sha256": "e5e55c9ef41253e2037e2a8547ef30b4abb85cfd62c6499581f91a62d658f547",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/A-Go-Go (Williams 1966)/A-Go-Go (Williams 1966).vbs"
+    }
+  },
+  {
     "file": "ABBAv2.0.vbs.original",
     "sha256": "c182357f982cfd54bc590e6f71a5ecacaec8199b2c7b4f735c0ff15ac96f42c6",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/ABBAv2.0/ABBAv2.0.vbs.original",
