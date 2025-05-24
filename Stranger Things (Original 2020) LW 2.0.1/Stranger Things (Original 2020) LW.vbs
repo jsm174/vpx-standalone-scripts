@@ -162,6 +162,10 @@ Randomize
 
 	Dim plungerIM 
 
+Dim BallHandlingQueue : Set BallHandlingQueue = New vpwQueueManager
+Dim xmasQueue : Set xmasQueue = New vpwQueueManager
+Dim GeneralPupQueue: Set GeneralPupQueue = New vpwQueueManager
+
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
 '/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
@@ -357,10 +361,11 @@ Randomize
 	Sub Table1_Init()
 		SetLocale(1033)
 		Spot1.opacity = 0
-		resetbackglass
 		StartXMAS
 		LoadEM
 		DMD_Init
+		PupInit
+		resetbackglass
 		Dim i
 		help.opacity = 0
 		Randomize
@@ -895,6 +900,7 @@ End Sub
 
 
 	Sub Table1_KeyDown(ByVal Keycode)
+
 
 	If ballrolleron = 1 then
 		if keycode = 46 then ' C Key
@@ -1959,6 +1965,7 @@ End Sub
 			Const pAudio=7
 			Const pCallouts=8
 
+Sub PupInit
 	if HasPuP Then
 	on error resume next
 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay") 
@@ -1983,25 +1990,6 @@ End Sub
 	PuPlayer.hide pMusic
 	PuPlayer.SetScreenex pCallouts,0,0,0,0,2
 	PuPlayer.hide pCallouts
-
-	Sub chilloutthemusic
-		If calloutlowermusicvol = 1 Then
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":40 }"
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":40 }"
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 8, ""FN"":11, ""VL"":"&(calloutvol)&" }"
-			vpmtimer.addtimer 2200, "turnitbackup'"
-		End If
-	End Sub
-
-	Sub turnitbackup
-		If calloutlowermusicvol = 1 Then
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":"&(videovol)&" }"
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
-			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
-		End If
-	End Sub
-
 
 	PuPlayer.playlistadd pMusic,"audioattract", 1 , 0
 	PuPlayer.playlistadd pMusic,"audiobg", 1 , 0
@@ -2210,6 +2198,32 @@ End Sub
 	PuPlayer.LabelNew pBackglass,"ah20n","AvantGarde LT Medium",			5,16777215  ,0,1,1,54,66,1,1
 	PuPlayer.LabelNew pBackglass,"ah20s","AvantGarde LT Medium",			5,16777215  ,0,1,1,65,66,1,1
 
+	'Page 2 (default Text Splash 1 Big Line)
+	PuPlayer.LabelNew pBackglass,"Splash"  ,"avantgarde",40,77749231,0,1,1,0,0,2,0
+
+	'Page 3 (default Text Splash 2 Lines)
+	PuPlayer.LabelNew pBackglass,"Splash2a","avantgarde",40,77749231,0,1,1,0,25,3,0
+	PuPlayer.LabelNew pBackglass,"Splash2b","avantgarde",40,77749231,0,1,1,0,75,3,0
+End Sub
+
+	Sub chilloutthemusic
+		If calloutlowermusicvol = 1 Then
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":40 }"
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":40 }"
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":40 }"
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 8, ""FN"":11, ""VL"":"&(calloutvol)&" }"
+			vpmtimer.addtimer 2200, "turnitbackup'"
+		End If
+	End Sub
+
+	Sub turnitbackup
+		If calloutlowermusicvol = 1 Then
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 2, ""FN"":11, ""VL"":"&(videovol)&" }"
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 4, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
+			PuPlayer.SendMSG "{ ""mt"":301, ""SN"": 7, ""FN"":11, ""VL"":"&(soundtrackvol)&" }"
+		End If
+	End Sub
+
 	Sub ruleshelperon
 		rulestime.enabled = 1
 	End Sub
@@ -2250,14 +2264,6 @@ End Sub
 			rulesposition = 0
 	End Select
 	End Sub
-
-
-	'Page 2 (default Text Splash 1 Big Line)
-	PuPlayer.LabelNew pBackglass,"Splash"  ,"avantgarde",40,77749231,0,1,1,0,0,2,0
-
-	'Page 3 (default Text Splash 2 Lines)
-	PuPlayer.LabelNew pBackglass,"Splash2a","avantgarde",40,77749231,0,1,1,0,25,3,0
-	PuPlayer.LabelNew pBackglass,"Splash2b","avantgarde",40,77749231,0,1,1,0,75,3,0
 
 	Sub resetbackglass
 	Loadhs
@@ -4307,10 +4313,11 @@ End Sub
 
 
 	Sub StartLightSeq()
+
 		On Error Resume Next
 		'lights sequences
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 50000
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 50000
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 50000
 		LightSeqAttract.UpdateInterval = 25
@@ -4726,6 +4733,8 @@ Redim fspeed(axmas.Count),intensity(axmas.Count),fadeDir(axmas.Count)
 
 '**************** Starts the fading
 Sub StartXMAS
+exit Sub
+
 Dim i:For i = 0 to axmas.Count-1
 axmas(i).timerInterval=-1
 axmas(i).timerenabled=1
@@ -6755,9 +6764,12 @@ End Sub
 	Dim quotenum:quotenum = 0
 	Sub randomquote
 		quotenum = RndNum(1,5)
+		debug.print "Q:" & quotenum
 		Select Case quotenum
 			Case 1
-			PuPlayer.playlistplayex pBackglass,"videoquotes","",100,1
+				PuPlayer.playlistplayex pBackglass,"videoquotes","",100,1
+			Case 2
+				RandomLightQuote
 		End Select
 	End Sub
 
@@ -8973,8 +8985,28 @@ End Sub
 		AddMultiball 1
 		EnableBallSaver 15
 		flashflash.Enabled = True
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 100000
+'		StartDemoLightSeq
+'		GeneralPupQueue.Add "StopDemoLightSeq","StopDemoLightSeq",80,100000,0,0,0,False
+
+	dim k, newLoopDelay
+
+		PrepSpellWord 40
+		SetLoopDelay "adventuring party" 
+
+		SpellWord "adventuring party"
+
+		for k = 1 to 7
+			
+			NewLoopDelay = LoopDelay*k
+		debug.print "loop delay :" &k &":" &newloopdelay	
+	
+			xmasQueue.Add "SpellWord-"&k,"SpellWord ""adventuring party"" ",80,NewLoopDelay,0,0,0,False
+		Next
+
+		xmasQueue.Add "SpellEnd","giOn:bInLightQuote = False",75,LoopDelay*8+(delayInc*myFSpeed*2),0,0,0,False
+
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 100000
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 100000
 		boltsoff
@@ -9104,7 +9136,9 @@ End Sub
 		FlashEffect 0
 		Flashxmas 0
 		LightSeqFlasher.StopPlay
-		LightSeqaxmas.StopPlay
+		
+		xmasqueue.RemoveAll(True)
+'		LightSeqaxmas.StopPlay
 		endamultiball
 
 	End Sub
@@ -9390,11 +9424,22 @@ End Sub
 					Dim waittime
 					waittime = 16000
 					gioff
-					vpmtimer.addtimer waittime, "Dropwall'"
+					'vpmtimer.addtimer waittime, "Dropwall'"
+					BallHandlingQueue.Add "Dropwall","Dropwall",95,waittime,0,0,0,True
 					MagnetW.MagnetON = True
 					spinner.MotorOn = True
 					PuPlayer.playpause 4
+
+					myFSpeed = 80
+
 					PuPlayer.playlistplayex pBackglass,"videowill","barricade down.mov",100,1
+					GeneralPupQueue.Add "StopXmas","StopXmas",95,2000,0,0,0,True
+					GeneralPupQueue.Add "Spell-R","Spell ""r"" ",95,3200,0,0,0,True
+					GeneralPupQueue.Add "Spell-U","Spell ""u"" ",95,5500,0,0,0,True
+					GeneralPupQueue.Add "Spell-N","Spell ""n"" ",95,8700,0,0,0,True
+					'GeneralPupQueue.Add "StartDemoLightSeq","StartDemoLightSeq",95,12600,0,0,0,True
+
+
 					DOF_Shaker_R.enabled = true  'DOF - Shaker pulse for "R"
 					DOF_Shaker_U.enabled = true  'DOF - Shaker pulse for "U"
 					DOF_Shaker_N.enabled = true  'DOF - Shaker pulse for "N"
@@ -9515,6 +9560,7 @@ End Sub
 			thedemogorgonmodel1.y = dbody.y
 			If  dbody.y = -85 Then
 				demogorgontime.Enabled = False
+				closewall
 				demoout = False
 			End If
 		End If
@@ -9589,15 +9635,48 @@ End Sub
 		End If
 	End Sub
 
+Sub StartDemoLightSeq
+
+Debug.print "Start DEMO Light"
+	dim i
+	for i = 0 to axmas.count-1
+		axmas(i).opacity = 2000
+	Next 
+
+	LightSeqaxmas.UpdateInterval = 150
+	LightSeqaxmas.Play SeqRandom, 10, , 6000
+	GeneralPupQueue.Add "ResetDemoLightSeq","ResetDemoLightSeq",95,6050,0,0,0,True
+End Sub
+
+Sub ResetDemoLightSeq
+dim i
+	for i = 0 to axmas.count-1
+		axmas(i).opacity = 0
+	Next
+
+	LightSeqaxmas.StopPlay
+	GeneralPupQueue.Add "StartDemoLightSeq","StartDemoLightSeq",95,100,0,0,0,True
+
+End Sub
+
+Sub StopDemoLightSeq
+	dim i
+	for i = 0 to axmas.count-1
+		axmas(i).opacity = 0
+	Next
+
+	LightSeqaxmas.StopPlay
+ 
+End Sub
 
 	Sub Dropwall
 		if dropwallskip = 0 then exit Sub
-		StopXMAS
+		GeneralPupQueue.Add "StopXMAS","StopXMAS",80,100,0,0,0,False
 		Spot1.opacity = 1000
 		DOF 116, DOFPulse  'DOF - Gear Motor
 		PlaySound "Bridge_Move"
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 3000
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 3000
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 3000
 		MagnetW.MagnetON = True
@@ -9631,13 +9710,15 @@ End Sub
 	End Sub
 
 	Sub spinoff
+		StopDemoLightSeq
 		LightSeqFlasher.StopPlay
 		LightSeqaxmas.StopPlay
 		spinner.MotorOn = False
 	End Sub
 
 	Sub Raisewall
-		StartXMAS
+		StopDemoLightSeq
+		'StartXMAS
 		Spot1.opacity = 0
 		DOF 116, DOFPulse  'DOF - Gear Motor
 		PlaySound "Bridge_Move"
@@ -9649,12 +9730,15 @@ End Sub
 			udtargettime.Enabled = True
 		End If
 		If openwall = True Then
-			backwallleft.Enabled = True
-			backwallright.Enabled = True
 			demogorgontime.Enabled = True
-			barricadetime.Enabled = True
 		End If
 	End Sub
+
+Sub closewall
+	backwallleft.Enabled = True
+	backwallright.Enabled = True
+	barricadetime.Enabled = True
+End Sub
 
 
 	Sub backwallleft_Timer()
@@ -10197,8 +10281,13 @@ End Sub
 		GiOff
 		GiGreen
 		flashflash.Enabled = True
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 50000
+
+
+		StartDemoLightSeq
+		GeneralPupQueue.Add "StopDemoLightSeq","StopDemoLightSeq",80,50000,0,0,0,False
+
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 50000
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 50000
 		startamultiball
@@ -10611,7 +10700,7 @@ End Sub
 		Dim waittime
 		waittime = 100
 		If LookForBarb = True Then
-		BarbSuper
+		'BarbSuper
 		Else
 		BallsInLock(CurrentPlayer) = BallsInLock(CurrentPlayer) + 1
 			Select Case BallsInLock(CurrentPlayer)
@@ -10657,6 +10746,7 @@ End Sub
 '****************
 
 	Sub StartBarb() 'Multiball
+	Dim i
 		If barbskip = 0 then exit Sub
 		BallLockBarbExit
 		DOF 338, DOFPulse   'DOF MX - BARB Flash
@@ -10676,8 +10766,30 @@ End Sub
 		GiOff
 		GiYellow
 		AssignBarbSuper
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 50000
+
+
+	dim k, newLoopDelay
+
+		PrepSpellWord 40
+		SetLoopDelay "find barb" 
+
+		SpellWord "find barb"
+
+		for k = 1 to 7
+			
+			NewLoopDelay = LoopDelay*k
+		debug.print "loop delay :" &k &":" &newloopdelay	
+	
+			xmasQueue.Add "SpellWord-"&k,"SpellWord ""find barb"" ",80,NewLoopDelay,0,0,0,False
+		Next
+
+		xmasQueue.Add "SpellEnd","giOn:bInLightQuote = False",75,LoopDelay*8+(delayInc*myFSpeed*2),0,0,0,False
+
+
+'		StartDemoLightSeq
+'		GeneralPupQueue.Add "StopDemoLightSeq","StopDemoLightSeq",80,50000,0,0,0,False
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 50000
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 50000
 		SetLightColor llo1, yellow, -1
@@ -10787,6 +10899,9 @@ End Sub
 		PuPlayer.playresume 4
 		PuPlayer.playlistplayex pAudio,"audiomultiballs","clear.mp3",100,1
 		PuPlayer.SetLoop 7,0
+
+		xmasqueue.RemoveAll(True)
+
 		LookForBarb = False
 		barbMultiball = False
 		BarbJackpots = False
@@ -11133,8 +11248,29 @@ End Sub
 		GiOff
 		GiBlue
 		run1lock(CurrentPlayer) = 0
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 50000
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 50000
+
+	dim k, newLoopDelay
+
+		PrepSpellWord 40
+		SetLoopDelay "bad men" 
+
+		SpellWord "bad men"
+
+		for k = 1 to 7
+			
+			NewLoopDelay = LoopDelay*k
+		debug.print "loop delay :" &k &":" &newloopdelay	
+	
+			xmasQueue.Add "SpellWord-"&k,"SpellWord ""bad men"" ",80,NewLoopDelay,0,0,0,False
+		Next
+
+		xmasQueue.Add "SpellEnd","giOn:bInLightQuote = False",75,LoopDelay*8+(delayInc*myFSpeed*2),0,0,0,False
+
+
+'		StartDemoLightSeq
+'		GeneralPupQueue.Add "StopDemoLightSeq","StopDemoLightSeq",80,50000,0,0,0,False
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 50000
 		' turn up the lights and yell baby
@@ -11369,8 +11505,10 @@ End Sub
 		PuPlayer.playlistplayex pBackglass,"videowizard","wizardfinal.mov",100,3
 		PuPlayer.playlistplayex pAudio,"audiomultiballs","clear.mp3",100,1
 		PuPlayer.playlistplayex pMusic,"audioclear","clear.mp3",100, 1
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 116000
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 116000
+		StartDemoLightSeq
+		GeneralPupQueue.Add "StopDemoLightSeq","StopDemoLightSeq",80,116000,0,0,0,False
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 116000
 		lm4.State = 1
@@ -11460,8 +11598,28 @@ End Sub
 		FlasherEL.opacity = 0
 		DemoHits = 0
 		FlashEffect 2
-		LightSeqaxmas.UpdateInterval = 150
-		LightSeqaxmas.Play SeqRandom, 10, , 65000
+'		StartDemoLightSeq
+'		GeneralPupQueue.Add "StopDemoLightSeq","StopDemoLightSeq",80,65000,0,0,0,False
+
+	dim k, newLoopDelay
+
+		PrepSpellWord 40
+		SetLoopDelay "demogorgon" 
+
+		SpellWord "demogorgon"
+
+		for k = 1 to 7
+			
+			NewLoopDelay = LoopDelay*k
+		debug.print "loop delay :" &k &":" &newloopdelay	
+	
+			xmasQueue.Add "SpellWord-"&k,"SpellWord ""demogorgon"" ",80,NewLoopDelay,0,0,0,False
+		Next
+
+		xmasQueue.Add "SpellEnd","giOn:bInLightQuote = False",75,LoopDelay*8+(delayInc*myFSpeed*2),0,0,0,False
+
+'		LightSeqaxmas.UpdateInterval = 150
+'		LightSeqaxmas.Play SeqRandom, 10, , 65000
 		LightSeqFlasher.UpdateInterval = 150
 		LightSeqFlasher.Play SeqRandom, 10, , 65000
 		' turn up the lights and yell baby
@@ -11660,7 +11818,10 @@ End Sub
 		GiOn
 		wizardpos = 0
 		FlashEffect 0
-		LightSeqFlasher.StopPlay
+
+		xmasqueue.RemoveAll(True)
+
+'		LightSeqFlasher.StopPlay
 		LightSeqaxmas.StopPlay
 		If demodefeated = True Then
 		lm4.State = 1
@@ -12861,3 +13022,836 @@ Class SlingshotCorrection
 	End Sub
 End Class
 
+Sub Spell(tmpLetter)
+Dim i
+	Select Case tmpLetter
+		Case "a"
+			i = 0
+		Case "b"
+			i = 1
+		Case "c"
+			i = 2
+		Case "d"
+			i = 3
+		Case "e"
+			i = 4
+		Case "f"
+			i = 5
+		Case "g"
+			i = 6
+		Case "h"
+			i = 7
+		Case "i"
+			i = 8
+		Case "j"
+			i = 9
+		Case "k"
+			i = 10
+		Case "l"
+			i = 11
+		Case "m"
+			i = 12
+		Case "n"
+			i = 13
+		Case "o"
+			i = 14
+		Case "p"
+			i = 15
+		Case "q"
+			i = 16
+		Case "r"
+			i = 17
+		Case "s"
+			i = 18
+		Case "t"
+			i = 19
+		Case "u"
+			i = 20
+		Case "v"
+			i = 21
+		Case "w"
+			i = 22
+		Case "x"
+			i = 23
+		Case "y"
+			i = 24
+		Case "z"
+			i = 25
+		Case Else
+			Exit Sub
+	End Select
+
+
+
+axmas(i).timerInterval= 10
+axmas(i).opacity = 100
+fadedir(i) = 1
+fspeed(i) = myFSpeed
+Intensity(i) = 1
+axmas(i).timerenabled=1
+'vpmtimer.addtimer 2000 , "axmas(i).timerenabled=0:axmas(i).opacity = 0 '"
+
+ExecuteGlobal ("Sub " & axmas(i).Name & "_timer:" & _
+"If Intensity("& i &") <=0 Then me.timerenabled=0:End If:" & _
+"If Intensity("& i &") >= 3000 Then fadeDir("& i &")=-1 :End If:" & _
+"Intensity("& i &") = Intensity("& i &") + fSpeed("& i &") * fadeDir("& i &"):" & _
+"axmas("& i &").opacity = intensity("& i &"):" & _
+"End Sub")
+
+End Sub
+
+Dim bInLightQuote : bInLightQuote = False
+Sub RandomLightQuote
+
+	if bInLightQuote then Exit Sub
+
+	PrepSpellWord 60
+
+	bInLightQuote = True
+
+	Select Case (Int(Rnd*5)+1)
+		Case 1
+			Spellword "friends dont lie"
+		Case 2
+			Spellword "a neverending story"
+		Case 3
+			Spellword "mornings are for coffee and contemplation" 
+		Case 4
+			Spellword "i dump your ass"
+		Case 5
+			Spellword "she will not be able to resist these pearls"
+	End Select
+
+End Sub
+
+
+Sub SetLoopDelay(xString)
+	LoopDelay =  (Len(xString)*delayInc*myFSpeed) + (delayInc*myFSpeed*2)
+	debug.print "loop delay " &loopdelay
+End Sub
+
+Sub TestMerlin
+	debug.print "in test"
+
+
+	dim k, newLoopDelay
+
+		PrepSpellWord 40
+		SetLoopDelay "adventuring party" 
+
+		SpellWord "adventuring party"
+
+		for k = 1 to 7
+			
+			NewLoopDelay = LoopDelay*k
+		debug.print "loop delay :" &k &":" &newloopdelay	
+	
+			xmasQueue.Add "SpellWord-"&k,"SpellWord ""adventuring party"" ",80,NewLoopDelay,0,0,0,False
+		Next
+
+		xmasQueue.Add "SpellEnd","giOn:bInLightQuote = False",75,LoopDelay*8+(delayInc*myFSpeed*2),0,0,0,False
+
+
+Exit Sub
+	dim k2, newLoopDelay2
+
+		PrepSpellWord 40
+		SetLoopDelay "find barb" 
+
+		SpellWord "find barb"
+
+		for k = 1 to 7
+			
+			NewLoopDelay = LoopDelay*k
+		debug.print "loop delay :" &k &":" &newloopdelay	
+	
+			xmasQueue.Add "SpellWord-"&k,"SpellWord ""find barb"" ",80,NewLoopDelay,0,0,0,False
+		Next
+
+		xmasQueue.Add "SpellEnd","giOn:bInLightQuote = False",75,LoopDelay*8+(delayInc*myFSpeed*2),0,0,0,False
+End Sub
+
+
+Dim LoopDelay
+dim delay,myFSpeed
+delay = 0
+LoopDelay = 0
+
+Sub PrepSpellWord (tmpSpeed)
+	myFSpeed = tmpSpeed
+	gioff
+	'StopXMAS
+	GeneralPupQueue.Add "StopXMAS","StopXMAS",80,10,0,0,0,False
+End Sub
+
+Dim DelayInc : DelayInc = 25
+
+Sub SpellWord(xString)
+dim i,tmpX, delayInc
+	
+debug.print "WORD:" & xString
+
+	delay = 0
+	delayInc = 25
+	For i = 1 To Len(xString)
+		tmpX = chr(34) &Mid(xString,i,1) & chr(34)
+		delay = delay + delayInc*myFSpeed
+		GeneralPupQueue.Add "Spell-"&i,"Spell " &tmpX,95,delay,0,0,0,True
+	Next
+'	delay = delay + delayInc*myFSpeed
+	'GeneralPupQueue.Add "Spell-"&i+1,"giOn:bInLightQuote = False",95,delay,0,0,0,True
+End Sub
+
+
+'  "If Intensity("& i &") <=0 Then axmas(i).timerenabled=0:axmas(i).opacity = 0:End If:" & _ 
+
+
+'***************************************************************
+' ZQUE: VPIN WORKSHOP ADVANCED QUEUING SYSTEM - 1.2.0
+'***************************************************************
+' WHAT IS IT?
+' The VPin Workshop Advanced Queuing System allows table authors
+' to put sub routine calls in a queue without creating a bunch
+' of timers. There are many use cases for this: queuing sequences
+' for light shows and DMD scenes, delaying solenoids until the
+' DMD is finished playing all its sequences (such as holding a
+' ball in a scoop), managing what actions take priority over
+' others (e.g. an extra ball sequence is probably more important
+' than a small jackpot), and many more.
+'
+' This system uses Scripting.Dictionary, a single timer, and the
+' GameTime global to keep track of everything in the queue.
+' This allows for better stability and a virtually unlimited
+' number of items in the queue. It also allows for greater
+' versatility, like pre-delays, queue delays, priorities, and
+' even modifying items in the queue.
+'
+' The VPin Workshop Queuing System can replace vpmTimer as a
+' proper queue system (each item depends on the previous)
+' whereas vpmTimer is a collection of virtual timers that run
+' in parallel. It also adds on other advanced functionality.
+' However, this queue system does not have ROM support out of
+' the box like vpmTimer does.
+'
+' I recommend reading all the comments before you implement the
+' queuing system into your table.
+'
+' WHAT YOU NEED to use the queuing system:
+' 1) Put this VBS file in your scripts folder, or copy / paste
+'    the code into your table script (and skip step 2).
+' 2) Include this file via Scripting.FileSystemObject, and
+'    ExecuteGlobal it.
+' 3) Make one or more queues by constructing the vpwQueueManager:
+'    Dim queue : Set queue = New vpwQueueManager
+' 4) Create (or use) a timer that is always enabled and
+'    preferably has an interval of 1 millisecond. Use a
+'    higher number for less time precision but less resource
+'    use. You only need one timer even if you
+'    have multiple queues.
+' 5) For each queue you created, call its Tick routine in
+'    the timer's *_timer() routine:
+'    queue.Tick
+' 6) You're done! Refer to the routines in vpwQueueManager to
+'    learn how to use the queuing system.
+'
+' TUTORIAL: https://youtu.be/kpPYgOiUlxQ
+'***************************************************************
+
+'===========================================
+' vpwQueueManager
+' This class manages a queue of
+' vpwQueueItems and executes them.
+'===========================================
+Class vpwQueueManager
+	Public qItems ' A dictionary of vpwQueueItems in the queue (do NOT use native Scripting.Dictionary.Add/Remove; use the vpwQueueManager's Add/Remove methods instead!)
+	Public preQItems ' A dictionary of vpwQueueItems pending to be added to qItems
+	Public debugOn 'Null = no debug. String = activate debug by using this unique label for the queue. REQUIRES baldgeek's error logs.
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.qCurrentItem
+	' This contains a string of the key currently active / at
+	' the top of the queue. An empty string means no items are
+	' active right now.
+	' This is an important property; it should be monitored
+	' in another timer or routine whenever you Add a queue item
+	' with a -1 (indefinite) preDelay or postDelay. Then, for
+	' preDelay, ExecuteCurrentItem should be called to run the
+	' queue item. And for postDelay, DoNextItem should be
+	' called to move to the next item in the queue.
+	'
+	' For example, let's say you add a queue item with the
+	' key "kickTheBall" and an indefinite preDelay. You want
+	' to wait until another timer fires before this queue item
+	' executes and kicks the ball out of a scoop. In the other
+	' timer, you will monitor qCurrentItem. Once it equals
+	' "kickTheBall", call ExecuteCurrentItem, which will run
+	' the queue item and presumably kick out the ball.
+	'
+	' WARNING!: If you do not properly execute one of these
+	' callback routines on an indefinite delayed item, then
+	' the queue will effectively freeze / stop until you do.
+	'---------------------------------------------------------
+	Public qCurrentItem
+	
+	Public preDelayTime ' The GameTime the preDelay for the qCurrentItem was started
+	Public postDelayTime ' The GameTime the postDelay for the qCurrentItem was started
+	
+	Private onQueueEmpty ' A string or object to be called every time the queue empties (use the QueueEmpty property to get/set this)
+	Private queueWasEmpty ' Boolean to determine if the queue was already empty when firing DoNextItem
+	Private preDelayTransfer ' Number of milliseconds of preDelay to transfer over to the next queue item when doNextItem is called
+	
+	Private Sub Class_Initialize
+		Set qItems = CreateObject("Scripting.Dictionary")
+		Set preQItems = CreateObject("Scripting.Dictionary")
+		qCurrentItem = ""
+		onQueueEmpty = ""
+		queueWasEmpty = True
+		debugOn = Null
+		preDelayTransfer = 0
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.Tick
+	' This is where all the magic happens! Call this method in
+	' your timer's _timer routine to check the queue and
+	' execute the necessary methods. We do not iterate over
+	' every item in the queue here, which allows for superior
+	' performance even if you have hundreds of items in the
+	' queue.
+	'----------------------------------------------------------
+	Public Sub Tick()
+		Dim item
+		If qItems.Count > 0 Then ' Don't waste precious resources if we have nothing in the queue
+			
+			' If no items are active, or the currently active item no longer exists, move to the next item in the queue.
+			' (This is also a failsafe to ensure the queue continues to work even if an item gets manually deleted from the dictionary).
+			If qCurrentItem = "" Or Not qItems.Exists(qCurrentItem) Then
+				DoNextItem
+			Else ' We are good; do stuff as normal
+				Set item = qItems.item(qCurrentItem)
+				
+				If item.Executed Then
+					' If the current item was executed and the post delay passed, go to the next item in the queue
+					If item.postDelay >= 0 And GameTime >= (postDelayTime + item.postDelay) Then
+						DebugLog qCurrentItem & " - postDelay of " & item.postDelay & " passed."
+						DoNextItem
+					End If
+				Else
+					' If the current item expires before it can be executed, go to the next item in the queue
+					If item.timeToLive > 0 And GameTime >= (item.queuedOn + item.timeToLive) Then
+						DebugLog qCurrentItem & " - expired (Time To live). Moving To the Next queue item."
+						DoNextItem
+					End If
+					
+					' If the current item was not executed yet and the pre delay passed, then execute it
+					If item.preDelay >= 0 And GameTime >= (preDelayTime + item.preDelay) Then
+						DebugLog qCurrentItem & " - preDelay of " & item.preDelay & " passed. Executing callback."
+						item.Execute
+						preDelayTime = 0
+						postDelayTime = GameTime
+					End If
+				End If
+			End If
+		End If
+		
+		' Loop through each item in the pre-queue to find any that is ready to be added
+		If preQItems.Count > 0 Then
+			Dim k, key
+			k = preQItems.Keys
+			For Each key In k
+				Set item = preQItems.Item(key)
+				
+				' If a queue item was pre-queued and is ready to be considered as actually in the queue, add it
+				If GameTime >= (item.queuedOn + item.preQueueDelay) Then
+					DebugLog key & " (preQueue) - preQueueDelay of " & item.preQueueDelay & " passed. Item added To the main queue."
+					preQItems.Remove key
+					Me.Add key, item.Callback, item.priority, 0, item.preDelay, item.postDelay, item.timeToLive, item.executeNow
+				End If
+			Next
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.DoNextItem
+	' Goes to the next item in the queue and deletes the
+	' currently active one.
+	'----------------------------------------------------------
+	Public Sub DoNextItem()
+		If Not qCurrentItem = "" Then
+			If qItems.Exists(qCurrentItem) Then qItems.Remove qCurrentItem ' Remove the current item from the queue if it still exists
+			qCurrentItem = ""
+		End If
+		
+		If qItems.Count > 0 Then
+			Dim k, key
+			Dim nextItem
+			Dim nextItemPriority
+			Dim item
+			nextItemPriority = 0
+			nextItem = ""
+			
+			' Find which item needs to run next based on priority first, queue order second (ignore items with an active preQueueDelay)
+			k = qItems.Keys
+			For Each key In k
+				Set item = qItems.Item(key)
+				
+				If item.preQueueDelay <= 0 And item.priority > nextItemPriority Then
+					nextItem = key
+					nextItemPriority = item.priority
+				End If
+			Next
+			
+			If qItems.Exists(nextItem) Then
+				Set item = qItems.Item(nextItem)
+				DebugLog "DoNextItem - checking " & nextItem & " (priority " & item.priority & ")"
+				
+				' Make sure the item is not expired and not already executed. If it is, remove it and re-call doNextItem
+				If (item.timeToLive > 0 And GameTime >= (item.queuedOn + item.timeToLive + preDelayTransfer)) Or item.executed = True Then
+					DebugLog "DoNextItem - " & nextItem & " expired (Time To live) Or already executed. Removing And going To the Next item."
+					qItems.Remove nextItem
+					DoNextItem
+					Exit Sub
+				End If
+				
+				'Transfer preDelay time when applicable
+				If preDelayTransfer > 0 And item.preDelay > -1 Then
+					DebugLog "DoNextItem " & nextItem & " - Transferred remaining postDelay of " & preDelayTransfer & " milliseconds from previously overridden queue item To its preDelay And timeToLive"
+					qItems.Item(nextItem).preDelay = item.preDelay + preDelayTransfer
+					If item.timeToLive > 0 Then qItems.Item(nextItem).timeToLive = item.timeToLive + preDelayTransfer
+					preDelayTransfer = 0
+				End If
+				
+				' Set item as current / active, and execute if it has no pre-delay (otherwise Tick will take care of pre-delay)
+				qCurrentItem = nextItem
+				If item.preDelay = 0 Then
+					DebugLog "DoNextItem - " & nextItem & " Now active. It has no preDelay, so executing callback immediately."
+					item.Execute
+					preDelayTime = 0
+					postDelayTime = GameTime
+				Else
+					DebugLog "DoNextItem - " & nextItem & " Now active. Waiting For a preDelay of " & item.preDelay & " before executing."
+					preDelayTime = GameTime
+					postDelayTime = 0
+				End If
+			End If
+		ElseIf queueWasEmpty = False Then
+			DebugLog "DoNextItem - Queue Is Now Empty; executing queueEmpty callback."
+			CallQueueEmpty() ' Call QueueEmpty if this was the last item in the queue
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.ExecuteCurrentItem
+	' Helper routine that can be used when the current item is
+	' on an indefinite preDelay. Call this when you are ready
+	' for that item to execute.
+	'----------------------------------------------------------
+	Public Sub ExecuteCurrentItem()
+		If Not qCurrentItem = "" And qItems.Exists(qCurrentItem) Then
+			DebugLog "ExecuteCurrentItem - Executing the callback For " & qCurrentItem & "."
+			Dim item
+			Set item = qItems.Item(qCurrentItem)
+			item.Execute
+			preDelayTime = 0
+			postDelayTime = GameTime
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.Add
+	' REQUIRES Class vpwQueueItem
+	'
+	' Add an item to the queue.
+	'
+	' PARAMETERS:
+	'
+	' key (string) - Unique name for this queue item
+	' WARNING: Specifying a key that already exists will
+	' overwrite the item in the queue. This is by design. Also
+	' note the following behaviors:
+	' * Tickers / clocks for tracking delay times will NOT be
+	' restarted for this item (but the total duration will be
+	' updated. For example, if the old preDelay was 3 seconds
+	' and 2 seconds elapsed, but Add was called to update
+	' preDelay to 5 seconds, then the queue item will now
+	' execute in 3 more seconds (new preDelay - time elapsed)).
+	' However, timeToLive WILL be restarted.
+	' * Items will maintain their same place in the queue.
+	' * If key = qCurrentItem (overwriting the currently active
+	' item in the queue) and qCurrentItem already executed
+	' the callback (but is waiting for a postDelay), then the
+	' current queue item's remaining postDelay will be added to
+	' the preDelay of the next item, and this item will be
+	' added to the bottom of the queue for re-execution.
+	' If you do not want it to re-execute, then add an If
+	' guard on your call to the Add method checking
+	' "If Not vpwQueueManager.qCurrentItem = key".
+	'
+	' qCallback (object|string) - An object to be called,
+	' or string to be executed globally, when this queue item
+	' runs. I highly recommend making sub routines for groups
+	' of things that should be executed by the queue so that
+	' your qCallback string does not get long, and you can
+	' easily organize your callbacks. Also, use double
+	' double-quotes when the call itself has quotes in it
+	' (VBScript escaping).
+	' Example: "playsound ""Plunger"""
+	'
+	' priority (number) - Items in the queue will be executed
+	' in order from highest priority to lowest. Items with the
+	' same priority will be executed in order according to
+	' when they were added to the queue. Use any number
+	' greater than 0. My recommendation is to make a plan for
+	' your table on how you will prioritize various types of
+	' queue items and what priority number each type should
+	' have. Also, you should reserve priority 1 (lowest) to
+	' items which should wait until everything else in the
+	' queue is done (such as ejecting a ball from a scoop).
+	'
+	' preQueueDelay (number) - The number of
+	' milliseconds before the queue actually considers this
+	' item as "in the queue" (pretend you started a timer to
+	' add this item into the queue after this delay; this
+	' logically works in a similar way; the only difference is
+	' timeToLive is still considered even when an item is
+	' pre-queued.) Set to 0 to add to the queue immediately.
+	' NOTE: this should be less than timeToLive.
+	'
+	' preDelay (number) - The number of milliseconds before
+	' the qCallback executes once this item is active (top)
+	' in the queue. Set this to 0 to immediately execute the
+	' qCallback when this item becomes active.
+	' Set this to -1 to have an indefinite delay until
+	' vpwQueueManager.ExecuteCurrentItem is called (see the
+	' comment for qCurrentItem for more information).
+	' NOTE: this should be less than timeToLive. And, if
+	' timeToLive runs out before preDelay runs out, the item
+	' will be removed and will not execute.
+	'
+	' postDelay (number) - After the qCallback executes, the
+	' number of milliseconds before moving on to the next item
+	' in the queue. Set this to -1 to have an indefinite delay
+	' until vpwQueueManager.DoNextItem is called (see the
+	' comment for qCurrentItem for more information).
+	'
+	' timeToLive (number) - After this item is added to the
+	' queue, the number of milliseconds before this queue item
+	' expires / is removed if the qCallback is not executed by
+	' then. Set to 0 to never expire. NOTE: If not 0, this
+	' should be greater than preDelay + preQueueDelay or the
+	' item will expire before the qCallback is executed.
+	' Example use case: Maybe a player scored a jackpot, but
+	' it would be awkward / irrelevant to play that jackpot
+	' sequence if it hasn't played after a few seconds (e.g.
+	' other items in the queue took priority).
+	'
+	' executeNow (boolean) - Specify true if this item
+	' should interrupt the queue and run immediately. This
+	' will only happen, however, if the currently active item
+	' has a priority less than or equal to the item you are
+	' adding. Note this does not bypass preQueueDelay nor
+	' preDelay if set.
+	' Example: If a player scores an extra ball, you might
+	' want that to interrupt everything else going on as it
+	' is an important milestone.
+	'----------------------------------------------------------
+	Public Sub Add(key, qCallback, priority, preQueueDelay, preDelay, postDelay, timeToLive, executeNow)
+		DebugLog "Adding queue item " & key
+		
+		'Construct the item class
+		Dim newClass
+		Set newClass = New vpwQueueItem
+		With newClass
+			.Callback = qCallback
+			.priority = priority
+			.preQueueDelay = preQueueDelay
+			.preDelay = preDelay
+			.postDelay = postDelay
+			.timeToLive = timeToLive
+			.executeNow = executeNow
+		End With
+		
+		'If we are attempting to overwrite the current queue item which already executed, take the remaining postDelay and add it to the preDelay of the next item. And set us up to immediately go to the next item while re-adding this item to the queue.
+		If preQueueDelay <= 0 And qItems.Exists(key) And qCurrentItem = key Then
+			If qItems.Item(key).executed = True Then
+				DebugLog key & " (Add) - Attempting To overwrite the current queue item which already executed. Immediately re-queuing this item To the bottom of the queue, transferring the remaining postDelay To the Next item, And going To the Next item."
+				If qItems.Item(key).postDelay >= 0 Then
+					preDelayTransfer = ((postDelayTime + qItems.Item(key).postDelay) - GameTime)
+				End If
+				
+				'Remove current queue item so we can go to the next item, this can be re-queued to the bottom, and the remaining postDelay transferred to the preDelay of the next item
+				qItems.Remove qCurrentItem
+				qCurrentItem = ""
+			End If
+		End If
+		
+		' Determine execution stuff if this item does not have a pre-queue delay
+		If preQueueDelay <= 0 Then
+			If executeNow = True Then
+				' Make sure this item does not immediately execute if the current item has a higher priority
+				If Not qCurrentItem = "" And qItems.Exists(qCurrentItem) Then
+					Dim item
+					Set item = qItems.Item(qCurrentItem)
+					If item.priority <= priority Then
+						DebugLog key & " (Add) - Execute Now was Set To True And this item's priority (" & priority & ") Is >= the active item's priority (" & item.priority & " from " & qCurrentItem & "). Making it the current active queue item."
+						qCurrentItem = key
+						If preDelay = 0 And preDelayTransfer = 0 Then
+							DebugLog key & " (Add) - No pre-delay. Executing the callback immediately."
+							newClass.Execute
+							preDelayTime = 0
+							postDelayTime = GameTime
+						Else
+							DebugLog key & " (Add) - Waiting For a pre-delay of " & (preDelay + preDelayTransfer) & " before executing the callback."
+							preDelayTime = GameTime
+							postDelayTime = 0
+						End If
+					Else
+						DebugLog key & " (Add) - Execute Now was Set To True, but this item's priority (" & priority & ") Is Not >= the active item's priority (" & item.priority & " from " & qCurrentItem & "). This item will Not be executed Now And will be added To the queue normally."
+					End If
+				Else
+					DebugLog key & " (Add) - Execute Now was Set To True And no item was active In the queue. Making it the current active queue item."
+					qCurrentItem = key
+					If preDelay = 0 Then
+						DebugLog key & " (Add) - No pre-delay. Executing the callback immediately."
+						preDelayTransfer = 0 'No preDelay transfer if we are immediately re-executing the same queue item
+						newClass.Execute
+						preDelayTime = 0
+						postDelayTime = GameTime
+					Else
+						DebugLog key & " (Add) - Waiting For a pre-delay of " & preDelay & " before executing the callback."
+						preDelayTime = GameTime
+						postDelayTime = 0
+					End If
+				End If
+			End If
+			If qItems.Exists(key) Then 'Overwrite existing item in the queue if it exists
+				DebugLog key & " (Add) - Already exists In the queue. Updating the item With the new parameters passed In Add."
+				Set qItems.Item(key) = newClass
+			Else
+				DebugLog key & " (Add) - Added To the queue."
+				qItems.Add key, newClass
+			End If
+			queueWasEmpty = False
+		Else
+			If preQItems.Exists(key) Then 'Overwrite existing item in the preQueue if it exists
+				DebugLog key & " (Add) - Already exists In the preQueue. Updating the item With the new parameters passed In Add."
+				Set preQItems.Item(key) = newClass
+			Else
+				DebugLog key & " (Add) - Added To the preQueue."
+				preQItems.Add key, newClass
+			End If
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.Remove
+	'
+	' Removes an item from the queue. It is better to use this
+	' than to remove the item from qItems directly as this sub
+	' will also call DoNextItem to advance the queue if
+	' the item removed was the active item.
+	' NOTE: This only removes items from qItems; to remove
+	' an item from preQItems, use the standard
+	' Scripting.Dictionary Remove method.
+	'
+	' PARAMETERS:
+	'
+	' key (string) - Unique name of the queue item to remove.
+	'----------------------------------------------------------
+	Public Sub Remove(key)
+		If qItems.Exists(key) Then
+			DebugLog key & " (Remove)"
+			qItems.Remove key
+			If qCurrentItem = key Or qCurrentItem = "" Then DoNextItem ' Ensure the queue does not get stuck
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueManager.RemoveAll
+	'
+	' Removes all items from the queue / clears the queue.
+	' It is better to call this sub than to remove all items
+	' from qItems directly because this sub cleans up the queue
+	' to ensure it continues to work properly.
+	'
+	' PARAMETERS:
+	'
+	' preQueue (boolean) - Also clear the pre-queue.
+	'----------------------------------------------------------
+	Public Sub RemoveAll(preQueue)
+		DebugLog "Queue was emptied via RemoveAll."
+		
+		' Loop through each item in the queue and remove it
+		Dim k, key
+		k = qItems.Keys
+		For Each key In k
+			qItems.Remove key
+		Next
+		qCurrentItem = ""
+		
+		If queueWasEmpty = False Then CallQueueEmpty() ' Queue is now empty, so call our callback if applicable
+		
+		If preQueue Then
+			k = preQItems.Keys
+			For Each key In k
+				preQItems.Remove key
+			Next
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' Get vpwQueueManager.QueueEmpty
+	' Get the current callback for when the queue is empty.
+	'----------------------------------------------------------
+	Public Property Get QueueEmpty()
+		If IsObject(onQueueEmpty) Then
+			Set QueueEmpty = onQueueEmpty
+		Else
+			QueueEmpty = onQueueEmpty
+		End If
+	End Property
+	
+	'----------------------------------------------------------
+	' Let vpwQueueManager.QueueEmpty
+	' Set the callback to call every time the queue empties.
+	' This could be useful for setting a sub routine to be
+	' called each time the queue empties for doing things such
+	' as ejecting balls from scoops. Unlike using the Add
+	' method, this callback is immune from getting removed by
+	' higher priority items in the queue and will be called
+	' every time the queue is emptied, not just once.
+	'
+	' PARAMETERS:
+	'
+	' callback (object|string) - The callback to call every
+	' time the queue empties.
+	'----------------------------------------------------------
+	Public Property Let QueueEmpty(callback)
+		If IsObject(callback) Then
+			Set onQueueEmpty = callback
+		ElseIf VarType(callback) = vbString Then
+			onQueueEmpty = callback
+		End If
+	End Property
+	
+	'----------------------------------------------------------
+	' Get vpwQueueManager.CallQueueEmpty
+	' Private method that actually calls the QueueEmpty
+	' callback.
+	'----------------------------------------------------------
+	Private Sub CallQueueEmpty()
+		If queueWasEmpty = True Then Exit Sub
+		queueWasEmpty = True
+		
+		If IsObject(onQueueEmpty) Then
+			Call onQueueEmpty(0)
+		ElseIf VarType(onQueueEmpty) = vbString Then
+			If onQueueEmpty > "" Then ExecuteGlobal onQueueEmpty
+		End If
+	End Sub
+	
+	'----------------------------------------------------------
+	' DebugLog
+	' Log something if debugOn is not null.
+	' REQUIRES / uses the WriteToLog sub from Baldgeek's
+	' error log library.
+	'----------------------------------------------------------
+	Private Sub DebugLog(message)
+		If Not IsNull(debugOn) Then
+			WriteToLog "VPW Queue " & debugOn, message
+		End If
+	End Sub
+End Class
+
+'===========================================
+' vpwQueueItem
+' Represents a single item for the queue
+' system. Do NOT use this class directly.
+' Instead, use the vpwQueueManager.Add
+' routine.
+
+' You can, however, access an individual
+' item in the queue via
+' vpwQueueManager.qItems and then modify
+' its properties while it is still in the
+' queue.
+'===========================================
+Class vpwQueueItem  ' Do not construct this class directly; use vpwQueueManager.Add instead, and vpwQueueManager.qItems.Item(key) to modify an item's properties.
+	Public priority ' The item's set priority
+	Public timeToLive ' The item's set timeToLive milliseconds requested
+	Public preQueueDelay ' The item's pre-queue milliseconds requested
+	Public preDelay ' The item's pre delay milliseconds requested
+	Public postDelay ' The item's post delay milliseconds requested
+	Public executeNow ' Whether the item was set to Execute immediately
+	Private qCallback ' The item's callback object or string (use the Callback property on the class to get/set it)
+	
+	Public executed ' Whether or not this item's qCallback was executed yet
+	Public queuedOn ' The game time this item was added to the queue
+	Public executedOn ' The game time this item was executed
+	
+	Private Sub Class_Initialize
+		' Defaults
+		priority = 0
+		timeToLive = 0
+		preQueueDelay = 0
+		preDelay = 0
+		postDelay = 0
+		qCallback = ""
+		executeNow = False
+		
+		queuedOn = GameTime
+		executedOn = 0
+	End Sub
+	
+	'----------------------------------------------------------
+	' vpwQueueItem.Execute
+	' Executes the qCallback on this item if it was not yet
+	' already executed.
+	Public Sub Execute()
+		If executed Then Exit Sub ' Do not allow an item's qCallback to ever Execute more than one time
+		
+		'Mark as execute before actually executing callback; that way, if callback recursively adds the item back into the queue, then we can properly handle it.
+		executed = True
+		executedOn = GameTime
+		
+		' Execute qCallback
+		If IsObject(qCallback) Then
+			Call qCallback(0)
+		ElseIf VarType(qCallback) = vbString Then
+			If qCallback > "" Then ExecuteGlobal qCallback
+		End If
+	End Sub
+	
+	Public Property Get Callback()
+		If IsObject(qCallback) Then
+			Set Callback = qCallback
+		Else
+			Callback = qCallback
+		End If
+	End Property
+	
+	Public Property Let Callback(cb)
+		If IsObject(cb) Then
+			Set qCallback = cb
+		ElseIf VarType(cb) = vbString Then
+			qCallback = cb
+		End If
+	End Property
+End Class
+
+
+
+Sub WipeAllQueues
+	GeneralPupQueue.RemoveAll(True)
+	xmasQueue.RemoveAll(True)
+	BallHandlingQueue.RemoveAll(True)
+End Sub
+
+Sub QueueTimer_Timer()
+	BallHandlingQueue.Tick
+	GeneralPupQueue.Tick
+	xmasQueue.Tick
+End Sub
+'***************************************************************
+' END VPIN WORKSHOP ADVANCED QUEUING SYSTEM
+'***************************************************************
