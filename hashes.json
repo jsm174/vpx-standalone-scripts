@@ -900,6 +900,16 @@
     }
   },
   {
+    "file": "Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original",
+    "sha256": "570f84aba4d57f3a4453845e495ae3a845c4e9bbfc52e2326326433c988d2e3a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW 1.2/Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original",
+    "patched": {
+      "file": "Game of Thrones LE (Stern 2015) VPW 1.2.vbs",
+      "sha256": "5e891b346be0847322e984b6acc862526d16d04dd91ca3f25e5034f06206e93e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW 1.2/Game of Thrones LE (Stern 2015) VPW 1.2.vbs"
+    }
+  },
+  {
     "file": "Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs.original",
     "sha256": "a3dc8923cce74cf1bd41b414621f7bcdfe132c1b7a3c66a349e04b1a0233dbd9",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW v1.0.2/Game of Thrones LE (Stern 2015) VPW v1.0.2.vbs.original",
