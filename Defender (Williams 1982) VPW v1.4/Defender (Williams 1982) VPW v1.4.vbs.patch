@@ -1,0 +1,51 @@
+--- ./Defender (Williams 1982) VPW v1.4/Defender (Williams 1982) VPW v1.4.vbs.original	2025-09-09 13:36:32
++++ ./Defender (Williams 1982) VPW v1.4/Defender (Williams 1982) VPW v1.4.vbs	2025-09-09 13:36:32
+@@ -4624,8 +4624,8 @@
+ 					Case 18,19,20
+ 						j = 3
+ 					End Select
+-					.GetImage("Seg" & cstr(i)).SetAlignedPosition ((i - 14) * 7) + j,0,0
+-					.GetImage("Seg" & cstr(i + 7)).SetAlignedPosition ((i - 14) * 7) + 77 + j,0,0
++					.GetImage("Seg" & cstr(i)).SetAlignedPosition (((i - 14) * 7) + j),0,0
++					.GetImage("Seg" & cstr(i + 7)).SetAlignedPosition (((i - 14) * 7) + 77 + j),0,0
+ 					'large scores
+ 					.AddActor FlexDMD.NewImage("SegL" & cstr(i), "VPX.DMD_L_Blank")
+ 					.AddActor FlexDMD.NewImage("SegL" & cstr(i + 7), "VPX.DMD_L_Blank")
+@@ -4637,8 +4637,8 @@
+ 					Case 18,19,20
+ 						j = 8
+ 					End Select
+-					.GetImage("SegL" & cstr(i)).SetAlignedPosition ((i - 14) * 16) + j,9,0
+-					.GetImage("SegL" & cstr(i + 7)).SetAlignedPosition ((i - 14) * 16) + j,9,0
++					.GetImage("SegL" & cstr(i)).SetAlignedPosition (((i - 14) * 16) + j),9,0
++					.GetImage("SegL" & cstr(i + 7)).SetAlignedPosition (((i - 14) * 16) + j),9,0
+ 					.GetImage("SegL" & cstr(i)).Visible = False
+ 					.GetImage("SegL" & cstr(i + 7)).Visible = False
+ 				Next 
+@@ -4646,7 +4646,7 @@
+ 				'3 smartbombs
+ 				For i = 1 to 3
+ 					.AddActor FlexDMD.NewImage("Bomb" & cstr(i), "VPX.DMD_Image_SmartBomb1")
+-					.GetImage("Bomb" & cstr(i)).SetAlignedPosition 120,(i + 1) * 5,0
++					.GetImage("Bomb" & cstr(i)).SetAlignedPosition 120,((i + 1) * 5),0
+ 					.GetImage("Bomb" & cstr(i)).Visible = False
+ 				Next
+ 
+@@ -4660,7 +4660,7 @@
+ 				'credit and ball/match number
+ 				For i = 28 to 29
+ 					.AddActor FlexDMD.NewImage("Ball" & cstr(i), "VPX.DMD_S_Blank")
+-					.GetImage("Ball" & cstr(i)).SetAlignedPosition ((i - 28) * 7) + 42,25,0
++					.GetImage("Ball" & cstr(i)).SetAlignedPosition (((i - 28) * 7) + 42),25,0
+ 					.GetImage("Ball" & cstr(i)).Visible = False
+ 				Next
+ 				.AddActor FlexDMD.NewImage("BallMatch", "VPX.DMD_Image_Match")
+@@ -4668,7 +4668,7 @@
+ 				.GetImage("BallMatch").Visible = False
+ 				For i = 30 to 31
+ 					.AddActor FlexDMD.NewImage("Credit" & cstr(i), "VPX.DMD_S_Blank")
+-					.GetImage("Credit" & cstr(i)).SetAlignedPosition ((i - 30) * 7) + 115,25,0
++					.GetImage("Credit" & cstr(i)).SetAlignedPosition (((i - 30) * 7) + 115),25,0
+ 					.GetImage("Credit" & cstr(i)).Visible = False
+ 				Next
+ 				.AddActor FlexDMD.NewImage("CreditsWave", "VPX.DMD_Image_Credits")
