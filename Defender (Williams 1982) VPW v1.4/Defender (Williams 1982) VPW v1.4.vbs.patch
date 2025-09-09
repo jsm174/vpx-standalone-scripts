@@ -1,5 +1,5 @@
---- ./Defender (Williams 1982) VPW v1.4/Defender (Williams 1982) VPW v1.4.vbs.original	2025-09-09 13:36:32
-+++ ./Defender (Williams 1982) VPW v1.4/Defender (Williams 1982) VPW v1.4.vbs	2025-09-09 13:36:32
+--- Defender (Williams 1982) VPW v1.4.vbs.original
++++ Defender (Williams 1982) VPW v1.4.vbs
 @@ -4624,8 +4624,8 @@
  					Case 18,19,20
  						j = 3

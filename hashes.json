@@ -680,6 +680,16 @@
     }
   },
   {
+    "file": "Defender (Williams 1982) VPW v1.4.vbs.original",
+    "sha256": "e2e8fcf95e9fa5048f683081acebcd54397fac4fc765812f726358a89021bd10",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Defender (Williams 1982) VPW v1.4/Defender (Williams 1982) VPW v1.4.vbs.original",
+    "patched": {
+      "file": "Defender (Williams 1982) VPW v1.4.vbs",
+      "sha256": "26dd29adbe92a65b52dc520a67d34a8876a0bc6637cce16bd9d345714162bafb",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Defender (Williams 1982) VPW v1.4/Defender (Williams 1982) VPW v1.4.vbs"
+    }
+  },
+  {
     "file": "Diablo Pinball v4.3.vbs.original",
     "sha256": "883e8c5bdb81048b2e6982868d0410de4799ef1d2695b43f22cd2fb9a53b7e5a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Diablo Pinball v4.3/Diablo Pinball v4.3.vbs.original",
