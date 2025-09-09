@@ -1,0 +1,28 @@
+--- ./Game of Thrones LE (Stern 2015) VPW 1.2/Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original	2025-09-08 20:41:54
++++ ./Game of Thrones LE (Stern 2015) VPW 1.2/Game of Thrones LE (Stern 2015) VPW 1.2.vbs	2025-09-08 20:42:31
+@@ -8915,7 +8915,7 @@
+                 line1 = "TOTAL BONUS" : line2 = FormatScore(BonusCnt * BonusMultiplier(CurrentPlayer))
+                 PlayfieldMultiplierVal = 1
+                 Dim t : t = ReplayAwarded(CurrentPlayer)
+-                AddScore (BonusCnt * BonusMultiplier(CurrentPlayer))+BonusHeldPoints(CurrentPlayer)
++                AddScore ((BonusCnt * BonusMultiplier(CurrentPlayer))+BonusHeldPoints(CurrentPlayer))
+                 if bBonusHeld = 0 Then BonusHeldPoints(CurrentPlayer) = 0
+                 if bBonusHeld = 1 Then 
+                     BonusHeldPoints(CurrentPlayer) = BonusCnt * BonusMultiplier(CurrentPlayer)
+@@ -10674,7 +10674,6 @@
+     End If
+     SetTopGates
+ End Sub
+-
+ Sub ElevatorKick(f)
+     'PlaySoundAt SoundFXDOF("fx_kicker", 110, DOFPulse, DOFContactors), KickerFloor
+ 	dim newball
+@@ -15900,7 +15899,7 @@
+ 						Else
+ 							.font = ComboFontVar
+ 						end if
+-						.SetAlignedPosition ((i-1)*25)+14,32,FlexDMD_Align_Bottom
++						.SetAlignedPosition (((i-1)*25)+14),32,FlexDMD_Align_Bottom
+                         .Text = (ComboMultiplier(i)*PlayfieldMultiplierVal)&"X"
+                     End If
+                     
