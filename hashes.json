@@ -990,6 +990,16 @@
     }
   },
   {
+    "file": "Gun Men (Staal 1979).vbs.original",
+    "sha256": "08534f6846ec619d8f0163f1413e8b44bd295dca1ce3b4cb1d6ac20765dee4f4",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gun Men (Staal 1979)/Gun Men (Staal 1979).vbs.original",
+    "patched": {
+      "file": "Gun Men (Staal 1979).vbs",
+      "sha256": "2ca43deb91b3b9b766e9a591d88b3f0489ae907d96588e334b3a763d8ab05fcd",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Gun Men (Staal 1979)/Gun Men (Staal 1979).vbs"
+    }
+  },
+  {
     "file": "HALO.vbs.original",
     "sha256": "db67f67b5a18f783601229ef8ffb363421b5a3d9ceac7316df91f64ee8878daa",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/HALO/HALO.vbs.original",

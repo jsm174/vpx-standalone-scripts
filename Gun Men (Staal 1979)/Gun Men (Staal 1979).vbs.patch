@@ -1,9 +1,11 @@
-1229c1229
-< 	ScoreReel6.SetValue (PlayersPlayingGame*10) + Balls
----
-> 	ScoreReel6.SetValue ((PlayersPlayingGame*10) + Balls)
-2473c2473
-< End Sub
-\ No newline at end of file
----
-> End Sub
+--- Gun Men (Staal 1979).vbs.original
++++ Gun Men (Staal 1979).vbs
+@@ -1226,7 +1226,7 @@
+ End Sub
+ 
+ Sub UpdateBallInPlay
+-	ScoreReel6.SetValue (PlayersPlayingGame*10) + Balls
++	ScoreReel6.SetValue ((PlayersPlayingGame*10) + Balls)
+     If B2SOn Then
+ 		Controller.B2SSetReel 27, PlayersPlayingGame
+ 		Controller.B2SSetReel 28, Balls
