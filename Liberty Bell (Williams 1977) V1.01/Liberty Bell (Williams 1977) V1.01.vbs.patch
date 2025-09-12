@@ -1,0 +1,42 @@
+--- ./Liberty Bell (Williams 1977) V1.01/Liberty Bell (Williams 1977) V1.01.vbs.original	2025-09-12 07:21:57
++++ ./Liberty Bell (Williams 1977) V1.01/Liberty Bell (Williams 1977) V1.01.vbs	2025-09-12 07:28:30
+@@ -404,9 +404,9 @@
+     LeftFlipper.RotateToStart
+ 	DOF 101, DOFOff
+ 	DOF 102, DOFOff
+-    Kicker2.Kick (Rnd*10)+150,9
+-    Kicker3.Kick (Rnd*10)+200,9 
+-    Kicker4.Kick (Rnd*40)+160,7
++    Kicker2.Kick ((Rnd*10)+150),9
++    Kicker3.Kick ((Rnd*10)+200),9 
++    Kicker4.Kick ((Rnd*40)+160),7
+ 	DOF 111, DOFPulse
+ 	DOF 112, DOFPulse
+ 	DOF 113, DOFPulse
+@@ -983,7 +983,7 @@
+ 		playsound SoundFXDOF("popper_ball",111,DOFPulse,DOFContactors)
+ 		DOF 126, DOFPulse
+ 		KickArm2.rotz=10
+-        Kicker2.Kick (Rnd*10)+140,6
++        Kicker2.Kick ((Rnd*10)+140),6
+ 	  Case 5:
+ 		kickarm2.rotz=0
+ 		kicker2Timer.enabled=0
+@@ -1011,7 +1011,7 @@
+ 		playsound SoundFXDOF("popper_ball",112,DOFPulse,DOFContactors)
+ 		DOF 126, DOFPulse
+ 		kickArm3.rotz=10
+-        Kicker3.Kick (Rnd*10)+205,6
++        Kicker3.Kick ((Rnd*10)+205),6
+ 	  Case 5:
+ 		kickarm3.rotz=0
+ 		kicker3Timer.enabled=0
+@@ -1046,7 +1046,7 @@
+ 		playsound SoundFXDOF("popper_ball",113,DOFPulse,DOFContactors)
+ 		DOF 126, DOFPulse
+ 		kickArm4.rotz=10
+-        Kicker4.Kick (Rnd*40)+160,7
++        Kicker4.Kick ((Rnd*40)+160),7
+ 	  Case 5:
+ 		kickarm4.rotz=0
+ 		me.timerenabled=0
