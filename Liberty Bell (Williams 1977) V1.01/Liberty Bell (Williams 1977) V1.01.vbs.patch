@@ -1,5 +1,5 @@
---- ./Liberty Bell (Williams 1977) V1.01/Liberty Bell (Williams 1977) V1.01.vbs.original	2025-09-12 07:21:57
-+++ ./Liberty Bell (Williams 1977) V1.01/Liberty Bell (Williams 1977) V1.01.vbs	2025-09-12 07:28:30
+--- Liberty Bell (Williams 1977) V1.01.vbs.original
++++ Liberty Bell (Williams 1977) V1.01.vbs
 @@ -404,9 +404,9 @@
      LeftFlipper.RotateToStart
  	DOF 101, DOFOff

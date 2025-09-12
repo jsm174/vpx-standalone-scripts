@@ -1380,6 +1380,16 @@
     }
   },
   {
+    "file": "Liberty Bell (Williams 1977) V1.01.vbs.original",
+    "sha256": "6293dc8eb02ba28bf96c3b5e6f06e1077eba70e99ac875cb6c2f8df5a802ed4e",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Liberty Bell (Williams 1977) V1.01/Liberty Bell (Williams 1977) V1.01.vbs.original",
+    "patched": {
+      "file": "Liberty Bell (Williams 1977) V1.01.vbs",
+      "sha256": "41285de03e5ed4155629303bc5d3216ccaf3318006726ff4bdaddb9b244924bc",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Liberty Bell (Williams 1977) V1.01/Liberty Bell (Williams 1977) V1.01.vbs"
+    }
+  },
+  {
     "file": "Lightning Ball (Gottlieb 1959).vbs.original",
     "sha256": "df96fb2b9bd1ca7ecd6b66cdcd8fc1dcd3259580bceb0f0351f924e557b42a7b",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Lightning Ball (Gottlieb 1959)/Lightning Ball (Gottlieb 1959).vbs.original",
