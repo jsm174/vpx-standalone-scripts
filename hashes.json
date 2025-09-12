@@ -490,6 +490,16 @@
     }
   },
   {
+    "file": "Bud and Terence (Original 2024) v1.6.vbs.original",
+    "sha256": "c4e0db1ff1b87b502e40acf3d0bcf6795ca62c0627fd75457390da200050808a",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bud Spencer & Terence Hill (Original 2024)/Bud and Terence (Original 2024) v1.6.vbs.original",
+    "patched": {
+      "file": "Bud and Terence (Original 2024) v1.6.vbs",
+      "sha256": "72171ee7d67f1505c112ae252d6daa5bd1aa7ea418bc4130ee1c3992e7238291",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bud Spencer & Terence Hill (Original 2024)/Bud and Terence (Original 2024) v1.6.vbs"
+    }
+  },
+  {
     "file": "Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs.original",
     "sha256": "facae5ac02964a5dec416b7e35ee2b09a08a15ce47c9c74dae10def52dda31c2",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b/Bugs Bunny's Birthday Ball (Bally 1991)Rev2.3b.vbs.original",
@@ -627,6 +637,16 @@
       "file": "Cue Ball Wizard (Gottlieb 1992) v1.1.2.vbs",
       "sha256": "195256bf258d4d8c001cdeaf53f5fd78979bd08b9ce517e7102e3b0c5191bebc",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cue Ball Wizard (Gottlieb 1992) v1.1.2/Cue Ball Wizard (Gottlieb 1992) v1.1.2.vbs"
+    }
+  },
+  {
+    "file": "Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs.original",
+    "sha256": "01afabb48c7c443dfcbcaf6a728964f47e5dc1057a969bc0267ef71568de25f9",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cybernaut (Bally 1985)/Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs.original",
+    "patched": {
+      "file": "Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs",
+      "sha256": "8789b276fa52c2f6b4047582016d69fd121bab7d5879d578bab55a6e7f6a9f52",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cybernaut (Bally 1985)/Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs"
     }
   },
   {

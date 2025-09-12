@@ -1,11 +1,11 @@
---- ./Bud Spencer & Terence Hill (Original 2024)/Bud and Terence (Original 2024) v1.6.vbs.original	2025-09-12 07:52:16
-+++ ./Bud Spencer & Terence Hill (Original 2024)/Bud and Terence (Original 2024) v1.6.vbs	2025-09-12 07:55:49
-@@ -4385,6 +4385,8 @@
- Const eScrollRight = 2 ' scroll on from the left
+--- Bud and Terence (Original 2024) v1.6.vbs.original
++++ Bud and Terence (Original 2024) v1.6.vbs
+@@ -4386,6 +4386,8 @@
  Const eBlink = 3       ' Blink (blinks for 'TimeOn')
  Const eBlinkFast = 4   ' Blink (blinks for 'TimeOn') at user specified intervals (fast speed)
-+
-+Const default = 0
  
++Const default = 0
++
  Const dqSize = 64
  
+ Dim dqHead

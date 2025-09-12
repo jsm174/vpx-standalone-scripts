@@ -1,10 +1,9 @@
---- ./Cybernaut (Bally 1985)/Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs.original	2025-09-12 07:38:16
-+++ ./Cybernaut (Bally 1985)/Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs	2025-09-12 07:45:00
-@@ -39,6 +39,19 @@
- On Error Goto 0
+--- Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs.original
++++ Cybernaut (Bally 1985)_Bigus(MOD)1.0.vbs
+@@ -40,6 +40,19 @@
  
  Const cGameName="cybrnaut",UseSolenoids=2,UseLamps=0,UseGI=0,SSolenoidOn="SolOn",SSolenoidOff="SolOff", SCoin="coin"
-+
+ 
 +
 +Const sSaucer=9'1
 +Const sLT=10'2              drop target reset
@@ -17,9 +16,10 @@
 +Const sCLo=18'9             ?
 +Const sEnable=19'10         K1 reley ( flipper enable )
 +Const sRightGate=20'11
- 
++
  LoadVPM "01130100", "Bally.VBS", 3.21
  Dim DesktopMode: DesktopMode = Table1.ShowDT
+ 
 @@ -90,19 +103,6 @@
  End Sub
  
