@@ -1,0 +1,9 @@
+1229c1229
+< 	ScoreReel6.SetValue (PlayersPlayingGame*10) + Balls
+---
+> 	ScoreReel6.SetValue ((PlayersPlayingGame*10) + Balls)
+2473c2473
+< End Sub
+\ No newline at end of file
+---
+> End Sub
