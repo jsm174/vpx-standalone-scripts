@@ -1,0 +1,29 @@
+--- ./GalaxyPlay_1_2/GalaxyPlay_1_2.vbs.original	2025-09-12 22:40:37
++++ ./GalaxyPlay_1_2/GalaxyPlay_1_2.vbs	2025-09-12 23:06:16
+@@ -154,7 +154,7 @@
+ 		cLCaptive.ForceTrans = 0.7
+ 		cLCaptive.MinForce = 1.5
+ 		cLCaptive.CreateEvents "cLCaptive"
+-		LCaptiveKicker.destroyball
++		'LCaptiveKicker.destroyball
+ 
+ 	Set cRCaptive=New cvpmCaptiveBall
+ 		cRCaptive.InitCaptive RCaptiveTrigger,RCaptiveWall,RCaptiveKicker,-45
+@@ -162,7 +162,7 @@
+ 		cRCaptive.ForceTrans = 0.7
+ 		cRCaptive.MinForce = 1.5
+ 		cRCaptive.CreateEvents "cRCaptive"
+-		RCaptiveKicker.destroyball
++		'RCaptiveKicker.destroyball
+ 
+ 	CaptiveInitKicker.createBall
+ 	CaptiveInitKicker.kick 180,5
+@@ -384,7 +384,7 @@
+ '      JP's VP10 Rolling Sounds
+ '*****************************************
+ 
+-Const tnob = 2 ' total number of balls
++Const tnob = 3 ' total number of balls
+ ReDim rolling(tnob)
+ InitRolling
+ 
