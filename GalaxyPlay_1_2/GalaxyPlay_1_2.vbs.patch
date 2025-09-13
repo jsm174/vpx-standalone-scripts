@@ -1,5 +1,5 @@
---- ./GalaxyPlay_1_2/GalaxyPlay_1_2.vbs.original	2025-09-12 22:40:37
-+++ ./GalaxyPlay_1_2/GalaxyPlay_1_2.vbs	2025-09-12 23:06:16
+--- GalaxyPlay_1_2.vbs.original
++++ GalaxyPlay_1_2.vbs
 @@ -154,7 +154,7 @@
  		cLCaptive.ForceTrans = 0.7
  		cLCaptive.MinForce = 1.5

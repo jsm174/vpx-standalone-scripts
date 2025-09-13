@@ -930,6 +930,16 @@
     }
   },
   {
+    "file": "GalaxyPlay_1_2.vbs.original",
+    "sha256": "c2c709bccb923e1c7355d5af28e6730305022fe69906b56f9c82aa7c91c0f845",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/GalaxyPlay_1_2/GalaxyPlay_1_2.vbs.original",
+    "patched": {
+      "file": "GalaxyPlay_1_2.vbs",
+      "sha256": "0797dc0d5aa5fcf3b3ce0d9d9eaed21c589651709f303c19e00325d17c7752f1",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/GalaxyPlay_1_2/GalaxyPlay_1_2.vbs"
+    }
+  },
+  {
     "file": "Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original",
     "sha256": "570f84aba4d57f3a4453845e495ae3a845c4e9bbfc52e2326326433c988d2e3a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW 1.2/Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original",
