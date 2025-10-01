@@ -1,0 +1,32 @@
+--- "./Transformers Pro (Stern 2011) v.2.2/Transformers Pro (Stern 2011) v.2.2.vbs.original"	2025-10-01 20:13:54.528670470 +0000
++++ "./Transformers Pro (Stern 2011) v.2.2/Transformers Pro (Stern 2011) v.2.2.vbs"	2025-10-01 20:13:54.527670470 +0000
+@@ -3310,12 +3310,28 @@
+ 	PlaySoundAtLevelActiveBall ("Apron_Hard_Hit_" & Int(Rnd * 3) + 1), BottomArchBallGuideSoundFactor * 0.25
+ End Sub
+ 
++'Remplacement du script Apron_Hit qui provoque le crash du jeu :
++'Sub Apron_Hit (idx)
++'	If Abs(cor.ballvelx(ActiveBall.id) < 4) And cor.ballvely(ActiveBall.id) > 7 Then
++'		RandomSoundBottomArchBallGuideHardHit()
++'	Else
++'		RandomSoundBottomArchBallGuide
++'	End If
++'End Sub
+ Sub Apron_Hit (idx)
+-	If Abs(cor.ballvelx(ActiveBall.id) < 4) And cor.ballvely(ActiveBall.id) > 7 Then
++    If Not IsEmpty(ActiveBall) And Not ActiveBall Is Nothing Then
++        On Error Resume Next ' Ignorer les erreurs temporairement
++        Dim ballId
++        ballId = ActiveBall.id
++        If Err.Number = 0 Then ' Vérifier si l'accès à ActiveBall.id a réussi
++            If Abs(cor.ballvelx(ballId) < 4) And cor.ballvely(ballId) > 7 Then
+ 		RandomSoundBottomArchBallGuideHardHit()
+ 	Else
+ 		RandomSoundBottomArchBallGuide
+ 	End If
++        End If
++        On Error Goto 0 ' Réactiver la gestion des erreurs
++    End If
+ End Sub
+ 
+ '/////////////////////////////  FLIPPER BALL GUIDE  ////////////////////////////
