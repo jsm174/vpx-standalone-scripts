@@ -3320,7 +3320,6 @@ End Sub
 'End Sub
 Sub Apron_Hit(idx)
     If Not IsEmpty(ActiveBall) And Not ActiveBall Is Nothing Then
-        On Error Resume Next ' Ignorer les erreurs temporairement
         Dim ballId
         ballId = ActiveBall.id
         If Err.Number = 0 Then ' Vérifier si l'accès à ActiveBall.id a réussi
@@ -3330,7 +3329,6 @@ Sub Apron_Hit(idx)
                 RandomSoundBottomArchBallGuide
             End If
         End If
-        On Error Goto 0 ' Réactiver la gestion des erreurs
     End If
 End Sub
 
