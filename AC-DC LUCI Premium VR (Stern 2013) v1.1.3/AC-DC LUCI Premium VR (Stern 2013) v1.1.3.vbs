@@ -377,7 +377,7 @@ end Sub
 		PinCab_Rails.visible=1
 		PinCab_FirePlate.visible=1
 		PushButton_0.visible=1
-		PushButton_002.visible=1
+		PushButton_002.visible=0
 		PushButton_001.visible=1
 		PushButton_003.visible=1
 	End If
