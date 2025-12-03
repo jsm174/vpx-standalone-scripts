@@ -1,5 +1,5 @@
---- ./Flash Gordon (Bally 1981) VPW Mod v3.0/Flash Gordon (Bally 1981) VPW Mod v3.0.vbs.original	2025-12-03 07:39:52
-+++ ./Flash Gordon (Bally 1981) VPW Mod v3.0/Flash Gordon (Bally 1981) VPW Mod v3.0.vbs	2025-12-03 07:36:09
+--- Flash Gordon (Bally 1981) VPW Mod v3.0.vbs.original
++++ Flash Gordon (Bally 1981) VPW Mod v3.0.vbs
 @@ -74,6 +74,7 @@
  Const lob = 0
  

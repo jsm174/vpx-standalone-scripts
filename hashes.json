@@ -870,13 +870,13 @@
     }
   },
   {
-    "file": "Flash Gordon (Bally 1981) 2.0.2.vbs.original",
-    "sha256": "7ed72cbd7ef556fcad321c1bbf6e45b61a9921e30cb25548ed1f35d5061d3d8f",
-    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash Gordon (Bally 1981) 2.0.2/Flash Gordon (Bally 1981) 2.0.2.vbs.original",
+    "file": "Flash Gordon (Bally 1981) VPW Mod v3.0.vbs.original",
+    "sha256": "10ebc81329d1b1e484b553daf3bb3ca3008cab317807df165640f24e2094dc0f",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash Gordon (Bally 1981) VPW Mod v3.0/Flash Gordon (Bally 1981) VPW Mod v3.0.vbs.original",
     "patched": {
-      "file": "Flash Gordon (Bally 1981) 2.0.2.vbs",
-      "sha256": "2cf7ed4176cc49b2f9b77e1bc4bb99a49833a1e85cd27eb70a565c20ca666a00",
-      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash Gordon (Bally 1981) 2.0.2/Flash Gordon (Bally 1981) 2.0.2.vbs"
+      "file": "Flash Gordon (Bally 1981) VPW Mod v3.0.vbs",
+      "sha256": "9301982f7dd6330a9f1ff8bbcc04ac0d3330a4a04b1a32b0ed8d3e5e020efaba",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Flash Gordon (Bally 1981) VPW Mod v3.0/Flash Gordon (Bally 1981) VPW Mod v3.0.vbs"
     }
   },
   {
