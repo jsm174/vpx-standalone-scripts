@@ -1,0 +1,18 @@
+--- ./Flash Gordon (Bally 1981) VPW Mod v3.0/Flash Gordon (Bally 1981) VPW Mod v3.0.vbs.original	2025-12-03 07:39:52
++++ ./Flash Gordon (Bally 1981) VPW Mod v3.0/Flash Gordon (Bally 1981) VPW Mod v3.0.vbs	2025-12-03 07:36:09
+@@ -74,6 +74,7 @@
+ Const lob = 0
+ 
+ Dim VRMode
++Const LiveViewVRSim = False
+ 
+ If RenderingMode = 2 Or LiveViewVRSim Then
+ 	VRMode = True
+@@ -236,7 +237,6 @@
+ Dim RampRollVolume : RampRollVolume = 0.5 		' Level of ramp rolling volume. Value between 0 and 1
+ 
+ '----- VR Room Auto-Detect -----
+-Const LiveViewVRSim = False
+ Dim BPRails, BPRamp1, BPRamp2, v
+ 
+ ' Called when options are tweaked by the player. 
