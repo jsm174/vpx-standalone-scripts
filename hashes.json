@@ -1830,6 +1830,16 @@
     }
   },
   {
+    "file": "Rattlecan v1.5.3.vbs.original",
+    "sha256": "fce21746ce03b811469797de7cb8e88c6e6e68bc58e1f730a593d190d11173c8",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rattlecan v1.5.3/Rattlecan v1.5.3.vbs.original",
+    "patched": {
+      "file": "Rattlecan v1.5.3.vbs",
+      "sha256": "8b7569f79e2ba1c950aeecb3064d872ab58fa8e658d25735ef26e2e342f55b38",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rattlecan v1.5.3/Rattlecan v1.5.3.vbs"
+    }
+  },
+  {
     "file": "Riccione.vbs.original",
     "sha256": "f144866a95ccbc7d75e4a5939d1787f1ca1f18500856b8b1d56729853e8eb171",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Riccione_V1.4/Riccione.vbs.original",
