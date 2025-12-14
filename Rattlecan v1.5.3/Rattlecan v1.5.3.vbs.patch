@@ -1,0 +1,19 @@
+--- Rattlecan v1.5.3.vbs.original
++++ Rattlecan v1.5.3.vbs
+@@ -604,14 +604,14 @@
+ 
+ Sub RescueBonus_Timer  
+ 	ScrollFromTopRight "    RESCUE BONUS    "
+-	BlinkANumber (CymonRescued+MaggieRescued+YoloRescued+KeenenRescued)*FriendsBonus_Score
++	BlinkANumber FriendsBonus_Score * (CymonRescued+MaggieRescued+YoloRescued+KeenenRescued)
+ 	RescueBonus.enabled=0
+ 	'PlaySound "sega_bonuscount", 0 , DigitalSoundsLevel	
+ End Sub
+ 
+ Sub SpectrumBonus_Timer	
+ 	ScrollFromTopLeft "   SPECTRUM BONUS   "
+-	BlinkANumber (CyanComplete+BlueComplete+MagentaComplete+RedComplete+YellowComplete+GreenComplete)*SpectrumBonus_Score
++	BlinkANumber SpectrumBonus_Score * (CyanComplete+BlueComplete+MagentaComplete+RedComplete+YellowComplete+GreenComplete)
+ 	SpectrumBonus.enabled=0
+ 	'PlaySound "sega_bonuscount", 0 , DigitalSoundsLevel	
+ End Sub
