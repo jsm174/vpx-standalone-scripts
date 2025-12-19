@@ -1,0 +1,82 @@
+--- "Blackwater 100 (Bally 1988) 1.1.vbs.original"	2024-01-20 22:31:53.631272190 +0100
++++ "Blackwater 100 (Bally 1988) 1.1.vbs"	2024-01-20 22:31:11.458122755 +0100
+@@ -71,17 +71,60 @@
+ 'Solenoid Controlled toys
+ '**********************************************************************************************************
+ 
++Class DropTarget
++  Private m_primary, m_secondary, m_prim, m_sw, m_animate, m_isDropped
++
++  Public Property Get Primary(): Set Primary = m_primary: End Property
++  Public Property Let Primary(input): Set m_primary = input: End Property
++
++  Public Property Get Secondary(): Set Secondary = m_secondary: End Property
++  Public Property Let Secondary(input): Set m_secondary = input: End Property
++
++  Public Property Get Prim(): Set Prim = m_prim: End Property
++  Public Property Let Prim(input): Set m_prim = input: End Property
++
++  Public Property Get Sw(): Sw = m_sw: End Property
++  Public Property Let Sw(input): m_sw = input: End Property
++
++  Public Property Get Animate(): Animate = m_animate: End Property
++  Public Property Let Animate(input): m_animate = input: End Property
++
++  Public Property Get IsDropped(): IsDropped = m_isDropped: End Property
++  Public Property Let IsDropped(input): m_isDropped = input: End Property
++
++  Public default Function init(primary, secondary, prim, sw, animate, isDropped)
++    Set m_primary = primary
++    Set m_secondary = secondary
++    Set m_prim = prim
++    m_sw = sw
++    m_animate = animate
++    m_isDropped = isDropped
++
++    Set Init = Me
++  End Function
++End Class
++
+ 'Start Gate Prim
+ Dim DropTargetPositions: DropTargetPositions=Array(-50, -40, -30, -20, -10, 0, 10, 10)
+-Dim DropTargets: DropTargets=Array(Array(0,Gate_DT, Gate_P1,200.1,0,Nothing), _
+-							 Array(0,Nothing, Gate_P2,200.1,0,Nothing), _ 
+-							 Array(0,Nothing, Gate_P3,200.1,0,Nothing), _
+-							 Array(0,Nothing, Gate_P4,175.2,0,Nothing), _
+-							 Array(0,Nothing, Gate_P5,175.2,0,Nothing))
++
++Dim DT0, DT1, DT2, DT3, DT4
++
++Set DT0 = (new DropTarget)(Nothing,Gate_DT, Gate_P1,200.1,0,false)
++Set DT1 = (new DropTarget)(Nothing,Nothing, Gate_P2,200.1,0,false)
++Set DT2 = (new DropTarget)(Nothing,Nothing, Gate_P3,200.1,0,false)
++Set DT3 = (new DropTarget)(Nothing,Nothing, Gate_P4,175.2,0,false)
++Set DT4 = (new DropTarget)(Nothing,Nothing, Gate_P5,175.2,0,false)
++
++
++Dim DropTargets: DropTargets=Array(DT0, DT1, DT2, DT3, DT4)
+ 
+ Sub SolGateDown(enabled)
+ 	If enabled then 
+-		DropTargets(0)(4) = -1: DropTargets(1)(4) = -1: DropTargets(2)(4) = -1: DropTargets(3)(4) = -1: DropTargets(4)(4) = -1
++    DropTargets(0).animate = -1
++    DropTargets(1).animate = -1
++    DropTargets(2).animate = -1
++    DropTargets(3).animate = -1
++    DropTargets(4).animate = -1
+ '		PlaySound SoundFX("Popper",DOFContactors)
+ 		Gate_DT.isdropped = 1
+ 		Gate_Wall.isdropped = 1
+@@ -91,7 +134,11 @@
+ 
+ Sub SolGateRaise(enabled)
+ 	If enabled Then 
+-		DropTargets(0)(4) = 1: DropTargets(1)(4) = 1: DropTargets(2)(4) = 1: DropTargets(3)(4) = 1: DropTargets(4)(4) = 1
++    DropTargets(0).animate = 1
++    DropTargets(1).animate = 1
++    DropTargets(2).animate = 1
++    DropTargets(3).animate = 1
++    DropTargets(4).animate = 1
+ 		PlaySound SoundFX("Popper",DOFContactors)
+ 		Gate_DT.isdropped = 0
+ 		Gate_Wall.isdropped = 0
