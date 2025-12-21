@@ -1,0 +1,77 @@
+--- GOTG_2.1.1.vbs.original
++++ GOTG_2.1.1.vbs
+@@ -17909,27 +17909,27 @@
+ 
+ '*************  starts PUP system,  must be called AFTER b2s/controller running so put in last line of table1_init
+ Sub PuPInit
+-Dim objFileToRead
++'Dim objFileToRead
+ 	on error resume next
+ 	Set PuPlayer = CreateObject("PinUpPlayer.PinDisplay")   
+ 	'puPlayer.Init pBonusScreen, ""
+ 
+ 	' Check Version Stuff
+-	if FileExists(puplayer.getroot&"\" & PuPPack_folder & "\version.txt") then
++' 	if FileExists(puplayer.getroot&"\" & PuPPack_folder & "\version.txt") then
+ 
+-		Set objFileToRead = fso.OpenTextFile(puplayer.getroot&"\" & PuPPack_folder & "\version.txt",1)
+-		PupPack_version = objFileToRead.ReadLine()
+-		objFileToRead.Close
+-		Set objFileToRead = Nothing
+-
+-		'use whatever command VPX uses to import external "version.txt" file (using the pup path above) to be used as vbs script
+-		if PupPack_version = PupPack_verified then
+-			if FileExists(puplayer.getroot&"\" & PuPPack_folder & "\Option Selected.txt") then
+-
+-				Set objFileToRead = fso.OpenTextFile(puplayer.getroot&"\" & PuPPack_folder & "\Option Selected.txt",1)
+-				PupOption = objFileToRead.ReadLine()
+-				objFileToRead.Close
+-				Set objFileToRead = Nothing
++' 		Set objFileToRead = fso.OpenTextFile(puplayer.getroot&"\" & PuPPack_folder & "\version.txt",1)
++' 		PupPack_version = objFileToRead.ReadLine()
++' 		objFileToRead.Close
++' 		Set objFileToRead = Nothing
++
++' 		'use whatever command VPX uses to import external "version.txt" file (using the pup path above) to be used as vbs script
++' 		if PupPack_version = PupPack_verified then
++' 			if FileExists(puplayer.getroot&"\" & PuPPack_folder & "\Option Selected.txt") then
++
++' 				Set objFileToRead = fso.OpenTextFile(puplayer.getroot&"\" & PuPPack_folder & "\Option Selected.txt",1)
++				PupOption = 2'objFileToRead.ReadLine()
++' 				objFileToRead.Close
++' 				Set objFileToRead = Nothing
+ 
+ 				if PupOption = 0 or PupOption=2 then   ' Desktop & 3 screen
+ 					ScreenType=0
+@@ -17939,19 +17939,19 @@
+ 					ScreenType=1
+ 				End if 
+ 
+-			   'use whatever command VPX uses to import external "Option Selected.txt" file (using the pup path above) to be used as vbs script
+-			   'make changes needed in script based on pup-pack option file found (like pupdmddrivertype,etc)
+-			end if
+-'			PuPlayer.B2SInit "",PuPPack_folder 'start the Pup-Pack
++' 			   'use whatever command VPX uses to import external "Option Selected.txt" file (using the pup path above) to be used as vbs script
++' 			   'make changes needed in script based on pup-pack option file found (like pupdmddrivertype,etc)
++' 			end if
++' '			PuPlayer.B2SInit "",PuPPack_folder 'start the Pup-Pack
+ 			PUPStatus = true
+-		Else
+-			MsgBox "PupPack version mismatch.  Please download the latest pupPack version " & PupPack_verified
+-			'pup-pack is not found or is incorrect version
+-			PUPStatus = false
+-			PUPEnabled = false
+-			'use FlexDMD or other option if supported on the table
+-		end if
+-	end if
++' 		Else
++' 			MsgBox "PupPack version mismatch.  Please download the latest pupPack version " & PupPack_verified
++' 			'pup-pack is not found or is incorrect version
++' 			PUPStatus = false
++' 			PUPEnabled = false
++' 			'use FlexDMD or other option if supported on the table
++' 		end if
++' 	end if
+ 
+ 	PuPlayer.B2SInit "", pGameName
+ 	on error goto 0
