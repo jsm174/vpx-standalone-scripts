@@ -1330,6 +1330,16 @@
     }
   },
   {
+    "file": "KISS (Stern 2015).vbs.original",
+    "sha256": "54861c755a29c7ea40b5c4b3ed4ff0f90807122b4648ed72b1ce080d6e4fca94",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/KISS (Stern 2015)/KISS (Stern 2015).vbs.original",
+    "patched": {
+      "file": "KISS (Stern 2015).vbs",
+      "sha256": "97555da34e038c1428f93ddd2c01980d451270ec968ce26738a39187b81f018e",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/KISS (Stern 2015)/KISS (Stern 2015).vbs"
+    }
+  },
+  {
     "file": "KISS (Stern 2015)_Bigus(MOD)1.1.vbs.original",
     "sha256": "5e74a9b17a8e742477a783b4f365d67c6de6660fd8b05b5826babf2c96577e3a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/KISS (Stern 2015)_Bigus(MOD)1.1/KISS (Stern 2015)_Bigus(MOD)1.1.vbs.original",
