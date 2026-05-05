@@ -1,0 +1,11 @@
+--- "./KISS (Stern 2015).vbs.original"	2026-04-03 13:03:13.381727164 -0600
++++ "./KISS (Stern 2015).vbs"	2026-04-03 13:09:26.223782189 -0600
+@@ -89,7 +89,7 @@
+ DMDPosY = 660                       '     Position in Decimal
+ 
+ ' Rightclick on UDMD window to get full list of colours
+-GetDMDColor
++` GetDMDColor  ` Subroutine is nothing but WshShell commands that aren't supported by VPX Standalone
+ 
+ Dim TableWidth  : TableWidth  = Table1.Width
+ Dim TableHeight : TableHeight = Table1.Height
