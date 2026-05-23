@@ -1,0 +1,33 @@
+--- Elvira and the Party Monsters (Bally 1989)_Bigus(MOD)2.4.vbs.original
++++ Elvira and the Party Monsters (Bally 1989)_Bigus(MOD)2.4.vbs
+@@ -1096,10 +1096,11 @@
+ 			.AddActor FlexDMD.NewImage("BackG", "FlexDMD.Resources.dmds.black.png")
+ 
+ 			vpmColourised = Controller.Games(cGameName).Settings.Value("dmd_colorize")
++			If Not IsNumeric(vpmColourised) Then vpmColourised = 0 Else vpmColourised = CLng(vpmColourised)
+ 			If vpmColourised = 0 Then
+-				vpm33Percent = Controller.Games(cGameName).Settings.Value("dmd_perc33") / 100
+-				vpm66Percent = Controller.Games(cGameName).Settings.Value("dmd_perc66") / 100
+-				vpmOffPercent = Controller.Games(cGameName).Settings.Value("dmd_perc0") / 100
++				vpm33Percent = SafePercent(Controller.Games(cGameName).Settings.Value("dmd_perc33"), 33)
++				vpm66Percent = SafePercent(Controller.Games(cGameName).Settings.Value("dmd_perc66"), 66)
++				vpmOffPercent = SafePercent(Controller.Games(cGameName).Settings.Value("dmd_perc0"), 0)
+ 			End If
+ 			
+ 			.AddActor FlexDMD.NewFrame("BackColour")
+@@ -1390,3 +1391,13 @@
+ 	If Length > Len(StringToPad) Then x = Length - len(StringToPad)
+ 	LPad = Space(x) & StringToPad
+ End Function
++
++Function SafePercent(v, defaultPercent)
++	'coerce a settings value to a 0..1 fraction with a fallback default percent (0..100)
++	'guards against missing/empty/non-numeric INI values that would cause type mismatch
++	If IsNumeric(v) Then
++		SafePercent = CDbl(v) / 100
++	Else
++		SafePercent = CDbl(defaultPercent) / 100
++	End If
++End Function
+\ No newline at end of file
+
