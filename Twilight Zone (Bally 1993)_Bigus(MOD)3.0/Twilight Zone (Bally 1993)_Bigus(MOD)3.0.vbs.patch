@@ -1,0 +1,63 @@
+--- Twilight Zone (Bally 1993)_Bigus(MOD)3.0.vbs.original
++++ Twilight Zone (Bally 1993)_Bigus(MOD)3.0.vbs
+@@ -220,7 +220,7 @@
+ 	With PowerBall
+ 		.image = "CBallW"
+ 		.color = RGB(255,255,255)
+-		.id = 666
++		.UserValue = 666
+ 		.Mass = 0.8*Ballmass
+ 	End With
+ End sub
+@@ -502,7 +502,7 @@
+ sub sw16_unhit():controller.Switch(16) = 0:updatetrough:end sub
+ 
+ sub sw15_hit()
+-if activeball.id = 666 then 	'opto handler
++if activeball.UserValue = 666 then 	'opto handler
+ 	controller.Switch(26) = 0	'if powerball
+ Else	
+ 	controller.Switch(26) = 1	'if regular ball
+@@ -512,7 +512,7 @@
+ sub sw15_unhit():controller.Switch(15) = 0:controller.switch(26) = 0:playsound SoundFX("fx_ballrel",DOFContactors):updatetrough:end sub	'if empty
+ 
+ sub sw26_hit
+-	if activeball.id = 666 then
++	if activeball.UserValue = 666 then
+ 		set powerballnf = activeball
+ 	end if
+ end Sub
+@@ -575,7 +575,7 @@
+ End Sub
+ 
+ Sub sw57_Hit()											'submarine switch, Tslot proximity
+-if activeball.id = 666 then
++if activeball.UserValue = 666 then
+ 	set powerballnf = activeball
+ else
+ controller.Switch(57) = 1
+@@ -1041,21 +1041,21 @@
+ Sub sw81_help_unhit
+ 	If activeball.vely > 28 then  activeball.vely = RndNum (26,27)			'-ninuzzu- Let's slow down the ball a bit so the magnets can
+ 	If activeball.vely < - 28 then  activeball.vely = - RndNum (26,27)		'catch the ball
+-	If mLowerRightMagnet.MagnetOn = 1 and activeball.id <> 666 then
++	If mLowerRightMagnet.MagnetOn = 1 and activeball.UserValue <> 666 then
+ 		activeball.vely = activeball.vely * -0.2
+ 		activeball.velx = activeball.velx * -0.2
+ 	End If
+ End Sub
+ 
+ Sub sw82_help_unhit
+-	If mUpperRightMagnet.MagnetOn = 1 and activeball.id <> 666 then
++	If mUpperRightMagnet.MagnetOn = 1 and activeball.UserValue <> 666 then
+ 		activeball.vely = activeball.vely * -0.2
+ 		activeball.velx = activeball.velx * -0.2
+     End If
+ End Sub
+ 
+ Sub sw83_help_unhit
+-	If mLeftMagnet.MagnetOn = 1 and activeball.id <> 666 then
++	If mLeftMagnet.MagnetOn = 1 and activeball.UserValue <> 666 then
+ 		activeball.vely = activeball.vely * -0.2
+ 		activeball.velx = activeball.velx * -0.2
+ 	End If
