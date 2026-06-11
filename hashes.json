@@ -940,6 +940,16 @@
     }
   },
   {
+    "file": "GalaxyQuest.vbs.original",
+    "sha256": "0b0e9563e447d363b92a8aead26bec99a7f3b1f60b68fde6ef90a3fc82c681dc",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/GalaxyQuest/GalaxyQuest.vbs.original",
+    "patched": {
+      "file": "GalaxyQuest.vbs",
+      "sha256": "cab38518c0771a27da875f17a9bddef8ddeb740ead9b514c84d4f40b6600b506",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/GalaxyQuest/GalaxyQuest.vbs"
+    }
+  },
+  {
     "file": "Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original",
     "sha256": "570f84aba4d57f3a4453845e495ae3a845c4e9bbfc52e2326326433c988d2e3a",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Game of Thrones LE (Stern 2015) VPW 1.2/Game of Thrones LE (Stern 2015) VPW 1.2.vbs.original",
