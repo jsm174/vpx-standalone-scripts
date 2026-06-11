@@ -1,0 +1,29 @@
+--- GalaxyQuest.vbs.original
++++ GalaxyQuest.vbs
+@@ -71,7 +71,7 @@
+ 	' initalise the FlexDMD display
+     If UseFlexDMD Then FlexDMD_Init
+ 
+-NVramPatchLoad
++'NVramPatchLoad
+     vpmInit me
+ 
+ 	' Ball texture
+@@ -155,7 +155,7 @@
+ Sub table1_Paused:Controller.Pause = 1:End Sub
+ Sub table1_unPaused:Controller.Pause = 0:End Sub
+ Sub table1_exit
+-	NVramPatchExit
++	'NVramPatchExit
+ 	If UseFlexDMD then
+ 		If IsObject(FlexDMD) Then 
+ 			If Not FlexDMD is Nothing Then
+@@ -588,7 +588,7 @@
+     End If
+     UpdateLeds
+     UpdateLamps
+-    NVramPatchKeyCheck
++    'NVramPatchKeyCheck
+ End Sub
+ 
+ Sub UpdateLamps()
