@@ -2560,6 +2560,16 @@
     }
   },
   {
+    "file": "Twilight Zone (Bally 1993)_Bigus(MOD)3.0.vbs.original",
+    "sha256": "a23ccbf1668d7ee758868a51d6f4e78ae641bb1b0b97cd5a3165db4c6b4b9c00",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twilight Zone (Bally 1993)_Bigus(MOD)3.0/Twilight Zone (Bally 1993)_Bigus(MOD)3.0.vbs.original",
+    "patched": {
+      "file": "Twilight Zone (Bally 1993)_Bigus(MOD)3.0.vbs",
+      "sha256": "150d6f0b64d8b11ced9b41385fc7315ab8dff2c8bdcfa4df24150955fb181668",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twilight Zone (Bally 1993)_Bigus(MOD)3.0/Twilight Zone (Bally 1993)_Bigus(MOD)3.0.vbs"
+    }
+  },
+  {
     "file": "Twister (Sega 1996) v2.0 w VR Room.vbs.original",
     "sha256": "709bd2fdfb8123e126e71efa0ae08628bbe74b024bc6f4f4a0b6eb4f4361a0c5",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Twister (Sega 1996) v2.0 w VR Room/Twister (Sega 1996) v2.0 w VR Room.vbs.original",
