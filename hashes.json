@@ -620,6 +620,16 @@
     }
   },
   {
+    "file": "Corinthian Master 1.3.vbs.original",
+    "sha256": "10072316216c119debbbadd4a8ef87b2badd5e3ec07a80948bd766243c65323d",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Corinthian Master 1.3/Corinthian Master 1.3.vbs.original",
+    "patched": {
+      "file": "Corinthian Master 1.3.vbs",
+      "sha256": "09b601ce170d814db6088360cbab19f6a8dc797d33ecffd752b331020d49af10",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Corinthian Master 1.3/Corinthian Master 1.3.vbs"
+    }
+  },
+  {
     "file": "Cosmic (Taito do Brasil - 1980) v4.vbs.original",
     "sha256": "0302236432d85dc2ccd5f2d62982e1036121ee1d273b2c32db915a9a6096d3a6",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Cosmic (Taito do Brasil - 1980) v4/Cosmic (Taito do Brasil - 1980) v4.vbs.original",
