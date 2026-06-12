@@ -2300,16 +2300,6 @@
     }
   },
   {
-    "file": "Student Prince (Williams 1968).vbs.original",
-    "sha256": "fd4f1483d8bb8814cd400b1fa227cac174a625277c4c474df4f9cb3184a35272",
-    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Student Prince (Williams 1968)/Student Prince (Williams 1968).vbs.original",
-    "patched": {
-      "file": "Student Prince (Williams 1968).vbs",
-      "sha256": "0d0368efe118d66ce0acaf09519885c07ae3e8e807eeeb5187bcca940370d29b",
-      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Student Prince (Williams 1968)/Student Prince (Williams 1968).vbs"
-    }
-  },
-  {
     "file": "Super Star (Williams 1972) v4.3.vbs.original",
     "sha256": "a7551199b2f8e3b7d256cac68ba8f1e3310f9e400b2be30c0e75886db63d7a9e",
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Super Star (Williams 1972) v4.3/Super Star (Williams 1972) v4.3.vbs.original",
