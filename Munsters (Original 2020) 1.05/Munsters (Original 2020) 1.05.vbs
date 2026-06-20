@@ -251,9 +251,12 @@ Const LilySwHitsNeeded=100  	' Number of switch hits before SJP
 
 DIM PupVideos
 
-' Orbital Scoreboard removed, but score-display guards still test osbkey;
-' keep it defined and empty so those `If osbkey="" Then` branches work.
-Dim osbkey: osbkey = ""
+'============================
+'  Orbital Scoreboard
+'============================
+
+Dim osbid:      osbid="MMadness"                             ' your orbital scoreboard login name or use the default MMadness code
+Dim osbkey:    osbkey=""                                     ' Orbital Scoreboard is dead; empty key keeps GetScores/SubmitOSBScore inert
 
 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1472,7 +1475,9 @@ End Sub
 
 	Sub SubmitScore
 		D "SubmitScore"
-		' Orbital Scoreboard removed
+		osbtemp = osbdefinit
+		osbtempscore=Score(CurrentPlayer)
+		SubmitOSBScore
 	End Sub
 
 	Sub EndOfBallComplete()
@@ -8875,6 +8880,172 @@ Sub PaintModesClear
 	PuPlayer.LabelSet pBackglass,"LBoost","",1,""
 	PuPlayer.LabelSet pBackglass,"SBoost","",1,""
 End Sub
+
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+'      OSB Orbital Score Board  http://www.orbitalscoreboard.com
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+	'****************************
+	' POST SCORES
+	'****************************
+	Dim osbtemp:osbtemp = osbdefinit
+	Dim osbtempscore:osbtempscore = 0
+	Sub SubmitOSBScore
+		On Error Resume Next
+		if osbactive = 1 or osbactive = 2 Then
+		Dim objXmlHttpMain, Url, strJSONToSend 
+
+		Url = "https://hook.integromat.com/82bu988v9grj31vxjklh2e4s6h97rnu0"
+
+		strJSONToSend = "{""auth"":""" & osbkey &""",""player id"": """ & osbid & """,""player initials"": """ & osbtemp &""",""score"": " & CStr(osbtempscore) & ",""table"":"""& TableName & """,""version"":""" & myVersion & """}"
+
+		Set objXmlHttpMain = CreateObject("Msxml2.ServerXMLHTTP")
+		objXmlHttpMain.open "PUT",Url, False
+		objXmlHttpMain.setRequestHeader "Content-Type", "application/json"
+		objXmlHttpMain.setRequestHeader "application", "application/json"
+
+		objXmlHttpMain.send strJSONToSend
+		end if
+	End Sub	
+
+	'****************************
+	' GET SCORES
+	'****************************
+	dim worldscores
+
+	Sub GetScores()
+		if osbkey="" then exit sub
+		On Error Resume Next
+		Dim objXmlHttpMain, Url, strJSONToSend 
+
+		Url = "https://hook.integromat.com/kj765ojs42ac3w4915elqj5b870jrm5c"
+
+		strJSONToSend = "{""auth"":"""& osbkey &""", ""table"":""" & TableName & """}"  ' TableName
+
+		Set objXmlHttpMain = CreateObject("Msxml2.ServerXMLHTTP")
+		objXmlHttpMain.open "PUT",Url, False
+		objXmlHttpMain.setRequestHeader "Content-Type", "application/json"
+		objXmlHttpMain.setRequestHeader "application", "application/json"
+
+		objXmlHttpMain.send strJSONToSend
+
+		worldscores = objXmlHttpMain.responseText
+		vpmtimer.addtimer 3000, "showsuccess '"
+		splitscores
+	End Sub	
+
+	Dim scorevar(23)
+	Dim dailyvar(23)
+	Dim weeklyvar(23)
+	Dim alltimevar(43)
+
+	EmptyScores:GetScores
+	sub emptyscores
+		dim i		
+		For i = 0 to 42
+			alltimevar(i) = "0"
+		Next
+		For i = 0 to 22
+			weeklyvar(i) = "0"
+			dailyvar(i) = "0"
+		Next
+	End Sub
+
+	Sub splitscores
+		On Error Resume Next
+		dim a,scoreset,subset,subit,myNum,daily,weekly,alltime,x
+		a = Split(worldscores,": {") 
+		subset = Split(a(1),"[")
+
+'		debug.print subset(1)
+'		debug.print subset(2)
+'		debug.print subset(3)
+' daily scores
+		myNum = 0
+		daily = Split(subset(1),": ")
+		for each x in daily
+			myNum = MyNum + 1
+			x = Replace(x, vbCr, "")
+			x = Replace(x, vbLf, "")
+			x = Replace(x, ",", "")
+			x = Replace(x, """", "")
+			x = Replace(x, "{", "")
+			x = Replace(x, "}", "")
+			x = Replace(x, "score", "")
+			x = Replace(x, "initials", "")
+			x = Replace(x, "weekly", "")
+			x = Replace(x, "]", "")
+			x = Replace(x, "alltime", "")
+			dailyvar(MyNum) = x
+			if dailyvar(MyNum) = "" Then
+				if MyNum = 2 or 4 or 6 or 8 or 10 or 12 or 14 or 16 or 18 or 20 Then
+					dailyvar(MyNum) = "OBS"
+				Else
+					dailyvar(MyNum) = 0
+				end if
+			end if
+			D "dailyvar(" &MyNum & ")=" & x
+		Next
+
+' weekly scores
+		myNum = 0
+		weekly = Split(subset(2),": ")
+		for each x in weekly
+			myNum = MyNum + 1
+			x = Replace(x, vbCr, "")
+			x = Replace(x, vbLf, "")
+			x = Replace(x, ",", "")
+			x = Replace(x, """", "")
+			x = Replace(x, "{", "")
+			x = Replace(x, "}", "")
+			x = Replace(x, "score", "")
+			x = Replace(x, "initials", "")
+			x = Replace(x, "weekly", "")
+			x = Replace(x, "]", "")
+			x = Replace(x, "alltime", "")
+			weeklyvar(MyNum) = x
+			if weeklyvar(MyNum) = "" Then
+				if MyNum = 2 or 4 or 6 or 8 or 10 or 12 or 14 or 16 or 18 or 20 Then
+					weeklyvar(MyNum) = "OBS"
+				Else
+					weeklyvar(MyNum) = 0
+				end if
+			end if
+			D "weeklyvar(" &MyNum & ")=" & x
+		Next
+' alltime scores
+		myNum = 0
+		alltime = Split(subset(3),": ")
+		for each x in alltime
+			myNum = MyNum + 1
+			x = Replace(x, vbCr, "")
+			x = Replace(x, vbLf, "")
+			x = Replace(x, ",", "")
+			x = Replace(x, """", "")
+			x = Replace(x, "{", "")
+			x = Replace(x, "}", "")
+			x = Replace(x, "score", "")
+			x = Replace(x, "initials", "")
+			x = Replace(x, "weekly", "")
+			x = Replace(x, "]", "")
+			x = Replace(x, "alltime", "")
+			alltimevar(MyNum) = x
+			if alltimevar(MyNum) = "" Then
+				if MyNum = 2 or 4 or 6 or 8 or 10 or 12 or 14 or 16 or 18 or 20 or 22 or 24 or 26 or 28 or 30 or 32 or 34 or 36 or 38 or 40 Then
+					alltimevar(MyNum) = "OBS"
+				Else
+					alltimevar(MyNum) = "0"
+				end if
+			end if
+			D "alltimevar(" &MyNum & ")=" & x
+		Next
+	end Sub
+
+	sub showsuccess
+	D "Scoreboard Updated"
+	'	'pupDMDDisplay "-","Scoreboard^Updated",dmdnote,3,0,10
+	end sub
+
 
 
 ' XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
