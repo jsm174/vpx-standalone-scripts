@@ -1,23 +1,622 @@
 --- Munsters (Original 2020) 1.05.vbs.original
 +++ Munsters (Original 2020) 1.05.vbs
-@@ -257,8 +257,9 @@
- '============================
+@@ -252,15 +252,6 @@
+ DIM PupVideos
  
- Dim osbid:      osbid="MMadness"                             ' your orbital scoreboard login name or use the default MMadness code
+ 
+-'============================
+-'  Orbital Scoreboard
+-'============================
+-
+-Dim osbid:      osbid="MMadness"                             ' your orbital scoreboard login name or use the default MMadness code
 -Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scoreboard api key or use the default Munster Table code
 -
-+'Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scoreboard api key or use the default Munster Table code
-+' Orbital score board is dead
-+Dim osbkey: osbkey=""
- 
- 
+-
+-
  'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-@@ -6014,7 +6015,7 @@
- 				PuPlayer.playstop pAudio
- 				PuPlayer.playlistplayex pAudio,"audionoise","Sound-0x018A.mp3",90,90
- 				MovieText CenterText(24,"TOTAL BONUS"), CenterText(26,FormatNumber( (50000+(10000*AreasComplete))*BonusMultiplier(CurrentPlayer),0))
--				AddScore (50000+(10000*AreasComplete))*BonusMultiplier(CurrentPlayer)
-+				AddScore ((50000+(10000*AreasComplete))*BonusMultiplier(CurrentPlayer))
- 			Case 26
- 				ClearPage3Timer.interval = 10
- 				ClearPage3Timer.Enabled = True
+ ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
+ '/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
+@@ -393,10 +384,8 @@
+ 		On Error Resume Next
+ 	End Sub
+ 
+-	Dim objShell
+-	Dim objShell2, objFs
+-	set objShell2 = CreateObject("shell.application")
+-	set objFs = CreateObject("Scripting.Filesystemobject")
++	' Dim objFs
++	' set objFs = CreateObject("Scripting.Filesystemobject")
+ 
+ 	Dim EnableBallControl
+ 	EnableBallControl = false 'Change to true to enable manual ball control (or press C in-game) via the arrow keys and B (boost movement) keys
+@@ -464,10 +453,10 @@
+ 
+ 	DOF 140, DOFOn
+ 
+-	GetTimes(objFs.GetFolder(Folder))
++	LoadMediaTimes
+ 
+-	set objShell2 = Nothing
+-	set objFs = Nothing
++	' set objShell2 = Nothing
++	' set objFs = Nothing
+ 
+ 	'Impulse Plunger as autoplunger
+ 	Const IMPowerSetting = 50 ' Plunger Power
+@@ -1479,9 +1468,7 @@
+ 
+ 	Sub SubmitScore
+ 		D "SubmitScore"
+-		osbtemp = osbdefinit
+-		osbtempscore=Score(CurrentPlayer)
+-		SubmitOSBScore
++		' Orbital Scoreboard removed
+ 	End Sub
+ 
+ 	Sub EndOfBallComplete()
+@@ -6031,55 +6018,288 @@
+ 
+ 
+ ' ------------------------ Parse Puplayer Videos
+-Function gnGetFileDetails(fo, fn)
+-        dim objFolder    
+-		gnGetFileDetails = ""
+-        set objFolder = objShell2.NameSpace(fo)
+-
+-        if (not objFolder is nothing) then
+-            dim objFolderItem
+-
+-            set objFolderItem = objFolder.ParseName(fn)
+-
+-            if (not objFolderItem Is Nothing) then                     
+-                gnGetFileDetails = objFolder.GetDetailsOf(objFolderItem, 27)   '27 length , 2 is type
+-			end if
+-            
+-            set objFolderItem = nothing
+-        end if
+-        
+-        set objFolder = nothing
+-End Function
++' gnGetFileDetails removed: PuP clip lengths are now hardcoded (LoadMediaTimes).
+ 
+ Function inseconds(s)
+ 	If len(s) = 8 Then inseconds=(mid(s,4,2)*60)+mid(s,7,2) else inseconds=0
+ End Function
+ 
+-Sub GetTimes(myfolder)
+-	Dim file, subfolder
+-	if instr(myfolder.name,"video") > 0 then
+-		fo(0)=fo(0)+1  ' tally of number of folders processed
+-		fo(fo(0))=myfolder.Name
+-		for each file in myfolder.Files
+-			If file.type = "MP4 File" Then 
+-				fn(fo(0),0)=fn(fo(0),0)+1
+-				fn(fo(0),fn(fo(0),0))=file.name
+-				fs(fo(0),fn(fo(0),0))=InSeconds(gnGetFileDetails(folder & myfolder.Name, file.name))
+-			End If
+-		Next
+-	End If
+-	If myfolder.name = "audiobg" Then
+-		for each file in myfolder.Files
+-			If file.type = "MP3 Format Sound" Then 
+-				MaxSongs=MaxSongs+1
+-				fn(40,MaxSongs)=file.name
+-		End If
+-	Next
+-	End If
+-	For Each subfolder in myfolder.Subfolders
+-		GetTimes(subfolder)
+-	Next
++' --- BEGIN generated PuP media table (scripts/gen_munsters_media.py) ---
++' Clip lengths + background songs hardcoded from the PuP pack so the
++' standalone host needs no shell.application / FSO File.Type. Regenerate
++' when the pack under pupvideos/<rom> changes.
++Sub LoadMediaTimes
++	' videoattract
++	AddTime "videoattract", "184 - attract.mp4", 14
++	AddTime "videoattract", "185 - attract.mp4", 9
++	AddTime "videoattract", "Video-0x0004 - stern attract.mp4", 5
++	AddTime "videoattract", "Video-0x0023 - attract.mp4", 17
++	AddTime "videoattract", "Video-0x0077 - long attract.mp4", 82
++	AddTime "videoattract", "Video-0x00BE.mp4", 3
++	' videobackground
++	AddTime "videobackground", "Video-0x000C.mp4", 5
++	AddTime "videobackground", "Video-0x008C.mp4", 6
++	AddTime "videobackground", "Video-0x00BE - intro fireplace.mp4", 3
++	' videoeddie
++	AddTime "videoeddie", "Video-0x00D5.mp4", 2
++	AddTime "videoeddie", "Video-0x00DA.mp4", 2
++	AddTime "videoeddie", "Video-0x00EE.mp4", 2
++	AddTime "videoeddie", "Video-0x0104.mp4", 2
++	AddTime "videoeddie", "Video-0x0111.mp4", 3
++	AddTime "videoeddie", "Video-0x0113.mp4", 4
++	AddTime "videoeddie", "Video-0x0130.mp4", 2
++	AddTime "videoeddie", "Video-0x0138.mp4", 1
++	AddTime "videoeddie", "Video-0x0149.mp4", 4
++	' videoenlargingray
++	AddTime "videoenlargingray", "Video-0x0012.mp4", 3
++	AddTime "videoenlargingray", "Video-0x001F.mp4", 3
++	AddTime "videoenlargingray", "Video-0x0031.mp4", 3
++	AddTime "videoenlargingray", "Video-0x0033.mp4", 3
++	AddTime "videoenlargingray", "Video-0x0057.mp4", 3
++	AddTime "videoenlargingray", "Video-0x0075.mp4", 3
++	AddTime "videoenlargingray", "Video-0x007B.mp4", 3
++	AddTime "videoenlargingray", "Video-0x007F.mp4", 3
++	AddTime "videoenlargingray", "Video-0x0093.mp4", 3
++	AddTime "videoenlargingray", "Video-0x00A6.mp4", 3
++	AddTime "videoenlargingray", "Video-0x00A8.mp4", 3
++	AddTime "videoenlargingray", "Video-0x00AA.mp4", 3
++	AddTime "videoenlargingray", "Video-0x00B0.mp4", 3
++	AddTime "videoenlargingray", "Video-0x00B1.mp4", 3
++	AddTime "videoenlargingray", "Video-0x00B4.mp4", 3
++	' videofiller
++	AddTime "videofiller", "Video-0x00D7.mp4", 5
++	AddTime "videofiller", "Video-0x00DB.mp4", 5
++	AddTime "videofiller", "Video-0x00DD.mp4", 5
++	AddTime "videofiller", "Video-0x0119.mp4", 5
++	AddTime "videofiller", "Video-0x011A.mp4", 6
++	AddTime "videofiller", "Video-0x011B.mp4", 6
++	AddTime "videofiller", "Video-0x0125.mp4", 5
++	AddTime "videofiller", "Video-0x012F.mp4", 5
++	AddTime "videofiller", "Video-0x0142.mp4", 5
++	AddTime "videofiller", "Video-0x014A.mp4", 6
++	' videograndpa
++	AddTime "videograndpa", "Video-0x00D6.mp4", 2
++	AddTime "videograndpa", "Video-0x00D9.mp4", 3
++	AddTime "videograndpa", "Video-0x00E6.mp4", 2
++	AddTime "videograndpa", "Video-0x00F0.mp4", 3
++	AddTime "videograndpa", "Video-0x00F5.mp4", 2
++	AddTime "videograndpa", "Video-0x00F6.mp4", 3
++	AddTime "videograndpa", "Video-0x00FB.mp4", 2
++	AddTime "videograndpa", "Video-0x00FF.mp4", 2
++	AddTime "videograndpa", "Video-0x010C.mp4", 3
++	AddTime "videograndpa", "Video-0x0114.mp4", 3
++	AddTime "videograndpa", "Video-0x0121.mp4", 2
++	AddTime "videograndpa", "Video-0x0122.mp4", 2
++	AddTime "videograndpa", "Video-0x012A.mp4", 1
++	AddTime "videograndpa", "Video-0x012B.mp4", 6
++	AddTime "videograndpa", "Video-0x013A.mp4", 1
++	AddTime "videograndpa", "Video-0x0144.mp4", 2
++	' videoherman
++	AddTime "videoherman", "Video-0x0036.mp4", 3
++	AddTime "videoherman", "Video-0x005B.mp4", 3
++	AddTime "videoherman", "Video-0x0076.mp4", 2
++	AddTime "videoherman", "Video-0x009E.mp4", 2
++	AddTime "videoherman", "Video-0x00D8.mp4", 3
++	AddTime "videoherman", "Video-0x00E5.mp4", 3
++	AddTime "videoherman", "Video-0x00E7.mp4", 3
++	AddTime "videoherman", "Video-0x00E9.mp4", 3
++	AddTime "videoherman", "Video-0x00F9.mp4", 3
++	' videojackpot
++	AddTime "videojackpot", "Video-0x0003 - raven.mp4", 2
++	AddTime "videojackpot", "Video-0x0022 - jackpot.mp4", 3
++	AddTime "videojackpot", "Video-0x005F - jackpot.mp4", 5
++	AddTime "videojackpot", "ZapJackpot.mp4", 2
++	' videolily
++	AddTime "videolily", "Video-0x00C7.mp4", 3
++	AddTime "videolily", "Video-0x00C8.mp4", 3
++	AddTime "videolily", "Video-0x00C9.mp4", 3
++	AddTime "videolily", "Video-0x00CA.mp4", 6
++	AddTime "videolily", "Video-0x00F7.mp4", 2
++	AddTime "videolily", "Video-0x018E.mp4", 8
++	' videomarilyn
++	AddTime "videomarilyn", "Video-0x00E4.mp4", 2
++	AddTime "videomarilyn", "Video-0x0105.mp4", 1
++	AddTime "videomarilyn", "Video-0x010A.mp4", 5
++	AddTime "videomarilyn", "Video-0x0112.mp4", 1
++	AddTime "videomarilyn", "Video-0x011C.mp4", 3
++	AddTime "videomarilyn", "Video-0x011D.mp4", 2
++	AddTime "videomarilyn", "Video-0x012E.mp4", 1
++	' videommadness
++	AddTime "videommadness", "Video-0x0007 - spot.mp4", 1
++	AddTime "videommadness", "Video-0x000A - eddie.mp4", 1
++	AddTime "videommadness", "Video-0x0028 - lily.mp4", 1
++	AddTime "videommadness", "Video-0x002D - raven.mp4", 0
++	AddTime "videommadness", "Video-0x006A -grandpa.mp4", 0
++	AddTime "videommadness", "Video-0x006E - marilyn.mp4", 1
++	AddTime "videommadness", "Video-0x009B - all - slower.mp4", 20
++	AddTime "videommadness", "Video-0x009B - all.mp4", 4
++	AddTime "videommadness", "Video-0x00A3 - madness.mp4", 0
++	' videoothers
++	AddTime "videoothers", "177 - door lit up - super skillshot.mp4", 6
++	AddTime "videoothers", "2 - intro - fireplace.mp4", 9
++	AddTime "videoothers", "38 - background filler.mp4", 16
++	AddTime "videoothers", "39 - background filler.mp4", 16
++	AddTime "videoothers", "6 - coffin open - shoot skill shot.mp4", 15
++	' videoraven
++	AddTime "videoraven", "Video-0x0020.mp4", 1
++	AddTime "videoraven", "Video-0x0064.mp4", 2
++	AddTime "videoraven", "Video-0x0071.mp4", 1
++	AddTime "videoraven", "Video-0x00A4.mp4", 2
++	AddTime "videoraven", "Video-0x00DE.mp4", 3
++	AddTime "videoraven", "Video-0x00F8.mp4", 2
++	AddTime "videoraven", "Video-0x00FD.mp4", 5
++	AddTime "videoraven", "Video-0x0102.mp4", 2
++	AddTime "videoraven", "Video-0x0109.mp4", 3
++	AddTime "videoraven", "Video-0x012D.mp4", 2
++	AddTime "videoraven", "Video-0x013B.mp4", 3
++	AddTime "videoraven", "Video-0x013D.mp4", 4
++	' videosjp
++	AddTime "videosjp", "Video-0x000B - zap.mp4", 4
++	AddTime "videosjp", "Video-0x000D - zap is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0013 - mystery is lit.mp4", 3
++	AddTime "videosjp", "Video-0x001A - grandpa is lit.mp4", 3
++	AddTime "videosjp", "Video-0x002F - spot is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0043 - mm is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0044 - spot.mp4", 4
++	AddTime "videosjp", "Video-0x0047 - marilyn is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0059 - lily.mp4", 4
++	AddTime "videosjp", "Video-0x005A - eddie.mp4", 4
++	AddTime "videosjp", "Video-0x005D - ray is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0060 - mm.mp4", 4
++	AddTime "videosjp", "Video-0x0069 - raven.mp4", 4
++	AddTime "videosjp", "Video-0x0073 - eddie is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0078 - ray.mp4", 4
++	AddTime "videosjp", "Video-0x0079 - mystery.mp4", 4
++	AddTime "videosjp", "Video-0x007E - herman is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0080 - herman.mp4", 4
++	AddTime "videosjp", "Video-0x008B - grandpa.mp4", 4
++	AddTime "videosjp", "Video-0x008D - lily is lit.mp4", 3
++	AddTime "videosjp", "Video-0x0099 - marilyn.mp4", 4
++	AddTime "videosjp", "Video-0x00BA - raven is lit.mp4", 3
++	' videospecials
++	AddTime "videospecials", "149 - special.mp4", 30
++	AddTime "videospecials", "Video-0x0001 - endofball.mp4", 12
++	AddTime "videospecials", "Video-0x002E - extra ball.mp4", 12
++	AddTime "videospecials", "Video-0x0037 - mystery.mp4", 7
++	AddTime "videospecials", "Video-0x005E - grandpa mode.mp4", 5
++	AddTime "videospecials", "Video-0x0062 - ball saved.mp4", 3
++	AddTime "videospecials", "Video-0x0063 - shoot left.mp4", 2
++	AddTime "videospecials", "Video-0x006B - extraball is lit.mp4", 4
++	AddTime "videospecials", "Video-0x008A - hit targets to lite.mp4", 4
++	AddTime "videospecials", "Video-0x008F - danger.mp4", 3
++	AddTime "videospecials", "Video-0x0090 - shoot again.mp4", 6
++	AddTime "videospecials", "Video-0x00AB - replay.mp4", 13
++	AddTime "videospecials", "Video-0x00AF - tilt.mp4", 4
++	AddTime "videospecials", "Video-0x00BB - raven mb.mp4", 4
++	AddTime "videospecials", "Video-0x00C7 - lily mode.mp4", 3
++	AddTime "videospecials", "Video-0x00CD - herman hurry.mp4", 2
++	AddTime "videospecials", "dragula.mp4", 5
++	' videospot
++	AddTime "videospot", "Video-0x0026.mp4", 4
++	AddTime "videospot", "Video-0x00DC.mp4", 2
++	AddTime "videospot", "Video-0x0127.mp4", 2
++	AddTime "videospot", "Video-0x0146.mp4", 2
++	AddTime "videospot", "Video-0x018F.mp4", 8
++	AddTime "videospot", "Video-0x0190.mp4", 10
++	' videotvclips
++	AddTime "videotvclips", "Video-0x0000.mp4", 11
++	AddTime "videotvclips", "Video-0x0009.mp4", 14
++	AddTime "videotvclips", "Video-0x000E.mp4", 7
++	AddTime "videotvclips", "Video-0x000F.mp4", 9
++	AddTime "videotvclips", "Video-0x0011.mp4", 12
++	AddTime "videotvclips", "Video-0x0015.mp4", 9
++	AddTime "videotvclips", "Video-0x0016.mp4", 13
++	AddTime "videotvclips", "Video-0x0017.mp4", 7
++	AddTime "videotvclips", "Video-0x001B.mp4", 9
++	AddTime "videotvclips", "Video-0x0024.mp4", 15
++	AddTime "videotvclips", "Video-0x0027.mp4", 8
++	AddTime "videotvclips", "Video-0x0030.mp4", 13
++	AddTime "videotvclips", "Video-0x003C.mp4", 8
++	AddTime "videotvclips", "Video-0x004E.mp4", 6
++	AddTime "videotvclips", "Video-0x004F.mp4", 11
++	AddTime "videotvclips", "Video-0x0065.mp4", 5
++	AddTime "videotvclips", "Video-0x0066.mp4", 16
++	AddTime "videotvclips", "Video-0x006D.mp4", 9
++	AddTime "videotvclips", "Video-0x007D.mp4", 14
++	AddTime "videotvclips", "Video-0x0081.mp4", 19
++	AddTime "videotvclips", "Video-0x0091.mp4", 10
++	AddTime "videotvclips", "Video-0x009D.mp4", 12
++	AddTime "videotvclips", "Video-0x00A0.mp4", 8
++	AddTime "videotvclips", "Video-0x00A2.mp4", 10
++	AddTime "videotvclips", "Video-0x00AD.mp4", 11
++	AddTime "videotvclips", "Video-0x00B3.mp4", 5
++	AddTime "videotvclips", "Video-0x00B8.mp4", 13
++	AddTime "videotvclips", "Video-0x00BD.mp4", 12
++	AddTime "videotvclips", "Video-0x00C5.mp4", 4
++	AddTime "videotvclips", "Video-0x00C6.mp4", 2
++	AddTime "videotvclips", "Video-0x00CE.mp4", 4
++	AddTime "videotvclips", "Video-0x00CF.mp4", 6
++	AddTime "videotvclips", "Video-0x00D0.mp4", 5
++	AddTime "videotvclips", "Video-0x014E.mp4", 7
++	AddTime "videotvclips", "Video-0x014F.mp4", 8
++	AddTime "videotvclips", "Video-0x0150.mp4", 11
++	AddTime "videotvclips", "Video-0x0151.mp4", 24
++	AddTime "videotvclips", "Video-0x0153.mp4", 16
++	AddTime "videotvclips", "Video-0x0155.mp4", 18
++	AddTime "videotvclips", "Video-0x0157.mp4", 14
++	AddTime "videotvclips", "Video-0x0158.mp4", 16
++	AddTime "videotvclips", "Video-0x0159.mp4", 12
++	AddTime "videotvclips", "Video-0x015C.mp4", 22
++	AddTime "videotvclips", "Video-0x015D.mp4", 9
++	AddTime "videotvclips", "Video-0x0161.mp4", 6
++	AddTime "videotvclips", "Video-0x0162.mp4", 11
++	AddTime "videotvclips", "Video-0x0166.mp4", 12
++	AddTime "videotvclips", "Video-0x0168.mp4", 13
++	AddTime "videotvclips", "Video-0x016B.mp4", 8
++	AddTime "videotvclips", "Video-0x016C.mp4", 12
++	AddTime "videotvclips", "Video-0x016D.mp4", 15
++	AddTime "videotvclips", "Video-0x0170.mp4", 13
++	AddTime "videotvclips", "Video-0x0175.mp4", 13
++	AddTime "videotvclips", "Video-0x0176.mp4", 10
++	AddTime "videotvclips", "Video-0x0177.mp4", 13
++	AddTime "videotvclips", "Video-0x0179.mp4", 11
++	AddTime "videotvclips", "Video-0x017B.mp4", 12
++	AddTime "videotvclips", "Video-0x017C.mp4", 13
++	AddTime "videotvclips", "Video-0x017D.mp4", 10
++	AddTime "videotvclips", "Video-0x017F.mp4", 14
++	AddTime "videotvclips", "Video-0x0181.mp4", 17
++	AddTime "videotvclips", "Video-0x0182.mp4", 12
++	AddTime "videotvclips", "Video-0x0184.mp4", 8
++	AddTime "videotvclips", "Video-0x0186.mp4", 7
++	AddTime "videotvclips", "Video-0x0188.mp4", 13
++	AddTime "videotvclips", "Video-0x018A.mp4", 12
++	AddTime "videotvclips", "Video-0x018B.mp4", 9
++	AddTime "videotvclips", "Video-0x018D.mp4", 12
++	' audiobg background songs
++	AddSong "Sound-0x0A1D.mp3"
++	AddSong "Sound-0x0A22.mp3"
++	AddSong "Sound-0x0A24.mp3"
++	AddSong "Sound-0x0A28.mp3"
++	AddSong "Sound-0x0A29.mp3"
++	AddSong "Sound-0x0A2D.mp3"
++	AddSong "Sound-0x0A2E.mp3"
++	AddSong "Sound-0x0A2F.mp3"
++	AddSong "Sound-0x0A32.mp3"
++	AddSong "Sound-0x0A33.mp3"
++End Sub
++
++Sub AddTime(fol, fil, secs)
++	Dim fi : fi = GetFolder(fol)
++	If fi = 0 Then
++		fo(0) = fo(0) + 1
++		fi = fo(0)
++		fo(fi) = fol
++	End If
++	fn(fi, 0) = fn(fi, 0) + 1
++	fn(fi, fn(fi, 0)) = fil
++	fs(fi, fn(fi, 0)) = secs
++End Sub
++
++Sub AddSong(fil)
++	maxsongs = maxsongs + 1
++	fn(40, maxsongs) = fil
+ End Sub 
++' --- END generated PuP media table --- 
+ 
+ Function GetTime(ifo,ifn)
+ 	Dim  a,f,n
+@@ -6173,34 +6393,34 @@
+ 	B2SOn = False
+ 	B2SOnALT = False
+ 	tempC = 0
+-	on error resume next
+-	Set objShell = CreateObject("WScript.Shell")
+-	objShell.RegRead(directory & "ForceDisableB2S")
+-	If Err.number <> 0 Then
+-		PopupMessage = "This latest version of Controller.vbs stores its settings in the registry. To adjust the values, you must use VP 10.2 (or newer) and setup your configuration in the DOF section of the -Keys, Nudge and DOF- dialog of Visual Pinball."
+-		objShell.RegWrite directory & "ForceDisableB2S",0, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFContactors",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFKnocker",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFChimes",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFBell",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFGear",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFShaker",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFFlippers",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFTargets",2, "REG_DWORD"
+-		objShell.RegWrite directory & "DOFDropTargets",2, "REG_DWORD"
+-		MsgBox PopupMessage
+-	End If
+-	tempC = objShell.RegRead(directory & "ForceDisableB2S")
+-	DOFeffects(1)=objShell.RegRead(directory & "DOFContactors")
+-	DOFeffects(2)=objShell.RegRead(directory & "DOFKnocker")
+-	DOFeffects(3)=objShell.RegRead(directory & "DOFChimes")
+-	DOFeffects(4)=objShell.RegRead(directory & "DOFBell")
+-	DOFeffects(5)=objShell.RegRead(directory & "DOFGear")
+-	DOFeffects(6)=objShell.RegRead(directory & "DOFShaker")
+-	DOFeffects(7)=objShell.RegRead(directory & "DOFFlippers")
+-	DOFeffects(8)=objShell.RegRead(directory & "DOFTargets")
+-	DOFeffects(9)=objShell.RegRead(directory & "DOFDropTargets")
+-	Set objShell = nothing
++
++	' Set objShell = CreateObject("WScript.Shell")
++	' objShell.RegRead(directory & "ForceDisableB2S")
++	' If Err.number <> 0 Then
++	' 	PopupMessage = "This latest version of Controller.vbs stores its settings in the registry. To adjust the values, you must use VP 10.2 (or newer) and setup your configuration in the DOF section of the -Keys, Nudge and DOF- dialog of Visual Pinball."
++	' 	objShell.RegWrite directory & "ForceDisableB2S",0, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFContactors",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFKnocker",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFChimes",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFBell",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFGear",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFShaker",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFFlippers",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFTargets",2, "REG_DWORD"
++	' 	objShell.RegWrite directory & "DOFDropTargets",2, "REG_DWORD"
++	' 	MsgBox PopupMessage
++	' End If
++	' tempC = objShell.RegRead(directory & "ForceDisableB2S")
++	' DOFeffects(1)=objShell.RegRead(directory & "DOFContactors")
++	' DOFeffects(2)=objShell.RegRead(directory & "DOFKnocker")
++	' DOFeffects(3)=objShell.RegRead(directory & "DOFChimes")
++	' DOFeffects(4)=objShell.RegRead(directory & "DOFBell")
++	' DOFeffects(5)=objShell.RegRead(directory & "DOFGear")
++	' DOFeffects(6)=objShell.RegRead(directory & "DOFShaker")
++	' DOFeffects(7)=objShell.RegRead(directory & "DOFFlippers")
++	' DOFeffects(8)=objShell.RegRead(directory & "DOFTargets")
++	' DOFeffects(9)=objShell.RegRead(directory & "DOFDropTargets")
++	' Set objShell = nothing
+ 
+ 	If TableType = "PROC" or TableType = "VPMALT" Then
+ 		If TableType = "PROC" Then
+@@ -8652,170 +8872,6 @@
+ 	PuPlayer.LabelSet pBackglass,"SBoost","",1,""
+ End Sub
+ 
+-'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+-'      OSB Orbital Score Board  http://www.orbitalscoreboard.com
+-'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+-
+-	'****************************
+-	' POST SCORES
+-	'****************************
+-	Dim osbtemp:osbtemp = osbdefinit
+-	Dim osbtempscore:osbtempscore = 0
+-	Sub SubmitOSBScore
+-		On Error Resume Next
+-		if osbactive = 1 or osbactive = 2 Then
+-		Dim objXmlHttpMain, Url, strJSONToSend 
+-
+-		Url = "https://hook.integromat.com/82bu988v9grj31vxjklh2e4s6h97rnu0"
+-
+-		strJSONToSend = "{""auth"":""" & osbkey &""",""player id"": """ & osbid & """,""player initials"": """ & osbtemp &""",""score"": " & CStr(osbtempscore) & ",""table"":"""& TableName & """,""version"":""" & myVersion & """}"
+-
+-		Set objXmlHttpMain = CreateObject("Msxml2.ServerXMLHTTP")
+-		objXmlHttpMain.open "PUT",Url, False
+-		objXmlHttpMain.setRequestHeader "Content-Type", "application/json"
+-		objXmlHttpMain.setRequestHeader "application", "application/json"
+-
+-		objXmlHttpMain.send strJSONToSend
+-		end if
+-	End Sub	
+-
+-	'****************************
+-	' GET SCORES
+-	'****************************
+-	dim worldscores
+-
+-	Sub GetScores()
+-		if osbkey="" then exit sub
+-		On Error Resume Next
+-		Dim objXmlHttpMain, Url, strJSONToSend 
+-
+-		Url = "https://hook.integromat.com/kj765ojs42ac3w4915elqj5b870jrm5c"
+-
+-		strJSONToSend = "{""auth"":"""& osbkey &""", ""table"":""" & TableName & """}"  ' TableName
+-
+-		Set objXmlHttpMain = CreateObject("Msxml2.ServerXMLHTTP")
+-		objXmlHttpMain.open "PUT",Url, False
+-		objXmlHttpMain.setRequestHeader "Content-Type", "application/json"
+-		objXmlHttpMain.setRequestHeader "application", "application/json"
+-
+-		objXmlHttpMain.send strJSONToSend
+-
+-		worldscores = objXmlHttpMain.responseText
+-		vpmtimer.addtimer 3000, "showsuccess '"
+-		splitscores
+-	End Sub	
+-
+-	Dim scorevar(23)
+-	Dim dailyvar(23)
+-	Dim weeklyvar(23)
+-	Dim alltimevar(43)
+-
+-	EmptyScores:GetScores
+-	sub emptyscores
+-		dim i		
+-		For i = 0 to 42
+-			alltimevar(i) = "0"
+-		Next
+-		For i = 0 to 22
+-			weeklyvar(i) = "0"
+-			dailyvar(i) = "0"
+-		Next
+-	End Sub
+-
+-	Sub splitscores
+-		On Error Resume Next
+-		dim a,scoreset,subset,subit,myNum,daily,weekly,alltime,x
+-		a = Split(worldscores,": {") 
+-		subset = Split(a(1),"[")
+-
+-'		debug.print subset(1)
+-'		debug.print subset(2)
+-'		debug.print subset(3)
+-' daily scores
+-		myNum = 0
+-		daily = Split(subset(1),": ")
+-		for each x in daily
+-			myNum = MyNum + 1
+-			x = Replace(x, vbCr, "")
+-			x = Replace(x, vbLf, "")
+-			x = Replace(x, ",", "")
+-			x = Replace(x, """", "")
+-			x = Replace(x, "{", "")
+-			x = Replace(x, "}", "")
+-			x = Replace(x, "score", "")
+-			x = Replace(x, "initials", "")
+-			x = Replace(x, "weekly", "")
+-			x = Replace(x, "]", "")
+-			x = Replace(x, "alltime", "")
+-			dailyvar(MyNum) = x
+-			if dailyvar(MyNum) = "" Then
+-				if MyNum = 2 or 4 or 6 or 8 or 10 or 12 or 14 or 16 or 18 or 20 Then
+-					dailyvar(MyNum) = "OBS"
+-				Else
+-					dailyvar(MyNum) = 0
+-				end if
+-			end if
+-			D "dailyvar(" &MyNum & ")=" & x
+-		Next
+-
+-' weekly scores
+-		myNum = 0
+-		weekly = Split(subset(2),": ")
+-		for each x in weekly
+-			myNum = MyNum + 1
+-			x = Replace(x, vbCr, "")
+-			x = Replace(x, vbLf, "")
+-			x = Replace(x, ",", "")
+-			x = Replace(x, """", "")
+-			x = Replace(x, "{", "")
+-			x = Replace(x, "}", "")
+-			x = Replace(x, "score", "")
+-			x = Replace(x, "initials", "")
+-			x = Replace(x, "weekly", "")
+-			x = Replace(x, "]", "")
+-			x = Replace(x, "alltime", "")
+-			weeklyvar(MyNum) = x
+-			if weeklyvar(MyNum) = "" Then
+-				if MyNum = 2 or 4 or 6 or 8 or 10 or 12 or 14 or 16 or 18 or 20 Then
+-					weeklyvar(MyNum) = "OBS"
+-				Else
+-					weeklyvar(MyNum) = 0
+-				end if
+-			end if
+-			D "weeklyvar(" &MyNum & ")=" & x
+-		Next
+-' alltime scores
+-		myNum = 0
+-		alltime = Split(subset(3),": ")
+-		for each x in alltime
+-			myNum = MyNum + 1
+-			x = Replace(x, vbCr, "")
+-			x = Replace(x, vbLf, "")
+-			x = Replace(x, ",", "")
+-			x = Replace(x, """", "")
+-			x = Replace(x, "{", "")
+-			x = Replace(x, "}", "")
+-			x = Replace(x, "score", "")
+-			x = Replace(x, "initials", "")
+-			x = Replace(x, "weekly", "")
+-			x = Replace(x, "]", "")
+-			x = Replace(x, "alltime", "")
+-			alltimevar(MyNum) = x
+-			if alltimevar(MyNum) = "" Then
+-				if MyNum = 2 or 4 or 6 or 8 or 10 or 12 or 14 or 16 or 18 or 20 or 22 or 24 or 26 or 28 or 30 or 32 or 34 or 36 or 38 or 40 Then
+-					alltimevar(MyNum) = "OBS"
+-				Else
+-					alltimevar(MyNum) = "0"
+-				end if
+-			end if
+-			D "alltimevar(" &MyNum & ")=" & x
+-		Next
+-	end Sub
+-
+-	sub showsuccess
+-	D "Scoreboard Updated"
+-	'	'pupDMDDisplay "-","Scoreboard^Updated",dmdnote,3,0,10
+-	end sub
+ 
+ ' XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ ' nFozzy Physics
