@@ -1,9 +1,10 @@
 --- Munsters (Original 2020) 1.05.vbs.original
 +++ Munsters (Original 2020) 1.05.vbs
-@@ -252,15 +252,6 @@
+@@ -251,14 +251,9 @@
+ 
  DIM PupVideos
  
- 
+-
 -'============================
 -'  Orbital Scoreboard
 -'============================
@@ -11,12 +12,13 @@
 -Dim osbid:      osbid="MMadness"                             ' your orbital scoreboard login name or use the default MMadness code
 -Dim osbkey:    osbkey="09dcddca-8710-11ea-97f8-42010a8a06b6" ' your orbital scoreboard api key or use the default Munster Table code
 -
--
--
++' Orbital Scoreboard removed, but score-display guards still test osbkey;
++' keep it defined and empty so those `If osbkey="" Then` branches work.
++Dim osbkey: osbkey = ""
+ 
+ 
  'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
- ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
- '/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
-@@ -393,10 +384,8 @@
+@@ -393,10 +388,8 @@
  		On Error Resume Next
  	End Sub
  
@@ -29,7 +31,7 @@
  
  	Dim EnableBallControl
  	EnableBallControl = false 'Change to true to enable manual ball control (or press C in-game) via the arrow keys and B (boost movement) keys
-@@ -464,10 +453,10 @@
+@@ -464,10 +457,10 @@
  
  	DOF 140, DOFOn
  
@@ -43,7 +45,7 @@
  
  	'Impulse Plunger as autoplunger
  	Const IMPowerSetting = 50 ' Plunger Power
-@@ -1479,9 +1468,7 @@
+@@ -1479,9 +1472,7 @@
  
  	Sub SubmitScore
  		D "SubmitScore"
@@ -54,7 +56,7 @@
  	End Sub
  
  	Sub EndOfBallComplete()
-@@ -6031,55 +6018,288 @@
+@@ -6031,55 +6022,288 @@
  
  
  ' ------------------------ Parse Puplayer Videos
@@ -386,7 +388,7 @@
  
  Function GetTime(ifo,ifn)
  	Dim  a,f,n
-@@ -6173,34 +6393,34 @@
+@@ -6173,34 +6397,34 @@
  	B2SOn = False
  	B2SOnALT = False
  	tempC = 0
@@ -449,7 +451,7 @@
  
  	If TableType = "PROC" or TableType = "VPMALT" Then
  		If TableType = "PROC" Then
-@@ -8652,170 +8872,6 @@
+@@ -8652,170 +8876,6 @@
  	PuPlayer.LabelSet pBackglass,"SBoost","",1,""
  End Sub
  
