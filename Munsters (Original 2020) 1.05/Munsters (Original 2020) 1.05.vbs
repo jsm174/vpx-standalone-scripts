@@ -251,6 +251,10 @@ Const LilySwHitsNeeded=100  	' Number of switch hits before SJP
 
 DIM PupVideos
 
+' Orbital Scoreboard removed, but score-display guards still test osbkey;
+' keep it defined and empty so those `If osbkey="" Then` branches work.
+Dim osbkey: osbkey = ""
+
 
 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ' X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  X  
