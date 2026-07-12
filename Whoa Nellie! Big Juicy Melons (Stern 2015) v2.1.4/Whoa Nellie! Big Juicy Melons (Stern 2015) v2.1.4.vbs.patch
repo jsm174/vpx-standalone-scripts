@@ -1,0 +1,71 @@
+--- "Whoa Nellie! Big Juicy Melons (Stern 2015) v2.1.4.vbs.original"	2026-07-12 18:08:57.521482846 -0400
++++ "Whoa Nellie! Big Juicy Melons (Stern 2015) v2.1.4.vbs"	2026-07-12 18:07:22.388743282 -0400
+@@ -209,7 +209,7 @@
+         TiltCheck
+     End If
+  
+-    if keycode = 6 then   ' Add coin
++    if keycode = AddCreditKey then   ' Add coin
+           if Credit < 9 then
+             Credit = Credit + 1
+             DOF 121, 1
+@@ -230,7 +230,7 @@
+   '  if keycode = 200 then RightInLaneTrigger_hit ' test functions   up arrow
+   '  if keycode = 204 then trigger5_hit' test functions   enter keypad
+  
+-    if keycode = 2 then
++    if keycode = StartGameKey then
+         If EnableInitialEntry = False Then
+ ' Do not add players if Credit = 0
+         if Credit > 0 then
+@@ -471,7 +471,7 @@
+     PlaySound "initialize"
+     ResetTimer.Enabled = TRUE
+     If B2SOn Then
+-        Controller.B2SSetScore 1,score(1)
++        Controller.B2SSetScorePlayer 1,score(1)
+     End If
+ End Sub
+  
+@@ -1591,7 +1591,7 @@
+     AddReel val
+  
+     If B2SOn Then
+-        Controller.B2SSetScore 1,Score(1)
++        Controller.B2SSetScorePlayer 1,Score(1)
+     End If
+   End If  
+ End Sub    
+@@ -1646,11 +1646,11 @@
+ '*************Load Scores
+ Sub LoadHighScore
+     dim temp
+-    temp = LoadValue("nellie", "credit")
++    temp = LoadValue("nellie", "Credit")
+     If (temp <> "") then Credit = CDbl(temp)
+     temp = LoadValue("nellie", "HiScore")
+     If (temp <> "") then HiSc = CDbl(temp)
+-    temp = LoadValue("nellie", "match")
++    temp = LoadValue("nellie", "Match")
+     If (temp <> "") then MatchNumber = CDbl(temp)
+     temp = LoadValue("nellie", "Initial1")
+     If (temp <> "") then Initial(1) = CDbl(temp)
+@@ -1658,9 +1658,9 @@
+     If (temp <> "") then Initial(2) = CDbl(temp)
+     temp = LoadValue("nellie", "Initial3")
+     If (temp <> "") then Initial(3) = CDbl(temp)
+-    temp = LoadValue("nellie", "score4")
++    temp = LoadValue("nellie", "Score4")
+     If (temp <> "") then score(1) = CDbl(temp)
+-    temp = LoadValue("nellie", "balls")
++    temp = LoadValue("nellie", "Balls")
+     If (temp <> "") then Balls = CDbl(temp)
+ End Sub
+  
+@@ -2193,4 +2193,4 @@
+             BallShadow(b).visible = 0
+         End If
+     Next
+-End Sub
+\ No newline at end of file
++End Sub
