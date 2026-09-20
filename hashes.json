@@ -795,7 +795,7 @@
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elektra (Bally 1981) w VR Room v2.0.7/Elektra (Bally 1981) w VR Room v2.0.7.vbs.original",
     "patched": {
       "file": "Elektra (Bally 1981) w VR Room v2.0.7.vbs",
-      "sha256": "d418424c6fd27be37d57a5a82027fab13f9889c4a6152d53f1c3346db1b88627",
+      "sha256": "d72b3b5378d3fbfcc8cff160a2e97aff40ebf15b74d88c942cb8c284af73ed01",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Elektra (Bally 1981) w VR Room v2.0.7/Elektra (Bally 1981) w VR Room v2.0.7.vbs"
     }
   },
@@ -935,7 +935,7 @@
     "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Galaxy (Stern 1980)/Galaxy (Stern 1980).vbs.original",
     "patched": {
       "file": "Galaxy (Stern 1980).vbs",
-      "sha256": "718618ceb396b7ba0a010052956e6862ac3870f28586e5bc34414fbf1969b987",
+      "sha256": "198df720cff9fe94b8ab20a7d6f67df77ded98993fe06a2a74b5358ab116f4bb",
       "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Galaxy (Stern 1980)/Galaxy (Stern 1980).vbs"
     }
   },
