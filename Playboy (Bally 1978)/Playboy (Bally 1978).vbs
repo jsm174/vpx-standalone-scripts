@@ -36,7 +36,7 @@ SolCallback(8)     		= "bsSaucer.SolOut"
 SolCallback(13) 		= "dtRBank.SolDropUp"
 SolCallback(sLRFlipper) = "SolRFlipper"
 SolCallback(sLLFlipper) = "SolLFlipper"
-' SolCallback(2)     		= "vpmSolSound Soundfx(""Knocker"",DOFKnocker)," 
+SolCallback(2)     		= "vpmSolSound Soundfx(""Knocker"",DOFKnocker)," 
 
 Set vpmShowDips 		= GetRef("editDips")
 Set LampCallback		= GetRef("UpdateMultipleLamps")
