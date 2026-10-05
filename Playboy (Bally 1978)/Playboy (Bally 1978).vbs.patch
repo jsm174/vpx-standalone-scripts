@@ -1,5 +1,5 @@
---- "Playboy (Bally 1978)/Playboy (Bally 1978).vbs.original"	2026-10-05 20:12:35.816080819 +0200
-+++ "Playboy (Bally 1978)/Playboy (Bally 1978).vbs"	2026-10-05 20:13:46.245493643 +0200
+--- Playboy (Bally 1978).vbs.original
++++ Playboy (Bally 1978).vbs
 @@ -36,7 +36,7 @@
  SolCallback(13) 		= "dtRBank.SolDropUp"
  SolCallback(sLRFlipper) = "SolRFlipper"
