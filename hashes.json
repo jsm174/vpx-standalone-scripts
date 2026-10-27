@@ -1900,13 +1900,13 @@
     }
   },
   {
-    "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original",
-    "sha256": "ef9629d4d7e02a29cceeadc0b4bd550d2623cee787329e9dcecfd29092a581cb",
-    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.3/Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs.original",
+    "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.4.vbs.original",
+    "sha256": "9bdffa0b3c4082c4f9b98a55905b113cfc4e06320a41d3b780df290362650ba0",
+    "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.4/Rollercoaster Tycoon (Stern 2002) VPW 2.4.vbs.original",
     "patched": {
-      "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs",
-      "sha256": "1ae5c11b6773117ba7bbf410659da4af1f1374ac16719a7d4f0c2d9676bcce85",
-      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.3/Rollercoaster Tycoon (Stern 2002) VPW 2.3.vbs"
+      "file": "Rollercoaster Tycoon (Stern 2002) VPW 2.4.vbs",
+      "sha256": "b207a51d2c5bd4138e27b81a5a16dc0eb1e6830032032e194aed8930a8a1db18",
+      "url": "https://raw.githubusercontent.com/jsm174/vpx-standalone-scripts/refs/heads/master/Rollercoaster Tycoon (Stern 2002) VPW 2.4/Rollercoaster Tycoon (Stern 2002) VPW 2.4.vbs"
     }
   },
   {
