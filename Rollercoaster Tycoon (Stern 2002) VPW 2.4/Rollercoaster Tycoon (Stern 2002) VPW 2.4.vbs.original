@@ -89,6 +89,7 @@ Dim BP_Gate8: BP_Gate8=Array(BM_Gate8, LM_Gi_Gate8)
 Dim BP_GhostTarget: BP_GhostTarget=Array(BM_GhostTarget, LM_Flashers_L129_GhostTarget, LM_Flashers_L130_GhostTarget, LM_Flashers_L131_GhostTarget, LM_Inserts_L50_GhostTarget, LM_Inserts_L51_GhostTarget, LM_Inserts_L54_GhostTarget, LM_Inserts_L55_GhostTarget, LM_Inserts_L56_GhostTarget, LM_Spotlights_gi04_GhostTarget, LM_Gi_GhostTarget)
 Dim BP_Layer1: BP_Layer1=Array(BM_Layer1, LM_Inserts_L11_Layer1, LM_Flashers_L121_Layer1, LM_Flashers_L122_Layer1, LM_Flashers_L123_Layer1, LM_Flashers_L127_Layer1, LM_Flashers_L129_Layer1, LM_Flashers_L130_Layer1, LM_Flashers_L131_Layer1, LM_Flashers_L132_Layer1, LM_Inserts_L18_Layer1, LM_Inserts_L19_Layer1, LM_Inserts_L35_Layer1, LM_Inserts_L36_Layer1, LM_Flashers_L48_Layer1, LM_Inserts_L51_Layer1, LM_Flashers_L57_Layer1, LM_Flashers_L58_Layer1, LM_Flashers_L59_Layer1, LM_Backlight_L65_Layer1, LM_Backlight_L66_Layer1, LM_Backlight_L69_Layer1, LM_Inserts_L70_Layer1, LM_Inserts_L71_Layer1, LM_Inserts_L72_Layer1, LM_Backlight_L73_Layer1, LM_Backlight_L74_Layer1, LM_Backlight_L75_Layer1, LM_Backlight_L76_Layer1, LM_Backlight_L77_Layer1, LM_Inserts_L78_Layer1, LM_Inserts_L79_Layer1, LM_Inserts_L9_Layer1, LM_Spotlights_gi04_Layer1, LM_Gi1_gi01_Layer1, LM_Gi1_gi02_Layer1, LM_Gi1_gi03_Layer1, LM_Gi_Layer1, LM_Gi1_gi21_Layer1, LM_Gi1_gi22_Layer1, LM_Gi1_gi23_Layer1)
 Dim BP_Layer2: BP_Layer2=Array(BM_Layer2, LM_Flashers_L121_Layer2, LM_Flashers_L122_Layer2, LM_Flashers_L127_Layer2, LM_Flashers_L130_Layer2, LM_Flashers_L131_Layer2, LM_Flashers_L58_Layer2, LM_Backlight_L67_Layer2, LM_Backlight_L68_Layer2, LM_Backlight_L69_Layer2, LM_Inserts_L71_Layer2, LM_Inserts_L72_Layer2, LM_Backlight_L73_Layer2, LM_Backlight_L74_Layer2, LM_Backlight_L75_Layer2, LM_Backlight_L76_Layer2, LM_Inserts_L79_Layer2, LM_Inserts_L9_Layer2, LM_Spotlights_gi04_Layer2, LM_Gi1_gi01_Layer2, LM_Gi1_gi02_Layer2, LM_Gi1_gi03_Layer2, LM_Gi_Layer2)
+Dim BP_Layer3: BP_Layer3=Array(BM_Layer3, LM_Inserts_L11_Layer1, LM_Flashers_L121_Layer1, LM_Flashers_L122_Layer1, LM_Flashers_L123_Layer1, LM_Flashers_L127_Layer1, LM_Flashers_L129_Layer1, LM_Flashers_L130_Layer1, LM_Flashers_L131_Layer1, LM_Flashers_L132_Layer1, LM_Inserts_L18_Layer1, LM_Inserts_L19_Layer1, LM_Inserts_L35_Layer1, LM_Inserts_L36_Layer1, LM_Flashers_L48_Layer1, LM_Inserts_L51_Layer1, LM_Flashers_L57_Layer1, LM_Flashers_L58_Layer1, LM_Flashers_L59_Layer1, LM_Backlight_L65_Layer1, LM_Backlight_L66_Layer1, LM_Backlight_L69_Layer1, LM_Inserts_L70_Layer1, LM_Inserts_L71_Layer1, LM_Inserts_L72_Layer1, LM_Backlight_L73_Layer1, LM_Backlight_L74_Layer1, LM_Backlight_L75_Layer1, LM_Backlight_L76_Layer1, LM_Backlight_L77_Layer1, LM_Inserts_L78_Layer1, LM_Inserts_L79_Layer1, LM_Inserts_L9_Layer1, LM_Spotlights_gi04_Layer1, LM_Gi1_gi01_Layer1, LM_Gi1_gi02_Layer1, LM_Gi1_gi03_Layer1, LM_Gi_Layer1, LM_Gi1_gi21_Layer1, LM_Gi1_gi22_Layer1, LM_Gi1_gi23_Layer1)
 Dim BP_LeftFlipper: BP_LeftFlipper=Array(BM_LeftFlipper, LM_Flashers_L121_LeftFlipper, LM_Inserts_L1_LeftFlipper, LM_Inserts_L23_LeftFlipper, LM_Inserts_L2_LeftFlipper, LM_Gi1_gi01_LeftFlipper, LM_Gi1_gi02_LeftFlipper, LM_Gi1_gi03_LeftFlipper, LM_Gi_LeftFlipper)
 Dim BP_LeftFlipper1: BP_LeftFlipper1=Array(BM_LeftFlipper1, LM_Flashers_L121_LeftFlipper1, LM_Flashers_L123_LeftFlipper1, LM_Flashers_L132_LeftFlipper1, LM_Gi_LeftFlipper1)
 Dim BP_LeftFlipper1U: BP_LeftFlipper1U=Array(BM_LeftFlipper1U, LM_Flashers_L121_LeftFlipper1U, LM_Flashers_L132_LeftFlipper1U, LM_Inserts_L17_LeftFlipper1U, LM_Inserts_L18_LeftFlipper1U, LM_Gi_LeftFlipper1U)
@@ -503,8 +504,6 @@ Sub table1_Init
         vpmTimer.AddTimer 2000, "Controller.SolMask(0)=&Hffffffff'" 'ignore all solenoids - then add the Timer to renable all the solenoids after 2 seconds
         Controller.Run GetPlayerHWnd
         On Error Goto 0
-        .Switch(36) = 1
-        .Switch(38) = 1
     End With
 
     ' Nudging
@@ -652,27 +651,36 @@ Sub Table1_OptionEvent(ByVal eventId)
 	RailVis = Table1.Option("Siderails", 0, 1, 1, 1, 0, Array("Not Visible", "Visible"))
 
 	'Ball image
-	v = Table1.Option("Ball Image", 0, 1, 1, 1, 0, Array("Standard","RCT Room"))
+	v = Table1.Option("Ball Image", 0, 1, 1, 0, 0, Array("Standard","RCT Room"))
 	Select Case v
 		Case 0: RCTBall1.image = "ball_Test8B": RCTBall2.image = "ball_Test8B": RCTBall3.image = "ball_Test8B": RCTBall4.image = "ball_Test8B"
 		Case 1: RCTBall1.image = "RCT_Ball_VR": RCTBall2.image = "RCT_Ball_VR": RCTBall3.image = "RCT_Ball_VR": RCTBall4.image = "RCT_Ball_VR"
 	End Select
 
     ' Glass	dirt
-	v = Table1.Option("Glass dirt", 0, 4, 1, 3, 0, Array("Hide", "25%", "50%", "75%", "100%"))
+	v = Table1.Option("Glass dirt", 0, 4, 1, 2, 0, Array("Hide", "25%", "50%", "75%", "100%"))
 	F_Glass_spec.Visible = v>0
-	F_Glass_dif.Visible = v>0
 	Select Case v
-		Case 1: F_Glass_spec.Opacity = 50000*0.25: F_Glass_dif.Opacity = 150*0.25
-		Case 2: F_Glass_spec.Opacity = 50000*0.50: F_Glass_dif.Opacity = 150*0.50
-		Case 3: F_Glass_spec.Opacity = 50000*0.75: F_Glass_dif.Opacity = 150*0.75
-		Case 4: F_Glass_spec.Opacity = 50000*1.00: F_Glass_dif.Opacity = 150*1.00
+		Case 1: F_Glass_spec.Opacity = 50000*0.25
+		Case 2: F_Glass_spec.Opacity = 50000*0.50
+		Case 3: F_Glass_spec.Opacity = 50000*0.75
+		Case 4: F_Glass_spec.Opacity = 50000*1.00
+	End Select
+
+    ' Glass	reflection
+	v = Table1.Option("Glass reflection", 0, 4, 1, 1, 0, Array("Hide", "25%", "50%", "75%", "100%"))
+	BGReflect.Visible = v>0
+	Select Case v
+		Case 1: BGReflect.Opacity = 4*0.25
+		Case 2: BGReflect.Opacity = 4*0.50
+		Case 3: BGReflect.Opacity = 4*0.75
+		Case 4: BGReflect.Opacity = 4*1.00
 	End Select
 
     ' Sound volumes
     RecordedVolume = Table1.Option("RCT Mech Volume", 0, 1, 0.01, 0.4, 1)
     CoasterVolume = Table1.Option("RCT Coaster Volume", 0, 1, 0.01, 0.4, 1)
-	BackglassBuzz = Table1.Option("Backglass Attract Buzz", 0, 1, 1, 0, 0, Array("Off", "On"))
+	BackglassBuzz = Table1.Option("Backglass Attract Buzz", 0, 1, 1, 1, 0, Array("Off", "On"))
     VolumeDial = Table1.Option("Other Mech Volume", 0, 1, 0.01, 0.8, 1)
     BallRollVolume = Table1.Option("Ball Roll Volume", 0, 1, 0.01, 0.5, 1)
 	RampRollVolume = Table1.Option("Ramp Roll Volume", 0, 1, 0.01, 0.5, 1)
@@ -707,12 +715,11 @@ Sub SetupRoom
 	If RenderingMode = 2 OR TestVRonDT = True Then
 		If VRRoomChoice = 2 Then 					' Coaster
 			F_Glass_spec.rotx = - 7.85
-			F_Glass_dif.rotx = - 7.85
 			F_Glass_spec.height = 284
-			F_Glass_dif.height = 284
 			VRATimer.enabled = true
 			VRTimer.enabled = true
 			BM_PinCab_Rails.visible = false
+			BGReflect.visible = false
 			For each Thing in VRCoasterRoom: Thing.visible = true: next
 			For each Thing in VRCab: Thing.visible = true: next
 			For each BP in BGT_All: BP.visible = true: next
@@ -724,9 +731,8 @@ Sub SetupRoom
 			MiniRoom.visible = true
 			MiniRoom_Wall.visible = true
 			F_Glass_spec.rotx = - 7.85
-			F_Glass_dif.rotx = - 7.85
 			F_Glass_spec.height = 284
-			F_Glass_dif.height = 284
+			BGReflect.visible = false
 			'Turn off VRRoom = 1 stuff
 			VRATimer.enabled = false
 			VRTimer.enabled = false
@@ -762,12 +768,15 @@ Sub SetRefractionProbes(Opt)
 	On Error Resume Next
 		Select Case Opt
 			Case 0:
+				BM_Layer3.RefractionProbe = ""
 				BM_Layer2.RefractionProbe = ""
 				BM_Layer1.RefractionProbe = ""
 			Case 1:
+				BM_Layer3.RefractionProbe = "Refractions"
 				BM_Layer2.RefractionProbe = "Refractions"
 				BM_Layer1.RefractionProbe = "Refractions"
 			Case 2:
+				BM_Layer3.RefractionProbe = "Refractions Rough"
 				BM_Layer2.RefractionProbe = "Refractions Rough"
 				BM_Layer1.RefractionProbe = "Refractions Rough"
 		End Select
@@ -775,8 +784,8 @@ Sub SetRefractionProbes(Opt)
 End Sub
 
 Function ReflectionToggle(state)
-	Dim ReflFullObjArray: ReflFullObjArray = Array(BP_Parts, BP_LeftFlipper, BP_LeftFlipperU, BP_LeftFlipper1, BP_LeftFlipper1U, BP_RightFlipper, BP_RightFlipperU, BP_RightFlipper1, BP_RightFlipper1U, BP_GhostTarget, BP_sw17, BP_sw18, BP_sw19, BP_sw22, BP_sw40, BP_sw44, BP_sw45, BP_sw46, BP_sw28, BP_sw29, BP_sw30, BP_sw31, BP_sw32, BP_sw39, BP_ScrambledEgg, BP_Layer1, BP_Layer2) 
-	Dim ReflPartObjArray: ReflPartObjArray = Array(BM_Parts, BM_LeftFlipper, BM_LeftFlipperU, BM_LeftFlipper1, BM_LeftFlipper1U, BM_RightFlipper, BM_RightFlipperU, BM_RightFlipper1, BM_RightFlipper1U, BM_GhostTarget, BM_sw17, BM_sw18, BM_sw19, BM_sw22, BM_sw40, BM_sw44, BM_sw45, BM_sw46, BM_sw28, BM_sw29, BM_sw30, BM_sw31, BM_sw32, BM_sw39, BM_ScrambledEgg, BM_Layer1, BM_Layer2) 
+	Dim ReflFullObjArray: ReflFullObjArray = Array(BP_Parts, BP_LeftFlipper, BP_LeftFlipperU, BP_LeftFlipper1, BP_LeftFlipper1U, BP_RightFlipper, BP_RightFlipperU, BP_RightFlipper1, BP_RightFlipper1U, BP_GhostTarget, BP_sw17, BP_sw18, BP_sw19, BP_sw22, BP_sw40, BP_sw44, BP_sw45, BP_sw46, BP_sw28, BP_sw29, BP_sw30, BP_sw31, BP_sw32, BP_sw39, BP_ScrambledEgg, BP_Layer1, BP_Layer2, BP_Layer3) 
+	Dim ReflPartObjArray: ReflPartObjArray = Array(BM_Parts, BM_LeftFlipper, BM_LeftFlipperU, BM_LeftFlipper1, BM_LeftFlipper1U, BM_RightFlipper, BM_RightFlipperU, BM_RightFlipper1, BM_RightFlipper1U, BM_GhostTarget, BM_sw17, BM_sw18, BM_sw19, BM_sw22, BM_sw40, BM_sw44, BM_sw45, BM_sw46, BM_sw28, BM_sw29, BM_sw30, BM_sw31, BM_sw32, BM_sw39, BM_ScrambledEgg, BM_Layer1, BM_Layer2, BM_Layer3) 
 	Dim IBP, BP, v1, v2
 	Select Case state
 		Case 0: 'No reflections
@@ -1505,11 +1514,25 @@ SolModCallback(32) = "FlashMod132" 'Middle Left 132
 Sub FlashMod121(pwm)
 	If DebugFlashers Then Debug.print "FlashMod121 level=" & pwm
 	L121.State = pwm
+If RenderingMode = 2 Or TestVRonDT = True Then
+	L121F.Visible = False
+	L121F.State = 0
+Else
+	L121F.Visible = True
+	L121F.State = pwm
+End If
 End Sub
 
 Sub FlashMod122(pwm)
 	If DebugFlashers Then Debug.print "FlashMod122 level=" & pwm
 	L122.State = pwm
+If RenderingMode = 2 Or TestVRonDT = True Then
+	L122F.Visible = False
+	L122F.State = 0
+Else
+	L122F.Visible = True
+	L122F.State = pwm
+End If
 End Sub
 
 Sub FlashMod123(pwm)
@@ -1525,16 +1548,37 @@ End Sub
 Sub FlashMod129(pwm)
 	If DebugFlashers Then Debug.print "FlashMod129 level=" & pwm
 	L129.State = pwm
+If RenderingMode = 2 Or TestVRonDT = True Then
+	L129F.Visible = False
+	L129F.State = 0
+Else
+	L129F.Visible = True
+	L129F.State = pwm
+End If
 End Sub
 
 Sub FlashMod130(pwm)
 	If DebugFlashers Then Debug.print "FlashMod130 level=" & pwm
 	L130.State = pwm
+If RenderingMode = 2 Or TestVRonDT = True Then
+	L130F.Visible = False
+	L130F.State = 0
+Else
+	L130F.Visible = True
+	L130F.State = pwm
+End If
 End Sub
 
 Sub FlashMod131(pwm)
 	If DebugFlashers Then Debug.print "FlashMod131 level=" & pwm
 	L131.State = pwm
+If RenderingMode = 2 Or TestVRonDT = True Then
+	L131F.Visible = False
+	L131F.State = 0
+Else
+	L131F.Visible = True
+	L131F.State = pwm
+End If
 End Sub
 
 Sub FlashMod132(pwm)
@@ -5237,6 +5281,10 @@ End Sub
 '2.2.8 - Rawd -             Re-aligned new room (that was rotated 3 degrees and scaled) - Reset coaster seats and gate positions
 '2.2.8b- Rawd - 			Separated VR rails from posters and other objects and raised the height of the rails and gates in VR
 '2.2.9 - apophis - 			Fixed(?) plunger line visualization. Fixed (?) ghost target animation. Added a ball image option.
-
 'Release 2.3
-
+'2.3.1 - Gedankekojote97-   New ramp and transparent plastic textures/materials. Added glowing insert lights. Added brighter flasher lights.
+'2.3.2 - Gedankekojote97-   Added pf glass reflection option. New pf glass dirt image. Cab View adjusted.
+'2.3.3 - Gedankekojote97-   Changed that the vr room train sounds comes from the backglass.
+'2.3.4 - Gedankekojote97-   Implemented the fix for the not properly working switch(38) (Opto, behind drop target). HUGE THANKS to @supergibson for finding the solution !
+'							Added higher collidable walls at the entrance of the middle ramp, because the ball glitched out sometimes.
+'Release 2.4
